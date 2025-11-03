@@ -17,6 +17,7 @@ import { PromoBanner } from "../site-components/PromoBanner";
 interface TemplateProps {
   data: BuilderData;
   activeSection?: string;
+  fontFamily?: string;
 }
 
 const templateColors = {
@@ -25,7 +26,7 @@ const templateColors = {
   accent: "#F4A460",
 };
 
-export const TrattoriaTemplate = ({ data, activeSection }: TemplateProps) => {
+export const TrattoriaTemplate = ({ data, activeSection, fontFamily = "Inter" }: TemplateProps) => {
   const getSectionHighlight = (sectionId: string) => {
     if (activeSection === sectionId) {
       return "ring-4 ring-primary ring-opacity-50 transition-all duration-500";
@@ -34,7 +35,10 @@ export const TrattoriaTemplate = ({ data, activeSection }: TemplateProps) => {
   };
 
   return (
-    <div className="w-full bg-white text-gray-900 overflow-y-auto h-full">
+    <div 
+      className="w-full bg-white text-gray-900 overflow-y-auto h-full"
+      style={{ fontFamily: fontFamily }}
+    >
       <PromoBanner data={data} templateColors={templateColors} />
       <div className={getSectionHighlight("hero")}>
         <SiteHeader data={data} templateColors={templateColors} />

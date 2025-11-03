@@ -66,24 +66,32 @@ export const HeroSection = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col lg:flex-row overflow-hidden bg-gray-50 relative">
+    <div className="h-screen flex flex-col lg:flex-row overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50/50 relative">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 opacity-[0.02] bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,1),transparent_50%)] pointer-events-none" />
+      
       {/* Left Column - Hero or Sidebar */}
-      <div className={`w-full lg:w-1/3 flex-shrink-0 transition-all duration-500 ease-in-out ${
+      <div className={`w-full lg:w-1/3 flex-shrink-0 transition-all duration-700 ease-out ${
         isSidebarOpen 
           ? "translate-x-0 opacity-100" 
           : "translate-x-0 opacity-100"
       } ${isSidebarOpen ? "lg:static fixed lg:relative z-50 lg:z-auto" : ""}`}>
         {!isSidebarOpen ? (
           // Hero Landing
-          <div className="h-full flex items-center justify-center p-6 sm:p-12 lg:p-16">
-            <div className="text-center space-y-8 sm:space-y-10 max-w-md w-full">
+          <div className="h-full flex items-center justify-center p-6 sm:p-12 lg:p-16 xl:p-20 relative">
+            {/* Subtle light effect */}
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/3 rounded-full blur-3xl pointer-events-none" />
+            
+            <div className="relative z-10 space-y-8 sm:space-y-12 max-w-lg w-full">
               <HeroContent />
               <button
                 onClick={handleStartBuilding}
-                className="w-full text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 bg-primary hover:bg-primary/90 text-white rounded-xl font-semibold transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-[1.02] flex items-center justify-center gap-2"
+                className="group relative w-full text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 bg-primary hover:bg-primary/90 text-white rounded-2xl font-semibold transition-all duration-300 shadow-2xl hover:shadow-primary/30 hover:scale-[1.02] flex items-center justify-center gap-2 overflow-hidden"
               >
-                Crea il mio sito ora
-                <ArrowRight className="w-5 h-5" />
+                <span className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                <span className="relative z-10">Crea il mio sito ora</span>
+                <ArrowRight className="relative z-10 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
             </div>
           </div>
@@ -102,7 +110,7 @@ export const HeroSection = () => {
       {/* Right Column - Preview (always visible) */}
       <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8 min-h-0 lg:min-h-full relative">
         <div className="w-full h-full max-w-7xl">
-          <WebsitePreview data={previewData} activeSection={activeSection} />
+          <WebsitePreview data={previewData} activeSection={activeSection} fontFamily={builderData?.fontFamily} />
         </div>
       </div>
       

@@ -16,6 +16,7 @@ import {
   Save,
   Rocket,
   Palette,
+  Type,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -27,6 +28,7 @@ import { BuilderStep6 } from "./builder-steps/BuilderStep6";
 import { BuilderStep7Reviews } from "./builder-steps/BuilderStep7Reviews";
 import { BuilderStep7FAQ } from "./builder-steps/BuilderStep7FAQ";
 import { BuilderStep8 } from "./builder-steps/BuilderStep8";
+import { BuilderStepTypography } from "./builder-steps/BuilderStepTypography";
 
 interface PersonalizationSidebarProps {
   data: BuilderData;
@@ -36,10 +38,11 @@ interface PersonalizationSidebarProps {
   onTemplateSelect?: (template: TemplateType) => void;
 }
 
-type Section = "template" | "hero" | "about" | "menu" | "events" | "gallery" | "reviews" | "reservation" | "faq" | "blog" | "contact" | "footer";
+type Section = "template" | "typography" | "hero" | "about" | "menu" | "events" | "gallery" | "reviews" | "reservation" | "faq" | "blog" | "contact" | "footer";
 
 const sections: { id: Section; label: string; icon: any }[] = [
   { id: "template", label: "Template", icon: Palette },
+  { id: "typography", label: "Tipografia", icon: Type },
   { id: "hero", label: "Hero", icon: Home },
   { id: "about", label: "Chi Siamo", icon: Users },
   { id: "menu", label: "Menu", icon: UtensilsCrossed },
@@ -77,6 +80,13 @@ export const PersonalizationSidebar = ({
               }
             }}
             onNext={() => setActiveSection("hero")}
+          />
+        );
+      case "typography":
+        return (
+          <BuilderStepTypography
+            data={data}
+            onUpdate={onUpdate}
           />
         );
       case "hero":
@@ -206,19 +216,19 @@ export const PersonalizationSidebar = ({
   };
 
   return (
-    <div className="h-full flex flex-col bg-white/95 backdrop-blur-xl border-r border-gray-200/50 shadow-2xl overflow-hidden">
+    <div className="h-full flex flex-col bg-white/98 backdrop-blur-2xl border-r border-gray-200/60 shadow-[0_0_60px_-15px_rgba(0,0,0,0.1)] overflow-hidden transition-all duration-700 ease-out">
       {/* Minimal Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-200/50 flex-shrink-0 bg-gradient-to-r from-gray-50/50 to-white/50">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-gradient-to-br from-primary to-primary/80 rounded-md flex items-center justify-center shadow-sm">
-            <Rocket className="w-3.5 h-3.5 text-white" />
+      <div className="flex items-center justify-between p-4 border-b border-gray-200/60 flex-shrink-0 bg-gradient-to-r from-white/80 via-gray-50/30 to-white/80 backdrop-blur-sm">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 bg-gradient-to-br from-primary via-primary/90 to-primary/80 rounded-lg flex items-center justify-center shadow-lg shadow-primary/20">
+            <Rocket className="w-4 h-4 text-white" />
           </div>
-          <span className="text-xs font-medium text-gray-700">Editor</span>
+          <span className="text-xs font-semibold text-gray-700 tracking-wide">Editor</span>
         </div>
         {onClose && (
           <button
             onClick={onClose}
-            className="p-1.5 hover:bg-gray-100/80 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-100/80 rounded-lg transition-all duration-200 hover:scale-105"
             aria-label="Chiudi"
           >
             <X className="w-4 h-4 text-gray-600" />
@@ -229,7 +239,7 @@ export const PersonalizationSidebar = ({
       {/* Sidebar Content */}
       <div className="flex flex-1 overflow-hidden min-h-0">
         {/* Icons Sidebar */}
-        <div className="w-14 sm:w-16 border-r border-gray-200/50 bg-gradient-to-b from-gray-50/30 to-white/30 flex flex-col py-3 flex-shrink-0">
+        <div className="w-16 border-r border-gray-200/60 bg-gradient-to-b from-gray-50/40 via-white/20 to-white/40 backdrop-blur-sm flex flex-col py-4 flex-shrink-0">
           {sections.map((section) => {
             const Icon = section.icon;
             const isActive = activeSection === section.id;
@@ -242,19 +252,19 @@ export const PersonalizationSidebar = ({
                     onSectionChange(section.id);
                   }
                 }}
-                className={`group relative flex flex-col items-center justify-center gap-1.5 p-2.5 transition-all duration-200 ${
+                className={`group relative flex flex-col items-center justify-center gap-2 p-3 transition-all duration-300 ${
                   isActive
-                    ? "bg-white shadow-sm border-l-2 border-primary text-primary"
-                    : "text-gray-500 hover:text-gray-900 hover:bg-white/60"
+                    ? "bg-white/90 shadow-md text-primary"
+                    : "text-gray-500 hover:text-gray-900 hover:bg-white/70"
                 }`}
                 title={section.label}
               >
-                <Icon className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform ${isActive ? "scale-110" : ""}`} />
-                <span className={`text-[10px] sm:text-xs font-medium hidden sm:block ${isActive ? "text-primary" : "text-gray-600"}`}>
+                <Icon className={`w-5 h-5 transition-all duration-300 ${isActive ? "scale-110" : "group-hover:scale-105"}`} />
+                <span className={`text-[10px] font-medium hidden sm:block transition-colors ${isActive ? "text-primary font-semibold" : "text-gray-600"}`}>
                   {section.label}
                 </span>
                 {isActive && (
-                  <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary rounded-r" />
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-primary to-primary/80 rounded-r-full" />
                 )}
               </button>
             );
@@ -268,11 +278,11 @@ export const PersonalizationSidebar = ({
       </div>
 
       {/* Compact Footer Actions */}
-      <div className="p-3 border-t border-gray-200/50 bg-gradient-to-r from-gray-50/50 to-white/50 flex items-center justify-between gap-2 flex-shrink-0">
+      <div className="p-3 border-t border-gray-200/60 bg-gradient-to-r from-white/90 via-gray-50/50 to-white/90 backdrop-blur-sm flex items-center justify-between gap-2 flex-shrink-0">
         <Button
           variant="ghost"
           size="sm"
-          className="h-8 px-3 text-xs hover:bg-gray-100/80"
+          className="h-8 px-3 text-xs hover:bg-gray-100/80 transition-all duration-200"
           onClick={() => {
             // Save functionality
             console.log("Save changes");
@@ -283,7 +293,7 @@ export const PersonalizationSidebar = ({
         </Button>
         <Button
           size="sm"
-          className="h-8 px-3 text-xs bg-primary hover:bg-primary/90 shadow-sm"
+          className="h-8 px-3 text-xs bg-primary hover:bg-primary/90 shadow-md shadow-primary/20 transition-all duration-200"
           onClick={() => {
             // Publish functionality
             console.log("Publish site");

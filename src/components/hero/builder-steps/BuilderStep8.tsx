@@ -56,54 +56,45 @@ export const BuilderStep8 = ({ data, onUpdate, onNext, onBack }: BuilderStep8Pro
         </p>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-2">
         {days.map(({ key, label }) => {
           const day = openingHours[key];
           return (
             <div
               key={key}
-              className="flex items-center gap-4 p-4 bg-muted/30 rounded-lg border"
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 p-3 bg-muted/20 rounded-lg border border-gray-200/50"
             >
-              <div className="w-24 font-medium text-sm">{label}</div>
-              <div className="flex items-center gap-2">
+              <div className="w-full sm:w-20 font-medium text-xs sm:text-sm flex-shrink-0">{label}</div>
+              <div className="flex items-center gap-2 flex-shrink-0">
                 <input
                   type="checkbox"
                   checked={!day.closed}
                   onChange={(e) => updateDay(key, "closed", !e.target.checked)}
-                  className="w-4 h-4"
+                  className="w-3.5 h-3.5"
                 />
-                <Label className="text-sm">Aperto</Label>
+                <Label className="text-xs">Aperto</Label>
               </div>
               {!day.closed && (
-                <>
-                  <div className="flex items-center gap-2">
-                    <Label htmlFor={`${key}-open`} className="text-xs text-muted-foreground">
-                      Apertura
-                    </Label>
-                    <Input
-                      id={`${key}-open`}
-                      type="time"
-                      value={day.open}
-                      onChange={(e) => updateDay(key, "open", e.target.value)}
-                      className="w-32"
-                    />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Label htmlFor={`${key}-close`} className="text-xs text-muted-foreground">
-                      Chiusura
-                    </Label>
-                    <Input
-                      id={`${key}-close`}
-                      type="time"
-                      value={day.close}
-                      onChange={(e) => updateDay(key, "close", e.target.value)}
-                      className="w-32"
-                    />
-                  </div>
-                </>
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                  <Input
+                    id={`${key}-open`}
+                    type="time"
+                    value={day.open}
+                    onChange={(e) => updateDay(key, "open", e.target.value)}
+                    className="w-full sm:w-24 text-xs sm:text-sm h-8"
+                  />
+                  <span className="text-xs text-muted-foreground">-</span>
+                  <Input
+                    id={`${key}-close`}
+                    type="time"
+                    value={day.close}
+                    onChange={(e) => updateDay(key, "close", e.target.value)}
+                    className="w-full sm:w-24 text-xs sm:text-sm h-8"
+                  />
+                </div>
               )}
               {day.closed && (
-                <span className="text-sm text-muted-foreground">Chiuso</span>
+                <span className="text-xs text-muted-foreground">Chiuso</span>
               )}
             </div>
           );
@@ -209,25 +200,6 @@ export const BuilderStep8 = ({ data, onUpdate, onNext, onBack }: BuilderStep8Pro
         </div>
       </div>
 
-      <div className="flex gap-3">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={onBack}
-          className="flex-1 text-lg py-6 transition-all duration-300 group"
-        >
-          <ArrowLeft className="mr-2 h-5 w-5 group-hover:-translate-x-1 transition-transform duration-300" />
-          Indietro
-        </Button>
-        <Button
-          type="button"
-          onClick={onNext}
-          className="flex-1 text-lg py-6 bg-primary hover:bg-primary/90 transition-all duration-300 group"
-        >
-          Completa
-          <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
-        </Button>
-      </div>
     </div>
   );
 };

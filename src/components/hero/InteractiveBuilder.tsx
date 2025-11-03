@@ -161,6 +161,9 @@ export interface BuilderData {
     link?: string;
   };
   cookieBannerEnabled?: boolean;
+  
+  // Typography
+  fontFamily?: string;
 }
 
 interface InteractiveBuilderProps {

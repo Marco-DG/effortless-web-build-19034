@@ -48,26 +48,6 @@ export const BuilderStep3 = ({ data, onUpdate, onNext, onBack }: BuilderStep3Pro
         />
       </div>
 
-      <div className="flex gap-3">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={onBack}
-          className="flex-1 text-lg py-6 transition-all duration-300 group"
-        >
-          <ArrowLeft className="mr-2 h-5 w-5 group-hover:-translate-x-1 transition-transform duration-300" />
-          Indietro
-        </Button>
-        <Button
-          type="button"
-          onClick={handleNext}
-          disabled={!data.businessName.trim()}
-          className="flex-1 text-lg py-6 bg-primary hover:bg-primary/90 transition-all duration-300 group"
-        >
-          Avanti
-          <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
-        </Button>
-      </div>
     </div>
   );
 };
