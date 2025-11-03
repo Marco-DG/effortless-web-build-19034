@@ -13,6 +13,7 @@ import { CookieBanner } from "../site-components/CookieBanner";
 
 interface TemplateProps {
   data: BuilderData;
+  activeSection?: string;
 }
 
 const templateColors = {
@@ -21,19 +22,42 @@ const templateColors = {
   accent: "#F4A460",
 };
 
-export const TrattoriaTemplate = ({ data }: TemplateProps) => {
+export const TrattoriaTemplate = ({ data, activeSection }: TemplateProps) => {
+  const getSectionHighlight = (sectionId: string) => {
+    if (activeSection === sectionId) {
+      return "ring-4 ring-primary ring-opacity-50 transition-all duration-500";
+    }
+    return "";
+  };
+
   return (
-    <div className="w-full bg-white text-gray-900 overflow-y-auto max-h-[800px] shadow-2xl rounded-lg">
-      <SiteHeader data={data} templateColors={templateColors} />
-      <SiteHero data={data} templateColors={templateColors} />
-      <SiteAbout data={data} templateColors={templateColors} />
-      <SiteMenu data={data} templateColors={templateColors} />
-      <SiteEvents data={data} templateColors={templateColors} />
-      <SiteReviews data={data} templateColors={templateColors} />
-      <SiteFAQ data={data} templateColors={templateColors} />
-      <SiteContact data={data} templateColors={templateColors} />
+    <div className="w-full bg-white text-gray-900 overflow-y-auto h-full">
+      <div className={getSectionHighlight("hero")}>
+        <SiteHeader data={data} templateColors={templateColors} />
+        <SiteHero data={data} templateColors={templateColors} />
+      </div>
+      <div className={getSectionHighlight("about")}>
+        <SiteAbout data={data} templateColors={templateColors} />
+      </div>
+      <div className={getSectionHighlight("menu")}>
+        <SiteMenu data={data} templateColors={templateColors} />
+      </div>
+      <div className={getSectionHighlight("events")}>
+        <SiteEvents data={data} templateColors={templateColors} />
+      </div>
+      <div className={getSectionHighlight("reviews")}>
+        <SiteReviews data={data} templateColors={templateColors} />
+      </div>
+      <div className={getSectionHighlight("faq")}>
+        <SiteFAQ data={data} templateColors={templateColors} />
+      </div>
+      <div className={getSectionHighlight("contact")}>
+        <SiteContact data={data} templateColors={templateColors} />
+      </div>
       <SiteNewsletter data={data} templateColors={templateColors} />
-      <SiteFooter data={data} templateColors={templateColors} />
+      <div className={getSectionHighlight("footer")}>
+        <SiteFooter data={data} templateColors={templateColors} />
+      </div>
       <CookieBanner data={data} />
     </div>
   );

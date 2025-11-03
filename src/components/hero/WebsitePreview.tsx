@@ -1,27 +1,22 @@
 import { BuilderData } from "./InteractiveBuilder";
-import { Monitor } from "lucide-react";
 import { TrattoriaTemplate } from "./templates/TrattoriaTemplate";
 import { UrbanBarTemplate } from "./templates/UrbanBarTemplate";
 import { DolceVitaTemplate } from "./templates/DolceVitaTemplate";
 import { CraftPubTemplate } from "./templates/CraftPubTemplate";
+import { Monitor } from "lucide-react";
 
 interface WebsitePreviewProps {
   data: BuilderData;
+  activeSection?: string;
 }
 
-export const WebsitePreview = ({ data }: WebsitePreviewProps) => {
+export const WebsitePreview = ({ data, activeSection }: WebsitePreviewProps) => {
   const renderTemplate = () => {
     if (!data.template) {
       return (
-        <div className="h-[800px] bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg flex items-center justify-center">
-          <div className="text-center space-y-4 p-8">
-            <Monitor className="w-16 h-16 mx-auto text-muted-foreground/50" />
-            <h3 className="text-2xl font-heading font-semibold text-muted-foreground">
-              Seleziona un template per iniziare
-            </h3>
-            <p className="text-muted-foreground/70">
-              Il tuo sito apparirà qui in tempo reale
-            </p>
+        <div className="h-full w-full flex items-center justify-center bg-gray-100 rounded-lg">
+          <div className="text-center text-gray-500">
+            <p className="text-lg">Caricamento template...</p>
           </div>
         </div>
       );
@@ -29,37 +24,36 @@ export const WebsitePreview = ({ data }: WebsitePreviewProps) => {
 
     switch (data.template) {
       case "trattoria":
-        return <TrattoriaTemplate data={data} />;
+        return <TrattoriaTemplate data={data} activeSection={activeSection} />;
       case "urban-bar":
-        return <UrbanBarTemplate data={data} />;
+        return <UrbanBarTemplate data={data} activeSection={activeSection} />;
       case "dolce-vita":
-        return <DolceVitaTemplate data={data} />;
+        return <DolceVitaTemplate data={data} activeSection={activeSection} />;
       case "craft-pub":
-        return <CraftPubTemplate data={data} />;
+        return <CraftPubTemplate data={data} activeSection={activeSection} />;
       default:
-        return null;
+        return (
+          <div className="h-full w-full flex items-center justify-center bg-gray-100 rounded-lg">
+            <div className="text-center text-gray-500">
+              <p className="text-lg">Template non trovato</p>
+            </div>
+          </div>
+        );
     }
   };
 
   return (
-    <div className="bg-card border border-border rounded-2xl p-6 animate-fade-in-up-delay-1 sticky top-8">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <Monitor className="h-5 w-5 text-muted-foreground" />
-          <span className="text-sm font-medium text-muted-foreground">
-            Anteprima Live
-          </span>
-        </div>
-        {data.template && (
-          <div className="flex gap-2">
-            <div className="w-3 h-3 rounded-full bg-red-500"></div>
-            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-            <div className="w-3 h-3 rounded-full bg-green-500"></div>
-          </div>
-        )}
+    <div className="h-full w-full flex flex-col bg-gray-100 rounded-lg overflow-hidden shadow-2xl">
+      {/* Label Anteprima Live */}
+      <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 border-b border-gray-200">
+        <Monitor className="h-4 w-4 text-muted-foreground" />
+        <span className="text-sm font-medium text-muted-foreground">
+          Anteprima Live
+        </span>
       </div>
-
-      <div className="relative">
+      
+      {/* Preview Content */}
+      <div className="flex-1 overflow-y-auto bg-white">
         {renderTemplate()}
       </div>
     </div>
