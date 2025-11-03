@@ -12,6 +12,11 @@ export const HeroSection = () => {
     logoUrl: "",
     tagline: "",
     menuItems: [],
+    events: [],
+    gallery: [],
+    reviews: [],
+    faqs: [],
+    blogPosts: [],
     socialLinks: {
       facebook: "",
       instagram: "",

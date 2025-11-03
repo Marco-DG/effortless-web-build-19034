@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { BuilderData, MenuItem } from "../InteractiveBuilder";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { BuilderData, MenuItem, MenuCategory } from "../InteractiveBuilder";
 import { ArrowLeft, ArrowRight, Plus, X } from "lucide-react";
 import { useState } from "react";
 
@@ -14,14 +15,23 @@ interface BuilderStep4Props {
 }
 
 export const BuilderStep4 = ({ data, onUpdate, onNext, onBack }: BuilderStep4Props) => {
-  const [newItem, setNewItem] = useState<MenuItem>({ name: "", description: "", price: "" });
+  const [newItem, setNewItem] = useState<Omit<MenuItem, "id">>({ 
+    name: "", 
+    description: "", 
+    price: "",
+    category: "antipasti"
+  });
 
   const addMenuItem = () => {
     if (newItem.name.trim() && newItem.price.trim()) {
+      const item: MenuItem = {
+        ...newItem,
+        id: `item-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+      };
       onUpdate({
-        menuItems: [...data.menuItems, newItem]
+        menuItems: [...data.menuItems, item]
       });
-      setNewItem({ name: "", description: "", price: "" });
+      setNewItem({ name: "", description: "", price: "", category: "antipasti" });
     }
   };
 
@@ -29,6 +39,18 @@ export const BuilderStep4 = ({ data, onUpdate, onNext, onBack }: BuilderStep4Pro
     const updatedItems = data.menuItems.filter((_, i) => i !== index);
     onUpdate({ menuItems: updatedItems });
   };
+
+  const categories: { value: MenuCategory; label: string }[] = [
+    { value: "antipasti", label: "Antipasti" },
+    { value: "primi", label: "Primi" },
+    { value: "secondi", label: "Secondi" },
+    { value: "dessert", label: "Dessert" },
+    { value: "cocktail", label: "Cocktail" },
+    { value: "birre", label: "Birre" },
+    { value: "vini", label: "Vini" },
+    { value: "bevande", label: "Bevande" },
+    { value: "altro", label: "Altro" },
+  ];
 
   const handleNext = () => {
     onNext();
@@ -85,6 +107,24 @@ export const BuilderStep4 = ({ data, onUpdate, onNext, onBack }: BuilderStep4Pro
                 className="mt-1"
               />
             </div>
+          </div>
+          <div>
+            <Label htmlFor="itemCategory" className="text-xs">Categoria</Label>
+            <Select
+              value={newItem.category}
+              onValueChange={(value) => setNewItem({ ...newItem, category: value as MenuCategory })}
+            >
+              <SelectTrigger className="mt-1">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map((cat) => (
+                  <SelectItem key={cat.value} value={cat.value}>
+                    {cat.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <div>
             <Label htmlFor="itemDesc" className="text-xs">Descrizione (opzionale)</Label>
