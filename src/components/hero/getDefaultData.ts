@@ -31,44 +31,123 @@ export const getDefaultData = (template: "trattoria" | "urban-bar" | "dolce-vita
       {
         id: "1",
         name: "Pasta alla Carbonara",
-        description: "Guanciale, uova, pecorino romano",
-        price: "€12",
+        description: "Guanciale croccante, uova fresche, pecorino romano DOP",
+        price: "€14",
         category: "primi",
         badges: ["popolare"],
+        ingredients: ["Guanciale", "Uova", "Pecorino romano", "Pepe nero"],
       },
       {
         id: "2",
         name: "Ossobuco alla Milanese",
-        description: "Con risotto allo zafferano",
-        price: "€18",
+        description: "Con risotto allo zafferano e gremolada",
+        price: "€22",
         category: "secondi",
+        ingredients: ["Ossobuco", "Risotto", "Zafferano", "Gremolada"],
       },
       {
         id: "3",
         name: "Tiramisù della Nonna",
-        description: "Ricetta originale, fatto in casa",
-        price: "€7",
+        description: "Ricetta originale tramandata, fatto in casa",
+        price: "€8",
         category: "dessert",
         badges: ["novità"],
+        ingredients: ["Mascarpone", "Caffè espresso", "Savoiardi", "Cacao"],
+      },
+      {
+        id: "4",
+        name: "Bruschetta al Pomodoro",
+        description: "Pane tostato, pomodori San Marzano, basilico fresco, aglio",
+        price: "€6",
+        category: "antipasti",
+        badges: ["vegetariano"],
+        ingredients: ["Pane", "Pomodori", "Basilico", "Aglio", "Olio EVO"],
+      },
+      {
+        id: "5",
+        name: "Tagliatelle al Ragù",
+        description: "Pasta fatta in casa con ragù di carne di manzo",
+        price: "€15",
+        category: "primi",
+        ingredients: ["Tagliatelle", "Ragù di manzo", "Pomodoro", "Vino rosso"],
       },
     ] : template === "urban-bar" ? [
       {
         id: "1",
         name: "Neon Martini",
-        description: "Gin, vermouth dry, twist al pompelmo rosa",
+        description: "Gin premium, vermouth dry, twist al pompelmo rosa e ghiaccio",
         price: "€14",
         category: "cocktail",
         badges: ["popolare"],
+        ingredients: ["Gin", "Vermouth dry", "Pompelmo rosa"],
       },
       {
         id: "2",
         name: "Dark Paradise",
-        description: "Rum invecchiato, amaretto, sciroppo di vaniglia",
+        description: "Rum invecchiato 8 anni, amaretto, sciroppo di vaniglia, ghiaccio tritato",
         price: "€16",
         category: "cocktail",
         badges: ["novità"],
+        ingredients: ["Rum", "Amaretto", "Sciroppo vaniglia"],
       },
-    ] : [],
+      {
+        id: "3",
+        name: "Mojito Tropicale",
+        description: "Rum bianco, menta fresca, lime, soda e frutto della passione",
+        price: "€12",
+        category: "cocktail",
+        ingredients: ["Rum bianco", "Menta", "Lime", "Frutto della passione"],
+      },
+      {
+        id: "4",
+        name: "Old Fashioned",
+        description: "Whiskey bourbon, zucchero, angostura, scorza d'arancia",
+        price: "€15",
+        category: "cocktail",
+        badges: ["popolare"],
+        ingredients: ["Bourbon", "Zucchero", "Angostura", "Arancia"],
+      },
+    ] : template === "dolce-vita" ? [
+      {
+        id: "1",
+        name: "Cappuccino Classico",
+        description: "Espresso con schiuma di latte vellutata e cacao",
+        price: "€3.50",
+        category: "bevande",
+        badges: ["popolare"],
+      },
+      {
+        id: "2",
+        name: "Croissant Artigianale",
+        description: "Sfogliato con burro di qualità, cotto al momento",
+        price: "€2.50",
+        category: "dessert",
+      },
+      {
+        id: "3",
+        name: "Cheesecake al Limone",
+        description: "Base di biscotti, crema al mascarpone e limone di Sicilia",
+        price: "€5.50",
+        category: "dessert",
+        badges: ["novità"],
+      },
+    ] : [
+      {
+        id: "1",
+        name: "IPA Americana",
+        description: "Luppolata, fruttata, amara al punto giusto - 6.5% ABV",
+        price: "€7",
+        category: "birre",
+        badges: ["popolare"],
+      },
+      {
+        id: "2",
+        name: "Stout Imperiale",
+        description: "Scura, cremosa, note di caffè e cioccolato - 8% ABV",
+        price: "€8",
+        category: "birre",
+      },
+    ],
     events: [
       {
         id: "1",
@@ -79,7 +158,26 @@ export const getDefaultData = (template: "trattoria" | "urban-bar" | "dolce-vita
         location: "Sala principale",
       },
     ],
-    gallery: [],
+    gallery: [
+      {
+        id: "1",
+        url: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800",
+        type: "image",
+        caption: "Atmosfera del locale",
+      },
+      {
+        id: "2",
+        url: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800",
+        type: "image",
+        caption: "Piatti del giorno",
+      },
+      {
+        id: "3",
+        url: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800",
+        type: "image",
+        caption: "Team in cucina",
+      },
+    ],
     reviews: [
       {
         id: "1",
@@ -112,7 +210,25 @@ export const getDefaultData = (template: "trattoria" | "urban-bar" | "dolce-vita
         answer: "Certamente! Abbiamo diverse opzioni vegane nel nostro menu. Controlla i badge sulle voci del menu.",
       },
     ],
-    blogPosts: [],
+    blogPosts: template === "trattoria" ? [
+      {
+        id: "1",
+        title: "Il nostro nuovo menu autunnale",
+        excerpt: "Scopri i piatti della stagione con ingredienti freschi e di stagione",
+        content: "Questo autunno abbiamo preparato un menu speciale con prodotti locali...",
+        date: new Date().toISOString().split("T")[0],
+        category: "Novità",
+        imageUrl: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800",
+      },
+      {
+        id: "2",
+        title: "La storia della nostra famiglia",
+        excerpt: "Tre generazioni di passione per la cucina italiana",
+        content: "La nostra storia inizia nel 1950 quando...",
+        date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+        category: "Storia",
+      },
+    ] : [],
     address: "Via Roma 1, Milano",
     phone: "+39 02 1234567",
     email: "info@esempio.it",
@@ -155,6 +271,28 @@ export const getDefaultData = (template: "trattoria" | "urban-bar" | "dolce-vita
         },
       ],
     },
+    newsletterEnabled: true,
+    newsletterTitle: "Resta Aggiornato",
+    newsletterDescription: "Iscriviti per ricevere novità, promozioni e menu stagionali",
+    promoBanner: {
+      enabled: true,
+      title: template === "trattoria" 
+        ? "Happy Hour: Aperitivo con vista 18:00-20:00"
+        : template === "urban-bar"
+        ? "Serata Speciale: DJ Set ogni Venerdì"
+        : template === "dolce-vita"
+        ? "Menu del Giorno: Piatti freschi ogni giorno"
+        : "Birra del Mese: Sconto 20%",
+      description: "Vieni a trovarci per scoprire le nostre offerte speciali",
+      link: "#menu",
+    },
+    cookieBannerEnabled: true,
+    deliveryLinks: {
+      glovo: "https://glovoapp.com",
+      uberEats: "https://ubereats.com",
+      deliveroo: "https://deliveroo.it",
+    },
+    reservationLink: "https://thefork.it",
   };
 
   return baseData;

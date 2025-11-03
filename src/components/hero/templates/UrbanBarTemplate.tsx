@@ -4,12 +4,15 @@ import { SiteHero } from "../site-components/SiteHero";
 import { SiteAbout } from "../site-components/SiteAbout";
 import { SiteMenu } from "../site-components/SiteMenu";
 import { SiteEvents } from "../site-components/SiteEvents";
+import { SiteGallery } from "../site-components/SiteGallery";
 import { SiteReviews } from "../site-components/SiteReviews";
 import { SiteFAQ } from "../site-components/SiteFAQ";
+import { SiteReservation } from "../site-components/SiteReservation";
 import { SiteContact } from "../site-components/SiteContact";
+import { SiteBlog } from "../site-components/SiteBlog";
 import { SiteNewsletter } from "../site-components/SiteNewsletter";
 import { SiteFooter } from "../site-components/SiteFooter";
-import { CookieBanner } from "../site-components/CookieBanner";
+import { PromoBanner } from "../site-components/PromoBanner";
 
 interface TemplateProps {
   data: BuilderData;
@@ -32,6 +35,7 @@ export const UrbanBarTemplate = ({ data, activeSection }: TemplateProps) => {
 
   return (
     <div className="w-full bg-[#0a0a0a] text-white overflow-y-auto h-full">
+      <PromoBanner data={data} templateColors={templateColors} />
       <div className={getSectionHighlight("hero")}>
         <SiteHeader data={data} templateColors={templateColors} />
         <SiteHero data={data} templateColors={templateColors} />
@@ -45,11 +49,20 @@ export const UrbanBarTemplate = ({ data, activeSection }: TemplateProps) => {
       <div className={getSectionHighlight("events")}>
         <SiteEvents data={data} templateColors={templateColors} />
       </div>
+      <div className={getSectionHighlight("gallery")}>
+        <SiteGallery data={data} templateColors={templateColors} />
+      </div>
       <div className={getSectionHighlight("reviews")}>
         <SiteReviews data={data} templateColors={templateColors} />
       </div>
+      <div className={getSectionHighlight("reservation")}>
+        <SiteReservation data={data} templateColors={templateColors} />
+      </div>
       <div className={getSectionHighlight("faq")}>
         <SiteFAQ data={data} templateColors={templateColors} />
+      </div>
+      <div className={getSectionHighlight("blog")}>
+        <SiteBlog data={data} templateColors={templateColors} />
       </div>
       <div className={getSectionHighlight("contact")}>
         <SiteContact data={data} templateColors={templateColors} />
@@ -58,7 +71,6 @@ export const UrbanBarTemplate = ({ data, activeSection }: TemplateProps) => {
       <div className={getSectionHighlight("footer")}>
         <SiteFooter data={data} templateColors={templateColors} />
       </div>
-      <CookieBanner data={data} />
     </div>
   );
 };
