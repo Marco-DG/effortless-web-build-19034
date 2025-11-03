@@ -9,9 +9,10 @@ interface WebsitePreviewProps {
   data: BuilderData;
   activeSection?: string;
   fontFamily?: string;
+  hideHeader?: boolean;
 }
 
-export const WebsitePreview = ({ data, activeSection, fontFamily = "Inter" }: WebsitePreviewProps) => {
+export const WebsitePreview = ({ data, activeSection, fontFamily = "Inter", hideHeader = false }: WebsitePreviewProps) => {
   const renderTemplate = () => {
     if (!data.template) {
       return (
@@ -44,15 +45,17 @@ export const WebsitePreview = ({ data, activeSection, fontFamily = "Inter" }: We
   };
 
   return (
-    <div className="h-full w-full flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-200/50">
+    <div className={`h-full w-full flex flex-col bg-white ${hideHeader ? "" : "rounded-2xl shadow-2xl border border-gray-200/50"} overflow-hidden`}>
       {/* Label Anteprima Live - Premium */}
-      <div className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200/50">
-        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-        <Monitor className="h-3.5 w-3.5 text-gray-500" />
-        <span className="text-xs font-medium text-gray-600 tracking-wide">
-          Anteprima Live
-        </span>
-      </div>
+      {!hideHeader && (
+        <div className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200/50">
+          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+          <Monitor className="h-3.5 w-3.5 text-gray-500" />
+          <span className="text-xs font-medium text-gray-600 tracking-wide">
+            Anteprima Live
+          </span>
+        </div>
+      )}
       
       {/* Preview Content */}
       <div 

@@ -20,22 +20,22 @@ export const SiteHeader = ({ data, templateColors }: SiteHeaderProps) => {
 
   return (
     <header
-      className="sticky top-0 z-50 text-white shadow-lg transition-all duration-300"
+      className="sticky top-0 z-50 text-white shadow-lg transition-all duration-300 overflow-hidden"
       style={{ backgroundColor: primaryColor }}
     >
-      <div className="container mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
+      <div className="container mx-auto px-4 sm:px-6 py-4 max-w-full">
+        <div className="flex items-center justify-between gap-2">
           {/* Logo e Nome */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
             {data.logoUrl ? (
               <img
                 src={data.logoUrl}
                 alt={`${data.businessName} logo`}
-                className="w-12 h-12 rounded-full object-cover"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover flex-shrink-0"
               />
             ) : (
               <div
-                className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-xl sm:text-2xl flex-shrink-0"
                 style={{ backgroundColor: accentColor }}
               >
                 {data.businessType === "restaurant" && "🍝"}
@@ -45,19 +45,19 @@ export const SiteHeader = ({ data, templateColors }: SiteHeaderProps) => {
                 {!data.businessType && "🏪"}
               </div>
             )}
-            <div>
-              <h1 className="text-xl font-bold">{data.businessName || "Il Tuo Locale"}</h1>
+            <div className="min-w-0 flex-1">
+              <h1 className="text-base sm:text-xl font-bold truncate">{data.businessName || "Il Tuo Locale"}</h1>
               {data.tagline && (
-                <p className="text-xs opacity-90 hidden sm:block">{data.tagline}</p>
+                <p className="text-xs opacity-90 hidden sm:block truncate">{data.tagline}</p>
               )}
             </div>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden md:flex items-center gap-4 lg:gap-6 flex-shrink-0">
             <a
               href="#menu"
-              className="hover:opacity-80 transition-opacity"
+              className="hover:opacity-80 transition-opacity whitespace-nowrap"
               style={{ color: accentColor }}
             >
               Menu
@@ -65,7 +65,7 @@ export const SiteHeader = ({ data, templateColors }: SiteHeaderProps) => {
             {data.about && (
               <a
                 href="#chi-siamo"
-                className="hover:opacity-80 transition-opacity"
+                className="hover:opacity-80 transition-opacity whitespace-nowrap"
                 style={{ color: accentColor }}
               >
                 Chi Siamo
@@ -74,7 +74,7 @@ export const SiteHeader = ({ data, templateColors }: SiteHeaderProps) => {
             {data.events.length > 0 && (
               <a
                 href="#eventi"
-                className="hover:opacity-80 transition-opacity"
+                className="hover:opacity-80 transition-opacity whitespace-nowrap"
                 style={{ color: accentColor }}
               >
                 Eventi
@@ -82,7 +82,7 @@ export const SiteHeader = ({ data, templateColors }: SiteHeaderProps) => {
             )}
             <a
               href="#contatti"
-              className="hover:opacity-80 transition-opacity"
+              className="hover:opacity-80 transition-opacity whitespace-nowrap"
               style={{ color: accentColor }}
             >
               Contatti
@@ -92,7 +92,7 @@ export const SiteHeader = ({ data, templateColors }: SiteHeaderProps) => {
                 href={data.reservationLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-6 py-2 rounded-lg font-semibold hover:opacity-90 transition-all"
+                className="px-4 lg:px-6 py-2 rounded-lg font-semibold hover:opacity-90 transition-all whitespace-nowrap"
                 style={{ backgroundColor: secondaryColor }}
               >
                 Prenota
@@ -102,7 +102,7 @@ export const SiteHeader = ({ data, templateColors }: SiteHeaderProps) => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2"
+            className="md:hidden p-2 flex-shrink-0"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >
@@ -112,7 +112,7 @@ export const SiteHeader = ({ data, templateColors }: SiteHeaderProps) => {
 
         {/* Mobile Navigation */}
         {menuOpen && (
-          <nav className="md:hidden mt-4 pb-4 space-y-2">
+          <nav className="md:hidden mt-4 pb-4 space-y-2 overflow-y-auto max-h-[calc(100vh-200px)]">
             <a
               href="#menu"
               className="block py-2 hover:opacity-80 transition-opacity"

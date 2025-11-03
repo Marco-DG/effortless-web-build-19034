@@ -216,11 +216,11 @@ export const PersonalizationSidebar = ({
   };
 
   return (
-    <div className="h-full flex flex-col bg-white/98 backdrop-blur-2xl border-r border-gray-200/60 shadow-[0_0_60px_-15px_rgba(0,0,0,0.1)] overflow-hidden transition-all duration-700 ease-out">
+    <div className="h-full w-full lg:w-auto flex flex-col bg-white border-r border-gray-200 shadow-lg overflow-hidden transition-all duration-700 ease-out">
       {/* Minimal Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-200/60 flex-shrink-0 bg-gradient-to-r from-white/80 via-gray-50/30 to-white/80 backdrop-blur-sm">
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0 bg-gray-50">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 bg-gradient-to-br from-primary via-primary/90 to-primary/80 rounded-lg flex items-center justify-center shadow-lg shadow-primary/20">
+          <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center shadow-sm">
             <Rocket className="w-4 h-4 text-white" />
           </div>
           <span className="text-xs font-semibold text-gray-700 tracking-wide">Editor</span>
@@ -228,7 +228,7 @@ export const PersonalizationSidebar = ({
         {onClose && (
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100/80 rounded-lg transition-all duration-200 hover:scale-105"
+            className="p-2 hover:bg-gray-100 rounded-lg transition-all duration-200 hover:scale-105"
             aria-label="Chiudi"
           >
             <X className="w-4 h-4 text-gray-600" />
@@ -239,7 +239,7 @@ export const PersonalizationSidebar = ({
       {/* Sidebar Content */}
       <div className="flex flex-1 overflow-hidden min-h-0">
         {/* Icons Sidebar */}
-        <div className="w-16 border-r border-gray-200/60 bg-gradient-to-b from-gray-50/40 via-white/20 to-white/40 backdrop-blur-sm flex flex-col py-4 flex-shrink-0">
+        <div className="w-16 border-r border-gray-200 bg-gray-50 flex flex-col py-4 flex-shrink-0">
           {sections.map((section) => {
             const Icon = section.icon;
             const isActive = activeSection === section.id;
@@ -254,8 +254,8 @@ export const PersonalizationSidebar = ({
                 }}
                 className={`group relative flex flex-col items-center justify-center gap-2 p-3 transition-all duration-300 ${
                   isActive
-                    ? "bg-white/90 shadow-md text-primary"
-                    : "text-gray-500 hover:text-gray-900 hover:bg-white/70"
+                    ? "bg-white shadow-sm text-primary"
+                    : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
                 }`}
                 title={section.label}
               >
@@ -264,7 +264,7 @@ export const PersonalizationSidebar = ({
                   {section.label}
                 </span>
                 {isActive && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-primary to-primary/80 rounded-r-full" />
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-r-full" />
                 )}
               </button>
             );
@@ -278,11 +278,11 @@ export const PersonalizationSidebar = ({
       </div>
 
       {/* Compact Footer Actions */}
-      <div className="p-3 border-t border-gray-200/60 bg-gradient-to-r from-white/90 via-gray-50/50 to-white/90 backdrop-blur-sm flex items-center justify-between gap-2 flex-shrink-0">
+      <div className="p-3 border-t border-gray-200 bg-gray-50 flex items-center justify-between gap-2 flex-shrink-0">
         <Button
           variant="ghost"
           size="sm"
-          className="h-8 px-3 text-xs hover:bg-gray-100/80 transition-all duration-200"
+          className="h-8 px-3 text-xs hover:bg-gray-100 transition-all duration-200"
           onClick={() => {
             // Save functionality
             console.log("Save changes");
@@ -293,7 +293,7 @@ export const PersonalizationSidebar = ({
         </Button>
         <Button
           size="sm"
-          className="h-8 px-3 text-xs bg-primary hover:bg-primary/90 shadow-md shadow-primary/20 transition-all duration-200"
+          className="h-8 px-3 text-xs bg-primary hover:bg-primary/90 shadow-sm transition-all duration-200"
           onClick={() => {
             // Publish functionality
             console.log("Publish site");

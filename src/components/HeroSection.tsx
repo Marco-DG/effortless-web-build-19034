@@ -4,10 +4,12 @@ import { WebsitePreview } from "./hero/WebsitePreview";
 import { useState } from "react";
 import { BuilderData, TemplateType } from "./hero/InteractiveBuilder";
 import { getDefaultData } from "./hero/getDefaultData";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Monitor, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export const HeroSection = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | undefined>();
   const [builderData, setBuilderData] = useState<BuilderData | null>(null);
 
@@ -66,28 +68,21 @@ export const HeroSection = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col lg:flex-row overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50/50 relative">
-      {/* Subtle background pattern */}
-      <div className="absolute inset-0 opacity-[0.02] bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,1),transparent_50%)] pointer-events-none" />
-      
+    <div className="h-screen flex flex-col lg:flex-row overflow-hidden bg-gray-50 relative">
       {/* Left Column - Hero or Sidebar */}
       <div className={`w-full lg:w-1/3 flex-shrink-0 transition-all duration-700 ease-out ${
         isSidebarOpen 
           ? "translate-x-0 opacity-100" 
           : "translate-x-0 opacity-100"
-      } ${isSidebarOpen ? "lg:static fixed lg:relative z-50 lg:z-auto" : ""}`}>
+      } ${isSidebarOpen ? "lg:static fixed lg:relative z-50 lg:z-auto h-full" : ""}`}>
         {!isSidebarOpen ? (
           // Hero Landing
           <div className="h-full flex items-center justify-center p-6 sm:p-12 lg:p-16 xl:p-20 relative">
-            {/* Subtle light effect */}
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/3 rounded-full blur-3xl pointer-events-none" />
-            
             <div className="relative z-10 space-y-8 sm:space-y-12 max-w-lg w-full">
               <HeroContent />
               <button
                 onClick={handleStartBuilding}
-                className="group relative w-full text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 bg-primary hover:bg-primary/90 text-white rounded-2xl font-semibold transition-all duration-300 shadow-2xl hover:shadow-primary/30 hover:scale-[1.02] flex items-center justify-center gap-2 overflow-hidden"
+                className="group relative w-full text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 bg-primary hover:bg-primary/90 text-white rounded-2xl font-semibold transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-[1.02] flex items-center justify-center gap-2 overflow-hidden"
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                 <span className="relative z-10">Crea il mio sito ora</span>
@@ -97,30 +92,83 @@ export const HeroSection = () => {
           </div>
         ) : (
           // Sidebar
-          <PersonalizationSidebar
-            data={builderData || getDefaultData("trattoria")}
-            onUpdate={handleUpdateData}
-            onTemplateSelect={handleTemplateSelect}
-            onSectionChange={handleSectionChange}
-            onClose={handleCloseSidebar}
-          />
+          <>
+            <PersonalizationSidebar
+              data={builderData || getDefaultData("trattoria")}
+              onUpdate={handleUpdateData}
+              onTemplateSelect={handleTemplateSelect}
+              onSectionChange={handleSectionChange}
+              onClose={handleCloseSidebar}
+            />
+            {/* Mobile Preview Button */}
+            <div className="lg:hidden fixed bottom-4 right-4 z-50">
+              <Button
+                onClick={() => setIsPreviewOpen(true)}
+                className="shadow-2xl bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-full font-semibold flex items-center gap-2"
+                size="lg"
+              >
+                <Monitor className="w-5 h-5" />
+                Anteprima
+              </Button>
+            </div>
+          </>
         )}
       </div>
 
-      {/* Right Column - Preview (always visible) */}
-      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8 min-h-0 lg:min-h-full relative">
+      {/* Right Column - Preview (desktop always visible, mobile in modal) */}
+      <div className="hidden lg:flex flex-1 items-center justify-center p-4 sm:p-6 lg:p-8 min-h-0 lg:min-h-full relative">
         <div className="w-full h-full max-w-7xl">
           <WebsitePreview data={previewData} activeSection={activeSection} fontFamily={builderData?.fontFamily} />
         </div>
       </div>
       
-      {/* Mobile Overlay */}
+      {/* Mobile Overlay for Sidebar */}
       {isSidebarOpen && (
         <div 
-          className="lg:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-sm transition-opacity duration-300"
+          className="lg:hidden fixed inset-0 bg-black/50 z-40 transition-opacity duration-300"
           onClick={handleCloseSidebar}
           aria-hidden="true"
         />
+      )}
+
+      {/* Mobile Preview Modal */}
+      {isPreviewOpen && (
+        <>
+          <div 
+            className="lg:hidden fixed inset-0 bg-black/50 z-[60] transition-opacity duration-300"
+            onClick={() => setIsPreviewOpen(false)}
+            aria-hidden="true"
+          />
+          <div className="lg:hidden fixed inset-0 z-[70] bg-white overflow-hidden flex flex-col">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white flex-shrink-0">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                <Monitor className="h-4 w-4 text-gray-500" />
+                <span className="text-sm font-medium text-gray-700">Anteprima Live</span>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsPreviewOpen(false)}
+                className="flex items-center gap-2"
+              >
+                <X className="w-4 h-4" />
+                Chiudi
+              </Button>
+            </div>
+            
+            {/* Modal Content */}
+            <div className="flex-1 overflow-y-auto bg-white">
+              <WebsitePreview 
+                data={previewData} 
+                activeSection={activeSection} 
+                fontFamily={builderData?.fontFamily}
+                hideHeader={true}
+              />
+            </div>
+          </div>
+        </>
       )}
     </div>
   );
