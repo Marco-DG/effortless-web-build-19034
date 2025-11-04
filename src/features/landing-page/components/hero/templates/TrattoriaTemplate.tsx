@@ -37,7 +37,6 @@ export const TrattoriaTemplate = ({ data, activeSection, fontFamily = "Inter" }:
   const components: Record<string, React.ReactNode> = {
     hero: (
       <div className={getSectionHighlight("hero")}>
-        <SiteHeader data={data} templateColors={templateColors} />
         <SiteHero data={data} templateColors={templateColors} />
       </div>
     ),
@@ -97,6 +96,7 @@ export const TrattoriaTemplate = ({ data, activeSection, fontFamily = "Inter" }:
       style={{ fontFamily: fontFamily }}
     >
       <PromoBanner data={data} templateColors={templateColors} />
+      <SiteHeader data={data} templateColors={templateColors} />
       
       {orderedSections.map(sectionId =>
         enabledSections[sectionId as keyof typeof enabledSections]
