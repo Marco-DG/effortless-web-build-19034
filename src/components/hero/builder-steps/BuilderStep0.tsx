@@ -35,12 +35,26 @@ const templates = [
     image: "🍺",
     colors: ["#2d5016", "#6b8e23", "#daa520"],
   },
+  {
+    id: "wine-bar" as TemplateType,
+    name: "Wine Bar",
+    description: "Elegante, minimale, palette vino/legno — stile premium",
+    image: "🍷",
+    colors: ["#3b0d11", "#6b3a2e", "#d9b99b"],
+  },
+  {
+    id: "fine-dining" as TemplateType,
+    name: "Fine Dining",
+    description: "Lussuoso, serif editoriale, nero/crema/oro",
+    image: "🍽️",
+    colors: ["#0b0b0b", "#e6dfd3", "#c7a559"],
+  },
 ];
 
 export const BuilderStep0 = ({ data, onUpdate, onNext }: BuilderStep0Props) => {
   const handleTemplateSelect = (template: TemplateType) => {
     onUpdate({ template });
-    setTimeout(onNext, 300);
+    // Non cambiare automaticamente sezione; resta su Template
   };
 
   return (

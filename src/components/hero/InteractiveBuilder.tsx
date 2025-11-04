@@ -12,7 +12,7 @@ import { WebsitePreview } from "./WebsitePreview";
 import { Button } from "@/components/ui/button";
 
 export type BusinessType = "restaurant" | "bar" | "cafe" | "pub" | "";
-export type TemplateType = "trattoria" | "urban-bar" | "dolce-vita" | "craft-pub" | "";
+export type TemplateType = "trattoria" | "urban-bar" | "dolce-vita" | "craft-pub" | "wine-bar" | "fine-dining" | "";
 export type MenuCategory = "antipasti" | "primi" | "secondi" | "dessert" | "cocktail" | "birre" | "vini" | "bevande" | "altro";
 export type Allergen = "glutine" | "latte" | "uova" | "soia" | "frutta a guscio" | "pesce" | "crostacei" | "sedano" | "senape" | "sesamo" | "lupini" | "molluschi" | "anidride solforosa";
 

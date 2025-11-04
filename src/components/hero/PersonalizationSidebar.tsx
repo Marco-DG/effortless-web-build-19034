@@ -82,7 +82,7 @@ export const PersonalizationSidebar = ({
                 onTemplateSelect(update.template);
               }
             }}
-            onNext={() => setActiveSection("hero")}
+            onNext={() => { /* non spostare automaticamente sezione */ }}
           />
         );
       case "typography":

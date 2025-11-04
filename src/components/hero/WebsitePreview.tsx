@@ -3,6 +3,8 @@ import { TrattoriaTemplate } from "./templates/TrattoriaTemplate";
 import { UrbanBarTemplate } from "./templates/UrbanBarTemplate";
 import { DolceVitaTemplate } from "./templates/DolceVitaTemplate";
 import { CraftPubTemplate } from "./templates/CraftPubTemplate";
+import { WineBarTemplate } from "./templates/WineBarTemplate";
+import { FineDiningTemplate } from "./templates/FineDiningTemplate";
 import { Monitor } from "lucide-react";
 
 interface WebsitePreviewProps {
@@ -33,6 +35,10 @@ export const WebsitePreview = ({ data, activeSection, fontFamily = "Inter", hide
         return <DolceVitaTemplate data={data} activeSection={activeSection} fontFamily={fontFamily} />;
       case "craft-pub":
         return <CraftPubTemplate data={data} activeSection={activeSection} fontFamily={fontFamily} />;
+      case "wine-bar":
+        return <WineBarTemplate data={data} activeSection={activeSection} fontFamily={fontFamily} />;
+      case "fine-dining":
+        return <FineDiningTemplate data={data} activeSection={activeSection} fontFamily={fontFamily} />;
       default:
         return (
           <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-50 rounded-lg">

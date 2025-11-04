@@ -1,10 +1,10 @@
 import { BuilderData } from "./InteractiveBuilder";
 
-export const getDefaultData = (template: "trattoria" | "urban-bar" | "dolce-vita" | "craft-pub" = "trattoria"): BuilderData => {
+export const getDefaultData = (template: "trattoria" | "urban-bar" | "dolce-vita" | "craft-pub" | "wine-bar" | "fine-dining" = "trattoria"): BuilderData => {
   const baseData: BuilderData = {
     template,
-    businessName: template === "trattoria" ? "La Trattoria" : template === "urban-bar" ? "Urban Bar" : template === "dolce-vita" ? "Dolce Vita Café" : "Craft Pub",
-    businessType: template === "trattoria" ? "restaurant" : template === "urban-bar" ? "bar" : template === "dolce-vita" ? "cafe" : "pub",
+    businessName: template === "trattoria" ? "La Trattoria" : template === "urban-bar" ? "Urban Bar" : template === "dolce-vita" ? "Dolce Vita Café" : template === "craft-pub" ? "Craft Pub" : template === "wine-bar" ? "Enoteca & Wine Bar" : "Fine Dining",
+    businessType: template === "trattoria" ? "restaurant" : template === "urban-bar" ? "bar" : template === "dolce-vita" ? "cafe" : template === "craft-pub" ? "pub" : "restaurant",
     logoUrl: "",
     tagline: template === "trattoria" 
       ? "Sapori Autentici della Tradizione Italiana" 
@@ -12,21 +12,33 @@ export const getDefaultData = (template: "trattoria" | "urban-bar" | "dolce-vita
       ? "Experience the Night"
       : template === "dolce-vita"
       ? "Il Tuo Momento di Dolcezza"
-      : "Birre Artigianali. Vibes Autentiche.",
+      : template === "craft-pub"
+      ? "Birre Artigianali. Vibes Autentiche."
+      : template === "wine-bar"
+      ? "Vini d'autore. Atmosfera intima."
+      : "Cucina d'autore in ogni dettaglio",
     heroSlogan: template === "trattoria" 
       ? "Sapori Autentici della Tradizione Italiana" 
       : template === "urban-bar"
       ? "Experience the Night"
       : template === "dolce-vita"
       ? "Il Tuo Momento di Dolcezza"
-      : "Birre Artigianali. Vibes Autentiche.",
+      : template === "craft-pub"
+      ? "Birre Artigianali. Vibes Autentiche."
+      : template === "wine-bar"
+      ? "Wine, Food & Atmosphere"
+      : "Fine Dining Experience",
     heroDescription: template === "trattoria"
       ? "Dove ogni piatto racconta una storia"
       : template === "urban-bar"
       ? "Cocktails d'autore in un'atmosfera unica"
       : template === "dolce-vita"
       ? "Caffè artigianale e dolci fatti in casa"
-      : "Dove la passione per la birra incontra la tradizione",
+      : template === "craft-pub"
+      ? "Dove la passione per la birra incontra la tradizione"
+      : template === "wine-bar"
+      ? "Un luogo dedicato al gusto, tra calici e piccoli piatti"
+      : "Un percorso culinario tra tecnica e materia prima",
     menuItems: template === "trattoria" ? [
       {
         id: "1",
@@ -131,7 +143,7 @@ export const getDefaultData = (template: "trattoria" | "urban-bar" | "dolce-vita
         category: "dessert",
         badges: ["novità"],
       },
-    ] : [
+    ] : template === "craft-pub" ? [
       {
         id: "1",
         name: "IPA Americana",
@@ -147,6 +159,14 @@ export const getDefaultData = (template: "trattoria" | "urban-bar" | "dolce-vita
         price: "€8",
         category: "birre",
       },
+    ] : template === "wine-bar" ? [
+      { id: "1", name: "Tagliere Selezione", description: "Salumi e formaggi DOP", price: "€18", category: "antipasti" },
+      { id: "2", name: "Calice Riserva", description: "Rosso strutturato, 2018", price: "€12", category: "bevande" },
+      { id: "3", name: "Tartare di Manzo", description: "Oliva taggiasca, senape antica", price: "€16", category: "secondi" },
+    ] : [
+      { id: "1", name: "Capesante Scottate", description: "Crema di topinambur, limone", price: "€24", category: "antipasti" },
+      { id: "2", name: "Risotto allo Champagne", description: "Oro, midollo affumicato", price: "€28", category: "primi" },
+      { id: "3", name: "Filetto di Manzo", description: "Glassa al vino, patate fondenti", price: "€36", category: "secondi" },
     ],
     events: [
       {
