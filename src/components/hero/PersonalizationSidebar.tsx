@@ -1,24 +1,6 @@
 import { useState } from "react";
 import { BuilderData, TemplateType } from "./InteractiveBuilder";
-import {
-  Home,
-  Users,
-  UtensilsCrossed,
-  Calendar,
-  Star,
-  HelpCircle,
-  Mail,
-  Layout,
-  Image,
-  CalendarCheck,
-  BookOpen,
-  X,
-  Save,
-  Rocket,
-  Palette,
-  Type,
-  Monitor,
-} from "lucide-react";
+import { X, Save, Rocket, Palette, Type, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { BuilderStep0 } from "./builder-steps/BuilderStep0";
@@ -30,6 +12,7 @@ import { BuilderStep7Reviews } from "./builder-steps/BuilderStep7Reviews";
 import { BuilderStep7FAQ } from "./builder-steps/BuilderStep7FAQ";
 import { BuilderStep8 } from "./builder-steps/BuilderStep8";
 import { BuilderStepTypography } from "./builder-steps/BuilderStepTypography";
+import { BuilderStepStyles } from "./builder-steps/BuilderStepStyles";
 
 interface PersonalizationSidebarProps {
   data: BuilderData;
@@ -40,22 +23,24 @@ interface PersonalizationSidebarProps {
   onOpenPreview?: () => void;
 }
 
-type Section = "template" | "typography" | "hero" | "about" | "menu" | "events" | "gallery" | "reviews" | "reservation" | "faq" | "blog" | "contact" | "footer";
+type Section = "template" | "styles" | "typography" | "hero" | "about" | "menu" | "events" | "gallery" | "reviews" | "reservation" | "faq" | "blog" | "contact" | "footer";
 
-const sections: { id: Section; label: string; icon: any }[] = [
-  { id: "template", label: "Template", icon: Palette },
-  { id: "typography", label: "Tipografia", icon: Type },
-  { id: "hero", label: "Hero", icon: Home },
-  { id: "about", label: "Chi Siamo", icon: Users },
-  { id: "menu", label: "Menu", icon: UtensilsCrossed },
-  { id: "events", label: "Eventi", icon: Calendar },
-  { id: "gallery", label: "Galleria", icon: Image },
-  { id: "reviews", label: "Recensioni", icon: Star },
-  { id: "reservation", label: "Prenotazioni", icon: CalendarCheck },
-  { id: "faq", label: "FAQ", icon: HelpCircle },
-  { id: "blog", label: "Blog", icon: BookOpen },
-  { id: "contact", label: "Contatti", icon: Mail },
-  { id: "footer", label: "Footer", icon: Layout },
+const appearanceSections: { id: Section; label: string }[] = [
+  { id: "template", label: "Template" },
+  { id: "styles", label: "Stili" },
+  { id: "typography", label: "Tipografia" },
+  { id: "hero", label: "Hero" },
+  { id: "gallery", label: "Galleria" },
+  { id: "footer", label: "Footer" },
+];
+
+const dataSections: { id: Section; label: string }[] = [
+  { id: "menu", label: "Menu" },
+  { id: "events", label: "Eventi" },
+  { id: "reviews", label: "Recensioni" },
+  { id: "faq", label: "FAQ" },
+  { id: "blog", label: "Blog" },
+  { id: "contact", label: "Contatti" },
 ];
 
 export const PersonalizationSidebar = ({
@@ -69,6 +54,24 @@ export const PersonalizationSidebar = ({
   const [activeSection, setActiveSection] = useState<Section>(
     data.template ? "hero" : "template"
   );
+  const [tab, setTab] = useState<"appearance" | "data">("appearance");
+
+  const order = data.sectionsOrder || ["hero","about","menu","gallery","contact"];
+  const enabled = data.sectionsEnabled || { hero: true, about: true, menu: true, gallery: true, contact: true };
+
+  const moveSection = (idx: number, dir: -1 | 1) => {
+    const newOrder = [...order];
+    const target = idx + dir;
+    if (target < 0 || target >= newOrder.length) return;
+    const temp = newOrder[idx];
+    newOrder[idx] = newOrder[target];
+    newOrder[target] = temp;
+    onUpdate({ sectionsOrder: newOrder });
+  };
+
+  const toggleSection = (key: string) => {
+    onUpdate({ sectionsEnabled: { ...enabled, [key]: !enabled[key as keyof typeof enabled] } });
+  };
 
   const renderSectionContent = () => {
     switch (activeSection) {
@@ -88,6 +91,13 @@ export const PersonalizationSidebar = ({
       case "typography":
         return (
           <BuilderStepTypography
+            data={data}
+            onUpdate={onUpdate}
+          />
+        );
+      case "styles":
+        return (
+          <BuilderStepStyles
             data={data}
             onUpdate={onUpdate}
           />
@@ -252,36 +262,28 @@ export const PersonalizationSidebar = ({
         </div>
       </div>
 
+      {/* Tabs */}
+      <div className="flex items-center gap-2 px-4 py-2 border-b border-gray-200 bg-white text-xs font-medium">
+        <button onClick={()=>setTab("appearance")} className={`px-3 py-1.5 rounded ${tab==="appearance"?"bg-gray-100 text-gray-900":"text-gray-600 hover:text-gray-900"}`}>Aspetto</button>
+        <button onClick={()=>setTab("data")} className={`px-3 py-1.5 rounded ${tab==="data"?"bg-gray-100 text-gray-900":"text-gray-600 hover:text-gray-900"}`}>Dati</button>
+      </div>
+
       {/* Sidebar Content */}
       <div className="flex flex-1 overflow-hidden min-h-0">
-        {/* Icons Sidebar */}
-        <div className="w-16 border-r border-gray-200 bg-gray-50 flex flex-col py-4 flex-shrink-0">
-          {sections.map((section) => {
-            const Icon = section.icon;
+        {/* Subnavigation (no icon column) */}
+        <div className="w-36 border-r border-gray-200 bg-gray-50 flex flex-col py-4 flex-shrink-0">
+          {(tab === "appearance" ? appearanceSections : dataSections).map((section) => {
             const isActive = activeSection === section.id;
             return (
               <button
                 key={section.id}
                 onClick={() => {
                   setActiveSection(section.id);
-                  if (onSectionChange) {
-                    onSectionChange(section.id);
-                  }
+                  if (onSectionChange) onSectionChange(section.id);
                 }}
-                className={`group relative flex flex-col items-center justify-center gap-2 p-3 transition-all duration-300 ${
-                  isActive
-                    ? "bg-white shadow-sm text-primary"
-                    : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
-                }`}
-                title={section.label}
+                className={`flex items-center justify-between px-4 py-2 text-sm transition-colors ${isActive?"bg-white text-primary border-l-2 border-primary":"text-gray-600 hover:text-gray-900"}`}
               >
-                <Icon className={`w-5 h-5 transition-all duration-300 ${isActive ? "scale-110" : "group-hover:scale-105"}`} />
-                <span className={`text-[10px] font-medium hidden sm:block transition-colors ${isActive ? "text-primary font-semibold" : "text-gray-600"}`}>
-                  {section.label}
-                </span>
-                {isActive && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-r-full" />
-                )}
+                <span>{section.label}</span>
               </button>
             );
           })}
@@ -289,7 +291,41 @@ export const PersonalizationSidebar = ({
 
         {/* Form Content */}
         <ScrollArea className="flex-1 min-w-0">
-          <div className="p-6 sm:p-8">{renderSectionContent()}</div>
+          <div className="p-6 sm:p-8">
+            {tab === "appearance" ? (
+              <>
+                {/* Reorderable sections */}
+                <div className="mb-6">
+                  <h4 className="text-sm font-semibold text-gray-700 mb-2">Sezioni del template</h4>
+                  <div className="space-y-2">
+                    {order.map((key, idx)=> (
+                      <div key={key} className="flex items-center justify-between rounded border px-3 py-2 bg-white">
+                        <div className="flex items-center gap-3">
+                          <input type="checkbox" checked={!!enabled[key as keyof typeof enabled]} onChange={()=>toggleSection(key)} />
+                          <span className="text-sm font-medium capitalize">{key}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <button onClick={()=>moveSection(idx,-1)} className="text-xs px-2 py-1 rounded bg-gray-100">↑</button>
+                          <button onClick={()=>moveSection(idx,1)} className="text-xs px-2 py-1 rounded bg-gray-100">↓</button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {renderSectionContent()}
+              </>
+            ) : (
+              <>
+                {/* Data-oriented sections shortcuts */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-6 text-xs">
+                  {dataSections.map((s)=> (
+                    <button key={s.id} onClick={()=>setActiveSection(s.id)} className={`px-2 py-2 rounded border ${activeSection===s.id?"border-primary text-primary":"border-gray-200 text-gray-600 hover:text-gray-900"}`}>{s.label}</button>
+                  ))}
+                </div>
+                {renderSectionContent()}
+              </>
+            )}
+          </div>
         </ScrollArea>
       </div>
 

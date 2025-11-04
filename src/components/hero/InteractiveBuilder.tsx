@@ -102,12 +102,18 @@ export interface BuilderData {
   businessType: BusinessType;
   logoUrl: string;
   tagline: string;
+  // Optional global theme overrides
+  customTheme?: { primary: string; secondary: string; accent: string };
   
   // Hero
   heroImageUrl?: string;
   heroVideoUrl?: string;
   heroSlogan?: string;
   heroDescription?: string;
+  
+  // Sections (order/toggle shared across templates)
+  sectionsOrder?: string[]; // e.g., ["hero","about","menu","gallery","contact"]
+  sectionsEnabled?: Record<string, boolean>;
   
   // About
   about?: AboutSection;

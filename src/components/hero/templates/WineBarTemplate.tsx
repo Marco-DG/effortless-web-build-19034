@@ -26,6 +26,16 @@ export const WineBarTemplate = ({ data, activeSection, fontFamily = "Inter" }: T
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    const applyFromHash = () => {
+      const m = window.location.hash.match(/page=(home|menu|about|gallery|contact)/);
+      if (m) setPage(m[1] as any);
+    };
+    applyFromHash();
+    window.addEventListener("hashchange", applyFromHash);
+    return () => window.removeEventListener("hashchange", applyFromHash);
+  }, []);
+
   const heroImage = useMemo(
     () =>
       data.heroImageUrl ||
@@ -33,6 +43,7 @@ export const WineBarTemplate = ({ data, activeSection, fontFamily = "Inter" }: T
     [data.heroImageUrl]
   );
 
+  const applied = data.customTheme || templateColors;
   return (
     <div className="w-full bg-[#0f0d0d] text-[#f4f2ef] overflow-y-auto h-full" style={{ fontFamily }}>
       <PromoBanner data={data} templateColors={templateColors} />
@@ -48,7 +59,7 @@ export const WineBarTemplate = ({ data, activeSection, fontFamily = "Inter" }: T
             <div className="w-9 h-9 rounded-full bg-[#6b3a2e] flex items-center justify-center font-semibold">
               {data.businessName?.[0] || "W"}
             </div>
-            <div className="text-sm md:text-base font-semibold tracking-wide" style={{ color: templateColors.accent }}>
+            <div className="text-sm md:text-base font-semibold tracking-wide" style={{ color: applied.accent }}>
               {data.businessName || "Enoteca & Wine Bar"}
             </div>
           </div>
@@ -99,7 +110,7 @@ export const WineBarTemplate = ({ data, activeSection, fontFamily = "Inter" }: T
                   {data.heroDescription || "Un luogo dedicato al gusto, tra calici e piccoli piatti."}
                 </p>
                 <div className="mt-8 flex gap-4">
-                  <a href="#menu" onClick={(e)=>{e.preventDefault();setPage("menu")}} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[#0f0d0d] font-semibold" style={{ backgroundColor: templateColors.accent }}>
+                  <a href="#menu" onClick={(e)=>{e.preventDefault();setPage("menu")}} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[#0f0d0d] font-semibold" style={{ backgroundColor: applied.accent }}>
                     Scopri il Menu <ArrowRight className="w-4 h-4" />
                   </a>
                   {data.reservationLink && (
@@ -153,7 +164,7 @@ export const WineBarTemplate = ({ data, activeSection, fontFamily = "Inter" }: T
           <footer className="py-16 px-6">
             <div className="mx-auto max-w-7xl grid md:grid-cols-3 gap-10 text-sm">
               <div>
-                <div className="text-lg font-semibold mb-2" style={{ color: templateColors.accent }}>{data.businessName || "Wine Bar"}</div>
+                <div className="text-lg font-semibold mb-2" style={{ color: applied.accent }}>{data.businessName || "Wine Bar"}</div>
                 <p className="text-white/70">{data.address || "Via della Vite 12, Roma"}</p>
               </div>
               <div>

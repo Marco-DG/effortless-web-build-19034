@@ -22,8 +22,11 @@ export const HeroSection = () => {
   };
 
   const handleTemplateSelect = (template: TemplateType) => {
-    const defaultData = getDefaultData(template);
-    setBuilderData(defaultData);
+    setBuilderData((prev)=>{
+      if (!prev) return getDefaultData(template);
+      // Keep existing data; only switch template field
+      return { ...prev, template } as any;
+    });
     setIsSidebarOpen(true);
   };
 

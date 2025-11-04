@@ -313,6 +313,8 @@ export const getDefaultData = (template: "trattoria" | "urban-bar" | "dolce-vita
       deliveroo: "https://deliveroo.it",
     },
     reservationLink: "https://thefork.it",
+    sectionsOrder: ["hero","about","menu","gallery","contact"],
+    sectionsEnabled: { hero: true, about: true, menu: true, gallery: true, contact: true },
   };
 
   return baseData;
