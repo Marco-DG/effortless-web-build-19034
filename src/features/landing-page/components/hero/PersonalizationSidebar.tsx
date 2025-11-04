@@ -53,9 +53,7 @@ export const PersonalizationSidebar = ({
   onTemplateSelect,
   onOpenPreview,
 }: PersonalizationSidebarProps) => {
-  const [activeSection, setActiveSection] = useState<Section>(
-    data.template ? "hero" : "template"
-  );
+  const [activeSection, setActiveSection] = useState<Section>("template");
   const [tab, setTab] = useState<"appearance" | "data">("appearance");
 
   const order = data.sectionsOrder || ["hero","about","menu","gallery","contact"];
@@ -341,7 +339,7 @@ export const PersonalizationSidebar = ({
           <button onClick={()=>setTab("data")} className={`px-3 py-1.5 rounded ${tab==="data"?"bg-gray-100 text-gray-900":"text-gray-600 hover:text-gray-900"}`}>Dati</button>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-gray-700 tracking-wide">Editor</span>
+
           {onClose && (
             <button
               onClick={onClose}
