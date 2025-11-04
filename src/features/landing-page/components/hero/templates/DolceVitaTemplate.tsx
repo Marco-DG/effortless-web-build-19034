@@ -81,14 +81,19 @@ export const DolceVitaTemplate = ({ data, activeSection, fontFamily = "Inter" }:
       </div>
     ),
     contact: (
-      <div className={getSectionHighlight("contact")}>
+      <div className="contact">
         <SiteContact data={data} templateColors={templateColors} />
+      </div>
+    ),
+    newsletter: (
+      <div className="newsletter">
+        <SiteNewsletter data={data} templateColors={templateColors} />
       </div>
     ),
   };
 
-  const orderedSections = data.sectionsOrder || Object.keys(components);
-  const enabledSections = data.sectionsEnabled || { hero: true, about: true, menu: true, gallery: true, contact: true };
+  const orderedSections = data.sectionsOrder || ["hero","about","menu","gallery","contact","newsletter"];
+  const enabledSections = data.sectionsEnabled || { hero: true, about: true, menu: true, gallery: true, contact: true, newsletter: true };
 
   return (
     <div 
@@ -104,7 +109,6 @@ export const DolceVitaTemplate = ({ data, activeSection, fontFamily = "Inter" }:
           : null
       )}
 
-      <SiteNewsletter data={data} templateColors={templateColors} />
       <div className={getSectionHighlight("footer")}>
         <SiteFooter data={data} templateColors={templateColors} />
       </div>

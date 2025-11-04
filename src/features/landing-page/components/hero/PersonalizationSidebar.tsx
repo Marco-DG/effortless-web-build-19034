@@ -63,8 +63,8 @@ export const PersonalizationSidebar = ({
     return acc;
   }, {} as Record<string, string>);
 
-  const order = data.sectionsOrder || ["hero","about","menu","gallery","contact"];
-  const enabled = data.sectionsEnabled || { hero: true, about: true, menu: true, gallery: true, contact: true };
+  const order = data.sectionsOrder || ["hero","about","menu","gallery","contact","newsletter"];
+  const enabled = data.sectionsEnabled || { hero: true, about: true, menu: true, gallery: true, contact: true, newsletter: true };
 
   const moveSection = (idx: number, dir: -1 | 1) => {
     const newOrder = [...order];

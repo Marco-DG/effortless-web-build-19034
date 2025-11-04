@@ -198,6 +198,7 @@ export const InteractiveBuilder = ({ onDataChange }: InteractiveBuilderProps) =>
     address: "",
     phone: "",
     email: "",
+    newsletterEnabled: true,
   });
 
   const updateBuilderData = (data: Partial<BuilderData>) => {
