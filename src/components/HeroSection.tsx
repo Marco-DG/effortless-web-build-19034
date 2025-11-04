@@ -15,7 +15,6 @@ export const HeroSection = () => {
 
   const handleStartBuilding = () => {
     setIsSidebarOpen(true);
-    // Se non c'è template selezionato, carica default "trattoria"
     if (!builderData) {
       const defaultData = getDefaultData("trattoria");
       setBuilderData(defaultData);
@@ -30,13 +29,12 @@ export const HeroSection = () => {
 
   const handleUpdateData = (data: Partial<BuilderData>) => {
     if (builderData) {
-      setBuilderData((prev) => prev ? ({ ...prev, ...data }) : null);
+      setBuilderData((prev) => (prev ? { ...prev, ...data } : null));
     }
   };
 
   const handleSectionChange = (section: string) => {
     setActiveSection(section);
-    // Reset after animation
     setTimeout(() => setActiveSection(undefined), 2000);
   };
 
@@ -44,7 +42,6 @@ export const HeroSection = () => {
     setIsSidebarOpen(false);
   };
 
-  // Preview data: usa builderData se disponibile, altrimenti template vuoto
   const previewData: BuilderData = builderData || {
     template: "",
     businessName: "",
@@ -70,11 +67,11 @@ export const HeroSection = () => {
   return (
     <div className="h-screen flex flex-col lg:flex-row overflow-hidden bg-gray-50 relative">
       {/* Left Column - Hero or Sidebar */}
-      <div className={`w-full lg:w-1/3 flex-shrink-0 transition-all duration-700 ease-out ${
-        isSidebarOpen 
-          ? "translate-x-0 opacity-100" 
-          : "translate-x-0 opacity-100"
-      } ${isSidebarOpen ? "lg:static fixed lg:relative z-50 lg:z-auto h-full" : ""}`}>
+      <div
+        className={`w-full lg:w-1/3 flex-shrink-0 transition-all duration-700 ease-out ${
+          isSidebarOpen ? "translate-x-0 opacity-100" : "translate-x-0 opacity-100"
+        } ${isSidebarOpen ? "lg:static fixed lg:relative z-50 lg:z-auto h-full" : ""}`}
+      >
         {!isSidebarOpen ? (
           // Hero Landing
           <div className="h-full flex items-center justify-center p-6 sm:p-12 lg:p-16 xl:p-20 relative">
@@ -99,18 +96,8 @@ export const HeroSection = () => {
               onTemplateSelect={handleTemplateSelect}
               onSectionChange={handleSectionChange}
               onClose={handleCloseSidebar}
+              onOpenPreview={() => setIsPreviewOpen(true)}
             />
-            {/* Mobile Preview Button */}
-            <div className="lg:hidden fixed bottom-4 right-4 z-50">
-              <Button
-                onClick={() => setIsPreviewOpen(true)}
-                className="shadow-2xl bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-full font-semibold flex items-center gap-2"
-                size="lg"
-              >
-                <Monitor className="w-5 h-5" />
-                Anteprima
-              </Button>
-            </div>
           </>
         )}
       </div>
@@ -121,10 +108,10 @@ export const HeroSection = () => {
           <WebsitePreview data={previewData} activeSection={activeSection} fontFamily={builderData?.fontFamily} />
         </div>
       </div>
-      
+
       {/* Mobile Overlay for Sidebar */}
       {isSidebarOpen && (
-        <div 
+        <div
           className="lg:hidden fixed inset-0 bg-black/50 z-40 transition-opacity duration-300"
           onClick={handleCloseSidebar}
           aria-hidden="true"
@@ -134,7 +121,7 @@ export const HeroSection = () => {
       {/* Mobile Preview Modal */}
       {isPreviewOpen && (
         <>
-          <div 
+          <div
             className="lg:hidden fixed inset-0 bg-black/50 z-[60] transition-opacity duration-300"
             onClick={() => setIsPreviewOpen(false)}
             aria-hidden="true"
@@ -157,12 +144,12 @@ export const HeroSection = () => {
                 Chiudi
               </Button>
             </div>
-            
+
             {/* Modal Content */}
             <div className="flex-1 overflow-y-auto bg-white">
-              <WebsitePreview 
-                data={previewData} 
-                activeSection={activeSection} 
+              <WebsitePreview
+                data={previewData}
+                activeSection={activeSection}
                 fontFamily={builderData?.fontFamily}
                 hideHeader={true}
               />

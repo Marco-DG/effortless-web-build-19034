@@ -17,6 +17,7 @@ import {
   Rocket,
   Palette,
   Type,
+  Monitor,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -36,6 +37,7 @@ interface PersonalizationSidebarProps {
   onClose?: () => void;
   onSectionChange?: (section: string) => void;
   onTemplateSelect?: (template: TemplateType) => void;
+  onOpenPreview?: () => void;
 }
 
 type Section = "template" | "typography" | "hero" | "about" | "menu" | "events" | "gallery" | "reviews" | "reservation" | "faq" | "blog" | "contact" | "footer";
@@ -62,6 +64,7 @@ export const PersonalizationSidebar = ({
   onClose,
   onSectionChange,
   onTemplateSelect,
+  onOpenPreview,
 }: PersonalizationSidebarProps) => {
   const [activeSection, setActiveSection] = useState<Section>(
     data.template ? "hero" : "template"
@@ -217,7 +220,7 @@ export const PersonalizationSidebar = ({
 
   return (
     <div className="h-full w-full lg:w-auto flex flex-col bg-white border-r border-gray-200 shadow-lg overflow-hidden transition-all duration-700 ease-out">
-      {/* Minimal Header */}
+      {/* Header with mobile preview button */}
       <div className="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0 bg-gray-50">
         <div className="flex items-center gap-2.5">
           <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center shadow-sm">
@@ -225,15 +228,28 @@ export const PersonalizationSidebar = ({
           </div>
           <span className="text-xs font-semibold text-gray-700 tracking-wide">Editor</span>
         </div>
-        {onClose && (
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-all duration-200 hover:scale-105"
-            aria-label="Chiudi"
-          >
-            <X className="w-4 h-4 text-gray-600" />
-          </button>
-        )}
+        <div className="flex items-center gap-2">
+          {/* Mobile only preview button */}
+          {onOpenPreview && (
+            <Button
+              onClick={onOpenPreview}
+              className="lg:hidden h-8 px-3 text-xs bg-primary hover:bg-primary/90 text-white flex items-center gap-2"
+              size="sm"
+            >
+              <Monitor className="w-3.5 h-3.5" />
+              Anteprima
+            </Button>
+          )}
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-all duration-200 hover:scale-105"
+              aria-label="Chiudi"
+            >
+              <X className="w-4 h-4 text-gray-600" />
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Sidebar Content */}
