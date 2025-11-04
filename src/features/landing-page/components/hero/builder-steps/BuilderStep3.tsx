@@ -11,7 +11,12 @@ interface BuilderStep3Props {
   onBack: () => void;
 }
 
-export const BuilderStep3 = ({ data, onUpdate, onNext, onBack }: BuilderStep3Props) => {
+export const BuilderStep3 = ({
+  data,
+  onUpdate,
+  onNext,
+  onBack,
+}: BuilderStep3Props) => {
   const handleNext = () => {
     if (data.businessName.trim()) {
       onNext();
@@ -21,7 +26,10 @@ export const BuilderStep3 = ({ data, onUpdate, onNext, onBack }: BuilderStep3Pro
   return (
     <div className="space-y-6 animate-fade-in">
       <div>
-        <Label htmlFor="businessName" className="text-sm font-medium text-foreground mb-2 block">
+        <Label
+          htmlFor="businessName"
+          className="text-sm font-medium text-foreground mb-2 block"
+        >
           Nome della tua attività
         </Label>
         <Input
@@ -35,7 +43,10 @@ export const BuilderStep3 = ({ data, onUpdate, onNext, onBack }: BuilderStep3Pro
       </div>
 
       <div>
-        <Label htmlFor="tagline" className="text-sm font-medium text-foreground mb-2 block">
+        <Label
+          htmlFor="tagline"
+          className="text-sm font-medium text-foreground mb-2 block"
+        >
           Slogan o descrizione (opzionale)
         </Label>
         <Input
@@ -48,6 +59,22 @@ export const BuilderStep3 = ({ data, onUpdate, onNext, onBack }: BuilderStep3Pro
         />
       </div>
 
+      <div>
+        <Label
+          htmlFor="heroImageUrl"
+          className="text-sm font-medium text-foreground mb-2 block"
+        >
+          Immagine di sfondo (URL, opzionale)
+        </Label>
+        <Input
+          id="heroImageUrl"
+          type="text"
+          placeholder="Incolla l'URL di un'immagine"
+          value={data.heroImageUrl || ""}
+          onChange={(e) => onUpdate({ heroImageUrl: e.target.value })}
+          className="text-lg py-6"
+        />
+      </div>
     </div>
   );
 };
