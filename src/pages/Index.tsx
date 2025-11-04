@@ -1,9 +1,9 @@
-import { HeroSection } from "@/components/HeroSection";
+import { Hero } from "@/features/landing-page/components/Hero";
 
 const Index = () => {
   return (
     <main className="h-screen overflow-hidden bg-background">
-      <HeroSection />
+      <Hero />
     </main>
   );
 };
