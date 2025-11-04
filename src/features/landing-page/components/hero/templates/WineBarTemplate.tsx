@@ -96,7 +96,7 @@ export const WineBarTemplate = ({ data, activeSection, fontFamily = "Inter" }: T
             <div
               className="absolute inset-0"
               style={{
-                backgroundImage: `linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.35)), url(${heroImage})`,
+                backgroundImage: `linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.35)), url(${heroImage}) center/cover`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -124,41 +124,57 @@ export const WineBarTemplate = ({ data, activeSection, fontFamily = "Inter" }: T
             <div className="relative lg:col-span-5 hidden lg:block" />
           </section>
 
-          {/* SPLIT ABOUT */}
-          <section className="mx-auto max-w-7xl px-6 py-20 grid md:grid-cols-2 gap-12">
-            <div>
-              <img src="https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=1200&auto=format&fit=crop" className="w-full h-[420px] object-cover rounded-2xl" />
-            </div>
-            <div className="flex items-center">
-              <div>
-                <h3 className="text-3xl md:text-4xl font-bold mb-4" style={{ fontFamily: "'Playfair Display', serif", color: templateColors.accent }}>La nostra enoteca</h3>
-                <p className="text-white/80 leading-relaxed">
-                  {data.about?.story || "Selezione curata di etichette e piccoli produttori. Calore, intimità e piatti pensati per accompagnare il calice."}
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* GRID MENU PREVIEW */}
-          <section className="bg-[#151212] py-20">
-            <div className="mx-auto max-w-7xl px-6">
-              <div className="flex items-end justify-between mb-10">
-                <h4 className="text-2xl md:text-3xl font-bold" style={{ fontFamily: "'Playfair Display', serif" }}>Assaggi & Calici</h4>
-                <button onClick={()=>setPage("menu")} className="text-sm text-white/80 hover:text-white">Vedi tutto</button>
-              </div>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {(data.menuItems || []).slice(0,6).map((item)=> (
-                  <div key={item.id} className="group p-5 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors">
-                    <div className="flex items-center justify-between mb-2">
-                      <h5 className="font-semibold text-lg">{item.name}</h5>
-                      <span className="text-white/70 font-medium">{item.price}</span>
-                    </div>
-                    {item.description && <p className="text-sm text-white/70">{item.description}</p>}
+          {/* Dynamic Sections for Home Page */}
+          {(() => {
+            const components: Record<string, React.ReactNode> = {
+              about: (
+                <section className="mx-auto max-w-7xl px-6 py-20 grid md:grid-cols-2 gap-12">
+                  <div>
+                    <img src="https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=1200&auto=format&fit=crop" className="w-full h-[420px] object-cover rounded-2xl" />
                   </div>
-                ))}
-              </div>
-            </div>
-          </section>
+                  <div className="flex items-center">
+                    <div>
+                      <h3 className="text-3xl md:text-4xl font-bold mb-4" style={{ fontFamily: "'Playfair Display', serif", color: templateColors.accent }}>La nostra enoteca</h3>
+                      <p className="text-white/80 leading-relaxed">
+                        {data.about?.story || "Selezione curata di etichette e piccoli produttori. Calore, intimità e piatti pensati per accompagnare il calice."}
+                      </p>
+                    </div>
+                  </div>
+                </section>
+              ),
+              menu: (
+                <section className="bg-[#151212] py-20">
+                  <div className="mx-auto max-w-7xl px-6">
+                    <div className="flex items-end justify-between mb-10">
+                      <h4 className="text-2xl md:text-3xl font-bold" style={{ fontFamily: "'Playfair Display', serif" }}>Assaggi & Calici</h4>
+                      <button onClick={()=>setPage("menu")} className="text-sm text-white/80 hover:text-white">Vedi tutto</button>
+                    </div>
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {(data.menuItems || []).slice(0,6).map((item)=> (
+                        <div key={item.id} className="group p-5 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors">
+                          <div className="flex items-center justify-between mb-2">
+                            <h5 className="font-semibold text-lg">{item.name}</h5>
+                            <span className="text-white/70 font-medium">{item.price}</span>
+                          </div>
+                          {item.description && <p className="text-sm text-white/70">{item.description}</p>}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+              ),
+              // Add other sections here if they are part of the home page and need to be ordered/enabled
+            };
+
+            const orderedSections = data.sectionsOrder || Object.keys(components);
+            const enabledSections = data.sectionsEnabled || { hero: true, about: true, menu: true, gallery: true, contact: true };
+
+            return orderedSections.map(sectionId =>
+              enabledSections[sectionId as keyof typeof enabledSections]
+                ? components[sectionId]
+                : null
+            );
+          })()}
 
           {/* FOOTER minimal */}
           <footer className="py-16 px-6">

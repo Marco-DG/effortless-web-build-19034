@@ -88,40 +88,56 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter" }
             </div>
           </section>
 
-          {/* ABOUT asimmetrico */}
-          <section className="mx-auto max-w-7xl px-6 py-24 grid lg:grid-cols-12 gap-10">
-            <div className="lg:col-span-5">
-              <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop" className="w-full h-[520px] object-cover rounded-2xl" />
-            </div>
-            <div className="lg:col-span-7 flex items-center">
-              <div>
-                <h3 className="text-3xl md:text-5xl font-bold mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>La Nostra Cucina</h3>
-                <p className="text-[#f5f2ec]/80 leading-relaxed max-w-2xl">{data.about?.philosophy || "Tecnica, materia prima e misura. Il nostro menu cambia con le stagioni e con quello che vale davvero la pena servire."}</p>
-              </div>
-            </div>
-          </section>
-
-          {/* PREVIEW MENU con divisori dorati */}
-          <section className="bg-[#111] py-20">
-            <div className="mx-auto max-w-5xl px-6">
-              <h4 className="text-2xl md:text-3xl font-bold mb-10" style={{ fontFamily: "'Playfair Display', serif" }}>Percorsi di gusto</h4>
-              <div className="space-y-6">
-                {(data.menuItems || []).slice(0,6).map((item, idx)=> (
-                  <div key={item.id} className="grid grid-cols-12 items-baseline">
-                    <div className="col-span-8">
-                      <div className="text-lg font-semibold">{item.name}</div>
-                      {item.description && <div className="text-sm text-[#f5f2ec]/70 max-w-xl">{item.description}</div>}
-                    </div>
-                    <div className="col-span-1 h-px bg-[#c7a559] mx-3" />
-                    <div className="col-span-3 text-right font-medium">{item.price}</div>
+          {/* Dynamic Sections for Home Page */}
+          {(() => {
+            const components: Record<string, React.ReactNode> = {
+              about: (
+                <section className="mx-auto max-w-7xl px-6 py-24 grid lg:grid-cols-12 gap-10">
+                  <div className="lg:col-span-5">
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop" className="w-full h-[520px] object-cover rounded-2xl" />
                   </div>
-                ))}
-              </div>
-              <div className="mt-10">
-                <button onClick={()=>setPage("menu")} className="text-sm tracking-widest uppercase text-[#f5f2ec]/80 hover:text-[#f5f2ec]">Vedi menu completo</button>
-              </div>
-            </div>
-          </section>
+                  <div className="lg:col-span-7 flex items-center">
+                    <div>
+                      <h3 className="text-3xl md:text-5xl font-bold mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>La Nostra Cucina</h3>
+                      <p className="text-[#f5f2ec]/80 leading-relaxed max-w-2xl">{data.about?.philosophy || "Tecnica, materia prima e misura. Il nostro menu cambia con le stagioni e con quello che vale davvero la pena servire."}</p>
+                    </div>
+                  </div>
+                </section>
+              ),
+              menu: (
+                <section className="bg-[#111] py-20">
+                  <div className="mx-auto max-w-5xl px-6">
+                    <h4 className="text-2xl md:text-3xl font-bold mb-10" style={{ fontFamily: "'Playfair Display', serif" }}>Percorsi di gusto</h4>
+                    <div className="space-y-6">
+                      {(data.menuItems || []).slice(0,6).map((item, idx)=> (
+                        <div key={item.id} className="grid grid-cols-12 items-baseline">
+                          <div className="col-span-8">
+                            <div className="text-lg font-semibold">{item.name}</div>
+                            {item.description && <div className="text-sm text-[#f5f2ec]/70 max-w-xl">{item.description}</div>}
+                          </div>
+                          <div className="col-span-1 h-px bg-[#c7a559] mx-3" />
+                          <div className="col-span-3 text-right font-medium">{item.price}</div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-10">
+                      <button onClick={()=>setPage("menu")} className="text-sm tracking-widest uppercase text-[#f5f2ec]/80 hover:text-[#f5f2ec]">Vedi menu completo</button>
+                    </div>
+                  </div>
+                </section>
+              ),
+              // Add other sections here if they are part of the home page and need to be ordered/enabled
+            };
+
+            const orderedSections = data.sectionsOrder || Object.keys(components);
+            const enabledSections = data.sectionsEnabled || { hero: true, about: true, menu: true, gallery: true, contact: true };
+
+            return orderedSections.map(sectionId =>
+              enabledSections[sectionId as keyof typeof enabledSections]
+                ? components[sectionId]
+                : null
+            );
+          })()}
 
           {/* FOOTER elegante */}
           <footer className="py-20 px-6">

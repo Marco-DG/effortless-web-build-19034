@@ -34,43 +34,76 @@ export const CraftPubTemplate = ({ data, activeSection, fontFamily = "Inter" }: 
     return "";
   };
 
+  const components: Record<string, React.ReactNode> = {
+    hero: (
+      <div className={getSectionHighlight("hero")}>
+        <SiteHeader data={data} templateColors={templateColors} />
+        <SiteHero data={data} templateColors={templateColors} />
+      </div>
+    ),
+    about: (
+      <div className={getSectionHighlight("about")}>
+        <SiteAbout data={data} templateColors={templateColors} />
+      </div>
+    ),
+    menu: (
+      <div className={getSectionHighlight("menu")}>
+        <SiteMenu data={data} templateColors={templateColors} />
+      </div>
+    ),
+    events: (
+      <div className={getSectionHighlight("events")}>
+        <SiteEvents data={data} templateColors={templateColors} />
+      </div>
+    ),
+    gallery: (
+      <div className={getSectionHighlight("gallery")}>
+        <SiteGallery data={data} templateColors={templateColors} />
+      </div>
+    ),
+    reviews: (
+      <div className={getSectionHighlight("reviews")}>
+        <SiteReviews data={data} templateColors={templateColors} />
+      </div>
+    ),
+    reservation: (
+      <div className={getSectionHighlight("reservation")}>
+        <SiteReservation data={data} templateColors={templateColors} />
+      </div>
+    ),
+    faq: (
+      <div className={getSectionHighlight("faq")}>
+        <SiteFAQ data={data} templateColors={templateColors} />
+      </div>
+    ),
+    blog: (
+      <div className={getSectionHighlight("blog")}>
+        <SiteBlog data={data} templateColors={templateColors} />
+      </div>
+    ),
+    contact: (
+      <div className={getSectionHighlight("contact")}>
+        <SiteContact data={data} templateColors={templateColors} />
+      </div>
+    ),
+  };
+
+  const orderedSections = data.sectionsOrder || Object.keys(components);
+  const enabledSections = data.sectionsEnabled || { hero: true, about: true, menu: true, gallery: true, contact: true };
+
   return (
     <div 
       className="w-full bg-[#1a120a] text-[#f5deb3] overflow-y-auto h-full"
       style={{ fontFamily: fontFamily }}
     >
       <PromoBanner data={data} templateColors={templateColors} />
-      <div className={getSectionHighlight("hero")}>
-        <SiteHeader data={data} templateColors={templateColors} />
-        <SiteHero data={data} templateColors={templateColors} />
-      </div>
-      <div className={getSectionHighlight("about")}>
-        <SiteAbout data={data} templateColors={templateColors} />
-      </div>
-      <div className={getSectionHighlight("menu")}>
-        <SiteMenu data={data} templateColors={templateColors} />
-      </div>
-      <div className={getSectionHighlight("events")}>
-        <SiteEvents data={data} templateColors={templateColors} />
-      </div>
-      <div className={getSectionHighlight("gallery")}>
-        <SiteGallery data={data} templateColors={templateColors} />
-      </div>
-      <div className={getSectionHighlight("reviews")}>
-        <SiteReviews data={data} templateColors={templateColors} />
-      </div>
-      <div className={getSectionHighlight("reservation")}>
-        <SiteReservation data={data} templateColors={templateColors} />
-      </div>
-      <div className={getSectionHighlight("faq")}>
-        <SiteFAQ data={data} templateColors={templateColors} />
-      </div>
-      <div className={getSectionHighlight("blog")}>
-        <SiteBlog data={data} templateColors={templateColors} />
-      </div>
-      <div className={getSectionHighlight("contact")}>
-        <SiteContact data={data} templateColors={templateColors} />
-      </div>
+      
+      {orderedSections.map(sectionId =>
+        enabledSections[sectionId as keyof typeof enabledSections]
+          ? components[sectionId]
+          : null
+      )}
+
       <SiteNewsletter data={data} templateColors={templateColors} />
       <div className={getSectionHighlight("footer")}>
         <SiteFooter data={data} templateColors={templateColors} />

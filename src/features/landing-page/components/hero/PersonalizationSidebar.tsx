@@ -31,17 +31,18 @@ const appearanceSections: { id: Section; label: string }[] = [
   { id: "template", label: "Template" },
   { id: "typography", label: "Tipografia" },
   { id: "hero", label: "Hero" },
+  { id: "about", label: "Chi siamo" },
   { id: "gallery", label: "Galleria" },
   { id: "layout", label: "Disposizione" },
 ];
 
 const dataSections: { id: Section; label: string }[] = [
-  { id: "menu", label: "Menu" },
+  { id: "menu", label: "Menù" },
   { id: "events", label: "Eventi" },
   { id: "reviews", label: "Recensioni" },
   { id: "faq", label: "FAQ" },
   { id: "contact", label: "Contatti" },
-  { id: "hours", label: "Orario" },
+  { id: "hours", label: "Orari" },
   { id: "delivery", label: "Delivery" },
 ];
 
@@ -55,6 +56,12 @@ export const PersonalizationSidebar = ({
 }: PersonalizationSidebarProps) => {
   const [activeSection, setActiveSection] = useState<Section>("template");
   const [tab, setTab] = useState<"appearance" | "data">("appearance");
+
+  const allSections = [...appearanceSections, ...dataSections];
+  const sectionLabels = allSections.reduce((acc, section) => {
+    acc[section.id] = section.label;
+    return acc;
+  }, {} as Record<string, string>);
 
   const order = data.sectionsOrder || ["hero","about","menu","gallery","contact"];
   const enabled = data.sectionsEnabled || { hero: true, about: true, menu: true, gallery: true, contact: true };
@@ -105,7 +112,7 @@ export const PersonalizationSidebar = ({
                 <div key={key} className="flex items-center justify-between rounded border px-3 py-2 bg-white">
                   <div className="flex items-center gap-3">
                     <input type="checkbox" checked={!!enabled[key as keyof typeof enabled]} onChange={()=>toggleSection(key)} />
-                    <span className="text-sm font-medium capitalize">{key}</span>
+                    <span className="text-sm font-medium capitalize">{sectionLabels[key] || key}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <button onClick={()=>moveSection(idx,-1)} className="text-xs px-2 py-1 rounded bg-gray-100">↑</button>
