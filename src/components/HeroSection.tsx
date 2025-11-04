@@ -79,7 +79,7 @@ export const HeroSection = () => {
           // Hero Landing
           <div className="h-full flex items-center justify-center p-6 sm:p-12 lg:p-16 xl:p-20 relative">
             <div className="relative z-10 space-y-8 sm:space-y-12 max-w-lg w-full">
-              <HeroContent />
+          <HeroContent />
               <button
                 onClick={handleStartBuilding}
                 className="group relative w-full text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 bg-primary hover:bg-primary/90 text-white rounded-2xl font-semibold transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-[1.02] flex items-center justify-center gap-2 overflow-hidden"
@@ -103,7 +103,7 @@ export const HeroSection = () => {
             />
           </>
         )}
-      </div>
+        </div>
 
       {/* Right Column - Preview (desktop always visible, mobile in modal) */}
       <div className="hidden lg:flex flex-1 items-center justify-center p-4 sm:p-6 lg:p-8 min-h-0 lg:min-h-full relative">

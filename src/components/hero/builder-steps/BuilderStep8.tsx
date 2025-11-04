@@ -102,6 +102,57 @@ export const BuilderStep8 = ({ data, onUpdate, onNext, onBack }: BuilderStep8Pro
       </div>
 
       <div className="space-y-4 pt-4 border-t">
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <Label htmlFor="address" className="text-xs">Indirizzo</Label>
+            <Input
+              id="address"
+              placeholder="Via Roma 1, Milano"
+              value={data.address}
+              onChange={(e) => onUpdate({ address: e.target.value })}
+              className="mt-1"
+            />
+          </div>
+          <div>
+            <Label htmlFor="phone" className="text-xs">Telefono</Label>
+            <Input
+              id="phone"
+              placeholder="+39 02 1234567"
+              value={data.phone}
+              onChange={(e) => onUpdate({ phone: e.target.value })}
+              className="mt-1"
+            />
+          </div>
+        </div>
+
+        <div>
+          <Label htmlFor="email" className="text-xs">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="info@esempio.it"
+            value={data.email}
+            onChange={(e) => onUpdate({ email: e.target.value })}
+            className="mt-1"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-xs">Social Media (opzionale)</Label>
+          <div className="grid grid-cols-2 gap-3">
+            <Input
+              placeholder="Facebook URL"
+              value={data.socialLinks.facebook}
+              onChange={(e) => onUpdate({ socialLinks: { ...data.socialLinks, facebook: e.target.value } })}
+            />
+            <Input
+              placeholder="Instagram URL"
+              value={data.socialLinks.instagram}
+              onChange={(e) => onUpdate({ socialLinks: { ...data.socialLinks, instagram: e.target.value } })}
+            />
+          </div>
+        </div>
+
         <div>
           <Label htmlFor="reservationLink" className="text-sm font-medium">
             Link prenotazioni (opzionale)

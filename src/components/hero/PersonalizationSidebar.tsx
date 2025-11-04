@@ -3,6 +3,8 @@ import { BuilderData, TemplateType } from "./InteractiveBuilder";
 import { X, Save, Rocket, Palette, Type, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { BuilderStep0 } from "./builder-steps/BuilderStep0";
 import { BuilderStep3 } from "./builder-steps/BuilderStep3";
 import { BuilderStep4 } from "./builder-steps/BuilderStep4";
@@ -12,7 +14,7 @@ import { BuilderStep7Reviews } from "./builder-steps/BuilderStep7Reviews";
 import { BuilderStep7FAQ } from "./builder-steps/BuilderStep7FAQ";
 import { BuilderStep8 } from "./builder-steps/BuilderStep8";
 import { BuilderStepTypography } from "./builder-steps/BuilderStepTypography";
-import { BuilderStepStyles } from "./builder-steps/BuilderStepStyles";
+// Styles step rimosso
 
 interface PersonalizationSidebarProps {
   data: BuilderData;
@@ -23,15 +25,14 @@ interface PersonalizationSidebarProps {
   onOpenPreview?: () => void;
 }
 
-type Section = "template" | "styles" | "typography" | "hero" | "about" | "menu" | "events" | "gallery" | "reviews" | "reservation" | "faq" | "blog" | "contact" | "footer";
+type Section = "template" | "typography" | "hero" | "about" | "menu" | "events" | "gallery" | "reviews" | "reservation" | "faq" | "contact" | "hours" | "delivery" | "layout";
 
 const appearanceSections: { id: Section; label: string }[] = [
   { id: "template", label: "Template" },
-  { id: "styles", label: "Stili" },
   { id: "typography", label: "Tipografia" },
   { id: "hero", label: "Hero" },
   { id: "gallery", label: "Galleria" },
-  { id: "footer", label: "Footer" },
+  { id: "layout", label: "Disposizione" },
 ];
 
 const dataSections: { id: Section; label: string }[] = [
@@ -39,8 +40,9 @@ const dataSections: { id: Section; label: string }[] = [
   { id: "events", label: "Eventi" },
   { id: "reviews", label: "Recensioni" },
   { id: "faq", label: "FAQ" },
-  { id: "blog", label: "Blog" },
   { id: "contact", label: "Contatti" },
+  { id: "hours", label: "Orario" },
+  { id: "delivery", label: "Delivery" },
 ];
 
 export const PersonalizationSidebar = ({
@@ -95,12 +97,26 @@ export const PersonalizationSidebar = ({
             onUpdate={onUpdate}
           />
         );
-      case "styles":
+      case "layout":
         return (
-          <BuilderStepStyles
-            data={data}
-            onUpdate={onUpdate}
-          />
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold">Disposizione</h3>
+            <p className="text-sm text-muted-foreground">Attiva/disattiva e riordina le sezioni del template.</p>
+            <div className="space-y-2">
+              {order.map((key, idx)=> (
+                <div key={key} className="flex items-center justify-between rounded border px-3 py-2 bg-white">
+                  <div className="flex items-center gap-3">
+                    <input type="checkbox" checked={!!enabled[key as keyof typeof enabled]} onChange={()=>toggleSection(key)} />
+                    <span className="text-sm font-medium capitalize">{key}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <button onClick={()=>moveSection(idx,-1)} className="text-xs px-2 py-1 rounded bg-gray-100">↑</button>
+                    <button onClick={()=>moveSection(idx,1)} className="text-xs px-2 py-1 rounded bg-gray-100">↓</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         );
       case "hero":
         return (
@@ -142,14 +158,100 @@ export const PersonalizationSidebar = ({
         return (
           <div className="space-y-6">
             <h3 className="text-xl font-semibold">Galleria</h3>
-            <p className="text-sm text-muted-foreground">
-              La galleria viene popolata automaticamente con le immagini caricate. Aggiungi immagini nella sezione "Chi Siamo" o "Eventi".
-            </p>
-            {data.gallery.length > 0 && (
-              <div className="space-y-2">
-                <p className="text-sm font-medium">Immagini nella galleria: {data.gallery.length}</p>
+            <div className="grid grid-cols-3 gap-3">
+              {(data.gallery || []).map((g, idx)=> (
+                <div key={g.id} className="relative group">
+                  <img src={g.url} className="w-full h-24 object-cover rounded" />
+                  <button
+                    onClick={()=> onUpdate({ gallery: data.gallery.filter((_,i)=> i!==idx) })}
+                    className="absolute top-1 right-1 text-xs bg-white/80 hover:bg-white text-red-600 rounded px-1"
+                    aria-label="Rimuovi"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+            <div>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={async (e)=>{
+                  const files = Array.from(e.target.files || []).slice(0,12);
+                  const read = (f: File)=> new Promise<string>((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result as string); r.onerror=rej; r.readAsDataURL(f); });
+                  const urls = await Promise.all(files.map(read));
+                  const items = urls.map((u,i)=>({ id: `gal-${Date.now()}-${i}`, url: u, type: "image" as const }));
+                  onUpdate({ gallery: [...(data.gallery||[]), ...items] });
+                }}
+              />
+            </div>
+          </div>
+        );
+      case "contact":
+        return (
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold">Contatti</h3>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label htmlFor="address" className="text-xs">Indirizzo</Label>
+                <Input id="address" placeholder="Via Roma 1, Milano" value={data.address} onChange={(e)=>onUpdate({ address: e.target.value })} className="mt-1" />
               </div>
-            )}
+              <div>
+                <Label htmlFor="phone" className="text-xs">Telefono</Label>
+                <Input id="phone" placeholder="+39 02 1234567" value={data.phone} onChange={(e)=>onUpdate({ phone: e.target.value })} className="mt-1" />
+              </div>
+            </div>
+            <div>
+              <Label htmlFor="email" className="text-xs">Email</Label>
+              <Input id="email" type="email" placeholder="info@esempio.it" value={data.email} onChange={(e)=>onUpdate({ email: e.target.value })} className="mt-1" />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-xs">Social Media (opzionale)</Label>
+              <div className="grid grid-cols-2 gap-3">
+                <Input placeholder="Facebook URL" value={data.socialLinks.facebook} onChange={(e)=>onUpdate({ socialLinks: { ...data.socialLinks, facebook: e.target.value } })} />
+                <Input placeholder="Instagram URL" value={data.socialLinks.instagram} onChange={(e)=>onUpdate({ socialLinks: { ...data.socialLinks, instagram: e.target.value } })} />
+              </div>
+            </div>
+          </div>
+        );
+      case "hours":
+        return (
+          <BuilderStep8
+            data={data}
+            onUpdate={onUpdate}
+            onNext={() => setActiveSection("delivery")}
+            onBack={() => setActiveSection("contact")}
+          />
+        );
+      case "delivery":
+        return (
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold">Delivery & Prenotazioni</h3>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="reservationLink" className="text-sm font-medium">Link prenotazioni (opzionale)</Label>
+                <Input id="reservationLink" placeholder="https://thefork.com/..." value={data.reservationLink || ""} onChange={(e)=>onUpdate({ reservationLink: e.target.value })} className="mt-2" />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label className="text-xs">Glovo</Label>
+                  <Input value={data.deliveryLinks?.glovo || ""} onChange={(e)=>onUpdate({ deliveryLinks: { ...data.deliveryLinks, glovo: e.target.value } })} />
+                </div>
+                <div>
+                  <Label className="text-xs">UberEats</Label>
+                  <Input value={data.deliveryLinks?.uberEats || ""} onChange={(e)=>onUpdate({ deliveryLinks: { ...data.deliveryLinks, uberEats: e.target.value } })} />
+                </div>
+                <div>
+                  <Label className="text-xs">Deliveroo</Label>
+                  <Input value={data.deliveryLinks?.deliveroo || ""} onChange={(e)=>onUpdate({ deliveryLinks: { ...data.deliveryLinks, deliveroo: e.target.value } })} />
+                </div>
+                <div>
+                  <Label className="text-xs">Just Eat</Label>
+                  <Input value={data.deliveryLinks?.justEat || ""} onChange={(e)=>onUpdate({ deliveryLinks: { ...data.deliveryLinks, justEat: e.target.value } })} />
+                </div>
+              </div>
+            </div>
           </div>
         );
       case "reviews":
@@ -230,42 +332,26 @@ export const PersonalizationSidebar = ({
 
   return (
     <div className="h-full w-full lg:w-auto flex flex-col bg-white border-r border-gray-200 shadow-lg overflow-hidden transition-all duration-700 ease-out">
-      {/* Header with mobile preview button */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0 bg-gray-50">
-        <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center shadow-sm">
-            <Rocket className="w-4 h-4 text-white" />
-          </div>
-          <span className="text-xs font-semibold text-gray-700 tracking-wide">Editor</span>
+      {/* Header rimosso su richiesta */}
+
+      {/* Tabs */}
+      <div className="flex items-center justify-between px-4 py-2 border-b border-gray-200 bg-white text-xs font-medium">
+        <div className="flex items-center gap-2">
+          <button onClick={()=>setTab("appearance")} className={`px-3 py-1.5 rounded ${tab==="appearance"?"bg-gray-100 text-gray-900":"text-gray-600 hover:text-gray-900"}`}>Aspetto</button>
+          <button onClick={()=>setTab("data")} className={`px-3 py-1.5 rounded ${tab==="data"?"bg-gray-100 text-gray-900":"text-gray-600 hover:text-gray-900"}`}>Dati</button>
         </div>
         <div className="flex items-center gap-2">
-          {/* Mobile only preview button */}
-          {onOpenPreview && (
-            <Button
-              onClick={onOpenPreview}
-              className="lg:hidden h-8 px-3 text-xs bg-primary hover:bg-primary/90 text-white flex items-center gap-2"
-              size="sm"
-            >
-              <Monitor className="w-3.5 h-3.5" />
-              Anteprima
-            </Button>
-          )}
+          <span className="text-xs font-semibold text-gray-700 tracking-wide">Editor</span>
           {onClose && (
             <button
               onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-all duration-200 hover:scale-105"
+              className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-200"
               aria-label="Chiudi"
             >
               <X className="w-4 h-4 text-gray-600" />
             </button>
           )}
         </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="flex items-center gap-2 px-4 py-2 border-b border-gray-200 bg-white text-xs font-medium">
-        <button onClick={()=>setTab("appearance")} className={`px-3 py-1.5 rounded ${tab==="appearance"?"bg-gray-100 text-gray-900":"text-gray-600 hover:text-gray-900"}`}>Aspetto</button>
-        <button onClick={()=>setTab("data")} className={`px-3 py-1.5 rounded ${tab==="data"?"bg-gray-100 text-gray-900":"text-gray-600 hover:text-gray-900"}`}>Dati</button>
       </div>
 
       {/* Sidebar Content */}
@@ -293,68 +379,15 @@ export const PersonalizationSidebar = ({
         <ScrollArea className="flex-1 min-w-0">
           <div className="p-6 sm:p-8">
             {tab === "appearance" ? (
-              <>
-                {/* Reorderable sections */}
-                <div className="mb-6">
-                  <h4 className="text-sm font-semibold text-gray-700 mb-2">Sezioni del template</h4>
-                  <div className="space-y-2">
-                    {order.map((key, idx)=> (
-                      <div key={key} className="flex items-center justify-between rounded border px-3 py-2 bg-white">
-                        <div className="flex items-center gap-3">
-                          <input type="checkbox" checked={!!enabled[key as keyof typeof enabled]} onChange={()=>toggleSection(key)} />
-                          <span className="text-sm font-medium capitalize">{key}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <button onClick={()=>moveSection(idx,-1)} className="text-xs px-2 py-1 rounded bg-gray-100">↑</button>
-                          <button onClick={()=>moveSection(idx,1)} className="text-xs px-2 py-1 rounded bg-gray-100">↓</button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                {renderSectionContent()}
-              </>
+              <>{renderSectionContent()}</>
             ) : (
-              <>
-                {/* Data-oriented sections shortcuts */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-6 text-xs">
-                  {dataSections.map((s)=> (
-                    <button key={s.id} onClick={()=>setActiveSection(s.id)} className={`px-2 py-2 rounded border ${activeSection===s.id?"border-primary text-primary":"border-gray-200 text-gray-600 hover:text-gray-900"}`}>{s.label}</button>
-                  ))}
-                </div>
-                {renderSectionContent()}
-              </>
+              <>{renderSectionContent()}</>
             )}
           </div>
         </ScrollArea>
       </div>
 
-      {/* Compact Footer Actions */}
-      <div className="p-3 border-t border-gray-200 bg-gray-50 flex items-center justify-between gap-2 flex-shrink-0">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-8 px-3 text-xs hover:bg-gray-100 transition-all duration-200"
-          onClick={() => {
-            // Save functionality
-            console.log("Save changes");
-          }}
-        >
-          <Save className="w-3.5 h-3.5 mr-1.5" />
-          Salva
-        </Button>
-        <Button
-          size="sm"
-          className="h-8 px-3 text-xs bg-primary hover:bg-primary/90 shadow-sm transition-all duration-200"
-          onClick={() => {
-            // Publish functionality
-            console.log("Publish site");
-          }}
-        >
-          <Rocket className="w-3.5 h-3.5 mr-1.5" />
-          Pubblica
-        </Button>
-      </div>
+      {/* Footer actions rimossi su richiesta */}
     </div>
   );
 };
