@@ -1,6 +1,6 @@
 import { BuilderData } from "./InteractiveBuilder";
 
-export const getDefaultData = (template: "trattoria" | "urban-bar" | "dolce-vita" | "craft-pub" | "wine-bar" | "fine-dining" = "trattoria"): BuilderData => {
+export const getDefaultData = (template: "trattoria" | "urban-bar" | "dolce-vita" | "craft-pub" | "wine-bar" | "fine-dining" = "wine-bar"): BuilderData => {
   const baseData: BuilderData = {
     template,
     businessName: template === "trattoria" ? "La Trattoria" : template === "urban-bar" ? "Urban Bar" : template === "dolce-vita" ? "Dolce Vita Café" : template === "craft-pub" ? "Craft Pub" : template === "wine-bar" ? "Enoteca & Wine Bar" : "Fine Dining",

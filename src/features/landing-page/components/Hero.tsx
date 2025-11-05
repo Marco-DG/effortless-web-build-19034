@@ -96,23 +96,21 @@ export const Hero = () => {
           />
           <div className="lg:hidden fixed inset-0 z-[70] bg-white/70 backdrop-blur-sm overflow-hidden flex flex-col">
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-4 border-b border-border bg-white/70 backdrop-blur-sm flex-shrink-0">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                <Monitor className="h-4 w-4 text-gray-500" />
-                <span className="text-sm font-medium text-gray-700">
-                  Anteprima Live
-                </span>
+            <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur border-b border-border">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              <Monitor className="h-3.5 w-3.5 text-muted-foreground" />
+              <span className="text-xs font-medium text-muted-foreground tracking-wide">Anteprima Live</span>
+              <div className="ml-auto">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={actions.closePreview}
+                  className="flex items-center gap-2"
+                >
+                  <X className="w-4 h-4" />
+                  Chiudi
+                </Button>
               </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={actions.closePreview}
-                className="flex items-center gap-2"
-              >
-                <X className="w-4 h-4" />
-                Chiudi
-              </Button>
             </div>
 
             {/* Modal Content */}

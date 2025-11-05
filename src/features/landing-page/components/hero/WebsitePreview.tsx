@@ -57,7 +57,7 @@ export const WebsitePreview = ({ data, activeSection, fontFamily = "Inter", hide
     <div className={`h-full w-full flex flex-col bg-white ${hideHeader ? "" : "rounded-2xl elev-2 border border-border/50"} overflow-hidden`}>
       {/* Label Anteprima Live - Premium */}
       {!hideHeader && (
-        <div className="flex items-center gap-2 px-4 py-2.5 bg-white/70 backdrop-blur border-b border-border/60">
+        <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur border-b border-border">
           <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
           <Monitor className="h-3.5 w-3.5 text-muted-foreground" />
           <span className="text-xs font-medium text-muted-foreground tracking-wide">Anteprima Live</span>

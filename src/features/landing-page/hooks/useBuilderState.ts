@@ -11,7 +11,7 @@ export const useBuilderState = () => {
   const startBuilding = () => {
     setIsSidebarOpen(true);
     if (!builderData) {
-      const defaultData = getDefaultData("trattoria");
+      const defaultData = getDefaultData("wine-bar");
       setBuilderData(defaultData);
     }
   };
@@ -48,7 +48,7 @@ export const useBuilderState = () => {
     setIsPreviewOpen(false);
   };
 
-  const previewData: BuilderData = builderData || getDefaultData("trattoria");
+  const previewData: BuilderData = builderData || getDefaultData("wine-bar");
 
   return {
     // State values

@@ -182,10 +182,10 @@ export const PersonalizationSidebar = ({
         return (
           <div className="space-y-6">
             <h3 className="text-xl font-semibold">Galleria</h3>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3">
               {(data.gallery || []).map((g, idx)=> (
                 <div key={g.id} className="relative group">
-                  <img src={g.url} className="w-full h-24 object-cover rounded" />
+                  <img src={g.url} className="w-full h-20 sm:h-24 object-cover rounded" />
                   <button
                     onClick={()=> onUpdate({ gallery: data.gallery.filter((_,i)=> i!==idx) })}
                     className="absolute top-1 right-1 text-xs bg-white/80 hover:bg-white text-red-600 rounded px-1"
@@ -365,7 +365,7 @@ export const PersonalizationSidebar = ({
           <button type="button" role="tab" aria-selected={tab==="data"} onClick={()=>setTab("data")} className={`px-3 py-1.5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${tab==="data"?"bg-muted text-foreground":"text-muted-foreground hover:text-foreground"}`}>Dati</button>
         </div>
         <div className="flex items-center gap-2">
-          <button type="button" onClick={onOpenPreview} className="sm:hidden inline-flex items-center gap-1.5 rounded-lg bg-primary text-primary-foreground px-2.5 py-1.5 text-xs font-medium" aria-label="Apri anteprima">
+          <button type="button" onClick={onOpenPreview} className="lg:hidden inline-flex items-center gap-1.5 rounded-lg bg-primary text-primary-foreground px-2.5 py-1.5 text-xs font-medium" aria-label="Apri anteprima">
             <Monitor className="w-3.5 h-3.5" /> Anteprima
           </button>
           {onClose && (
@@ -383,7 +383,7 @@ export const PersonalizationSidebar = ({
       {/* Sidebar Content */}
       <div className="flex flex-1 overflow-hidden min-h-0">
         {/* Subnavigation (no icon column) */}
-        <div className="w-10 md:w-36 border-r border-border bg-white/50 backdrop-blur flex flex-col py-2 md:py-4 flex-shrink-0" role="navigation" aria-label="Sezioni">
+        <div className="w-10 2xl:w-36 border-r border-border bg-white/50 backdrop-blur flex flex-col py-2 2xl:py-4 flex-shrink-0" role="navigation" aria-label="Sezioni">
           {(tab === "appearance" ? appearanceSections : dataSections).map((section) => {
             const isActive = activeSection === section.id;
             return (
@@ -393,10 +393,10 @@ export const PersonalizationSidebar = ({
                   setActiveSection(section.id);
                   if (onSectionChange) onSectionChange(section.id);
                 }}
-                className={`flex items-center justify-center md:justify-between px-1 md:px-4 py-2 md:py-2 text-base md:text-sm transition-colors hover-raise focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${isActive?"bg-white/80 text-primary md:border-l-2 md:border-primary":"text-muted-foreground hover:text-foreground"}` }
+                className={`flex items-center justify-center 2xl:justify-between px-1 2xl:px-4 py-2 2xl:py-2 text-base 2xl:text-sm transition-colors hover-raise focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${isActive?"bg-white/80 text-primary 2xl:border-l-2 2xl:border-primary":"text-muted-foreground hover:text-foreground"}` }
               >
-                {(() => { const Icon = SectionIcon[section.id]; return <Icon className="w-4 h-4 md:w-5 md:h-5" />; })()}
-                <span className="hidden md:inline">{section.label}</span><span className="sr-only"> {isActive ? "(attivo)" : ""}</span>
+                {(() => { const Icon = SectionIcon[section.id]; return <Icon className="w-4 h-4 2xl:w-5 2xl:h-5" />; })()}
+                <span className="hidden 2xl:inline">{section.label}</span><span className="sr-only"> {isActive ? "(attivo)" : ""}</span>
               </button>
             );
           })}
@@ -404,7 +404,7 @@ export const PersonalizationSidebar = ({
 
         {/* Form Content */}
         <ScrollArea className="flex-1 min-w-0">
-          <div className="p-4 md:p-6">
+          <div className="p-4 2xl:p-6">
             {/* Animated section content */}
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             {(tab === "appearance" || tab === "data") && (
