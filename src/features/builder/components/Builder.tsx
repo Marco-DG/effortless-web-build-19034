@@ -96,21 +96,35 @@ export const Builder = () => {
           />
           <div className="lg:hidden fixed inset-0 z-[70] bg-white/70 backdrop-blur-sm overflow-hidden flex flex-col">
             {/* Modal Header */}
-            <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur border-b border-border">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-              <Monitor className="h-3.5 w-3.5 text-muted-foreground" />
-              <span className="text-xs font-medium text-muted-foreground tracking-wide">Anteprima Live</span>
-              <div className="ml-auto">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={actions.closePreview}
-                  className="flex items-center gap-2"
-                >
-                  <X className="w-4 h-4" />
-                  Chiudi
-                </Button>
-              </div>
+            <div className="flex items-center justify-between px-3 py-2 bg-white/90 backdrop-blur border-b border-border">
+              <button
+                type="button"
+                onClick={() => {
+                  const builderData = localStorage.getItem("builderData");
+                  if (builderData) {
+                    localStorage.setItem("builderData", builderData);
+                  } else {
+                    localStorage.setItem("builderData", JSON.stringify(previewData));
+                  }
+                  window.open("/preview", "_blank");
+                }}
+                className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                aria-label="Apri anteprima in nuova scheda"
+              >
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+                <span>Nuova scheda</span>
+              </button>
+              
+              <button
+                type="button"
+                onClick={actions.closePreview}
+                className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+              >
+                <X className="w-4 h-4" />
+                <span>Chiudi</span>
+              </button>
             </div>
 
             {/* Modal Content */}

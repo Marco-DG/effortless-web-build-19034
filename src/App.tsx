@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Index from "./pages/Index";
+import Preview from "./pages/Preview";
 import { CursorGlow } from "@/components/visual/CursorGlow";
 import { AICommandPalette } from "@/components/ai/AICommandPalette";
 import { PerformanceToggle } from "@/components/controls/PerformanceToggle";
@@ -26,6 +27,7 @@ const RouteWrapper = () => {
       >
         <Routes location={location}>
           <Route path="/" element={<Index />} />
+          <Route path="/preview" element={<Preview />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </motion.div>

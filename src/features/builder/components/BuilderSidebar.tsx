@@ -320,7 +320,7 @@ export const BuilderSidebar = ({
   };
 
   return (
-    <div className="h-full w-full lg:w-auto flex flex-col bg-white border-r border-border shadow-lg overflow-hidden transition-all duration-700 ease-out">
+    <div className="h-full w-full lg:w-auto flex flex-col bg-white lg:rounded-l-2xl border-r border-border shadow-lg overflow-hidden transition-all duration-700 ease-out">
       {/* Header rimosso su richiesta */}
 
       {/* Single Header - Mobile/Desktop */}

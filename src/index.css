@@ -115,6 +115,87 @@ All colors MUST be HSL.
   h3 { font-size: clamp(1.5rem, 1.4rem + 0.8vw, 2rem); line-height: 1.2; }
   p  { font-size: clamp(1rem, 0.98rem + 0.2vw, 1.125rem); line-height: 1.7; }
 
+/* Custom scrollbars - minimal and elegant */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--border)) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--border));
+  border-radius: 3px;
+  border: none;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--border) / 0.8);
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Viewport-specific styles for templates */
+.viewport-mobile .hidden.md\\:flex { display: none !important; }
+.viewport-mobile .hidden.md\\:block { display: none !important; }
+.viewport-mobile .hidden.lg\\:block { display: none !important; }
+
+/* Grid overrides for mobile */
+.viewport-mobile .grid.grid-cols-1.lg\\:grid-cols-12 { grid-template-columns: 1fr !important; }
+.viewport-mobile .grid.md\\:grid-cols-2 { grid-template-columns: 1fr !important; }
+.viewport-mobile .grid.md\\:grid-cols-3 { grid-template-columns: 1fr !important; }
+.viewport-mobile .grid.sm\\:grid-cols-2 { grid-template-columns: 1fr !important; }
+.viewport-mobile .grid.lg\\:grid-cols-3 { grid-template-columns: 1fr !important; }
+
+/* Typography overrides for mobile */
+.viewport-mobile .text-4xl.md\\:text-6xl.lg\\:text-7xl { font-size: 2rem !important; line-height: 1.2 !important; }
+.viewport-mobile .text-lg.md\\:text-2xl { font-size: 1rem !important; }
+.viewport-mobile .text-3xl.md\\:text-4xl { font-size: 1.5rem !important; }
+.viewport-mobile .text-2xl.md\\:text-3xl { font-size: 1.25rem !important; }
+.viewport-mobile .text-sm.md\\:text-base { font-size: 0.875rem !important; }
+
+/* Layout and spacing overrides for mobile */
+.viewport-mobile .p-8.md\\:p-16 { padding: 1rem !important; }
+.viewport-mobile .px-6 { padding-left: 1rem !important; padding-right: 1rem !important; }
+.viewport-mobile .py-20 { padding-top: 3rem !important; padding-bottom: 3rem !important; }
+.viewport-mobile .py-16 { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+.viewport-mobile .gap-12 { gap: 1.5rem !important; }
+.viewport-mobile .gap-10 { gap: 1.5rem !important; }
+.viewport-mobile .gap-6 { gap: 1rem !important; }
+
+/* Max-width overrides for mobile */
+.viewport-mobile .max-w-7xl { max-width: 100% !important; }
+.viewport-mobile .max-w-6xl { max-width: 100% !important; }
+.viewport-mobile .max-w-4xl { max-width: 100% !important; }
+.viewport-mobile .max-w-2xl { max-width: 100% !important; }
+
+/* Flexbox overrides for mobile */
+.viewport-mobile .flex.gap-4 { flex-direction: column !important; gap: 0.75rem !important; }
+.viewport-mobile .flex.items-end.lg\\:items-center { align-items: center !important; }
+
+/* Columns overrides for mobile */
+.viewport-mobile .columns-2.md\\:columns-3 { columns: 1 !important; }
+
+/* Specific WineBar overrides */
+.viewport-mobile .lg\\:col-span-7 { grid-column: span 1 !important; }
+.viewport-mobile .lg\\:col-span-5 { display: none !important; }
+
+/* Tablet overrides */
+.viewport-tablet .grid.grid-cols-1.lg\\:grid-cols-12 { grid-template-columns: 1fr !important; }
+.viewport-tablet .text-4xl.md\\:text-6xl.lg\\:text-7xl { font-size: 3rem !important; }
+.viewport-tablet .hidden.lg\\:block { display: none !important; }
+.viewport-tablet .lg\\:col-span-7 { grid-column: span 1 !important; }
+.viewport-tablet .lg\\:col-span-5 { display: none !important; }
+
 }
 
 @media (prefers-reduced-motion: reduce) {
