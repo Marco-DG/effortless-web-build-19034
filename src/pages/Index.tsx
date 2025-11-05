@@ -1,9 +1,9 @@
-import { Hero } from "@/features/landing-page/components/Hero";
+import { Builder } from "@/features/builder";
 
 const Index = () => {
   return (
     <main className="h-screen overflow-hidden luxe-gradient-bg">
-      <Hero />
+      <Builder />
     </main>
   );
 };
