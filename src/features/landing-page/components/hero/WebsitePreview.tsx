@@ -1,10 +1,13 @@
 import { BuilderData } from "./InteractiveBuilder";
-import { TrattoriaTemplate } from "./templates/TrattoriaTemplate";
-import { UrbanBarTemplate } from "./templates/UrbanBarTemplate";
-import { DolceVitaTemplate } from "./templates/DolceVitaTemplate";
-import { CraftPubTemplate } from "./templates/CraftPubTemplate";
-import { WineBarTemplate } from "./templates/WineBarTemplate";
-import { FineDiningTemplate } from "./templates/FineDiningTemplate";
+import React, { Suspense, lazy } from "react";
+
+const TrattoriaTemplate = lazy(() => import("./templates/TrattoriaTemplate").then(m => ({ default: m.TrattoriaTemplate })));
+const UrbanBarTemplate = lazy(() => import("./templates/UrbanBarTemplate").then(m => ({ default: m.UrbanBarTemplate })));
+const DolceVitaTemplate = lazy(() => import("./templates/DolceVitaTemplate").then(m => ({ default: m.DolceVitaTemplate })));
+const CraftPubTemplate = lazy(() => import("./templates/CraftPubTemplate").then(m => ({ default: m.CraftPubTemplate })));
+const WineBarTemplate = lazy(() => import("./templates/WineBarTemplate").then(m => ({ default: m.WineBarTemplate })));
+const FineDiningTemplate = lazy(() => import("./templates/FineDiningTemplate").then(m => ({ default: m.FineDiningTemplate })));
+
 import { Monitor } from "lucide-react";
 
 interface WebsitePreviewProps {
@@ -51,13 +54,13 @@ export const WebsitePreview = ({ data, activeSection, fontFamily = "Inter", hide
   };
 
   return (
-    <div className={`h-full w-full flex flex-col bg-white ${hideHeader ? "" : "rounded-2xl shadow-2xl border border-gray-200/50"} overflow-hidden`}>
+    <div className={`h-full w-full flex flex-col bg-white ${hideHeader ? "" : "rounded-2xl elev-2 border border-border/50"} overflow-hidden`}>
       {/* Label Anteprima Live - Premium */}
       {!hideHeader && (
-        <div className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200/50">
+        <div className="flex items-center gap-2 px-4 py-2.5 bg-white/70 backdrop-blur border-b border-border/60">
           <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-          <Monitor className="h-3.5 w-3.5 text-gray-500" />
-          <span className="text-xs font-medium text-gray-600 tracking-wide">Anteprima Live</span>
+          <Monitor className="h-3.5 w-3.5 text-muted-foreground" />
+          <span className="text-xs font-medium text-muted-foreground tracking-wide">Anteprima Live</span>
         </div>
       )}
       
@@ -66,7 +69,7 @@ export const WebsitePreview = ({ data, activeSection, fontFamily = "Inter", hide
         className="flex-1 overflow-y-auto bg-white"
         style={{ fontFamily: fontFamily }}
       >
-        {renderTemplate()}
+        <Suspense fallback={<div className="p-6 text-sm text-muted-foreground">Caricamento…</div>}>{renderTemplate()}</Suspense>
       </div>
     </div>
   );

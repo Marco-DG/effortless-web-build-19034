@@ -4,6 +4,9 @@ import { WebsitePreview } from "./hero/WebsitePreview";
 import { ArrowRight, Monitor, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useBuilderState } from "../hooks/useBuilderState";
+import { MagneticButton } from "@/components/interactive/MagneticButton";
+import { ParallaxOrbs } from "@/components/visual/ParallaxOrbs";
+import { motion } from "framer-motion";
 
 export const Hero = () => {
   const {
@@ -16,7 +19,8 @@ export const Hero = () => {
   } = useBuilderState();
 
   return (
-    <div className="h-screen flex flex-col lg:flex-row overflow-hidden bg-gray-50 relative">
+    <div className="min-h-screen h-full flex flex-col lg:flex-row overflow-hidden relative luxe-gradient-bg">
+      <div className="pointer-events-none absolute inset-0 noise-bg" aria-hidden />
       {/* Left Column - Hero or Sidebar */}
       <div
         className={`w-full lg:w-1/3 flex-shrink-0 transition-all duration-700 ease-out ${
@@ -28,16 +32,23 @@ export const Hero = () => {
         {!isSidebarOpen ? (
           // Hero Landing
           <div className="h-full flex items-center justify-center p-6 sm:p-12 lg:p-16 xl:p-20 relative">
+            <ParallaxOrbs />
             <div className="relative z-10 space-y-8 sm:space-y-12 max-w-lg w-full">
               <HeroContent />
-              <button
+              <div className="[perspective:1000px]">
+              <div className="[transform-style:preserve-3d] will-change-transform">
+              <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2, ease: [0.22,1,0.36,1] }}>
+              <MagneticButton
                 onClick={actions.startBuilding}
-                className="group relative w-full text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 bg-primary hover:bg-primary/90 text-white rounded-2xl font-semibold transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-[1.02] flex items-center justify-center gap-2 overflow-hidden"
+                className="group relative w-full text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 bg-primary text-primary-foreground rounded-2xl font-semibold transition-all duration-300 elev-1 hover:scale-[1.02] flex items-center justify-center gap-2 overflow-hidden"
               >
-                <span className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                <span className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                 <span className="relative z-10">Crea il mio sito ora</span>
                 <ArrowRight className="relative z-10 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-              </button>
+              </MagneticButton>
+             </motion.div>
+                </div>
+                </div>
             </div>
           </div>
         ) : (
@@ -83,9 +94,9 @@ export const Hero = () => {
             onClick={actions.closePreview}
             aria-hidden="true"
           />
-          <div className="lg:hidden fixed inset-0 z-[70] bg-white overflow-hidden flex flex-col">
+          <div className="lg:hidden fixed inset-0 z-[70] bg-white/70 backdrop-blur-sm overflow-hidden flex flex-col">
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white flex-shrink-0">
+            <div className="flex items-center justify-between p-4 border-b border-border bg-white/70 backdrop-blur-sm flex-shrink-0">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                 <Monitor className="h-4 w-4 text-gray-500" />

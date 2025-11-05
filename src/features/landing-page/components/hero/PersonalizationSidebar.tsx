@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BuilderData, TemplateType } from "./InteractiveBuilder";
-import { X, Save, Rocket, Palette, Type, Monitor } from "lucide-react";
+import { X, Save, Rocket, Palette, Type, Monitor, Info, Images, PanelsTopLeft, UtensilsCrossed, Calendar, Star, HelpCircle, Phone, Clock, Truck, LayoutTemplate } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Label } from "@/components/ui/label";
@@ -26,6 +26,23 @@ interface PersonalizationSidebarProps {
 }
 
 type Section = "template" | "typography" | "hero" | "about" | "menu" | "events" | "gallery" | "reviews" | "reservation" | "faq" | "contact" | "hours" | "delivery" | "layout";
+
+const SectionIcon: Record<Section, React.ComponentType<{ className?: string }>> = {
+ template: LayoutTemplate,
+ typography: Type,
+ hero: Monitor,
+ about: Info,
+ menu: UtensilsCrossed,
+ events: Calendar,
+ gallery: Images,
+ reviews: Star,
+ reservation: Rocket,
+ faq: HelpCircle,
+ contact: Phone,
+ hours: Clock,
+ delivery: Truck,
+ layout: PanelsTopLeft,
+};
 
 const appearanceSections: { id: Section; label: string }[] = [
   { id: "template", label: "Template" },
@@ -106,17 +123,19 @@ export const PersonalizationSidebar = ({
         return (
           <div className="space-y-4">
             <h3 className="text-xl font-semibold">Disposizione</h3>
-            <p className="text-sm text-muted-foreground">Attiva/disattiva e riordina le sezioni del template.</p>
+            <p className="text-sm text-muted-foreground">Attiva/disattiva e riordina le sezioni del template. Trascina per riordinare.</p>
             <div className="space-y-2">
+              {/* Reorder list */}
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {order.map((key, idx)=> (
-                <div key={key} className="flex items-center justify-between rounded border px-3 py-2 bg-white">
+                <div key={key} className="flex items-center justify-between rounded-lg border border-border px-3 py-2.5 bg-white shadow-sm">
                   <div className="flex items-center gap-3">
                     <input type="checkbox" checked={!!enabled[key as keyof typeof enabled]} onChange={()=>toggleSection(key)} />
-                    <span className="text-sm font-medium capitalize">{sectionLabels[key] || key}</span>
+                    <span className="text-sm font-medium capitalize cursor-grab select-none">☰ {sectionLabels[key] || key}</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <button onClick={()=>moveSection(idx,-1)} className="text-xs px-2 py-1 rounded bg-gray-100">↑</button>
-                    <button onClick={()=>moveSection(idx,1)} className="text-xs px-2 py-1 rounded bg-gray-100">↓</button>
+                    <button onClick={()=>moveSection(idx,-1)} className="text-xs px-2 py-1 rounded-md bg-muted hover:bg-muted/80 transition-colors">↑</button>
+                    <button onClick={()=>moveSection(idx,1)} className="text-xs px-2 py-1 rounded-md bg-muted hover:bg-muted/80 transition-colors">↓</button>
                   </div>
                 </div>
               ))}
@@ -336,17 +355,19 @@ export const PersonalizationSidebar = ({
   };
 
   return (
-    <div className="h-full w-full lg:w-auto flex flex-col bg-white border-r border-gray-200 shadow-lg overflow-hidden transition-all duration-700 ease-out">
+    <div className="h-full w-full lg:w-auto flex flex-col bg-white border-r border-border shadow-lg overflow-hidden transition-all duration-700 ease-out">
       {/* Header rimosso su richiesta */}
 
-      {/* Tabs */}
-      <div className="flex items-center justify-between px-4 py-2 border-b border-gray-200 bg-white text-xs font-medium">
+      {/* Single Header - Mobile/Desktop */}
+      <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-white/80 backdrop-blur text-xs font-medium">
         <div className="flex items-center gap-2">
-          <button onClick={()=>setTab("appearance")} className={`px-3 py-1.5 rounded ${tab==="appearance"?"bg-gray-100 text-gray-900":"text-gray-600 hover:text-gray-900"}`}>Aspetto</button>
-          <button onClick={()=>setTab("data")} className={`px-3 py-1.5 rounded ${tab==="data"?"bg-gray-100 text-gray-900":"text-gray-600 hover:text-gray-900"}`}>Dati</button>
+          <button type="button" role="tab" aria-selected={tab==="appearance"} onClick={()=>setTab("appearance")} className={`px-3 py-1.5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${tab==="appearance"?"bg-muted text-foreground":"text-muted-foreground hover:text-foreground"}`}>Aspetto</button>
+          <button type="button" role="tab" aria-selected={tab==="data"} onClick={()=>setTab("data")} className={`px-3 py-1.5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${tab==="data"?"bg-muted text-foreground":"text-muted-foreground hover:text-foreground"}`}>Dati</button>
         </div>
         <div className="flex items-center gap-2">
-
+          <button type="button" onClick={onOpenPreview} className="sm:hidden inline-flex items-center gap-1.5 rounded-lg bg-primary text-primary-foreground px-2.5 py-1.5 text-xs font-medium" aria-label="Apri anteprima">
+            <Monitor className="w-3.5 h-3.5" /> Anteprima
+          </button>
           {onClose && (
             <button
               onClick={onClose}
@@ -362,7 +383,7 @@ export const PersonalizationSidebar = ({
       {/* Sidebar Content */}
       <div className="flex flex-1 overflow-hidden min-h-0">
         {/* Subnavigation (no icon column) */}
-        <div className="w-36 border-r border-gray-200 bg-gray-50 flex flex-col py-4 flex-shrink-0">
+        <div className="w-10 md:w-36 border-r border-border bg-white/50 backdrop-blur flex flex-col py-2 md:py-4 flex-shrink-0" role="navigation" aria-label="Sezioni">
           {(tab === "appearance" ? appearanceSections : dataSections).map((section) => {
             const isActive = activeSection === section.id;
             return (
@@ -372,9 +393,10 @@ export const PersonalizationSidebar = ({
                   setActiveSection(section.id);
                   if (onSectionChange) onSectionChange(section.id);
                 }}
-                className={`flex items-center justify-between px-4 py-2 text-sm transition-colors ${isActive?"bg-white text-primary border-l-2 border-primary":"text-gray-600 hover:text-gray-900"}`}
+                className={`flex items-center justify-center md:justify-between px-1 md:px-4 py-2 md:py-2 text-base md:text-sm transition-colors hover-raise focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${isActive?"bg-white/80 text-primary md:border-l-2 md:border-primary":"text-muted-foreground hover:text-foreground"}` }
               >
-                <span>{section.label}</span>
+                {(() => { const Icon = SectionIcon[section.id]; return <Icon className="w-4 h-4 md:w-5 md:h-5" />; })()}
+                <span className="hidden md:inline">{section.label}</span><span className="sr-only"> {isActive ? "(attivo)" : ""}</span>
               </button>
             );
           })}
@@ -382,11 +404,13 @@ export const PersonalizationSidebar = ({
 
         {/* Form Content */}
         <ScrollArea className="flex-1 min-w-0">
-          <div className="p-6 sm:p-8">
-            {tab === "appearance" ? (
-              <>{renderSectionContent()}</>
-            ) : (
-              <>{renderSectionContent()}</>
+          <div className="p-4 md:p-6">
+            {/* Animated section content */}
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {(tab === "appearance" || tab === "data") && (
+              <div>
+                {renderSectionContent()}
+              </div>
             )}
           </div>
         </ScrollArea>

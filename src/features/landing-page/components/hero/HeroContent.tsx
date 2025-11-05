@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 const rotatingWords = [
   "ristoranti",
@@ -27,19 +28,24 @@ export const HeroContent = () => {
 
   return (
     <div className="space-y-7 sm:space-y-10">
-      <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight sm:leading-[1.05] tracking-tight">
-        <span className="inline-block animate-fade-in-up bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
-          Online.
-        </span>{" "}
-        <span className="inline-block animate-fade-in-up-delay-1 text-gray-900">
-          Subito.
-        </span>{" "}
-        <span className="inline-block animate-fade-in-up-delay-2 bg-gradient-to-r from-primary via-primary/90 to-primary bg-clip-text text-transparent whitespace-nowrap">
-          Zero stress.
-        </span>
-      </h1>
-      
-      <p className="text-base sm:text-lg lg:text-xl text-gray-600 leading-relaxed animate-fade-in-up-delay-3 max-w-xl">
+      <motion.div
+        initial="hidden"
+        animate="show"
+        variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { staggerChildren: 0.08 } } }}
+      >
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight sm:leading-[1.05] tracking-tight">
+          <motion.span variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }} className="inline-block text-foreground">Online.</motion.span>{" "}
+          <motion.span variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }} className="inline-block text-foreground/80">Subito.</motion.span>{" "}
+          <motion.span variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }} className="inline-block text-primary whitespace-nowrap">Zero stress.</motion.span>
+        </h1>
+      </motion.div>
+
+      <motion.p
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+        className="text-base sm:text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-xl"
+      >
         Crea e pubblica il tuo sito in pochi minuti. Perfetto per{" "}
         <span className="relative inline-block min-w-[110px]">
           <span
@@ -51,8 +57,8 @@ export const HeroContent = () => {
           </span>
         </span>{" "}
         e piccoli business che vogliono farsi trovare {" "}
-        <span className="text-gray-900 font-semibold">ora</span>.
-      </p>
+        <span className="text-secondary font-semibold">ora</span>.
+      </motion.p>
     </div>
   );
 };
