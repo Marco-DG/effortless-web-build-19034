@@ -32,7 +32,7 @@ export const Builder = () => {
           // Hero Landing
           <div className="h-full flex items-center justify-center p-6 sm:p-12 lg:p-16 xl:p-20 relative">
             <ParallaxOrbs />
-            <div className="relative z-10 space-y-8 sm:space-y-12 max-w-lg w-full">
+            <div className="relative z-10 space-y-8 sm:space-y-12 max-w-2xl w-full">
               <HeroContent />
               <div className="[perspective:1000px]">
               <div className="[transform-style:preserve-3d] will-change-transform">
