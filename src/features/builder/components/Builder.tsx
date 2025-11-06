@@ -40,7 +40,7 @@ export const Builder = () => {
               <div className="[transform-style:preserve-3d] will-change-transform">
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2, ease: [0.22,1,0.36,1] }}>
                 <div className="grid grid-cols-1 gap-3">
-                  <CTAButton
+                 <CTAButton
                     onClick={() => {
                       actions.openSidebar();
                       actions.changeSection("typography");
@@ -69,9 +69,26 @@ export const Builder = () => {
                     subtitle="Template, sezioni e tipografia in pochi clic"
                     theme="fuchsia"
                   />
-                </div>
+               </div>
 
-              </motion.div>
+               <div className="mt-4">
+                 <div className="relative isolate flex items-center gap-2 sm:gap-3 text-sm sm:text-base">
+                   <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 backdrop-blur ring-1 ring-emerald-300 shadow-[0_1px_0_rgba(255,255,255,0.6)]">
+                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-emerald-600 font-medium">Subito</span>
+                   </span>
+                   <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 backdrop-blur ring-1 ring-rose-300 shadow-[0_1px_0_rgba(255,255,255,0.6)]">
+                     <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-orange-500 font-medium">Online</span>
+                   </span>
+                   <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 backdrop-blur ring-1 ring-fuchsia-300 shadow-[0_1px_0_rgba(255,255,255,0.6)]">
+                     <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-500" />
+                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-600 to-pink-500 font-medium">Senza stress</span>
+                   </span>
+                 </div>
+               </div>
+
+             </motion.div>
                 </div>
                 </div>
             </div>

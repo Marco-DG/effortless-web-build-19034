@@ -61,9 +61,9 @@ export function CTAButton({ onClick, icon, title, subtitle, theme, variant = "se
   return (
     <MagneticButton
       onClick={onClick}
-      className={`group relative w-full text-left px-5 sm:px-6 py-4 rounded-2xl transition-all duration-300 elev-1 flex items-center justify-between gap-4 overflow-hidden transform hover:-translate-y-0.5
+      className={`group relative w-full text-left px-5 sm:px-6 ${variant === 'primary' ? 'py-5' : 'py-4'} rounded-2xl transition-all duration-300 elev-1 flex items-center justify-between gap-4 overflow-hidden transform hover:-translate-y-0.5
       ${variant === 'primary'
-        ? 'text-white bg-gradient-to-r from-primary via-primary/80 to-fuchsia-500 hover:shadow-2xl ring-1 ring-primary/50 hover:ring-primary/70'
+        ? 'text-white bg-gradient-to-r from-primary via-primary/85 to-fuchsia-500 shadow-lg hover:shadow-2xl ring-2 ring-primary/60 hover:ring-primary/70'
         : `text-foreground bg-white/80 backdrop-blur hover:shadow-xl group-hover:shadow-xl ring-1 ${t.ring}`
       }`}
     >
@@ -76,12 +76,10 @@ export function CTAButton({ onClick, icon, title, subtitle, theme, variant = "se
       <span className="relative z-10 flex-1 min-w-0">
         <span className="block text-base sm:text-lg font-semibold leading-snug inline-flex items-center gap-2 flex-wrap text-foreground">
           <span>{title}</span>
-          {variant === 'secondary' && (
-            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-white/70 ring-1 ring-white/60 text-[10px] font-medium">
-              <Sparkles className={`w-3 h-3 ${t.badgeIcon}`} />
-              <span className={t.badgeText}>IA</span>
-            </span>
-          )}
+          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-white/70 ring-1 ring-white/60 text-[10px] font-semibold">
+            <Sparkles className={`w-3 h-3 ${t.badgeIcon}`} />
+            <span className="font-semibold">IA</span>
+          </span>
         </span>
         <span className={`block text-xs sm:text-sm ${variant === 'primary' ? 'text-primary-foreground/90' : 'text-muted-foreground'}`}>{subtitle}</span>
       </span>
