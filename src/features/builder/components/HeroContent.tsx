@@ -67,7 +67,14 @@ export const HeroContent = ({ actions }: { actions: any }) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
         className="text-base sm:text-lg lg:text-xl text-muted-foreground leading-relaxed">
-        Crea il tuo <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60 font-semibold">brand</span> in pochi minuti.
+        Il tuo <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60 font-semibold">brand</span>
+        {' '}
+        subito online
+        {' '}
+        <span className="bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-600 to-pink-500 font-medium">senza stress.</span>
+        
+        <br />
+        Perfetto per ristoranti, bar e locali che vogliono farsi trovare ora, ad un prezzo onesto.
       </motion.p>
 
       <div className="[perspective:1000px]">
