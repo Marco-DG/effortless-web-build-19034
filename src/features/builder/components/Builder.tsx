@@ -132,7 +132,7 @@ export const Builder = () => {
               <TemplatePreview
                 data={previewData}
                 activeSection={activeSection}
-                fontFamily={builderData?.fontFamily}
+                fontFamily={builderData?.fontPrimary || builderData?.fontFamily}
                 hideHeader={true}
               />
             </div>

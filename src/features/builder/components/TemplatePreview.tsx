@@ -1,6 +1,7 @@
 import { BuilderData } from "@/types/builder";
 import React, { Suspense, lazy, useState, useEffect } from "react";
 import { Monitor, Tablet, Smartphone } from "lucide-react";
+import { ensureGoogleFontLoaded } from "@/lib/fonts";
 import { ViewportMode, getAvailableViewports } from "@/components/ui/viewport-selector";
 
 const TrattoriaTemplate = lazy(() => import("@/features/templates/TrattoriaTemplate").then(m => ({ default: m.TrattoriaTemplate })));
@@ -51,6 +52,13 @@ export const TemplatePreview = ({ data, activeSection, fontFamily = "Inter", hid
     window.addEventListener("resize", updateViewportLogic);
     return () => window.removeEventListener("resize", updateViewportLogic);
   }, [viewportMode]);
+  useEffect(() => {
+    if (fontFamily) ensureGoogleFontLoaded(fontFamily);
+  }, [fontFamily]);
+
+  const headingFamily = (data as any)?.fontSecondary || fontFamily;
+  useEffect(() => { if (headingFamily) ensureGoogleFontLoaded(headingFamily); }, [headingFamily]);
+
   const renderTemplate = () => {
     if (!data.template) {
       return (
@@ -137,7 +145,7 @@ export const TemplatePreview = ({ data, activeSection, fontFamily = "Inter", hid
       {/* Preview Content */}
       <div className="flex-1 overflow-hidden bg-muted/5">
         <div 
-          className={`h-full mx-auto bg-white ${
+          className={`h-full mx-auto bg-white builder-preview-root ${
             isMobileDevice ? "viewport-mobile" :
             viewportMode === "mobile" ? "viewport-mobile" : 
             viewportMode === "tablet" ? "viewport-tablet" : "viewport-desktop"
@@ -153,6 +161,10 @@ export const TemplatePreview = ({ data, activeSection, fontFamily = "Inter", hid
         >
           <div className="w-full h-full overflow-y-auto overflow-x-hidden">
             <div style={{ width: "100%", overflowX: "hidden" }}>
+              {/* Inject heading font if provided */}
+              {headingFamily && (
+                <style>{`.builder-preview-root :is(h1,h2,h3,h4,h5,h6,.heading){font-family:'${headingFamily}', ${fontFamily}, serif !important;}`}</style>
+              )}
               <Suspense fallback={<div className="p-6 text-sm text-muted-foreground">Caricamento…</div>}>
                 {renderTemplate()}
               </Suspense>

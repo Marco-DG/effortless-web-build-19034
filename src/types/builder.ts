@@ -123,7 +123,9 @@ export interface BuilderData {
   reservationLink?: string;
   sectionsOrder: string[];
   sectionsEnabled: Record<string, boolean>;
-  fontFamily?: string;
+  fontFamily?: string; // legacy/global
+  fontPrimary?: string;   // corpo testo
+  fontSecondary?: string; // titoli
 }
 
 export type BuilderSection = 

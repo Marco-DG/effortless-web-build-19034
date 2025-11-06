@@ -315,6 +315,9 @@ export const getDefaultData = (template: TemplateType = "wine-bar"): BuilderData
     reservationLink: "https://thefork.it",
     sectionsOrder: ["hero","about","menu","gallery","newsletter","contact"],
     sectionsEnabled: { hero: true, about: true, menu: true, gallery: true, newsletter: true, contact: true },
+    fontFamily: "Inter",
+    fontPrimary: "Inter",
+    fontSecondary: "Playfair Display",
   };
 
   return baseData;

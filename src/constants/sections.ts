@@ -2,7 +2,7 @@ import { BuilderSection } from "@/types/builder";
 import { 
   LayoutTemplate, Type, Monitor, Info, UtensilsCrossed, 
   Calendar, Images, Star, Rocket, HelpCircle, Phone, 
-  Clock, Truck, PanelsTopLeft 
+  Clock, Truck, PanelsTopLeft, FileStack 
 } from "lucide-react";
 
 export const SECTION_ICONS: Record<BuilderSection, React.ComponentType<{ className?: string }>> = {
@@ -20,10 +20,12 @@ export const SECTION_ICONS: Record<BuilderSection, React.ComponentType<{ classNa
   hours: Clock,
   delivery: Truck,
   layout: PanelsTopLeft,
+  pages: FileStack,
 };
 
 export const APPEARANCE_SECTIONS: Array<{ id: BuilderSection; label: string }> = [
   { id: "template", label: "Template" },
+  { id: "pages", label: "Pagine" },
   { id: "typography", label: "Tipografia" },
   { id: "hero", label: "Hero" },
   { id: "about", label: "Chi siamo" },
