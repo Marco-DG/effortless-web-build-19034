@@ -90,6 +90,13 @@ export const BuilderSidebar = ({
           <div className="space-y-4">
             <h3 className="text-xl font-semibold">Disposizione</h3>
             <p className="text-sm text-muted-foreground">Attiva/disattiva e riordina le sezioni del template. Trascina per riordinare.</p>
+
+            {/* Toggle single page */}
+            <div className="flex items-center justify-between rounded-lg border border-border px-3 py-2.5 bg-white shadow-sm">
+              <label htmlFor="singlePage" className="text-sm font-medium">Modalità Single Page</label>
+              <input id="singlePage" type="checkbox" checked={!!data.singlePage} onChange={(e)=>onUpdate({ singlePage: e.target.checked })} />
+            </div>
+
             <div className="space-y-2">
               {/* Reorder list */}
               {order.map((key, idx)=> (

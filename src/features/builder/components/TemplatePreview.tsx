@@ -80,9 +80,9 @@ export const TemplatePreview = ({ data, activeSection, fontFamily = "Inter", hid
       case "craft-pub":
         return <CraftPubTemplate data={data} activeSection={activeSection} fontFamily={fontFamily} />;
       case "wine-bar":
-        return <WineBarTemplate data={data} activeSection={activeSection} fontFamily={fontFamily} />;
+        return <WineBarTemplate data={data} activeSection={activeSection} fontFamily={fontFamily} singlePage={data.singlePage ?? true} />;
       case "fine-dining":
-        return <FineDiningTemplate data={data} activeSection={activeSection} fontFamily={fontFamily} />;
+        return <FineDiningTemplate data={data} activeSection={activeSection} fontFamily={fontFamily} singlePage={data.singlePage ?? true} />;
       default:
         return (
           <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-50 rounded-lg">

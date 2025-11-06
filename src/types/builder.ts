@@ -140,6 +140,7 @@ export interface BuilderData {
   fontFamily?: string; // legacy/global
   fontPrimary?: string;   // corpo testo
   fontSecondary?: string; // titoli
+ singlePage?: boolean;
 }
 
 export type BuilderSection = 

@@ -318,6 +318,7 @@ export const getDefaultData = (template: TemplateType = "wine-bar"): BuilderData
     fontFamily: "Inter",
     fontPrimary: "Inter",
     fontSecondary: "Playfair Display",
+    singlePage: true,
   };
 
   return baseData;

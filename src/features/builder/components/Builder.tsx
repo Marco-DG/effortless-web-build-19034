@@ -22,7 +22,7 @@ export const Builder = () => {
       <div className="pointer-events-none absolute inset-0 noise-bg" aria-hidden />
       {/* Left Column - Hero or Sidebar */}
       <div
-        className={`w-full lg:w-1/3 flex-shrink-0 transition-all duration-700 ease-out ${
+        className={`w-full lg:w-[37.5%] flex-shrink-0 transition-all duration-700 ease-out ${
           isSidebarOpen
             ? "translate-x-0 opacity-100"
             : "translate-x-0 opacity-100"

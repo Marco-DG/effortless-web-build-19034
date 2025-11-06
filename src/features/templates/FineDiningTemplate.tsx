@@ -7,6 +7,7 @@ interface TemplateProps {
   data: BuilderData;
   activeSection?: string;
   fontFamily?: string;
+  singlePage?: boolean;
 }
 
 const templateColors = {
@@ -15,7 +16,7 @@ const templateColors = {
   accent: "#c7a559", // gold accent
 };
 
-export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter" }: TemplateProps) => {
+export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter", singlePage = true }: TemplateProps) => {
   const [page, setPage] = useState<"home" | "menu" | "about" | "gallery" | "contact">("home");
   const [navSolid, setNavSolid] = useState(false);
 
@@ -27,14 +28,16 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter" }
   }, []);
 
   useEffect(() => {
-    const applyFromHash = () => {
-      const m = window.location.hash.match(/page=(home|menu|about|gallery|contact)/);
-      if (m) setPage(m[1] as any);
-    };
-    applyFromHash();
-    window.addEventListener("hashchange", applyFromHash);
-    return () => window.removeEventListener("hashchange", applyFromHash);
-  }, []);
+    if (!singlePage) {
+      const applyFromHash = () => {
+        const m = window.location.hash.match(/page=(home|menu|about|gallery|contact)/);
+        if (m) setPage(m[1] as any);
+      };
+      applyFromHash();
+      window.addEventListener("hashchange", applyFromHash);
+      return () => window.removeEventListener("hashchange", applyFromHash);
+    }
+  }, [singlePage]);
 
   const heroImage = useMemo(
     () =>
@@ -61,15 +64,24 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter" }
               ["Gallery", "gallery"],
               ["Contact", "contact"],
             ].map(([label, key]) => (
-              <button key={key as string} onClick={() => setPage(key as any)} className={`hover:text-[#f5f2ec] transition-colors ${page===key?"text-[#f5f2ec]":""}`}>{label}</button>
+              singlePage ? (
+                <a
+                  key={key as string}
+                  href={`#${key}`}
+                  onClick={(e)=>{ e.preventDefault(); document.getElementById(String(key))?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}
+                  className="hover:text-[#f5f2ec] transition-colors"
+                >{label}</a>
+              ) : (
+                <button key={key as string} onClick={() => setPage(key as any)} className={`hover:text-[#f5f2ec] transition-colors ${page===key?"text-[#f5f2ec]":""}`}>{label}</button>
+              )
             ))}
           </nav>
         </div>
       </header>
 
       {/* HOME */}
-      {page === "home" && (
-        <main className="animate-fade-in">
+      {(singlePage || page === "home") && (
+        <main id="home" className="animate-fade-in scroll-mt-24">
           {/* HERO cinematico */}
           <section className="relative min-h-[82vh] flex items-end">
             <div className="absolute inset-0" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.55)), url(${heroImage})`, backgroundSize: "cover", backgroundPosition: "center" }} />
@@ -159,9 +171,9 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter" }
         </main>
       )}
 
-      {/* MENU PAGE */}
-      {page === "menu" && (
-        <main className="animate-fade-in">
+      {/* MENU */}
+      {(singlePage || page === "menu") && (
+        <main id="menu" className="animate-fade-in scroll-mt-24">
           <section className="min-h-[35vh] flex items-center justify-center bg-[#0b0b0b]">
             <h2 className="text-5xl font-extrabold" style={{ fontFamily: "'Playfair Display', serif" }}>Menu</h2>
           </section>
@@ -180,9 +192,9 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter" }
         </main>
       )}
 
-      {/* ABOUT PAGE */}
-      {page === "about" && (
-        <main className="animate-fade-in">
+      {/* ABOUT */}
+      {(singlePage || page === "about") && (
+        <main id="about" className="animate-fade-in scroll-mt-24">
           <section className="mx-auto max-w-6xl px-6 py-24 grid md:grid-cols-2 gap-12">
             <div>
               <h2 className="text-4xl font-bold mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>Racconto</h2>
@@ -195,9 +207,9 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter" }
         </main>
       )}
 
-      {/* GALLERY PAGE */}
-      {page === "gallery" && (
-        <main className="animate-fade-in">
+      {/* GALLERY */}
+      {(singlePage || page === "gallery") && (
+        <main id="gallery" className="animate-fade-in scroll-mt-24">
           <section className="mx-auto max-w-7xl px-6 py-20 grid md:grid-cols-3 gap-4">
             {(data.gallery || []).map((g)=> (
               <div key={g.id} className="relative group overflow-hidden rounded-2xl">
@@ -209,9 +221,9 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter" }
         </main>
       )}
 
-      {/* CONTACT PAGE */}
-      {page === "contact" && (
-        <main className="animate-fade-in">
+      {/* CONTACT */}
+      {(singlePage || page === "contact") && (
+        <main id="contact" className="animate-fade-in scroll-mt-24">
           <section className="mx-auto max-w-4xl px-6 py-20 grid md:grid-cols-2 gap-12">
             <div>
               <h2 className="text-3xl font-bold mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>Prenotazioni</h2>

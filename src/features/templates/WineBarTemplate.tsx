@@ -7,6 +7,7 @@ interface TemplateProps {
   data: BuilderData;
   activeSection?: string;
   fontFamily?: string;
+  singlePage?: boolean;
 }
 
 const templateColors = {
@@ -19,6 +20,7 @@ export const WineBarTemplate = ({
   data,
   activeSection,
   fontFamily = "Inter",
+  singlePage = true,
 }: TemplateProps) => {
   const [page, setPage] = useState<
     "home" | "menu" | "about" | "gallery" | "contact"
@@ -33,16 +35,16 @@ export const WineBarTemplate = ({
   }, []);
 
   useEffect(() => {
-    const applyFromHash = () => {
-      const m = window.location.hash.match(
-        /page=(home|menu|about|gallery|contact)/,
-      );
-      if (m) setPage(m[1] as any);
-    };
-    applyFromHash();
-    window.addEventListener("hashchange", applyFromHash);
-    return () => window.removeEventListener("hashchange", applyFromHash);
-  }, []);
+    if (!singlePage) {
+      const applyFromHash = () => {
+        const m = window.location.hash.match(/page=(home|menu|about|gallery|contact)/);
+        if (m) setPage(m[1] as any);
+      };
+      applyFromHash();
+      window.addEventListener("hashchange", applyFromHash);
+      return () => window.removeEventListener("hashchange", applyFromHash);
+    }
+  }, [singlePage]);
 
   const heroImage = useMemo(
     () =>
@@ -85,26 +87,40 @@ export const WineBarTemplate = ({
               ["Gallery", "gallery"],
               ["Contatti", "contact"],
             ].map(([label, key]) => (
-              <button
-                key={key as string}
-                onClick={() => setPage(key as any)}
-                className={`transition-colors hover:opacity-90 ${
-                  page === key ? "text-white" : "text-white/70"
-                }`}
-              >
-                {label}
-              </button>
+              singlePage ? (
+                <a
+                  key={key as string}
+                  href={`#${key}`}
+                  onClick={(e)=>{
+                    e.preventDefault();
+                    document.getElementById(String(key))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                  className={`transition-colors hover:opacity-90 text-white/80`}
+                  style={{ color: applied.accent }}
+                >
+                  {label}
+                </a>
+              ) : (
+                <button
+                  key={key as string}
+                  onClick={() => setPage(key as any)}
+                  className={`transition-colors hover:opacity-90 ${page === key ? "text-white" : "text-white/70"}`}
+                >
+                  {label}
+                </button>
+              )
             ))}
           </nav>
         </div>
       </header>
 
       {/* HOME PAGE */}
-      {page === "home" && (
-        <main className="animate-fade-in">
+      {(singlePage || page === "home") && (
+        <main id="home" className="animate-fade-in scroll-mt-24">
           {/* HERO full screen with parallax */}
           <section
-            className="relative min-h-[80vh] grid grid-cols-1 lg:grid-cols-12"
+            id="home"
+            className="relative min-h-[80vh] grid grid-cols-1 lg:grid-cols-12 scroll-mt-24"
             style={{ backgroundAttachment: "fixed" }}
           >
             <div
@@ -132,7 +148,11 @@ export const WineBarTemplate = ({
                     href="#menu"
                     onClick={(e) => {
                       e.preventDefault();
-                      setPage("menu");
+                      if (singlePage) {
+                        document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      } else {
+                        setPage("menu");
+                      }
                     }}
                     className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[#0f0d0d] font-semibold"
                     style={{ backgroundColor: applied.accent }}
@@ -275,9 +295,9 @@ export const WineBarTemplate = ({
         </main>
       )}
 
-      {/* MENU PAGE */}
-      {page === "menu" && (
-        <main className="animate-fade-in">
+      {/* MENU */}
+      {(singlePage || page === "menu") && (
+        <main id="menu" className="animate-fade-in scroll-mt-24">
           <section
             className="min-h-[40vh] flex items-center justify-center relative"
             style={{
@@ -315,8 +335,8 @@ export const WineBarTemplate = ({
       )}
 
       {/* ABOUT */}
-      {page === "about" && (
-        <main className="animate-fade-in">
+      {(singlePage || page === "about") && (
+        <main id="about" className="animate-fade-in scroll-mt-24">
           <section className="mx-auto max-w-6xl px-6 py-20 grid md:grid-cols-2 gap-12">
             <div>
               <h2
@@ -341,8 +361,8 @@ export const WineBarTemplate = ({
       )}
 
       {/* GALLERY */}
-      {page === "gallery" && (
-        <main className="animate-fade-in">
+      {(singlePage || page === "gallery") && (
+        <main id="gallery" className="animate-fade-in scroll-mt-24">
           <section className="mx-auto max-w-7xl px-6 py-16">
             <div className="columns-2 md:columns-3 gap-4 [column-fill:_balance]">
               <div className="break-inside-avoid">
@@ -360,8 +380,8 @@ export const WineBarTemplate = ({
       )}
 
       {/* CONTACT */}
-      {page === "contact" && (
-        <main className="animate-fade-in">
+      {(singlePage || page === "contact") && (
+        <main id="contact" className="animate-fade-in scroll-mt-24">
           <section className="mx-auto max-w-4xl px-6 py-16 grid md:grid-cols-2 gap-10">
             <div>
               <h2
