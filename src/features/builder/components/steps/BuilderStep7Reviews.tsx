@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { BuilderData, Review } from "../InteractiveBuilder";
+import { BuilderData, Review } from "@/types/builder";
 import { ArrowLeft, ArrowRight, Plus, X, Star } from "lucide-react";
 import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";

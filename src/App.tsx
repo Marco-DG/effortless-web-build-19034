@@ -7,7 +7,6 @@ import Index from "./pages/Index";
 import Preview from "./pages/Preview";
 import { CursorGlow } from "@/components/visual/CursorGlow";
 import { AICommandPalette } from "@/components/ai/AICommandPalette";
-import { PerformanceToggle } from "@/components/controls/PerformanceToggle";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();

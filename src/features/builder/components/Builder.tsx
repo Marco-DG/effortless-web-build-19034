@@ -1,8 +1,7 @@
 import { HeroContent } from "./HeroContent";
 import { BuilderSidebar } from "./BuilderSidebar";
 import { TemplatePreview } from "./TemplatePreview";
-import { ArrowRight, Monitor, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, X } from "lucide-react";
 import { useBuilderState } from "../hooks/useBuilderState";
 import { MagneticButton } from "@/components/interactive/MagneticButton";
 import { ParallaxOrbs } from "@/components/visual/ParallaxOrbs";

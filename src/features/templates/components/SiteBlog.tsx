@@ -1,4 +1,4 @@
-import { BuilderData, BlogPost } from "../InteractiveBuilder";
+import { BuilderData, BlogPost } from "@/types/builder";
 import { Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 

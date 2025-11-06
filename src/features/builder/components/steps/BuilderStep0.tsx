@@ -1,4 +1,4 @@
-import { BuilderData, TemplateType } from "../InteractiveBuilder";
+import { BuilderData, TemplateType } from "@/types/builder";
 
 interface BuilderStep0Props {
   data: BuilderData;

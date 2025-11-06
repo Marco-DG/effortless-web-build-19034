@@ -5,7 +5,9 @@ import {
   Clock, Truck, PanelsTopLeft, FileStack 
 } from "lucide-react";
 
-export const SECTION_ICONS: Record<BuilderSection, React.ComponentType<{ className?: string }>> = {
+import type { ComponentType } from "react";
+
+export const SECTION_ICONS: Record<BuilderSection, ComponentType<{ className?: string }>> = {
   template: LayoutTemplate,
   typography: Type,
   hero: Monitor,

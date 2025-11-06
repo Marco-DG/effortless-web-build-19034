@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { BuilderData, BusinessType } from "../InteractiveBuilder";
+import { BuilderData, BusinessType } from "@/types/builder";
 import { UtensilsCrossed, Coffee, Beer, Store, ArrowRight, ArrowLeft } from "lucide-react";
 
 interface BuilderStep2Props {

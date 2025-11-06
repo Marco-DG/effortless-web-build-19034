@@ -4,14 +4,27 @@ export type TemplateType = "trattoria" | "urban-bar" | "dolce-vita" | "craft-pub
 
 export type BusinessType = "restaurant" | "bar" | "cafe" | "pub";
 
+export type MenuCategory =
+  | "antipasti"
+  | "primi"
+  | "secondi"
+  | "dessert"
+  | "cocktail"
+  | "birre"
+  | "vini"
+  | "bevande"
+  | "altro";
+
 export interface MenuItem {
   id: string;
   name: string;
   description: string;
   price: string;
-  category: string;
+  category: MenuCategory;
   badges?: string[];
   ingredients?: string[];
+  allergens?: string[];
+  imageUrl?: string;
 }
 
 export interface Event {
@@ -21,6 +34,7 @@ export interface Event {
   date: string;
   time: string;
   location: string;
+  imageUrl?: string;
 }
 
 export interface GalleryItem {
@@ -130,6 +144,7 @@ export interface BuilderData {
 
 export type BuilderSection = 
   | "template" 
+  | "pages"
   | "typography" 
   | "hero" 
   | "about" 

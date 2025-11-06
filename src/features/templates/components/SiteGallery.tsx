@@ -1,4 +1,4 @@
-import { BuilderData, GalleryItem } from "../InteractiveBuilder";
+import { BuilderData, GalleryItem } from "@/types/builder";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Play, Image as ImageIcon } from "lucide-react";
 

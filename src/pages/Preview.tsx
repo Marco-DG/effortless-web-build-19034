@@ -1,11 +1,8 @@
-import { useSearchParams } from "react-router-dom";
 import { TemplatePreview } from "@/features/builder";
 import { getDefaultData } from "@/lib/defaultData";
 import { BuilderData } from "@/types/builder";
 
 export default function Preview() {
-  const [searchParams] = useSearchParams();
-  
   // Recupera i dati dal localStorage o usa default
   const builderData = (() => {
     try {

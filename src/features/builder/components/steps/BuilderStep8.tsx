@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { BuilderData, OpeningHours } from "../InteractiveBuilder";
+import { BuilderData, OpeningHours } from "@/types/builder";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useState } from "react";
 

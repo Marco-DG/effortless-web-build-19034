@@ -1,4 +1,4 @@
-import { BuilderData, MenuItem, MenuCategory } from "../InteractiveBuilder";
+import { BuilderData, MenuItem, MenuCategory } from "@/types/builder";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 
