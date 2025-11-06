@@ -63,11 +63,11 @@ export function CTAButton({ onClick, icon, title, subtitle, theme, variant = "se
       onClick={onClick}
       className={`group relative w-full text-left px-5 sm:px-6 ${variant === 'primary' ? 'py-5' : 'py-4'} rounded-2xl transition-all duration-300 elev-1 flex items-center justify-between gap-4 overflow-hidden transform hover:-translate-y-0.5
       ${variant === 'primary'
-        ? 'text-white bg-gradient-to-r from-primary via-primary/85 to-fuchsia-500 shadow-lg hover:shadow-2xl ring-2 ring-primary/60 hover:ring-primary/70'
+        ? 'text-white bg-primary shadow-lg hover:shadow-2xl ring-2 ring-primary/40 hover:ring-primary/60'
         : `text-foreground bg-white/80 backdrop-blur hover:shadow-xl group-hover:shadow-xl ring-1 ${t.ring}`
       }`}
     >
-      <span className={`absolute inset-0 ${variant === 'primary' ? 'bg-white/10 opacity-0 group-hover:opacity-100' : 'bg-gradient-to-l ' + t.overlay + ' to-transparent opacity-100'} transition-opacity duration-500`} />
+      <span className={`absolute inset-0 ${variant === 'primary' ? 'bg-white/10 opacity-0 group-hover:opacity-100' : 'bg-gradient-to-l ' + t.overlay + ' to-transparent opacity-0 group-hover:opacity-100'} transition-opacity duration-500`} />
 
       <span className={`relative z-10 inline-flex items-center justify-center w-11 h-11 rounded-xl ${variant === 'primary' ? 'bg-white/20 text-white' : `${t.iconBg} ${t.iconText}`}`}>
         {icon}
