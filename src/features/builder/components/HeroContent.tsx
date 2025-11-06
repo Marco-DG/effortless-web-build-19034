@@ -69,12 +69,12 @@ export const HeroContent = ({ actions }: { actions: any }) => {
         className="text-base sm:text-lg lg:text-xl text-muted-foreground leading-relaxed">
         Il tuo <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60 font-semibold">brand</span>
         {' '}
-        subito online
+        online, subito e
         {' '}
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-600 to-pink-500 font-medium">senza stress.</span>
         
         <br />
-        Perfetto per ristoranti, bar e locali che vogliono farsi trovare ora, ad un prezzo onesto.
+        Per ristoranti, bar e locali che vogliono farsi trovare.
       </motion.p>
 
       <div className="[perspective:1000px]">
