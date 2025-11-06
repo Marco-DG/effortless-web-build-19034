@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { CTAButton } from "@/components/ui/cta-button";
+import { PenTool, LayoutDashboard, ScrollText } from "lucide-react";
 
 const rotatingTargets = [
   { prefix: "Il tuo", noun: "ristorante" },
@@ -12,7 +14,7 @@ const rotatingTargets = [
   { prefix: "Il tuo", noun: "pub" },
 ];
 
-export const HeroContent = () => {
+export const HeroContent = ({ actions }: { actions: any }) => {
   const [idx, setIdx] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -59,39 +61,54 @@ export const HeroContent = () => {
         </motion.span>
       </motion.h1>
 
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        className="relative">
-        <div className="pointer-events-none absolute -inset-x-2 -top-2 -bottom-2 bg-gradient-to-r from-primary/10 via-secondary/10 to-emerald-100 blur-2xl rounded-3xl" aria-hidden />
-        <div className="relative isolate flex items-center gap-2 sm:gap-3 text-sm sm:text-base">
-          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 backdrop-blur ring-1 ring-emerald-300 shadow-[0_1px_0_rgba(255,255,255,0.6)]">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-emerald-600 font-medium">Subito</span>
-          </span>
-          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 backdrop-blur ring-1 ring-rose-300 shadow-[0_1px_0_rgba(255,255,255,0.6)]">
-            <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-orange-500 font-medium">Online</span>
-          </span>
-          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 backdrop-blur ring-1 ring-fuchsia-300 shadow-[0_1px_0_rgba(255,255,255,0.6)]">
-            <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-500" />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-600 to-pink-500 font-medium">Senza stress</span>
-          </span>
-        </div>
-      </motion.div>
-
       {/* Subheadline */}
       <motion.p
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-        className="text-base sm:text-lg lg:text-xl text-muted-foreground leading-relaxed"
-      >
-        Dal menù alle prenotazioni: tutto pronto.
-        <br />
+        className="text-base sm:text-lg lg:text-xl text-muted-foreground leading-relaxed">
         Crea il tuo <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60 font-semibold">brand</span> in pochi minuti.
       </motion.p>
+
+      <div className="[perspective:1000px]">
+        <div className="[transform-style:preserve-3d] will-change-transform">
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2, ease: [0.22,1,0.36,1] }}>
+            <div className="grid grid-cols-1 gap-3">
+              <CTAButton
+                onClick={() => {
+                  actions.openSidebar();
+                  actions.changeSection("typography");
+                }}
+                icon={<PenTool className="w-5 h-5" />}
+                title={<>Disegna il tuo <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-emerald-600">logo personalizzato</span></>}
+                
+                theme="emerald"
+              />
+
+              <CTAButton
+                onClick={() => {
+                  actions.openSidebar();
+                  actions.changeSection("menu");
+                }}
+                icon={<ScrollText className="w-5 h-5" />}
+                title={<>Scrivi il tuo <span className="bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-orange-500">menù digitale</span></>}
+                
+                theme="rose"
+              />
+
+              <CTAButton
+                onClick={actions.startBuilding}
+                icon={<LayoutDashboard className="w-5 h-5" />}
+                title={<>Costruisci il tuo <span className="bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-600 to-pink-500">sito online</span></>}
+                
+                theme="fuchsia"
+              />
+            </div>
+
+
+          </motion.div>
+        </div>
+      </div>
     </div>
   );
 };

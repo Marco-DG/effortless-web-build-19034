@@ -50,7 +50,7 @@ const themeStyles: Record<CTATheme, {
 export interface CTAButtonProps {
   onClick: () => void;
   icon: ReactNode;
-  title: string;
+title: ReactNode;
   subtitle: string;
   theme: CTATheme;
   variant?: CTAVariant;

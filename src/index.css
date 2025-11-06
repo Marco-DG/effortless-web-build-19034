@@ -18,7 +18,7 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    --primary: 221 83% 53%; /* modern blue */
+    --primary: 220 83% 53%; /* user suggested blue */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 215 16% 47%; /* slate-500 */
@@ -65,7 +65,7 @@ All colors MUST be HSL.
     --popover: 222 47% 6%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 217 91% 60%; /* bright blue */
+    --primary: 220 83% 60%; /* user suggested blue */
     --primary-foreground: 222 47% 6%;
 
     --secondary: 215 13% 34%;
