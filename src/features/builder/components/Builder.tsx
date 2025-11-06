@@ -1,104 +1,13 @@
 import { HeroContent } from "./HeroContent";
 import { BuilderSidebar } from "./BuilderSidebar";
 import { TemplatePreview } from "./TemplatePreview";
-import { ArrowRight, X, PenTool, LayoutDashboard, ScrollText, Sparkles } from "lucide-react";
+import { X, PenTool, LayoutDashboard, ScrollText } from "lucide-react";
+import { CTAButton } from "@/components/ui/cta-button";
 import { useBuilderState } from "../hooks/useBuilderState";
-import { MagneticButton } from "@/components/interactive/MagneticButton";
 import { ParallaxOrbs } from "@/components/visual/ParallaxOrbs";
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 
-// Reusable CTA button themed after the three badges (emerald, primary, fuchsia)
-type Theme = "emerald" | "primary" | "fuchsia" | "amber";
-
-const themeStyles: Record<Theme, {
-  overlay: string;
-  ring: string;
-  iconText: string;
-  iconBg: string;
-  badgeRing: string;
-  badgeDot: string;
-  badgeText: string;
-  badgeIcon: string;
-}> = {
-  emerald: {
-    overlay: "from-emerald-100/50",
-    ring: "ring-emerald-300 hover:ring-emerald-400/70",
-    iconText: "text-emerald-700",
-    iconBg: "bg-white/30",
-    badgeRing: "",
-    badgeDot: "bg-emerald-500",
-    badgeText: "bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-emerald-600",
-    badgeIcon: "text-emerald-500",
-  },
-  primary: {
-    overlay: "from-primary/20",
-    ring: "ring-primary/30 hover:ring-primary/50",
-    iconText: "text-primary",
-    iconBg: "bg-white/30",
-    badgeRing: "",
-    badgeDot: "bg-primary",
-    badgeText: "bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60",
-    badgeIcon: "text-primary",
-  },
-  fuchsia: {
-    overlay: "from-fuchsia-200/50",
-    ring: "ring-fuchsia-300 hover:ring-fuchsia-400/70",
-    iconText: "text-fuchsia-700",
-    iconBg: "bg-white/30",
-    badgeRing: "",
-    badgeDot: "bg-fuchsia-500",
-    badgeText: "bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-600 to-pink-500",
-    badgeIcon: "text-fuchsia-500",
-  },
-  amber: {
-    overlay: "from-rose-100/60",
-    ring: "ring-rose-300 hover:ring-rose-400/80",
-    iconText: "text-rose-700",
-    iconBg: "bg-white/30",
-    badgeRing: "",
-    badgeDot: "bg-rose-500",
-    badgeText: "bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-orange-500",
-    badgeIcon: "text-rose-500",
-  },
-};
-
-interface CTAButtonProps {
-  onClick: () => void;
-  icon: ReactNode;
-  title: string;
-  subtitle: string;
-  theme: Theme;
-}
-
-const CTAButton = ({ onClick, icon, title, subtitle, theme }: CTAButtonProps) => {
-  const t = themeStyles[theme];
-  return (
-    <MagneticButton
-      onClick={onClick}
-      className={`group relative w-full text-left px-5 sm:px-6 py-4 bg-white/80 backdrop-blur text-foreground rounded-2xl transition-all duration-300 elev-1 hover:shadow-xl group-hover:shadow-xl flex items-center justify-between gap-4 overflow-hidden ring-1 ${t.ring} transform hover:-translate-y-0.5`}
-    >
-      <span className={`absolute inset-0 bg-gradient-to-l ${t.overlay} to-transparent opacity-100 transition-opacity duration-500`} />
-
-      <span className={`relative z-10 inline-flex items-center justify-center w-11 h-11 rounded-xl ${t.iconBg} ${t.iconText}`}>
-        {icon}
-      </span>
-
-      <span className="relative z-10 flex-1 min-w-0">
-        <span className="block text-base sm:text-lg font-semibold leading-snug inline-flex items-center gap-2 flex-wrap">
-          <span>{title}</span>
-          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-white/70 ring-1 ring-white/60 text-[10px] font-medium">
-            <Sparkles className={`w-3 h-3 ${t.badgeIcon}`} />
-            <span className={`${t.badgeText}`}>IA</span>
-          </span>
-        </span>
-        <span className="block text-xs sm:text-sm text-muted-foreground">{subtitle}</span>
-      </span>
-
-      <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-0.5" />
-    </MagneticButton>
-  );
-};
 
 export const Builder = () => {
   const {
@@ -150,7 +59,7 @@ export const Builder = () => {
                     icon={<ScrollText className="w-5 h-5" />}
                     title="Scrivi il tuo menù"
                     subtitle="Crea sezioni, piatti e prezzi in pochi clic"
-                    theme="amber"
+                    theme="rose"
                   />
 
                   <CTAButton

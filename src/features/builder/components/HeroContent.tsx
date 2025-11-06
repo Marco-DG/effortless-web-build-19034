@@ -70,9 +70,9 @@ export const HeroContent = () => {
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-emerald-600 font-medium">Subito</span>
           </span>
-          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 backdrop-blur ring-1 ring-amber-300 shadow-[0_1px_0_rgba(255,255,255,0.6)]">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-orange-500 font-medium">Online</span>
+          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 backdrop-blur ring-1 ring-rose-300 shadow-[0_1px_0_rgba(255,255,255,0.6)]">
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-orange-500 font-medium">Online</span>
           </span>
           <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 backdrop-blur ring-1 ring-fuchsia-300 shadow-[0_1px_0_rgba(255,255,255,0.6)]">
             <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-500" />
