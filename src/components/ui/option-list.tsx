@@ -21,17 +21,20 @@ export interface OptionListProps<T extends string = string> {
   showSelectedCheck?: boolean;
 }
 
-export function OptionList<T extends string = string>({ items, selectedId, onSelect, ariaLabel = "Lista opzioni", className = "", showSelectedCheck = false, enableSearch = false, searchPlaceholder = "Cerca...", onSearchChange }: OptionListProps<T>) {
+export function OptionList<T extends string = string>({ items, selectedId, onSelect, ariaLabel = "Lista opzioni", className = "", showSelectedCheck = false, enableSearch = false, searchPlaceholder = "Cerca...", onSearchChange, searchAddon }: OptionListProps<T>) {
   return (
     <div className={`rounded-lg border bg-white ${className}`} aria-label={ariaLabel}>
       {enableSearch && (
         <div className="p-2 border-b">
-          <input
-            type="text"
-            placeholder={searchPlaceholder}
-            className="w-full px-3 py-2 border rounded-md text-sm"
-            onChange={(e)=> onSearchChange && onSearchChange(e.target.value)}
-          />
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              placeholder={searchPlaceholder}
+              className="flex-1 px-3 py-2 border rounded-md text-sm"
+              onChange={(e)=> onSearchChange && onSearchChange(e.target.value)}
+            />
+            {searchAddon}
+          </div>
         </div>
       )}
       <div className="divide-y max-h-[520px] overflow-auto pr-1" role="list">

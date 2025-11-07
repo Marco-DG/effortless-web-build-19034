@@ -113,6 +113,9 @@ export interface BuilderData {
   businessName: string;
   businessType: BusinessType;
   logoUrl: string;
+  logoMode?: "image" | "text";
+  logoText?: string;
+  logoFont?: string;
   tagline: string;
   heroSlogan: string;
   heroDescription: string;
@@ -144,6 +147,7 @@ export interface BuilderData {
 }
 
 export type BuilderSection = 
+  | "logo"
   | "template" 
   | "pages"
   | "typography" 

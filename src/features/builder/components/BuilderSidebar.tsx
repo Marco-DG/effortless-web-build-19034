@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { BuilderStep0 } from "./steps/BuilderStep0";
 import { BuilderStep3 } from "./steps/BuilderStep3";
+import { BuilderStepLogo } from "./steps/BuilderStepLogo";
 import { BuilderStep4 } from "./steps/BuilderStep4";
 import { BuilderStep5 } from "./steps/BuilderStep5";
 import { BuilderStep6 } from "./steps/BuilderStep6";
@@ -38,7 +39,7 @@ export const BuilderSidebar = ({
   onTemplateSelect,
   onOpenPreview,
 }: BuilderSidebarProps) => {
-  const [activeSection, setActiveSection] = useState<Section>("template");
+  const [activeSection, setActiveSection] = useState<Section>("logo");
   const [tab, setTab] = useState<"appearance" | "data">("appearance");
 
   const allSections = [...APPEARANCE_SECTIONS, ...DATA_SECTIONS];
@@ -66,6 +67,18 @@ export const BuilderSidebar = ({
 
   const renderSectionContent = () => {
     switch (activeSection) {
+      case "logo":
+        return (
+          <BuilderStepLogo
+            data={data}
+            onUpdate={onUpdate}
+            onGoDesignLogo={() => {
+              // usa la stessa azione della Hero per aprire il flusso tipografia o design
+              if (onSectionChange) onSectionChange("typography");
+              setActiveSection("typography");
+            }}
+          />
+        );
       case "template":
         return (
           <BuilderStep0

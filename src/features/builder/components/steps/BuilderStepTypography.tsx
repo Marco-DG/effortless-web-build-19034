@@ -85,23 +85,22 @@ export const BuilderStepTypography = ({ data, onUpdate }: BuilderStepTypographyP
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
-        <Select value={category} onValueChange={(v)=> setCategory(v as any)}>
-          <SelectTrigger className="w-[200px] h-9 text-xs border rounded-md bg-white shadow-sm data-[state=open]:ring-2 data-[state=open]:ring-primary/40">
-            <SelectValue placeholder="Categoria" />
-          </SelectTrigger>
-          <SelectContent className="text-xs">
-            {(["Tutti","Preferiti","Sans-serif","Serif","Monospace","Display"] as const).map(c => (
-              <SelectItem key={c} value={c} className="text-xs">{c}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
       <OptionList
         enableSearch
         searchPlaceholder="Cerca font..."
         onSearchChange={setQuery}
+        searchAddon={(
+          <Select value={category} onValueChange={(v)=> setCategory(v as any)}>
+            <SelectTrigger className="w-[160px] h-9 text-xs border rounded-md bg-white shadow-sm data-[state=open]:ring-2 data-[state=open]:ring-primary/40">
+              <SelectValue placeholder="Categoria" />
+            </SelectTrigger>
+            <SelectContent className="text-xs">
+              {(["Tutti","Preferiti","Sans-serif","Serif","Monospace","Display"] as const).map(c => (
+                <SelectItem key={c} value={c} className="text-xs">{c}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
         items={filtered.map((font: any) => ({
           id: font.id,
           title: font.name,

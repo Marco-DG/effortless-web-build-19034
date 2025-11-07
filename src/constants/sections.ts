@@ -2,12 +2,13 @@ import { BuilderSection } from "@/types/builder";
 import { 
   LayoutTemplate, Type, Monitor, Info, UtensilsCrossed, 
   Calendar, Images, Star, Rocket, HelpCircle, Phone, 
-  Clock, Truck, FileStack 
+  Clock, Truck, FileStack, PenTool
 } from "lucide-react";
 
 import type { ComponentType } from "react";
 
 export const SECTION_ICONS: Record<BuilderSection, ComponentType<{ className?: string }>> = {
+  logo: PenTool,
   template: LayoutTemplate,
   typography: Type,
   hero: Monitor,
@@ -25,6 +26,7 @@ export const SECTION_ICONS: Record<BuilderSection, ComponentType<{ className?: s
 };
 
 export const APPEARANCE_SECTIONS: Array<{ id: BuilderSection; label: string }> = [
+  { id: "logo", label: "Logo" },
   { id: "template", label: "Template" },
   { id: "pages", label: "Pagine" },
   { id: "typography", label: "Tipografia" },

@@ -6,6 +6,9 @@ export const getDefaultData = (template: TemplateType = "wine-bar"): BuilderData
     businessName: template === "wine-bar" ? "Enoteca & Wine Bar" : template === "fine-dining" ? "Fine Dining" : "La Trattoria",
     businessType: template === "wine-bar" ? "restaurant" : template === "fine-dining" ? "restaurant" : "restaurant",
     logoUrl: "",
+    logoMode: "image",
+    logoText: "",
+    logoFont: "",
     tagline: template === "wine-bar"
       ? "Vini d'autore. Atmosfera intima."
       : template === "fine-dining"
