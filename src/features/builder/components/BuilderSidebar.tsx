@@ -303,13 +303,6 @@ export const BuilderSidebar = ({
             )}
           </div>
         );
-      case "contact":
-        return (
-          <div className="space-y-6">
-            <h3 className="text-xl font-semibold">Contatti</h3>
-            <p className="text-sm text-muted-foreground">Gestisci email, telefono e link social nelle impostazioni template.</p>
-          </div>
-        );
       case "footer":
         return (
           <div className="space-y-6">

@@ -1,4 +1,6 @@
+import React from "react";
 import { BuilderData, TemplateType } from "@/types/builder";
+import { OptionList } from "@/components/ui/option-list";
 
 interface BuilderStep0Props {
   data: BuilderData;
@@ -6,48 +8,21 @@ interface BuilderStep0Props {
   onNext: () => void;
 }
 
-const templates = [
-  {
-    id: "trattoria" as TemplateType,
-    name: "La Trattoria",
-    description: "Stile caldo, perfetto per cucina italiana tradizionale",
-    image: "🍝",
-    colors: ["#8B4513", "#D2691E", "#F4A460"],
-  },
-  {
-    id: "urban-bar" as TemplateType,
-    name: "Urban Bar",
-    description: "Look moderno e scuro per cocktail bar contemporanei",
-    image: "🍸",
-    colors: ["#1a1a1a", "#3d3d3d", "#00d9ff"],
-  },
-  {
-    id: "dolce-vita" as TemplateType,
-    name: "Dolce Vita Café",
-    description: "Design chiaro e accogliente per caffetterie",
-    image: "☕",
-    colors: ["#f5e6d3", "#d4a574", "#8b6f47"],
-  },
-  {
-    id: "craft-pub" as TemplateType,
-    name: "Craft Pub",
-    description: "Rustico e vivace per pub e birrerie artigianali",
-    image: "🍺",
-    colors: ["#2d5016", "#6b8e23", "#daa520"],
-  },
+const allTemplates = [
   {
     id: "wine-bar" as TemplateType,
     name: "Wine Bar",
-    description: "Elegante, minimale, palette vino/legno — stile premium",
-    image: "🍷",
-    colors: ["#3b0d11", "#6b3a2e", "#d9b99b"],
+    description: "Elegante, minimale — stile premium",
   },
   {
     id: "fine-dining" as TemplateType,
     name: "Fine Dining",
-    description: "Lussuoso, serif editoriale, nero/crema/oro",
-    image: "🍽️",
-    colors: ["#0b0b0b", "#e6dfd3", "#c7a559"],
+    description: "Lussuoso, serif editoriale",
+  },
+  {
+    id: "trattoria" as TemplateType,
+    name: "La Trattoria",
+    description: "Stile caldo, tradizionale",
   },
 ];
 
@@ -55,6 +30,23 @@ export const BuilderStep0 = ({ data, onUpdate, onNext }: BuilderStep0Props) => {
   const handleTemplateSelect = (template: TemplateType) => {
     onUpdate({ template });
     // Non cambiare automaticamente sezione; resta su Template
+  };
+
+  const [query, setQuery] = React.useState("");
+  const [favorites, setFavorites] = React.useState<string[]>(() => {
+    try { const raw = localStorage.getItem("favoriteTemplates"); const arr = raw ? JSON.parse(raw) : []; return Array.isArray(arr) ? arr : []; } catch { return []; }
+  });
+  const templates = React.useMemo(() => {
+    const q = query.trim().toLowerCase();
+    const arr = allTemplates.filter(t => !q || t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q));
+    return arr;
+  }, [query]);
+  const toggleFavorite = (id: string) => {
+    setFavorites(prev => {
+      const next = prev.includes(id) ? prev.filter(x=>x!==id) : [...prev, id];
+      try { localStorage.setItem("favoriteTemplates", JSON.stringify(next)); } catch {}
+      return next;
+    });
   };
 
   return (
@@ -68,40 +60,25 @@ export const BuilderStep0 = ({ data, onUpdate, onNext }: BuilderStep0Props) => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-        {templates.map((template) => (
-          <button
-            key={template.id}
-            onClick={() => handleTemplateSelect(template.id)}
-            className={`group relative p-6 rounded-xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl ${
-              data.template === template.id
-                ? "border-primary bg-primary/5"
-                : "border-border bg-card hover:border-primary/50"
-            }`}
-          >
-            <div className="text-6xl mb-4">{template.image}</div>
-            <h4 className="text-xl font-heading font-semibold text-foreground mb-2">
-              {template.name}
-            </h4>
-            <p className="text-sm text-muted-foreground mb-4">
-              {template.description}
-            </p>
-            <div className="flex gap-2 justify-center">
-              {template.colors.map((color, idx) => (
-                <div
-                  key={idx}
-                  className="w-8 h-8 rounded-full border-2 border-white shadow-sm"
-                  style={{ backgroundColor: color }}
-                />
-              ))}
-            </div>
-            {data.template === template.id && (
-              <div className="absolute top-4 right-4 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                <span className="text-white text-xs">✓</span>
-              </div>
-            )}
-          </button>
-        ))}
+      <div className="mt-6">
+        <OptionList
+          enableSearch
+          searchPlaceholder="Cerca template..."
+          onSearchChange={setQuery}
+          items={templates.map(t => ({ id: t.id, title: t.name, description: t.description, meta: (
+            <button
+              onClick={(e)=>{ e.stopPropagation(); toggleFavorite(t.id); }}
+              className={`p-1 rounded hover:bg-white/60 transition-colors ${favorites.includes(t.id) ? "text-yellow-500" : "text-muted-foreground"}`}
+              aria-label={favorites.includes(t.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
+            >
+              <svg className={`w-4 h-4 ${favorites.includes(t.id) ? "fill-yellow-400" : ""}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+            </button>
+          ) }))}
+          selectedId={data.template}
+          onSelect={(id)=> handleTemplateSelect(id)}
+          ariaLabel="Seleziona template"
+          showSelectedCheck
+        />
       </div>
     </div>
   );

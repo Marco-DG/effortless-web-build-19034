@@ -4,12 +4,9 @@ import { Monitor, Tablet, Smartphone } from "lucide-react";
 import { ensureGoogleFontLoaded } from "@/lib/fonts";
 import { ViewportMode, getAvailableViewports } from "@/components/ui/viewport-selector";
 
-const TrattoriaTemplate = lazy(() => import("@/features/templates/TrattoriaTemplate").then(m => ({ default: m.TrattoriaTemplate })));
-const UrbanBarTemplate = lazy(() => import("@/features/templates/UrbanBarTemplate").then(m => ({ default: m.UrbanBarTemplate })));
-const DolceVitaTemplate = lazy(() => import("@/features/templates/DolceVitaTemplate").then(m => ({ default: m.DolceVitaTemplate })));
-const CraftPubTemplate = lazy(() => import("@/features/templates/CraftPubTemplate").then(m => ({ default: m.CraftPubTemplate })));
 const WineBarTemplate = lazy(() => import("@/features/templates/WineBarTemplate").then(m => ({ default: m.WineBarTemplate })));
 const FineDiningTemplate = lazy(() => import("@/features/templates/FineDiningTemplate").then(m => ({ default: m.FineDiningTemplate })));
+const TrattoriaTemplate = lazy(() => import("@/features/templates/TrattoriaTemplate").then(m => ({ default: m.TrattoriaTemplate })));
 
 interface TemplatePreviewProps {
   data: BuilderData;
@@ -71,18 +68,12 @@ export const TemplatePreview = ({ data, activeSection, fontFamily = "Inter", hid
     }
 
     switch (data.template) {
-      case "trattoria":
-        return <TrattoriaTemplate data={data} activeSection={activeSection} fontFamily={fontFamily} />;
-      case "urban-bar":
-        return <UrbanBarTemplate data={data} activeSection={activeSection} fontFamily={fontFamily} />;
-      case "dolce-vita":
-        return <DolceVitaTemplate data={data} activeSection={activeSection} fontFamily={fontFamily} />;
-      case "craft-pub":
-        return <CraftPubTemplate data={data} activeSection={activeSection} fontFamily={fontFamily} />;
       case "wine-bar":
         return <WineBarTemplate data={data} activeSection={activeSection} fontFamily={fontFamily} singlePage={data.singlePage ?? true} />;
       case "fine-dining":
         return <FineDiningTemplate data={data} activeSection={activeSection} fontFamily={fontFamily} singlePage={data.singlePage ?? true} />;
+      case "trattoria":
+        return <TrattoriaTemplate data={data} activeSection={activeSection} fontFamily={fontFamily} />;
       default:
         return (
           <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-50 rounded-lg">

@@ -3,42 +3,24 @@ import { BuilderData, TemplateType } from "@/types/builder";
 export const getDefaultData = (template: TemplateType = "wine-bar"): BuilderData => {
   const baseData: BuilderData = {
     template,
-    businessName: template === "trattoria" ? "La Trattoria" : template === "urban-bar" ? "Urban Bar" : template === "dolce-vita" ? "Dolce Vita Café" : template === "craft-pub" ? "Craft Pub" : template === "wine-bar" ? "Enoteca & Wine Bar" : "Fine Dining",
-    businessType: template === "trattoria" ? "restaurant" : template === "urban-bar" ? "bar" : template === "dolce-vita" ? "cafe" : template === "craft-pub" ? "pub" : "restaurant",
+    businessName: template === "wine-bar" ? "Enoteca & Wine Bar" : template === "fine-dining" ? "Fine Dining" : "La Trattoria",
+    businessType: template === "wine-bar" ? "restaurant" : template === "fine-dining" ? "restaurant" : "restaurant",
     logoUrl: "",
-    tagline: template === "trattoria" 
-      ? "Sapori Autentici della Tradizione Italiana" 
-      : template === "urban-bar"
-      ? "Experience the Night"
-      : template === "dolce-vita"
-      ? "Il Tuo Momento di Dolcezza"
-      : template === "craft-pub"
-      ? "Birre Artigianali. Vibes Autentiche."
-      : template === "wine-bar"
+    tagline: template === "wine-bar"
       ? "Vini d'autore. Atmosfera intima."
-      : "Cucina d'autore in ogni dettaglio",
-    heroSlogan: template === "trattoria" 
-      ? "Sapori Autentici della Tradizione Italiana" 
-      : template === "urban-bar"
-      ? "Experience the Night"
-      : template === "dolce-vita"
-      ? "Il Tuo Momento di Dolcezza"
-      : template === "craft-pub"
-      ? "Birre Artigianali. Vibes Autentiche."
-      : template === "wine-bar"
+      : template === "fine-dining"
+      ? "Cucina d'autore in ogni dettaglio"
+      : "Sapori Autentici della Tradizione Italiana",
+    heroSlogan: template === "wine-bar"
       ? "Wine, Food & Atmosphere"
-      : "Fine Dining Experience",
-    heroDescription: template === "trattoria"
-      ? "Dove ogni piatto racconta una storia"
-      : template === "urban-bar"
-      ? "Cocktails d'autore in un'atmosfera unica"
-      : template === "dolce-vita"
-      ? "Caffè artigianale e dolci fatti in casa"
-      : template === "craft-pub"
-      ? "Dove la passione per la birra incontra la tradizione"
-      : template === "wine-bar"
+      : template === "fine-dining"
+      ? "Fine Dining Experience"
+      : "Sapori Autentici della Tradizione Italiana",
+    heroDescription: template === "wine-bar"
       ? "Un luogo dedicato al gusto, tra calici e piccoli piatti"
-      : "Un percorso culinario tra tecnica e materia prima",
+      : template === "fine-dining"
+      ? "Un percorso culinario tra tecnica e materia prima"
+      : "Dove ogni piatto racconta una storia",
     menuItems: template === "trattoria" ? [
       {
         id: "1",
@@ -82,82 +64,6 @@ export const getDefaultData = (template: TemplateType = "wine-bar"): BuilderData
         price: "€15",
         category: "primi",
         ingredients: ["Tagliatelle", "Ragù di manzo", "Pomodoro", "Vino rosso"],
-      },
-    ] : template === "urban-bar" ? [
-      {
-        id: "1",
-        name: "Neon Martini",
-        description: "Gin premium, vermouth dry, twist al pompelmo rosa e ghiaccio",
-        price: "€14",
-        category: "cocktail",
-        badges: ["popolare"],
-        ingredients: ["Gin", "Vermouth dry", "Pompelmo rosa"],
-      },
-      {
-        id: "2",
-        name: "Dark Paradise",
-        description: "Rum invecchiato 8 anni, amaretto, sciroppo di vaniglia, ghiaccio tritato",
-        price: "€16",
-        category: "cocktail",
-        badges: ["novità"],
-        ingredients: ["Rum", "Amaretto", "Sciroppo vaniglia"],
-      },
-      {
-        id: "3",
-        name: "Mojito Tropicale",
-        description: "Rum bianco, menta fresca, lime, soda e frutto della passione",
-        price: "€12",
-        category: "cocktail",
-        ingredients: ["Rum bianco", "Menta", "Lime", "Frutto della passione"],
-      },
-      {
-        id: "4",
-        name: "Old Fashioned",
-        description: "Whiskey bourbon, zucchero, angostura, scorza d'arancia",
-        price: "€15",
-        category: "cocktail",
-        badges: ["popolare"],
-        ingredients: ["Bourbon", "Zucchero", "Angostura", "Arancia"],
-      },
-    ] : template === "dolce-vita" ? [
-      {
-        id: "1",
-        name: "Cappuccino Classico",
-        description: "Espresso con schiuma di latte vellutata e cacao",
-        price: "€3.50",
-        category: "bevande",
-        badges: ["popolare"],
-      },
-      {
-        id: "2",
-        name: "Croissant Artigianale",
-        description: "Sfogliato con burro di qualità, cotto al momento",
-        price: "€2.50",
-        category: "dessert",
-      },
-      {
-        id: "3",
-        name: "Cheesecake al Limone",
-        description: "Base di biscotti, crema al mascarpone e limone di Sicilia",
-        price: "€5.50",
-        category: "dessert",
-        badges: ["novità"],
-      },
-    ] : template === "craft-pub" ? [
-      {
-        id: "1",
-        name: "IPA Americana",
-        description: "Luppolata, fruttata, amara al punto giusto - 6.5% ABV",
-        price: "€7",
-        category: "birre",
-        badges: ["popolare"],
-      },
-      {
-        id: "2",
-        name: "Stout Imperiale",
-        description: "Scura, cremosa, note di caffè e cioccolato - 8% ABV",
-        price: "€8",
-        category: "birre",
       },
     ] : template === "wine-bar" ? [
       { id: "1", name: "Tagliere Selezione", description: "Salumi e formaggi DOP", price: "€18", category: "antipasti" },
@@ -298,11 +204,9 @@ export const getDefaultData = (template: TemplateType = "wine-bar"): BuilderData
       enabled: true,
       title: template === "trattoria" 
         ? "Happy Hour: Aperitivo con vista 18:00-20:00"
-        : template === "urban-bar"
-        ? "Serata Speciale: DJ Set ogni Venerdì"
-        : template === "dolce-vita"
-        ? "Menu del Giorno: Piatti freschi ogni giorno"
-        : "Birra del Mese: Sconto 20%",
+        : template === "fine-dining"
+        ? "Menu Degustazione: 7 portate stagionali"
+        : "Happy Hour: Aperitivo con vista 18:00-20:00",
       description: "Vieni a trovarci per scoprire le nostre offerte speciali",
       link: "#menu",
     },

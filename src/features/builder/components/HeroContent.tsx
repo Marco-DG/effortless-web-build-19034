@@ -83,9 +83,10 @@ export const HeroContent = ({ actions }: { actions: any }) => {
             <div className="grid grid-cols-1 gap-3">
               <CTAButton
                 onClick={() => {
-                  actions.openSidebar();
+                  actions.startBuilding();
                   actions.changeSection("typography");
                 }}
+                subtitle="Crea un logo in pochi click con l’aiuto dell’IA"
                 icon={<PenTool className="w-5 h-5" />}
                 title={<>Disegna il tuo <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-500 to-emerald-600">logo personalizzato</span></>}
                 
@@ -94,9 +95,10 @@ export const HeroContent = ({ actions }: { actions: any }) => {
 
               <CTAButton
                 onClick={() => {
-                  actions.openSidebar();
+                  actions.startBuilding();
                   actions.changeSection("menu");
                 }}
+                subtitle="Genera e modifica il tuo menù digitale"
                 icon={<ScrollText className="w-5 h-5" />}
                 title={<>Scrivi il tuo <span className="bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-orange-500">menù digitale</span></>}
                 
@@ -107,7 +109,7 @@ export const HeroContent = ({ actions }: { actions: any }) => {
                 onClick={actions.startBuilding}
                 icon={<LayoutDashboard className="w-5 h-5" />}
                 title={<>Costruisci il tuo <span className="bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-600 to-pink-500">sito online</span></>}
-                
+                subtitle="Apri il builder e personalizza il tuo sito"
                 theme="fuchsia"
               />
             </div>

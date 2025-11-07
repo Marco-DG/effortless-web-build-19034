@@ -1,6 +1,6 @@
 // Centralized type definitions for the website builder
 
-export type TemplateType = "trattoria" | "urban-bar" | "dolce-vita" | "craft-pub" | "wine-bar" | "fine-dining";
+export type TemplateType = "wine-bar" | "fine-dining" | "trattoria";
 
 export type BusinessType = "restaurant" | "bar" | "cafe" | "pub";
 
