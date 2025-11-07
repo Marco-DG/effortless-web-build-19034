@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { BuilderData } from "@/types/builder";
 import { PromoBanner } from "./components/PromoBanner";
+import { SiteFooter } from "./components/SiteFooter";
 import { SiteNewsletter } from "./components/SiteNewsletter";
 import { ArrowRight } from "lucide-react";
 
@@ -294,32 +295,7 @@ export const WineBarTemplate = ({
             );
           })()}
 
-          {/* FOOTER minimal */}
-          <footer className="py-16 px-6">
-            <div className="mx-auto max-w-7xl grid md:grid-cols-3 gap-10 text-sm">
-              <div>
-                <div
-                  className="text-lg font-semibold mb-2"
-                  style={{ color: applied.accent }}
-                >
-                  {data.businessName || "Wine Bar"}
-                </div>
-                <p className="text-white/70">
-                  {data.address || "Via della Vite 12, Roma"}
-                </p>
-              </div>
-              <div>
-                <div className="font-semibold mb-2">Orari</div>
-                <p className="text-white/70">Mer-Dom 17:00–23:00</p>
-              </div>
-              <div>
-                <div className="font-semibold mb-2">Contatti</div>
-                <p className="text-white/70">
-                  {data.email || "info@winebar.it"}
-                </p>
-              </div>
-            </div>
-          </footer>
+          <SiteFooter data={data} templateColors={templateColors} variant="wine" />
         </main>
       )}
 
@@ -359,6 +335,7 @@ export const WineBarTemplate = ({
               </div>
             ))}
           </section>
+         <SiteFooter data={data} templateColors={templateColors} variant="wine" />
         </main>
       )}
 
@@ -385,7 +362,8 @@ export const WineBarTemplate = ({
               />
             </div>
           </section>
-        </main>
+         <SiteFooter data={data} templateColors={templateColors} variant="wine" />
+       </main>
       )}
 
       {/* GALLERY */}
@@ -404,6 +382,7 @@ export const WineBarTemplate = ({
               </div>
             </div>
           </section>
+         <SiteFooter data={data} templateColors={templateColors} variant="wine" />
         </main>
       )}
 
@@ -450,6 +429,7 @@ export const WineBarTemplate = ({
               </form>
             </div>
           </section>
+         <SiteFooter data={data} templateColors={templateColors} variant="wine" />
         </main>
       )}
     </div>

@@ -8,18 +8,21 @@ interface SiteFooterProps {
     secondary: string;
     accent: string;
   };
+  variant?: "wine" | "fine" | "trattoria";
 }
 
-export const SiteFooter = ({ data, templateColors }: SiteFooterProps) => {
+export const SiteFooter = ({ data, templateColors, variant = "trattoria" }: SiteFooterProps) => {
   const primaryColor = templateColors?.primary || "#8B4513";
   const accentColor = templateColors?.accent || "#F4A460";
 
+  const containerMax = variant === "wine" ? "max-w-7xl" : variant === "fine" ? "max-w-6xl" : "max-w-6xl";
+  const padY = variant === "fine" ? "py-20" : "py-16";
   return (
     <footer
-      className="text-white py-12 px-6"
+      className={`text-white ${padY} px-6`}
       style={{ backgroundColor: primaryColor }}
     >
-      <div className="container mx-auto max-w-6xl">
+      <div className={`container mx-auto ${containerMax}`}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Logo e Info */}
           <div>

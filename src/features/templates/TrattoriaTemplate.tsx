@@ -1,4 +1,5 @@
 import { BuilderData } from "@/types/builder";
+import React, { useState } from "react";
 import { SiteHeader } from "./components/SiteHeader";
 import { SiteHero } from "./components/SiteHero";
 import { SiteAbout } from "./components/SiteAbout";
@@ -26,7 +27,7 @@ const templateColors = {
   accent: "#F4A460",
 };
 
-export const TrattoriaTemplate = ({ data, activeSection, fontFamily = "Inter" }: TemplateProps) => {
+export const TrattoriaTemplate = ({ data, activeSection, fontFamily = "Inter", singlePage = true }: TemplateProps & { singlePage?: boolean }) => {
   const getSectionHighlight = (sectionId: string) => {
     if (activeSection === sectionId) {
       return "ring-4 ring-primary ring-opacity-50 transition-all duration-500";
@@ -103,15 +104,47 @@ export const TrattoriaTemplate = ({ data, activeSection, fontFamily = "Inter" }:
       <PromoBanner data={data} templateColors={templateColors} />
       <SiteHeader data={data} templateColors={templateColors} />
       
-      {orderedSections.map(sectionId =>
-        enabledSections[sectionId as keyof typeof enabledSections]
-          ? components[sectionId]
-          : null
+      {singlePage ? (
+        <>
+          {orderedSections.map(sectionId =>
+            enabledSections[sectionId as keyof typeof enabledSections]
+              ? components[sectionId]
+              : null
+          )}
+          <div className={getSectionHighlight("footer")}>
+            <SiteFooter data={data} templateColors={templateColors} />
+          </div>
+        </>
+      ) : (
+        <>
+          {/* HOME */}
+          <main id="home" className="scroll-mt-24">
+            {enabledSections.hero && components.hero}
+            {enabledSections.newsletter && components.newsletter}
+            <SiteFooter data={data} templateColors={templateColors} />
+          </main>
+          {/* MENU */}
+          <main id="menu" className="scroll-mt-24">
+            {enabledSections.menu && components.menu}
+            <SiteFooter data={data} templateColors={templateColors} />
+          </main>
+          {/* ABOUT */}
+          <main id="about" className="scroll-mt-24">
+            {enabledSections.about && components.about}
+            <SiteFooter data={data} templateColors={templateColors} />
+          </main>
+          {/* GALLERY */}
+          <main id="gallery" className="scroll-mt-24">
+            {enabledSections.gallery && components.gallery}
+            <SiteFooter data={data} templateColors={templateColors} />
+          </main>
+          {/* CONTACT */}
+          <main id="contact" className="scroll-mt-24">
+            {enabledSections.contact && components.contact}
+            <SiteFooter data={data} templateColors={templateColors} />
+          </main>
+        </>
       )}
-
-      <div className={getSectionHighlight("footer")}>
-        <SiteFooter data={data} templateColors={templateColors} />
-      </div>
     </div>
   );
 };

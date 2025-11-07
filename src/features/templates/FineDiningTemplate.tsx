@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { BuilderData } from "@/types/builder";
 import { PromoBanner } from "./components/PromoBanner";
+import { SiteFooter } from "./components/SiteFooter";
 import { SiteNewsletter } from "./components/SiteNewsletter";
 import { ArrowRight } from "lucide-react";
 
@@ -188,23 +189,7 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter", 
             );
           })()}
 
-          {/* FOOTER elegante */}
-          <footer className="py-20 px-6">
-            <div className="mx-auto max-w-6xl grid md:grid-cols-3 gap-12 text-sm">
-              <div>
-                <div className="text-xs tracking-widest uppercase mb-3" style={{ color: templateColors.secondary }}>{data.businessName || "Fine Dining"}</div>
-                <div className="text-[#f5f2ec]/70">{data.address || "Via Elegantia 1, Milano"}</div>
-              </div>
-              <div>
-                <div className="font-semibold mb-2" style={{ color: templateColors.accent }}>Orari</div>
-                <div className="text-[#f5f2ec]/70">Mar–Dom 19:00–23:00</div>
-              </div>
-              <div>
-                <div className="font-semibold mb-2" style={{ color: templateColors.accent }}>Contatti</div>
-                <div className="text-[#f5f2ec]/70">{data.email || "info@finedining.it"}</div>
-              </div>
-            </div>
-          </footer>
+          <SiteFooter data={data} templateColors={templateColors} variant="fine" />
         </main>
       )}
 
@@ -226,6 +211,7 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter", 
               </div>
             ))}
           </section>
+          <SiteFooter data={data} templateColors={templateColors} variant="fine" />
         </main>
       )}
 
@@ -241,6 +227,7 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter", 
               <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200&auto=format&fit=crop" className="w-full h-[420px] object-cover rounded-2xl" />
             </div>
           </section>
+          <SiteFooter data={data} templateColors={templateColors} variant="fine" />
         </main>
       )}
 
@@ -255,6 +242,7 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter", 
               </div>
             ))}
           </section>
+          <SiteFooter data={data} templateColors={templateColors} variant="fine" />
         </main>
       )}
 
@@ -276,6 +264,7 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter", 
               </form>
             </div>
           </section>
+          <SiteFooter data={data} templateColors={templateColors} variant="fine" />
         </main>
       )}
     </div>

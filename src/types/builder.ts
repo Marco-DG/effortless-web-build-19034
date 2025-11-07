@@ -157,5 +157,4 @@ export type BuilderSection =
   | "faq" 
   | "contact" 
   | "hours" 
-  | "delivery" 
-  | "layout";
+  | "delivery";

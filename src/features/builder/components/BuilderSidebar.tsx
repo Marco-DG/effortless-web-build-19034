@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { BuilderData, TemplateType, BuilderSection } from "@/types/builder";
-import { X, Monitor } from "lucide-react";
+import { X, Monitor, FileText, LayoutGrid } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { BuilderStep0 } from "./steps/BuilderStep0";
 import { BuilderStep3 } from "./steps/BuilderStep3";
 import { BuilderStep4 } from "./steps/BuilderStep4";
@@ -85,20 +86,41 @@ export const BuilderSidebar = ({
             onUpdate={onUpdate}
           />
         );
-      case "layout":
+      case "pages":
         return (
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold">Disposizione</h3>
-            <p className="text-sm text-muted-foreground">Attiva/disattiva e riordina le sezioni del template. Trascina per riordinare.</p>
+            <h3 className="text-xl font-semibold">Pagine</h3>
+            <p className="text-sm text-muted-foreground">Scegli Pagina singola o Pagine multiple. In modalità multiple, i componenti vengono distribuiti tra le pagine standard e puoi attivarle/disattivarle e riordinarle.</p>
 
-            {/* Toggle single page */}
-            <div className="flex items-center justify-between rounded-lg border border-border px-3 py-2.5 bg-white shadow-sm">
-              <label htmlFor="singlePage" className="text-sm font-medium">Modalità Single Page</label>
-              <input id="singlePage" type="checkbox" checked={!!data.singlePage} onChange={(e)=>onUpdate({ singlePage: e.target.checked })} />
+            {/* Segmented toggle: mutually exclusive with explicit labels */}
+            <div className="rounded-md border border-border p-1 bg-white/70">
+              <ToggleGroup
+                type="single"
+                value={data.singlePage ? 'single' : 'multi'}
+                onValueChange={(v)=> v && onUpdate({ singlePage: v === 'single' })}
+                className="grid grid-cols-2 gap-1"
+              >
+                <ToggleGroupItem
+                  value="single"
+                  aria-label="Pagina singola"
+                  className="flex items-center justify-center gap-2 px-3 py-2 rounded-md text-sm font-medium data-[state=on]:bg-primary data-[state=on]:text-primary-foreground hover:bg-muted"
+                >
+                  <FileText className="h-4 w-4" />
+                  <span>Pagina singola</span>
+                </ToggleGroupItem>
+                <ToggleGroupItem
+                  value="multi"
+                  aria-label="Pagine multiple"
+                  className="flex items-center justify-center gap-2 px-3 py-2 rounded-md text-sm font-medium data-[state=on]:bg-primary data-[state=on]:text-primary-foreground hover:bg-muted"
+                >
+                  <LayoutGrid className="h-4 w-4" />
+                  <span>Pagine multiple</span>
+                </ToggleGroupItem>
+              </ToggleGroup>
             </div>
 
             <div className="space-y-2">
-              {/* Reorder list */}
+              {/* Reorder and toggle sections */}
               {order.map((key, idx)=> (
                 <div key={key} className="flex items-center justify-between rounded-lg border border-border px-3 py-2.5 bg-white shadow-sm">
                   <div className="flex items-center gap-3">
@@ -106,8 +128,8 @@ export const BuilderSidebar = ({
                     <span className="text-sm font-medium capitalize cursor-grab select-none">☰ {sectionLabels[key] || key}</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <button onClick={()=>moveSection(idx,-1)} className="text-xs px-2 py-1 rounded-md bg-muted hover:bg-muted/80 transition-colors">↑</button>
-                    <button onClick={()=>moveSection(idx,1)} className="text-xs px-2 py-1 rounded-md bg-muted hover:bg-muted/80 transition-colors">↓</button>
+                    <button onClick={()=>moveSection(idx,-1)} className="text-xs px-2 py-1 rounded-md bg-muted hover:bg-muted/80 transition-colors" aria-label="Sposta su">↑</button>
+                    <button onClick={()=>moveSection(idx,1)} className="text-xs px-2 py-1 rounded-md bg-muted hover:bg-muted/80 transition-colors" aria-label="Sposta giù">↓</button>
                   </div>
                 </div>
               ))}
