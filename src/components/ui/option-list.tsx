@@ -5,6 +5,7 @@ export interface OptionItem {
   title: string;
   description?: string;
   meta?: React.ReactNode;
+  thumbnailUrl?: string;
 }
 
 export interface OptionListProps<T extends string = string> {
@@ -43,19 +44,29 @@ export function OptionList<T extends string = string>({ items, selectedId, onSel
             className={`w-full text-left p-3 transition-colors ${isSelected ? "bg-primary/5" : "hover:bg-muted/50"}`}
           >
             <div className="flex items-start justify-between gap-3">
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <h4 className="font-semibold text-sm truncate">{item.title}</h4>
-                  {isSelected && (
-                    showSelectedCheck ? <svg className="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 6L9 17L4 12" strokeLinecap="round" strokeLinejoin="round"/></svg> :
-                    <span className="text-primary text-xs font-medium">Selezionato</span>
+              <div className="flex items-start gap-3 flex-1 min-w-0">
+                {item.thumbnailUrl && (
+                  <img src={item.thumbnailUrl} alt="" className="w-14 h-10 rounded object-cover flex-shrink-0" />
+                )}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h4 className="font-semibold text-sm truncate">{item.title}</h4>
+                    {isSelected && (
+                      showSelectedCheck ? (
+                        <svg className="w-4 h-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M20 6L9 17L4 12" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      ) : (
+                        <span className="text-primary text-xs font-medium">Selezionato</span>
+                      )
+                    )}
+                  </div>
+                  {item.description && (
+                    <p className="text-[12px] text-muted-foreground mb-1">{item.description}</p>
                   )}
                 </div>
-                {item.description && (
-                  <p className="text-[12px] text-muted-foreground mb-1">{item.description}</p>
-                )}
               </div>
-              {item.meta && <div className="flex items-center gap-2">{item.meta}</div>}
+              {item.meta && <div className="flex items-center gap-2 flex-shrink-0">{item.meta}</div>}
             </div>
           </button>
         );
@@ -63,6 +74,7 @@ export function OptionList<T extends string = string>({ items, selectedId, onSel
       {items.length === 0 && (
         <div className="col-span-full text-sm text-muted-foreground p-4 border rounded-md">Nessuna opzione disponibile.</div>
       )}
+      </div>
     </div>
   );
 }

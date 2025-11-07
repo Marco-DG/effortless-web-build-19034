@@ -65,7 +65,11 @@ export const BuilderStep0 = ({ data, onUpdate, onNext }: BuilderStep0Props) => {
           enableSearch
           searchPlaceholder="Cerca template..."
           onSearchChange={setQuery}
-          items={templates.map(t => ({ id: t.id, title: t.name, description: t.description, meta: (
+          items={templates.map(t => ({ id: t.id, title: t.name, description: t.description, thumbnailUrl: (
+            t.id === "wine-bar" ? "https://images.unsplash.com/photo-1527169402691-feff5539e52c?q=80&w=400&auto=format&fit=crop" :
+            t.id === "fine-dining" ? "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=400&auto=format&fit=crop" :
+            "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=400&auto=format&fit=crop"
+          ), meta: (
             <button
               onClick={(e)=>{ e.stopPropagation(); toggleFavorite(t.id); }}
               className={`p-1 rounded hover:bg-white/60 transition-colors ${favorites.includes(t.id) ? "text-yellow-500" : "text-muted-foreground"}`}

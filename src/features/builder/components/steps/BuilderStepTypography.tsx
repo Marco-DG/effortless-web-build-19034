@@ -1,6 +1,7 @@
 import React from "react";
 import { BuilderData } from "@/types/builder";
 import { Check, Star } from "lucide-react";
+import { OptionList } from "@/components/ui/option-list";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getAllFonts, ensureGoogleFontLoaded } from "@/lib/fonts";
 
@@ -85,13 +86,6 @@ export const BuilderStepTypography = ({ data, onUpdate }: BuilderStepTypographyP
       </div>
 
       <div className="flex items-center gap-2">
-        <input
-          type="text"
-          placeholder="Cerca font..."
-          className="w-full px-3 py-2 border rounded-md text-sm"
-          value={query}
-          onChange={(e)=>setQuery(e.target.value)}
-        />
         <Select value={category} onValueChange={(v)=> setCategory(v as any)}>
           <SelectTrigger className="w-[200px] h-9 text-xs border rounded-md bg-white shadow-sm data-[state=open]:ring-2 data-[state=open]:ring-primary/40">
             <SelectValue placeholder="Categoria" />
@@ -104,45 +98,35 @@ export const BuilderStepTypography = ({ data, onUpdate }: BuilderStepTypographyP
         </Select>
       </div>
 
-      <div className="rounded-lg border divide-y max-h-[520px] overflow-auto pr-1 bg-white">
-        {filtered.map((font: any) => {
-          const isSelected = selectedFont === font.id;
-          return (
-            <button
-              key={font.id}
-              onClick={() => handleSelect(font)}
-              className={`w-full text-left p-3 transition-colors ${
-                isSelected ? "bg-primary/5" : "hover:bg-muted/50"
-              }`}
+      <OptionList
+        enableSearch
+        searchPlaceholder="Cerca font..."
+        onSearchChange={setQuery}
+        items={filtered.map((font: any) => ({
+          id: font.id,
+          title: font.name,
+          description: font.category,
+          meta: (
+            <span
+              role="button"
+              tabIndex={0}
+              onClick={(e)=>{ e.stopPropagation(); toggleFavorite(font.id); }}
+              onKeyDown={(e)=>{ if(e.key==='Enter'){ e.stopPropagation(); toggleFavorite(font.id); } }}
+              className={`p-1 rounded hover:bg-white/60 transition-colors ${favorites.includes(font.id) ? "text-yellow-500" : "text-muted-foreground"}`}
+              aria-label={favorites.includes(font.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
             >
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h4 className="font-semibold text-sm truncate">{font.name}</h4>
-                    {isSelected && <Check className="w-4 h-4 text-primary flex-shrink-0" />}
-                  </div>
-                  <p className="text-[10px] text-muted-foreground mb-1">{font.category}</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span
-                    role="button"
-                    tabIndex={0}
-                    onClick={(e)=>{ e.stopPropagation(); toggleFavorite(font.id); }}
-                    onKeyDown={(e)=>{ if(e.key==='Enter'){ e.stopPropagation(); toggleFavorite(font.id); } }}
-                    className={`p-1 rounded hover:bg-white/60 transition-colors ${favorites.includes(font.id) ? "text-yellow-500" : "text-muted-foreground"}`}
-                    aria-label={favorites.includes(font.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
-                  >
-                    <Star className={`w-4 h-4 ${favorites.includes(font.id) ? "fill-yellow-400" : ""}`} />
-                  </span>
-                </div>
-              </div>
-            </button>
-          );
-        })}
-        {filtered.length === 0 && (
-          <div className="col-span-full text-sm text-muted-foreground p-4 border rounded-md">Nessun font trovato.</div>
-        )}
-      </div>
+              <Star className={`w-4 h-4 ${favorites.includes(font.id) ? "fill-yellow-400" : ""}`} />
+            </span>
+          )
+        }))}
+        selectedId={selectedFont}
+        onSelect={(id)=> {
+          const font = filtered.find((f:any)=> f.id === id);
+          if (font) handleSelect(font);
+        }}
+        ariaLabel="Seleziona font"
+        showSelectedCheck
+      />
     </div>
   );
 };
