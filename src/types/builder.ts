@@ -119,6 +119,10 @@ export interface BuilderData {
   tagline: string;
   heroSlogan: string;
   heroDescription: string;
+  heroTitleFont?: string;
+  heroSubtitleFont?: string;
+  heroTitleStyle?: TextStyle;
+  heroSubtitleStyle?: TextStyle;
   menuItems: MenuItem[];
   events: Event[];
   gallery: GalleryItem[];

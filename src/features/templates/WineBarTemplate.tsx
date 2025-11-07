@@ -60,13 +60,14 @@ export const WineBarTemplate = ({
 
   const useTextLogo = (data.logoMode === "text") && (data.logoText || data.businessName);
   const logoText = data.logoText || data.businessName || "Il Tuo Locale";
-  const logoFont = data.logoFont || data.fontSecondary || data.fontPrimary || "Inter";
+  // Logo should only change font when user explicitly sets logoFont
+  const logoFont = data.logoFont || fontFamily;
 
   useEffect(()=>{
-    if (useTextLogo && logoFont) {
-      ensureGoogleFontLoaded(logoFont);
+    if (useTextLogo && data.logoFont) {
+      ensureGoogleFontLoaded(data.logoFont);
     }
-  }, [useTextLogo, logoFont]);
+  }, [useTextLogo, data.logoFont]);
   return (
     <div
       className="w-full bg-[#0f0d0d] text-[#f4f2ef] overflow-y-auto h-full"

@@ -2,8 +2,10 @@ import React from "react";
 import { BuilderData } from "@/types/builder";
 import { Button } from "@/components/ui/button";
 import { PenTool, Upload, Image as ImageIcon, Trash2, Star } from "lucide-react";
+import { ImageUploader } from "@/components/ui/image-uploader";
 import { OptionList } from "@/components/ui/option-list";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 import { getAllFonts, ensureGoogleFontLoaded } from "@/lib/fonts";
 
 interface BuilderStepLogoProps {
@@ -102,51 +104,20 @@ export const BuilderStepLogo: React.FC<BuilderStepLogoProps> = ({ data, onUpdate
           </div>
         </div>
         <div className="flex items-center gap-2">
-          {!useText && (
-            <Button size="sm" variant="secondary" onClick={() => fileInputRef.current?.click()}>
-              <Upload className="w-4 h-4 mr-2" /> Carica
-            </Button>
-          )}
           <Button size="sm" onClick={onGoDesignLogo}>
             <PenTool className="w-4 h-4 mr-2" /> Disegna il tuo logo
           </Button>
         </div>
       </div>
       {!useText && (
-        <div
-          className={`rounded-md border ${dragOver ? "border-primary bg-primary/5" : "border-border bg-white"} p-4 transition-colors`}
-          onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
-          onDragLeave={() => setDragOver(false)}
-          onDrop={onDrop}
-          role="button"
-          tabIndex={0}
-          onClick={() => !data.logoUrl && fileInputRef.current?.click()}
-        >
-          {data.logoUrl ? (
-          <div className="flex items-center gap-4">
-            <img src={data.logoUrl} alt="Anteprima logo" className="w-16 h-16 rounded object-cover" />
-            <div className="flex-1">
-              <p className="text-sm font-medium">Logo caricato</p>
-              <p className="text-xs text-muted-foreground">PNG, JPG o SVG. Consigliato: fondo trasparente.</p>
-            </div>
-            <Button variant="ghost" className="text-red-600 hover:text-red-700 hover:bg-red-50" onClick={() => onUpdate({ logoUrl: "" })}>
-              <Trash2 className="w-4 h-4 mr-2" /> Rimuovi
-            </Button>
-          </div>
-        ) : (
-          <div className="flex items-center gap-3 text-muted-foreground">
-            <div className="w-12 h-12 rounded-md bg-muted/40 flex items-center justify-center">
-              <ImageIcon className="w-6 h-6" />
-            </div>
-            <div className="flex-1">
-              <p className="text-sm">
-                Trascina qui il tuo logo oppure <button className="underline" onClick={() => fileInputRef.current?.click()}>carica un file</button>
-              </p>
-              <p className="text-xs">PNG, JPG o SVG · max ~5MB</p>
-            </div>
-          </div>
-        )}
-        </div>
+        <ImageUploader
+          label="Logo"
+          value={data.logoUrl}
+          onChange={(url)=> onUpdate({ logoUrl: url })}
+          onRemove={() => onUpdate({ logoUrl: "" })}
+          helpText="PNG, JPG o SVG · max ~5MB"
+          previewSize={64}
+        />
       )}
 
       {useText && (

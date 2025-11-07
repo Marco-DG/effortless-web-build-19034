@@ -51,11 +51,11 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter", 
 
   const useTextLogo = (data.logoMode === "text") && (data.logoText || data.businessName);
   const logoText = data.logoText || data.businessName || "Fine Dining";
-  // Keep the logo text font consistent with current site typography unless the user explicitly picks one
-  const logoFont = data.logoFont || data.fontSecondary || data.fontPrimary || fontFamily;
+  // Logo should only change font when user explicitly sets logoFont
+  const logoFont = data.logoFont || fontFamily;
   useEffect(() => {
-    if (useTextLogo && logoFont) ensureGoogleFontLoaded(logoFont);
-  }, [useTextLogo, logoFont]);
+    if (useTextLogo && data.logoFont) ensureGoogleFontLoaded(data.logoFont);
+  }, [useTextLogo, data.logoFont]);
 
   return (
     <div className="w-full bg-[#0b0b0b] text-[#f5f2ec] overflow-y-auto h-full" style={{ fontFamily }}>

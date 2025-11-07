@@ -1,8 +1,10 @@
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BuilderData } from "@/types/builder";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ImageUploader } from "@/components/ui/image-uploader";
 
 interface BuilderStep3Props {
   data: BuilderData;
@@ -17,8 +19,10 @@ export const BuilderStep3 = ({
   onNext,
   onBack,
 }: BuilderStep3Props) => {
+  const fileInputRef = React.useRef<HTMLInputElement | null>(null);
   const handleNext = () => {
-    if (data.businessName.trim()) {
+    const name = (data.businessName || "").trim();
+    if (name) {
       onNext();
     }
   };
@@ -27,54 +31,47 @@ export const BuilderStep3 = ({
     <div className="space-y-6 animate-fade-in">
       <div>
         <Label
-          htmlFor="businessName"
+          htmlFor="heroTitle"
           className="text-sm font-medium text-foreground mb-2 block"
         >
-          Nome della tua attività
+          Titolo (Hero)
         </Label>
         <Input
-          id="businessName"
+          id="heroTitle"
           type="text"
-          placeholder="Es: La Trattoria del Centro"
-          value={data.businessName}
-          onChange={(e) => onUpdate({ businessName: e.target.value })}
+          placeholder="Es: Benvenuti nella nostra Enoteca"
+          value={data.heroSlogan}
+          onChange={(e) => onUpdate({ heroSlogan: e.target.value })}
           className="text-lg py-6"
         />
       </div>
 
       <div>
         <Label
-          htmlFor="tagline"
+          htmlFor="heroSubtitle"
           className="text-sm font-medium text-foreground mb-2 block"
         >
-          Slogan o descrizione (opzionale)
+          Sottotitolo (Hero)
         </Label>
         <Input
-          id="tagline"
+          id="heroSubtitle"
           type="text"
-          placeholder="Es: Sapori autentici dal 1985"
-          value={data.tagline}
-          onChange={(e) => onUpdate({ tagline: e.target.value })}
+          placeholder="Es: Vini d'autore. Atmosfera intima."
+          value={data.heroDescription}
+          onChange={(e) => onUpdate({ heroDescription: e.target.value })}
           className="text-lg py-6"
         />
       </div>
 
-      <div>
-        <Label
-          htmlFor="heroImageUrl"
-          className="text-sm font-medium text-foreground mb-2 block"
-        >
-          Immagine di sfondo (URL, opzionale)
-        </Label>
-        <Input
-          id="heroImageUrl"
-          type="text"
-          placeholder="Incolla l'URL di un'immagine"
-          value={data.heroImageUrl || ""}
-          onChange={(e) => onUpdate({ heroImageUrl: e.target.value })}
-          className="text-lg py-6"
-        />
-      </div>
-    </div>
-  );
+     {/* Background image uploader (drag & drop + URL) */}
+     <ImageUploader
+       label="Immagine di sfondo"
+       value={data.heroImageUrl}
+       onChange={(url)=> onUpdate({ heroImageUrl: url })}
+       onRemove={() => onUpdate({ heroImageUrl: "" })}
+       helpText="PNG, JPG o SVG"
+       previewSize={64}
+     />
+   </div>
+ );
 };

@@ -20,7 +20,8 @@ export const SiteHeader = ({ data, templateColors }: SiteHeaderProps) => {
 
   const useTextLogo = (data.logoMode === "text") && (data.logoText || data.businessName);
   const logoText = data.logoText || data.businessName || "Il Tuo Locale";
-  const logoFont = data.logoFont || data.fontSecondary || data.fontPrimary;
+  // Logo font should not be affected by Typography (Titoli/Sottotitoli) changes
+  const logoFont = data.logoFont || undefined;
 
   return (
     <header
