@@ -1,6 +1,7 @@
 import React from "react";
 import { BuilderData, TemplateType } from "@/types/builder";
 import { OptionList } from "@/components/ui/option-list";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface BuilderStep0Props {
   data: BuilderData;
@@ -36,11 +37,13 @@ export const BuilderStep0 = ({ data, onUpdate, onNext }: BuilderStep0Props) => {
   const [favorites, setFavorites] = React.useState<string[]>(() => {
     try { const raw = localStorage.getItem("favoriteTemplates"); const arr = raw ? JSON.parse(raw) : []; return Array.isArray(arr) ? arr : []; } catch { return []; }
   });
+  const [category, setCategory] = React.useState<"Tutti"|"Preferiti">("Tutti");
   const templates = React.useMemo(() => {
     const q = query.trim().toLowerCase();
-    const arr = allTemplates.filter(t => !q || t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q));
-    return arr;
-  }, [query]);
+    const base = allTemplates.filter(t => !q || t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q));
+    const filtered = category === "Preferiti" ? base.filter(t => favorites.includes(t.id)) : base;
+    return filtered;
+  }, [query, category, favorites]);
   const toggleFavorite = (id: string) => {
     setFavorites(prev => {
       const next = prev.includes(id) ? prev.filter(x=>x!==id) : [...prev, id];
@@ -65,6 +68,18 @@ export const BuilderStep0 = ({ data, onUpdate, onNext }: BuilderStep0Props) => {
           enableSearch
           searchPlaceholder="Cerca template..."
           onSearchChange={setQuery}
+          searchAddon={(
+            <Select value={category} onValueChange={(v)=> setCategory(v as any)}>
+              <SelectTrigger className="w-[160px] h-9 text-xs border rounded-md bg-white shadow-sm data-[state=open]:ring-2 data-[state=open]:ring-primary/40">
+                <SelectValue placeholder="Categoria" />
+              </SelectTrigger>
+              <SelectContent className="text-xs">
+                {(["Tutti","Preferiti"] as const).map(c => (
+                  <SelectItem key={c} value={c} className="text-xs">{c}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
           items={templates.map(t => ({ id: t.id, title: t.name, description: t.description, thumbnailUrl: (
             t.id === "wine-bar" ? "https://images.unsplash.com/photo-1527169402691-feff5539e52c?q=80&w=400&auto=format&fit=crop" :
             t.id === "fine-dining" ? "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=400&auto=format&fit=crop" :

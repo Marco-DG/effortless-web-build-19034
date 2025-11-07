@@ -138,7 +138,7 @@ export const BuilderSidebar = ({
                 <div key={key} className="flex items-center justify-between rounded-lg border border-border px-3 py-2.5 bg-white shadow-sm">
                   <div className="flex items-center gap-3">
                     <input type="checkbox" checked={!!enabled[key as keyof typeof enabled]} onChange={()=>toggleSection(key)} />
-                    <span className="text-sm font-medium capitalize cursor-grab select-none">☰ {sectionLabels[key] || key}</span>
+                    <span className="text-sm font-medium capitalize">{sectionLabels[key] || key}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <button onClick={()=>moveSection(idx,-1)} className="text-xs px-2 py-1 rounded-md bg-muted hover:bg-muted/80 transition-colors" aria-label="Sposta su">↑</button>
