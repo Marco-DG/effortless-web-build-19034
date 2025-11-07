@@ -199,7 +199,7 @@ export const WineBarTemplate = ({
                 <section className="mx-auto max-w-7xl px-6 py-20 grid md:grid-cols-2 gap-12">
                   <div>
                     <img
-                      src="https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=1200&auto=format&fit=crop"
+                      src={data.about?.imageUrl || "https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=1200&auto=format&fit=crop"}
                       className="w-full h-[420px] object-cover rounded-2xl"
                     />
                   </div>
@@ -212,10 +212,10 @@ export const WineBarTemplate = ({
                           color: templateColors.accent,
                         }}
                       >
-                        La nostra enoteca
+                        {data.about?.heading || "La nostra enoteca"}
                       </h3>
                       <p className="text-white/80 leading-relaxed">
-                        {data.about?.story ||
+                        {data.about?.text || data.about?.story ||
                           "Selezione curata di etichette e piccoli produttori. Calore, intimità e piatti pensati per accompagnare il calice."}
                       </p>
                     </div>
@@ -366,16 +366,16 @@ export const WineBarTemplate = ({
                 className="text-4xl font-bold mb-4"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
-                La nostra storia
+                {data.about?.heading || "La nostra storia"}
               </h2>
               <p className="text-white/80 leading-relaxed">
-                {data.about?.story ||
+                {data.about?.text || data.about?.story ||
                   "Una selezione curata di vini e piccoli piatti in un ambiente intimo."}
               </p>
             </div>
             <div>
               <img
-                src="https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=1200&auto=format&fit=crop"
+                src={data.about?.imageUrl || "https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=1200&auto=format&fit=crop"}
                 className="w-full h-[420px] object-cover rounded-2xl"
               />
             </div>

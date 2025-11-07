@@ -85,9 +85,15 @@ export interface SocialLinks {
 }
 
 export interface AboutSection {
-  story: string;
-  philosophy: string;
-  values: Array<{
+  // New model (preferred)
+  imageUrl?: string; // Foto della sezione
+  heading?: string;  // Titolo del paragrafo
+  text?: string;     // Paragrafo di testo
+  
+  // Legacy fields (still optional for backward compatibility with older templates)
+  story?: string;
+  philosophy?: string;
+  values?: Array<{
     title: string;
     description: string;
     icon: string;

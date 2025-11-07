@@ -24,6 +24,11 @@ export const getDefaultData = (template: TemplateType = "wine-bar"): BuilderData
       : template === "fine-dining"
       ? "Un percorso culinario tra tecnica e materia prima"
       : "Dove ogni piatto racconta una storia",
+    heroImageUrl: template === "wine-bar"
+      ? "https://images.unsplash.com/photo-1527169402691-feff5539e52c?q=80&w=1600&auto=format&fit=crop"
+      : template === "fine-dining"
+      ? "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1600&auto=format&fit=crop"
+      : "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1600&auto=format&fit=crop",
     menuItems: template === "trattoria" ? [
       {
         id: "1",
@@ -176,29 +181,24 @@ export const getDefaultData = (template: TemplateType = "wine-bar"): BuilderData
       tripadvisor: "",
     },
     about: {
-      story: template === "trattoria"
-        ? "Da tre generazioni portiamo in tavola i sapori autentici della cucina italiana. Ogni ingrediente è selezionato con cura, ogni ricetta custodita gelosamente. Benvenuti nella nostra famiglia."
-        : "Nel cuore della città, dove il design incontra la mixology d'eccellenza.",
-      philosophy: template === "trattoria"
-        ? "Crediamo nell'importanza degli ingredienti freschi e della tradizione. Ogni piatto racconta una storia di passione e dedizione."
-        : "Ogni cocktail è un'opera d'arte, ogni serata un'esperienza indimenticabile.",
-      values: [
-        {
-          title: template === "trattoria" ? "Ingredienti Freschi" : "Cocktail Signature",
-          description: template === "trattoria" ? "Dal produttore alla tavola" : "Creazioni esclusive dei nostri bartender",
-          icon: template === "trattoria" ? "🌾" : "🍹",
-        },
-        {
-          title: template === "trattoria" ? "Ricette Tradizionali" : "Live DJ Set",
-          description: template === "trattoria" ? "Tramandate di generazione" : "Ogni weekend musica dal vivo",
-          icon: template === "trattoria" ? "👨‍🍳" : "🎵",
-        },
-        {
-          title: template === "trattoria" ? "Passione" : "Design Unico",
-          description: template === "trattoria" ? "In ogni piatto che serviamo" : "Ambiente moderno e ricercato",
-          icon: template === "trattoria" ? "❤️" : "✨",
-        },
-      ],
+      imageUrl:
+        template === "wine-bar"
+          ? "https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=1200&auto=format&fit=crop"
+          : template === "fine-dining"
+          ? "https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=1200&auto=format&fit=crop"
+          : "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200&auto=format&fit=crop",
+      heading:
+        template === "wine-bar"
+          ? "La nostra enoteca"
+          : template === "fine-dining"
+          ? "La nostra storia"
+          : "La nostra trattoria",
+      text:
+        template === "trattoria"
+          ? "Da tre generazioni portiamo in tavola i sapori autentici della cucina italiana. Ogni ingrediente è selezionato con cura, ogni ricetta custodita gelosamente. Benvenuti nella nostra famiglia."
+          : template === "fine-dining"
+          ? "Un percorso culinario che unisce tecnica, materia prima e ricerca in un ambiente elegante."
+          : "Selezione curata di etichette e piccoli produttori. Calore, intimità e piatti pensati per accompagnare il calice.",
     },
     newsletterEnabled: true,
     newsletterTitle: "Resta Aggiornato",

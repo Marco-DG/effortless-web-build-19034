@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { ImageUploader } from "@/components/ui/image-uploader";
 import { BuilderStep0 } from "./steps/BuilderStep0";
 import { BuilderStep3 } from "./steps/BuilderStep3";
 import { BuilderStepLogo } from "./steps/BuilderStepLogo";
@@ -204,17 +205,16 @@ export const BuilderSidebar = ({
               ))}
             </div>
             <div>
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={async (e)=>{
-                  const files = Array.from(e.target.files || []).slice(0,12);
-                  const read = (f: File)=> new Promise<string>((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result as string); r.onerror=rej; r.readAsDataURL(f); });
-                  const urls = await Promise.all(files.map(read));
-                  const items = urls.map((u,i)=>({ id: `gal-${Date.now()}-${i}`, url: u, type: "image" as const }));
-                  onUpdate({ gallery: [...(data.gallery||[]), ...items] });
+              {/* Riutilizzo componente condiviso per singola immagine; aggiunge subito alla galleria */}
+              <ImageUploader
+                label="Aggiungi immagine"
+                value={""}
+                onChange={(url)=> {
+                  const item = { id: `gal-${Date.now()}`, url, type: "image" as const };
+                  onUpdate({ gallery: [...(data.gallery||[]), item] });
                 }}
+                helpText="PNG, JPG o SVG"
+                previewSize={64}
               />
             </div>
           </div>

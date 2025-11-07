@@ -104,7 +104,7 @@ Key types:
   - hero: `heroSlogan`, `heroDescription`, optional fonts/styles
   - content collections: `menuItems[]`, `events[]`, `gallery[]`, `reviews[]`, `faqs[]`, `blogPosts[]`
   - contacts: `address`, `phone`, `email`, `openingHours`, `socialLinks`, `reservationLink?`, `deliveryLinks`
-  - about: `about.story`, `about.philosophy`, `about.values[]`
+  - about: `imageUrl`, `heading`, `text` (campi legacy ancora letti se presenti: `story`, `philosophy`, `values[]`)
   - site chrome: `promoBanner`, `cookieBannerEnabled`, newsletter fields
   - layout control: `sectionsOrder: string[]`, `sectionsEnabled: Record<string, boolean>`, `singlePage?`
   - typography: `fontFamily?` (legacy), `fontPrimary?` (body), `fontSecondary?` (headings)
@@ -124,6 +124,11 @@ Local persistence helpers:
 - Reduced-effects user preference handled via `src/hooks/useReducedEffects.ts`, toggling `reduced-effects` class on `html`.
 
 ### Fonts
+
+### Immagini (riuso)
+- Per la selezione di immagini nel builder, usare sempre il componente condiviso `ImageUploader` (`src/components/ui/image-uploader.tsx`).
+- Sezioni che lo usano: Hero, Logo (modalità immagine), About, Galleria (aggiunta singola immagine).
+- Evitare input file custom duplicati: il componente gestisce drag & drop, preview, URL e rimozione.
 - Google Fonts are managed by `src/lib/fonts.ts`:
   - `getAllFonts()` returns curated list (with metadata and category)
   - `ensureGoogleFontLoaded(familyId, googleName?, weights)` injects a `<link>` tag once per font
