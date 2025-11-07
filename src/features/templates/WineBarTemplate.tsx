@@ -4,6 +4,7 @@ import { PromoBanner } from "./components/PromoBanner";
 import { SiteFooter } from "./components/SiteFooter";
 import { SiteNewsletter } from "./components/SiteNewsletter";
 import { ArrowRight } from "lucide-react";
+import { ensureGoogleFontLoaded } from "@/lib/fonts";
 
 interface TemplateProps {
   data: BuilderData;
@@ -56,6 +57,16 @@ export const WineBarTemplate = ({
   );
 
   const applied = data.customTheme || templateColors;
+
+  const useTextLogo = (data.logoMode === "text") && (data.logoText || data.businessName);
+  const logoText = data.logoText || data.businessName || "Il Tuo Locale";
+  const logoFont = data.logoFont || data.fontSecondary || data.fontPrimary || "Inter";
+
+  useEffect(()=>{
+    if (useTextLogo && logoFont) {
+      ensureGoogleFontLoaded(logoFont);
+    }
+  }, [useTextLogo, logoFont]);
   return (
     <div
       className="w-full bg-[#0f0d0d] text-[#f4f2ef] overflow-y-auto h-full"
@@ -70,16 +81,22 @@ export const WineBarTemplate = ({
         }`}
       >
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-[#6b3a2e] flex items-center justify-center font-semibold">
-              {data.businessName?.[0] || "W"}
-            </div>
-            <div
-              className="text-sm md:text-base font-semibold tracking-wide"
-              style={{ color: applied.accent }}
-            >
-              {data.businessName || "Enoteca & Wine Bar"}
-            </div>
+          <div className="flex items-center gap-3 min-w-0">
+            {data.logoUrl ? (
+              <img
+                src={data.logoUrl}
+                alt={`${data.businessName || "Logo"}`}
+                className="w-12 h-12 md:w-14 md:h-14 object-contain flex-shrink-0"
+              />
+            ) : (
+              <div
+                className="text-lg md:text-xl font-bold truncate"
+                style={{ fontFamily: logoFont, color: applied.accent }}
+                title={logoText}
+              >
+                {logoText}
+              </div>
+            )}
           </div>
           <nav className="hidden md:flex items-center gap-6 text-sm">
             {(() => {

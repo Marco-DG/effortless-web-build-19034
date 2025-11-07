@@ -4,6 +4,7 @@ import { PromoBanner } from "./components/PromoBanner";
 import { SiteFooter } from "./components/SiteFooter";
 import { SiteNewsletter } from "./components/SiteNewsletter";
 import { ArrowRight } from "lucide-react";
+import { ensureGoogleFontLoaded } from "@/lib/fonts";
 
 interface TemplateProps {
   data: BuilderData;
@@ -48,6 +49,14 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter", 
     [data.heroImageUrl]
   );
 
+  const useTextLogo = (data.logoMode === "text") && (data.logoText || data.businessName);
+  const logoText = data.logoText || data.businessName || "Fine Dining";
+  // Keep the logo text font consistent with current site typography unless the user explicitly picks one
+  const logoFont = data.logoFont || data.fontSecondary || data.fontPrimary || fontFamily;
+  useEffect(() => {
+    if (useTextLogo && logoFont) ensureGoogleFontLoaded(logoFont);
+  }, [useTextLogo, logoFont]);
+
   return (
     <div className="w-full bg-[#0b0b0b] text-[#f5f2ec] overflow-y-auto h-full" style={{ fontFamily }}>
       <PromoBanner data={data} templateColors={templateColors} />
@@ -55,8 +64,18 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter", 
       {/* NAVBAR */}
       <header className={`sticky top-0 z-50 transition-colors duration-300 ${navSolid ? "bg-[#0b0b0b]/95" : "bg-transparent"}`}>
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
-          <div className="text-sm tracking-widest uppercase" style={{ color: templateColors.secondary }}>
-            {data.businessName || "Fine Dining"}
+          <div className="min-w-0">
+            {data.logoUrl ? (
+              <img src={data.logoUrl} alt={`${data.businessName || "Logo"}`} className="h-10 md:h-12 object-contain" />
+            ) : (
+              <div
+                className="text-sm tracking-widest uppercase truncate"
+                style={{ color: templateColors.secondary, fontFamily: logoFont }}
+                title={logoText}
+              >
+                {logoText}
+              </div>
+            )}
           </div>
           <nav className="hidden md:flex items-center gap-8 text-xs tracking-widest uppercase text-[#f5f2ec]/80">
             {(() => {

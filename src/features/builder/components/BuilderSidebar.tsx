@@ -39,7 +39,7 @@ export const BuilderSidebar = ({
   onTemplateSelect,
   onOpenPreview,
 }: BuilderSidebarProps) => {
-  const [activeSection, setActiveSection] = useState<Section>("logo");
+  const [activeSection, setActiveSection] = useState<Section>("template");
   const [tab, setTab] = useState<"appearance" | "data">("appearance");
 
   const allSections = [...APPEARANCE_SECTIONS, ...DATA_SECTIONS];

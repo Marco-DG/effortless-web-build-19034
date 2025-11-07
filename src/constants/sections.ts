@@ -26,8 +26,8 @@ export const SECTION_ICONS: Record<BuilderSection, ComponentType<{ className?: s
 };
 
 export const APPEARANCE_SECTIONS: Array<{ id: BuilderSection; label: string }> = [
-  { id: "logo", label: "Logo" },
   { id: "template", label: "Template" },
+  { id: "logo", label: "Logo" },
   { id: "pages", label: "Pagine" },
   { id: "typography", label: "Tipografia" },
   { id: "hero", label: "Hero" },

@@ -18,6 +18,10 @@ export const SiteHeader = ({ data, templateColors }: SiteHeaderProps) => {
   const secondaryColor = templateColors?.secondary || "#D2691E";
   const accentColor = templateColors?.accent || "#F4A460";
 
+  const useTextLogo = (data.logoMode === "text") && (data.logoText || data.businessName);
+  const logoText = data.logoText || data.businessName || "Il Tuo Locale";
+  const logoFont = data.logoFont || data.fontSecondary || data.fontPrimary;
+
   return (
     <header
       className="sticky top-0 z-50 text-white shadow-lg transition-all duration-300 overflow-hidden"
@@ -30,23 +34,25 @@ export const SiteHeader = ({ data, templateColors }: SiteHeaderProps) => {
             {data.logoUrl ? (
               <img
                 src={data.logoUrl}
-                alt={`${data.businessName} logo`}
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover flex-shrink-0"
+                alt={`${data.businessName || "Logo"}`}
+                className="w-10 h-10 sm:w-12 sm:h-12 object-contain flex-shrink-0"
               />
             ) : (
-              <div
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-xl sm:text-2xl flex-shrink-0"
-                style={{ backgroundColor: accentColor }}
-              >
-                {data.businessType === "restaurant" && "🍝"}
-                {data.businessType === "bar" && "🍸"}
-                {data.businessType === "cafe" && "☕"}
-                {data.businessType === "pub" && "🍺"}
-                {!data.businessType && "🏪"}
+              <div className="flex items-center min-w-0">
+                <div
+                  className="text-lg sm:text-2xl font-bold truncate"
+                  style={{ fontFamily: logoFont, color: accentColor }}
+                  title={logoText}
+                >
+                  {logoText}
+                </div>
               </div>
             )}
             <div className="min-w-0 flex-1">
-              <h1 className="text-base sm:text-xl font-bold truncate">{data.businessName || "Il Tuo Locale"}</h1>
+              {/* Non ripetere il titolo quando il logo è testuale o immagine */}
+              {false && (
+                <h1 className="text-base sm:text-xl font-bold truncate">{data.businessName || "Il Tuo Locale"}</h1>
+              )}
               {data.tagline && (
                 <p className="text-xs opacity-90 hidden sm:block truncate">{data.tagline}</p>
               )}
