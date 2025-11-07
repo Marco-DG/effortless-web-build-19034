@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { BuilderData } from "@/types/builder";
 import { PromoBanner } from "./components/PromoBanner";
+import { SiteNewsletter } from "./components/SiteNewsletter";
 import { ArrowRight } from "lucide-react";
 
 interface TemplateProps {
@@ -57,24 +58,22 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter", 
             {data.businessName || "Fine Dining"}
           </div>
           <nav className="hidden md:flex items-center gap-8 text-xs tracking-widest uppercase text-[#f5f2ec]/80">
-            {[
-              ["Home", "home"],
-              ["Menu", "menu"],
-              ["About", "about"],
-              ["Gallery", "gallery"],
-              ["Contact", "contact"],
-            ].map(([label, key]) => (
-              singlePage ? (
-                <a
-                  key={key as string}
-                  href={`#${key}`}
-                  onClick={(e)=>{ e.preventDefault(); document.getElementById(String(key))?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}
-                  className="hover:text-[#f5f2ec] transition-colors"
-                >{label}</a>
-              ) : (
-                <button key={key as string} onClick={() => setPage(key as any)} className={`hover:text-[#f5f2ec] transition-colors ${page===key?"text-[#f5f2ec]":""}`}>{label}</button>
-              )
-            ))}
+            {(() => {
+              const enabled = data.sectionsEnabled || { hero:true, about:true, menu:true, gallery:true, contact:true };
+              const items: Array<[string,string]> = [["Home","home"],["Menu","menu"],["About","about"],["Gallery","gallery"],["Contact","contact"]].filter(([_,k])=> enabled[k as keyof typeof enabled]);
+              return items.map(([label, key]) => (
+                singlePage ? (
+                  <a
+                    key={key as string}
+                    href={`#${key}`}
+                    onClick={(e)=>{ e.preventDefault(); document.getElementById(String(key))?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}
+                    className="hover:text-[#f5f2ec] transition-colors"
+                  >{label}</a>
+                ) : (
+                  <button key={key as string} onClick={() => setPage(key as any)} className={`hover:text-[#f5f2ec] transition-colors ${page===key?"text-[#f5f2ec]":""}`}>{label}</button>
+                )
+              ));
+            })()}
           </nav>
         </div>
       </header>
@@ -83,26 +82,29 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter", 
       {(singlePage || page === "home") && (
         <main id="home" className="animate-fade-in scroll-mt-24">
           {/* HERO cinematico */}
-          <section className="relative min-h-[82vh] flex items-end">
-            <div className="absolute inset-0" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.55)), url(${heroImage})`, backgroundSize: "cover", backgroundPosition: "center" }} />
-            <div className="relative z-10 w-full mx-auto max-w-7xl px-6 pb-20">
-              <h1 className="text-5xl md:text-7xl font-extrabold leading-[1.05]" style={{ fontFamily: "'Playfair Display', serif" }}>
-                {data.heroSlogan || "Fine Dining Experience"}
-              </h1>
-              <p className="mt-4 text-lg md:text-2xl text-[#f5f2ec]/90 animate-fade-in-up">
-                {data.heroDescription || "Cucina d'autore in uno spazio di quiete ed eleganza."}
-              </p>
-              <div className="mt-8">
-                <a onClick={()=>setPage("menu")} className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-semibold cursor-pointer" style={{ backgroundColor: templateColors.accent, color: "#0b0b0b" }}>
-                  Prenota / Menu <ArrowRight className="w-4 h-4" />
-                </a>
-              </div>
-            </div>
-          </section>
+          {/* Spostata nella mappa components per rispettare Disposizione */}
 
           {/* Dynamic Sections for Home Page */}
           {(() => {
             const components: Record<string, React.ReactNode> = {
+              hero: (
+                <section className="relative min-h-[82vh] flex items-end">
+                  <div className="absolute inset-0" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.55)), url(${heroImage})`, backgroundSize: "cover", backgroundPosition: "center" }} />
+                  <div className="relative z-10 w-full mx-auto max-w-7xl px-6 pb-20">
+                    <h1 className="text-5xl md:text-7xl font-extrabold leading-[1.05]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                      {data.heroSlogan || "Fine Dining Experience"}
+                    </h1>
+                    <p className="mt-4 text-lg md:text-2xl text-[#f5f2ec]/90 animate-fade-in-up">
+                      {data.heroDescription || "Cucina d'autore in uno spazio di quiete ed eleganza."}
+                    </p>
+                    <div className="mt-8">
+                      <a onClick={()=>setPage("menu")} className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-semibold cursor-pointer" style={{ backgroundColor: templateColors.accent, color: "#0b0b0b" }}>
+                        Prenota / Menu <ArrowRight className="w-4 h-4" />
+                      </a>
+                    </div>
+                  </div>
+                </section>
+              ),
               about: (
                 <section className="mx-auto max-w-7xl px-6 py-24 grid lg:grid-cols-12 gap-10">
                   <div className="lg:col-span-5">
@@ -138,11 +140,46 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter", 
                   </div>
                 </section>
               ),
-              // Add other sections here if they are part of the home page and need to be ordered/enabled
+              gallery: (
+                <main id="gallery" className="animate-fade-in scroll-mt-24">
+                  <section className="mx-auto max-w-7xl px-6 py-20 grid md:grid-cols-3 gap-4">
+                    {(data.gallery || []).map((g)=> (
+                      <div key={g.id} className="relative group overflow-hidden rounded-2xl">
+                        <img src={g.url} className="w-full h-[320px] object-cover transition-transform duration-500 group-hover:scale-105" />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                      </div>
+                    ))}
+                  </section>
+                </main>
+              ),
+              newsletter: (
+                <section id="newsletter" className="animate-fade-in scroll-mt-24">
+                  <SiteNewsletter data={data} templateColors={templateColors} />
+                </section>
+              ),
+              contact: (
+                <main id="contact" className="animate-fade-in scroll-mt-24">
+                  <section className="mx-auto max-w-4xl px-6 py-20 grid md:grid-cols-2 gap-12">
+                    <div>
+                      <h2 className="text-3xl font-bold mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>Prenotazioni</h2>
+                      <p className="text-[#f5f2ec]/80 mb-6">{data.address || "Via Elegantia 1, Milano"}</p>
+                      <p className="text-[#f5f2ec]/80">{data.email || "info@finedining.it"}</p>
+                    </div>
+                    <div>
+                      <form className="space-y-3 text-sm">
+                        <input placeholder="Nome" className="w-full px-3 py-2 rounded bg-[#111] border border-white/10" />
+                        <input placeholder="Email" className="w-full px-3 py-2 rounded bg-[#111] border border-white/10" />
+                        <textarea placeholder="Messaggio" className="w-full px-3 py-2 rounded bg-[#111] border border-white/10 h-28" />
+                        <button className="px-5 py-3 rounded-xl font-semibold" style={{ backgroundColor: templateColors.accent, color: "#0b0b0b" }}>Invia</button>
+                      </form>
+                    </div>
+                  </section>
+                </main>
+              ),
             };
 
-            const orderedSections = data.sectionsOrder || Object.keys(components);
-            const enabledSections = data.sectionsEnabled || { hero: true, about: true, menu: true, gallery: true, contact: true };
+            const orderedSections = data.sectionsOrder || ["hero","about","menu","gallery","newsletter","contact"];
+            const enabledSections = data.sectionsEnabled || { hero: true, about: true, menu: true, gallery: true, newsletter: true, contact: true };
 
             return orderedSections.map(sectionId =>
               enabledSections[sectionId as keyof typeof enabledSections]
@@ -172,7 +209,7 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter", 
       )}
 
       {/* MENU */}
-      {(singlePage || page === "menu") && (
+      {(!singlePage && page === "menu") && (
         <main id="menu" className="animate-fade-in scroll-mt-24">
           <section className="min-h-[35vh] flex items-center justify-center bg-[#0b0b0b]">
             <h2 className="text-5xl font-extrabold" style={{ fontFamily: "'Playfair Display', serif" }}>Menu</h2>
@@ -193,7 +230,7 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter", 
       )}
 
       {/* ABOUT */}
-      {(singlePage || page === "about") && (
+      {(!singlePage && page === "about") && (
         <main id="about" className="animate-fade-in scroll-mt-24">
           <section className="mx-auto max-w-6xl px-6 py-24 grid md:grid-cols-2 gap-12">
             <div>
@@ -208,7 +245,7 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter", 
       )}
 
       {/* GALLERY */}
-      {(singlePage || page === "gallery") && (
+      {(!singlePage && page === "gallery") && (
         <main id="gallery" className="animate-fade-in scroll-mt-24">
           <section className="mx-auto max-w-7xl px-6 py-20 grid md:grid-cols-3 gap-4">
             {(data.gallery || []).map((g)=> (
@@ -222,7 +259,7 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter", 
       )}
 
       {/* CONTACT */}
-      {(singlePage || page === "contact") && (
+      {(!singlePage && page === "contact") && (
         <main id="contact" className="animate-fade-in scroll-mt-24">
           <section className="mx-auto max-w-4xl px-6 py-20 grid md:grid-cols-2 gap-12">
             <div>

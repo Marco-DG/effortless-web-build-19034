@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { BuilderData } from "@/types/builder";
 import { PromoBanner } from "./components/PromoBanner";
+import { SiteNewsletter } from "./components/SiteNewsletter";
 import { ArrowRight } from "lucide-react";
 
 interface TemplateProps {
@@ -80,13 +81,10 @@ export const WineBarTemplate = ({
             </div>
           </div>
           <nav className="hidden md:flex items-center gap-6 text-sm">
-            {[
-              ["Home", "home"],
-              ["Menu", "menu"],
-              ["About", "about"],
-              ["Gallery", "gallery"],
-              ["Contatti", "contact"],
-            ].map(([label, key]) => (
+            {(() => {
+              const enabled = data.sectionsEnabled || { hero:true, about:true, menu:true, gallery:true, contact:true };
+              const items: Array<[string,string]> = [["Home","home"],["Menu","menu"],["About","about"],["Gallery","gallery"],["Contatti","contact"]].filter(([_,k])=> enabled[k as keyof typeof enabled]);
+              return items.map(([label, key]) => (
               singlePage ? (
                 <a
                   key={key as string}
@@ -109,7 +107,8 @@ export const WineBarTemplate = ({
                   {label}
                 </button>
               )
-            ))}
+              ));
+            })()}
           </nav>
         </div>
       </header>
@@ -117,66 +116,66 @@ export const WineBarTemplate = ({
       {/* HOME PAGE */}
       {(singlePage || page === "home") && (
         <main id="home" className="animate-fade-in scroll-mt-24">
-          {/* HERO full screen with parallax */}
-          <section
-            id="home"
-            className="relative min-h-[80vh] grid grid-cols-1 lg:grid-cols-12 scroll-mt-24"
-            style={{ backgroundAttachment: "fixed" }}
-          >
-            <div
-              className="absolute inset-0"
-              style={{
-                backgroundImage: `linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.35)), url(${heroImage})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            />
-            <div className="relative lg:col-span-7 flex items-end lg:items-center p-8 md:p-16">
-              <div className="max-w-2xl">
-                <h1
-                  className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05]"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
-                >
-                  {data.heroSlogan || "Wine, Food & Atmosphere"}
-                </h1>
-                <p className="mt-4 text-lg md:text-2xl text-white/90">
-                  {data.heroDescription ||
-                    "Un luogo dedicato al gusto, tra calici e piccoli piatti."}
-                </p>
-                <div className="mt-8 flex gap-4">
-                  <a
-                    href="#menu"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (singlePage) {
-                        document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                      } else {
-                        setPage("menu");
-                      }
-                    }}
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[#0f0d0d] font-semibold"
-                    style={{ backgroundColor: applied.accent }}
-                  >
-                    Scopri il Menu <ArrowRight className="w-4 h-4" />
-                  </a>
-                  {data.reservationLink && (
-                    <a
-                      href={data.reservationLink}
-                      target="_blank"
-                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/80 text-white hover:bg-white/10 transition-colors"
-                    >
-                      Prenota
-                    </a>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="relative lg:col-span-5 hidden lg:block" />
-          </section>
-
           {/* Dynamic Sections for Home Page */}
           {(() => {
             const components: Record<string, React.ReactNode> = {
+              hero: (
+                <section
+                  id="home"
+                  className="relative min-h-[80vh] grid grid-cols-1 lg:grid-cols-12 scroll-mt-24"
+                  style={{ backgroundAttachment: "fixed" }}
+                >
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      backgroundImage: `linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.35)), url(${heroImage})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
+                  />
+                  <div className="relative lg:col-span-7 flex items-end lg:items-center p-8 md:p-16">
+                    <div className="max-w-2xl">
+                      <h1
+                        className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05]"
+                        style={{ fontFamily: "'Playfair Display', serif" }}
+                      >
+                        {data.heroSlogan || "Wine, Food & Atmosphere"}
+                      </h1>
+                      <p className="mt-4 text-lg md:text-2xl text-white/90">
+                        {data.heroDescription ||
+                          "Un luogo dedicato al gusto, tra calici e piccoli piatti."}
+                      </p>
+                      <div className="mt-8 flex gap-4">
+                        <a
+                          href="#menu"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (singlePage) {
+                              document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            } else {
+                              setPage("menu");
+                            }
+                          }}
+                          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[#0f0d0d] font-semibold"
+                          style={{ backgroundColor: applied.accent }}
+                        >
+                          Scopri il Menu <ArrowRight className="w-4 h-4" />
+                        </a>
+                        {data.reservationLink && (
+                          <a
+                            href={data.reservationLink}
+                            target="_blank"
+                            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/80 text-white hover:bg-white/10 transition-colors"
+                          >
+                            Prenota
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="relative lg:col-span-5 hidden lg:block" />
+                </section>
+              ),
               about: (
                 <section className="mx-auto max-w-7xl px-6 py-20 grid md:grid-cols-2 gap-12">
                   <div>
@@ -246,18 +245,47 @@ export const WineBarTemplate = ({
                   </div>
                 </section>
               ),
-              // Add other sections here if they are part of the home page and need to be ordered/enabled
+              gallery: (
+                <main id="gallery" className="animate-fade-in scroll-mt-24">
+                  <section className="mx-auto max-w-7xl px-6 py-16 grid md:grid-cols-3 gap-4">
+                    {(data.gallery || []).map((g)=> (
+                      <div key={g.id} className="relative group overflow-hidden rounded-2xl">
+                        <img src={g.url} className="w-full h-[320px] object-cover transition-transform duration-500 group-hover:scale-105" />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                      </div>
+                    ))}
+                  </section>
+                </main>
+              ),
+              newsletter: (
+               <section id="newsletter" className="animate-fade-in scroll-mt-24">
+                 <SiteNewsletter data={data} templateColors={templateColors} />
+               </section>
+             ),
+             contact: (
+                <main id="contact" className="animate-fade-in scroll-mt-24">
+                  <section className="mx-auto max-w-4xl px-6 py-16 grid md:grid-cols-2 gap-10">
+                    <div>
+                      <h2 className="text-3xl font-bold mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>Contatti</h2>
+                      <p className="text-white/80">{data.address || "Via della Vite 12, Roma"}</p>
+                      <p className="text-white/80">{data.phone || "+39 02 1234567"}</p>
+                      <p className="text-white/80">{data.email || "info@winebar.it"}</p>
+                    </div>
+                    <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+                      <form className="space-y-3 text-sm">
+                        <input placeholder="Nome" className="w-full px-3 py-2 rounded bg-black/30 border border-white/10" />
+                        <input placeholder="Email" className="w-full px-3 py-2 rounded bg-black/30 border border-white/10" />
+                        <textarea placeholder="Messaggio" className="w-full px-3 py-2 rounded bg-black/30 border border-white/10 h-28" />
+                        <button className="px-5 py-3 rounded-xl font-semibold" style={{ backgroundColor: templateColors.accent, color: "#0f0d0d" }}>Invia</button>
+                      </form>
+                    </div>
+                  </section>
+                </main>
+              ),
             };
 
-            const orderedSections =
-              data.sectionsOrder || Object.keys(components);
-            const enabledSections = data.sectionsEnabled || {
-              hero: true,
-              about: true,
-              menu: true,
-              gallery: true,
-              contact: true,
-            };
+            const orderedSections = data.sectionsOrder || ["hero","about","menu","gallery","newsletter","contact"];
+            const enabledSections = data.sectionsEnabled || { hero: true, about: true, menu: true, gallery: true, newsletter: true, contact: true };
 
             return orderedSections.map((sectionId) =>
               enabledSections[sectionId as keyof typeof enabledSections]
@@ -296,7 +324,7 @@ export const WineBarTemplate = ({
       )}
 
       {/* MENU */}
-      {(singlePage || page === "menu") && (
+      {(!singlePage && page === "menu") && (
         <main id="menu" className="animate-fade-in scroll-mt-24">
           <section
             className="min-h-[40vh] flex items-center justify-center relative"
@@ -335,7 +363,7 @@ export const WineBarTemplate = ({
       )}
 
       {/* ABOUT */}
-      {(singlePage || page === "about") && (
+      {(!singlePage && page === "about") && (
         <main id="about" className="animate-fade-in scroll-mt-24">
           <section className="mx-auto max-w-6xl px-6 py-20 grid md:grid-cols-2 gap-12">
             <div>
@@ -361,7 +389,7 @@ export const WineBarTemplate = ({
       )}
 
       {/* GALLERY */}
-      {(singlePage || page === "gallery") && (
+      {(!singlePage && page === "gallery") && (
         <main id="gallery" className="animate-fade-in scroll-mt-24">
           <section className="mx-auto max-w-7xl px-6 py-16">
             <div className="columns-2 md:columns-3 gap-4 [column-fill:_balance]">
@@ -380,7 +408,7 @@ export const WineBarTemplate = ({
       )}
 
       {/* CONTACT */}
-      {(singlePage || page === "contact") && (
+      {(!singlePage && page === "contact") && (
         <main id="contact" className="animate-fade-in scroll-mt-24">
           <section className="mx-auto max-w-4xl px-6 py-16 grid md:grid-cols-2 gap-10">
             <div>
