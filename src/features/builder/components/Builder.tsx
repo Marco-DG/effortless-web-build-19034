@@ -2,6 +2,7 @@ import { HeroContent } from "./HeroContent";
 import { BuilderSidebar } from "./BuilderSidebar";
 import { TemplatePreview } from "./TemplatePreview";
 import { LogoPreview } from "./LogoPreview";
+import { MenuPreview } from "./MenuPreview";
 import { X } from "lucide-react";
 
 import { useBuilderState } from "../hooks/useBuilderState";
@@ -20,7 +21,7 @@ export const Builder = () => {
     previewData,
     actions,
   } = useBuilderState();
-  const [macroTab, setMacroTab] = useState<"logo" | "appearance" | "data">("appearance");
+  const [macroTab, setMacroTab] = useState<"logo" | "menu" | "site">("site")
 
   return (
     <div className="min-h-screen h-full flex flex-col lg:flex-row overflow-hidden relative luxe-gradient-bg">
@@ -64,6 +65,8 @@ export const Builder = () => {
         <div className="w-full h-full max-w-7xl">
           {macroTab === "logo" ? (
             <LogoPreview data={previewData} />
+          ) : macroTab === "menu" ? (
+            <MenuPreview data={previewData} />
           ) : (
             <TemplatePreview
               data={previewData}
@@ -123,6 +126,8 @@ export const Builder = () => {
             <div className="flex-1 overflow-y-auto bg-white">
               {macroTab === "logo" ? (
                <LogoPreview data={previewData} />
+             ) : macroTab === "menu" ? (
+               <MenuPreview data={previewData} />
              ) : (
                <TemplatePreview
                  data={previewData}

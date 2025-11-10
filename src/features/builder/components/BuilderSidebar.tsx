@@ -17,6 +17,7 @@ import { BuilderStep7Reviews } from "./steps/BuilderStep7Reviews";
 import { BuilderStep7FAQ } from "./steps/BuilderStep7FAQ";
 import { BuilderStep8 } from "./steps/BuilderStep8";
 import { BuilderStepTypography } from "./steps/BuilderStepTypography";
+import { MenuBuilder } from "./steps/MenuBuilder";
 // Styles step rimosso
 
 interface BuilderSidebarProps {
@@ -26,8 +27,8 @@ interface BuilderSidebarProps {
   onSectionChange?: (section: string) => void;
   onTemplateSelect?: (template: TemplateType) => void;
   onOpenPreview?: () => void;
-  macroTab?: "logo" | "appearance" | "data";
-  onMacroTabChange?: (tab: "logo" | "appearance" | "data") => void;
+  macroTab?: "logo" | "menu" | "site";
+  onMacroTabChange?: (tab: "logo" | "menu" | "site") => void;
 
 }
 
@@ -42,7 +43,7 @@ export const BuilderSidebar = ({
   onSectionChange,
   onTemplateSelect,
   onOpenPreview,
-  macroTab = "appearance",
+  macroTab = "site",
   onMacroTabChange,
 }: BuilderSidebarProps) => {
   const [activeSection, setActiveSection] = useState<Section>("template");
@@ -175,12 +176,16 @@ export const BuilderSidebar = ({
         );
       case "menu":
         return (
-          <BuilderStep4
-            data={data}
-            onUpdate={onUpdate}
-            onNext={() => setActiveSection("events")}
-            onBack={() => setActiveSection("about")}
-          />
+          macroTab === "menu" ? (
+            <MenuBuilder data={data} onUpdate={onUpdate} />
+          ) : (
+            <BuilderStep4
+              data={data}
+              onUpdate={onUpdate}
+              onNext={() => setActiveSection("events")}
+              onBack={() => setActiveSection("about")}
+            />
+          )
         );
       case "events":
         return (
@@ -365,7 +370,8 @@ export const BuilderSidebar = ({
       <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-white/80 backdrop-blur text-xs font-medium">
         <div className="flex items-center gap-2">
           <button type="button" role="tab" aria-selected={macroTab === "logo"} onClick={() => { onMacroTabChange?.("logo"); setActiveSection("logo"); onSectionChange?.("logo"); }} className={`px-3 py-1.5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${macroTab === "logo" ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground"}`}>Logo</button>
-          <button type="button" role="tab" aria-selected={macroTab === "appearance"} onClick={() => { onMacroTabChange?.("appearance"); }} className={`px-3 py-1.5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${macroTab === "appearance" ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground"}`}>Aspetto</button>
+          <button type="button" role="tab" aria-selected={macroTab === "menu"} onClick={() => { onMacroTabChange?.("menu"); setActiveSection("menu"); onSectionChange?.("menu"); }} className={`px-3 py-1.5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${macroTab === "menu" ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground"}`}>Menù</button>
+          <button type="button" role="tab" aria-selected={macroTab === "appearance"} onClick={() => { onMacroTabChange?.("appearance"); }} className={`px-3 py-1.5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${macroTab === "appearance" ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground"}`}>Sito Web</button>
           <button type="button" role="tab" aria-selected={macroTab === "data"} onClick={() => { onMacroTabChange?.("data"); }} className={`px-3 py-1.5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${macroTab === "data" ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground"}`}>Dati</button>
         </div>
         <div className="flex items-center gap-2">
@@ -388,7 +394,13 @@ export const BuilderSidebar = ({
       <div className="flex flex-1 overflow-hidden min-h-0">
         {/* Subnavigation (no icon column) */}
         <div className="w-10 2xl:w-36 border-r border-border bg-white/50 backdrop-blur flex flex-col py-2 2xl:py-4 flex-shrink-0" role="navigation" aria-label="Sezioni">
-          {(macroTab === "logo" ? [{ id: "logo", label: "Logo" }] : (macroTab === "appearance" ? APPEARANCE_SECTIONS : DATA_SECTIONS)).map((section: any) => {
+          {(macroTab === "logo"
+            ? [{ id: "logo", label: "Logo" }]
+            : macroTab === "menu"
+            ? [{ id: "menu", label: "Menù" }]
+            : macroTab === "appearance"
+            ? APPEARANCE_SECTIONS
+            : DATA_SECTIONS).map((section: any) => {
             const isActive = activeSection === section.id;
             return (
               <button
