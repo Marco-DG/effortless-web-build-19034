@@ -88,12 +88,7 @@ export const Builder = () => {
               <button
                 type="button"
                 onClick={() => {
-                  const builderData = localStorage.getItem("builderData");
-                  if (builderData) {
-                    localStorage.setItem("builderData", builderData);
-                  } else {
-                    localStorage.setItem("builderData", JSON.stringify(previewData));
-                  }
+                  localStorage.setItem("builderData", JSON.stringify(previewData));
                   window.open("/preview", "_blank");
                 }}
                 className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"

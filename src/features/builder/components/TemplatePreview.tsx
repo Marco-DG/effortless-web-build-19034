@@ -48,7 +48,7 @@ export const TemplatePreview = ({ data, activeSection, fontFamily = "Inter", hid
     updateViewportLogic();
     window.addEventListener("resize", updateViewportLogic);
     return () => window.removeEventListener("resize", updateViewportLogic);
-  }, [viewportMode]);
+  }, [viewportMode, wasManuallySet]);
   useEffect(() => {
     if (fontFamily) ensureGoogleFontLoaded(fontFamily);
   }, [fontFamily]);

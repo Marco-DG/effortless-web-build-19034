@@ -108,7 +108,11 @@ export const TrattoriaTemplate = ({ data, activeSection, fontFamily = "Inter", s
         <>
           {orderedSections.map(sectionId =>
             enabledSections[sectionId as keyof typeof enabledSections]
-              ? components[sectionId]
+              ? (
+                <section id={sectionId} key={sectionId} className="scroll-mt-24">
+                  {components[sectionId]}
+                </section>
+              )
               : null
           )}
           <div className={getSectionHighlight("footer")}>

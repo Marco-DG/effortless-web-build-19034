@@ -140,6 +140,7 @@ Local persistence helpers:
 - Desktop: user can switch viewports (desktop/tablet/mobile) using helpers from `components/ui/viewport-selector`.
 - Mobile: viewport controls are hidden; preview takes full width for native responsive testing.
 - `activeSection` flashes a highlight ring around the relevant section inside templates to provide context when a user edits that section from the sidebar.
+- In-page anchors are standardized: `#home`, `#menu`, `#about`, `#gallery`, `#events`, `#contact`, etc. Single-page templates (e.g., Trattoria) now wrap each section with an element carrying its corresponding `id` for proper in-page navigation.
 
 ### AI/Command Palette (Scaffold)
 - `components/ai/AICommandPalette.tsx` binds Ctrl/Cmd+K and opens a command dialog with placeholder actions for future AI-assisted flows (e.g., generate section, CTA, improvements).

@@ -114,6 +114,19 @@ export interface DeliveryLinks {
   justEat?: string;
 }
 
+export interface MenuConfig {
+  title?: string;
+  subtitle?: string;
+  layout?: "list" | "cards" | "grid";
+  columns?: 1 | 2 | 3;
+  showFilters?: boolean;
+  showImages?: boolean;
+  showBadges?: boolean;
+  showIngredients?: boolean;
+  showAllergens?: boolean;
+  highlightCategory?: MenuCategory | "none";
+}
+
 export interface BuilderData {
   template: TemplateType;
   businessName: string;
@@ -130,6 +143,7 @@ export interface BuilderData {
   heroTitleStyle?: TextStyle;
   heroSubtitleStyle?: TextStyle;
   menuItems: MenuItem[];
+  menuConfig?: MenuConfig;
   events: Event[];
   gallery: GalleryItem[];
   reviews: Review[];

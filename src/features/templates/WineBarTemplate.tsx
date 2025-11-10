@@ -3,6 +3,7 @@ import { BuilderData } from "@/types/builder";
 import { PromoBanner } from "./components/PromoBanner";
 import { SiteFooter } from "./components/SiteFooter";
 import { SiteNewsletter } from "./components/SiteNewsletter";
+import { SiteMenu } from "./components/SiteMenu";
 import { ArrowRight } from "lucide-react";
 import { ensureGoogleFontLoaded } from "@/lib/fonts";
 
@@ -333,25 +334,8 @@ export const WineBarTemplate = ({
               Menu
             </h2>
           </section>
-          <section className="mx-auto max-w-6xl px-6 py-16 grid md:grid-cols-2 gap-10">
-            {(data.menuItems || []).map((item) => (
-              <div
-                key={item.id}
-                className="p-6 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors"
-              >
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-semibold">{item.name}</h3>
-                  <span className="text-white/80 font-medium">
-                    {item.price}
-                  </span>
-                </div>
-                {item.description && (
-                  <p className="mt-2 text-white/70 text-sm">
-                    {item.description}
-                  </p>
-                )}
-              </div>
-            ))}
+          <section className="px-0">
+            <SiteMenu data={data} templateColors={templateColors} variant="wine" />
           </section>
          <SiteFooter data={data} templateColors={templateColors} variant="wine" />
         </main>

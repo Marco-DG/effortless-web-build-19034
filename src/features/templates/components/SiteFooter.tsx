@@ -78,20 +78,20 @@ export const SiteFooter = ({ data, templateColors, variant = "trattoria" }: Site
               </li>
               {data.about && (
                 <li>
-                  <a href="#chi-siamo" className="hover:opacity-80 transition-opacity">
+                  <a href="#about" className="hover:opacity-80 transition-opacity">
                     Chi Siamo
                   </a>
                 </li>
               )}
-              {data.events.length > 0 && (
+              {(data.events && data.events.length > 0) && (
                 <li>
-                  <a href="#eventi" className="hover:opacity-80 transition-opacity">
+                  <a href="#events" className="hover:opacity-80 transition-opacity">
                     Eventi
                   </a>
                 </li>
               )}
               <li>
-                <a href="#contatti" className="hover:opacity-80 transition-opacity">
+                <a href="#contact" className="hover:opacity-80 transition-opacity">
                   Contatti
                 </a>
               </li>

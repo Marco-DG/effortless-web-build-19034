@@ -3,6 +3,7 @@ import { BuilderData } from "@/types/builder";
 import { PromoBanner } from "./components/PromoBanner";
 import { SiteFooter } from "./components/SiteFooter";
 import { SiteNewsletter } from "./components/SiteNewsletter";
+import { SiteMenu } from "./components/SiteMenu";
 import { ArrowRight } from "lucide-react";
 import { ensureGoogleFontLoaded } from "@/lib/fonts";
 
@@ -218,7 +219,7 @@ export const FineDiningTemplate = ({ data, activeSection, fontFamily = "Inter", 
           <section className="min-h-[35vh] flex items-center justify-center bg-[#0b0b0b]">
             <h2 className="text-5xl font-extrabold" style={{ fontFamily: "'Playfair Display', serif" }}>Menu</h2>
           </section>
-          <section className="mx-auto max-w-4xl px-6 py-20 space-y-8">
+          <section className="mx-auto max-w-6xl px-6 py-16">
             {(data.menuItems || []).map((item)=> (
               <div key={item.id} className="grid grid-cols-12 items-baseline">
                 <div className="col-span-8">

@@ -32,11 +32,11 @@ export const APPEARANCE_SECTIONS: Array<{ id: BuilderSection; label: string }> =
   { id: "typography", label: "Tipografia" },
   { id: "hero", label: "Hero" },
   { id: "about", label: "Chi siamo" },
+  { id: "menu", label: "Menù" },
   { id: "gallery", label: "Galleria" },
 ];
 
 export const DATA_SECTIONS: Array<{ id: BuilderSection; label: string }> = [
-  { id: "menu", label: "Menù" },
   { id: "events", label: "Eventi" },
   { id: "reviews", label: "Recensioni" },
   { id: "faq", label: "FAQ" },
