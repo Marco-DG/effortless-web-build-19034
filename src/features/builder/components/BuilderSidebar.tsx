@@ -371,8 +371,7 @@ export const BuilderSidebar = ({
         <div className="flex items-center gap-2">
           <button type="button" role="tab" aria-selected={macroTab === "logo"} onClick={() => { onMacroTabChange?.("logo"); setActiveSection("logo"); onSectionChange?.("logo"); }} className={`px-3 py-1.5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${macroTab === "logo" ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground"}`}>Logo</button>
           <button type="button" role="tab" aria-selected={macroTab === "menu"} onClick={() => { onMacroTabChange?.("menu"); setActiveSection("menu"); onSectionChange?.("menu"); }} className={`px-3 py-1.5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${macroTab === "menu" ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground"}`}>Menù</button>
-          <button type="button" role="tab" aria-selected={macroTab === "appearance"} onClick={() => { onMacroTabChange?.("appearance"); }} className={`px-3 py-1.5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${macroTab === "appearance" ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground"}`}>Sito Web</button>
-          <button type="button" role="tab" aria-selected={macroTab === "data"} onClick={() => { onMacroTabChange?.("data"); }} className={`px-3 py-1.5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${macroTab === "data" ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground"}`}>Dati</button>
+          <button type="button" role="tab" aria-selected={macroTab === "site"} onClick={() => { onMacroTabChange?.("site"); }} className={`px-3 py-1.5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${macroTab === "site" ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground"}`}>Sito Web</button>
         </div>
         <div className="flex items-center gap-2">
           <button type="button" onClick={onOpenPreview} className="lg:hidden inline-flex items-center gap-1.5 rounded-lg bg-primary text-primary-foreground px-2.5 py-1.5 text-xs font-medium" aria-label="Apri anteprima">
@@ -398,9 +397,7 @@ export const BuilderSidebar = ({
             ? [{ id: "logo", label: "Logo" }]
             : macroTab === "menu"
             ? [{ id: "menu", label: "Menù" }]
-            : macroTab === "appearance"
-            ? APPEARANCE_SECTIONS
-            : DATA_SECTIONS).map((section: any) => {
+            : [...APPEARANCE_SECTIONS, ...DATA_SECTIONS]).map((section: any) => {
             const isActive = activeSection === section.id;
             return (
               <button
