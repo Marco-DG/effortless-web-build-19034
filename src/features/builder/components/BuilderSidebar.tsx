@@ -26,6 +26,9 @@ interface BuilderSidebarProps {
   onSectionChange?: (section: string) => void;
   onTemplateSelect?: (template: TemplateType) => void;
   onOpenPreview?: () => void;
+  macroTab?: "logo" | "appearance" | "data";
+  onMacroTabChange?: (tab: "logo" | "appearance" | "data") => void;
+
 }
 
 import { SECTION_ICONS, APPEARANCE_SECTIONS, DATA_SECTIONS } from "@/constants/sections";
@@ -39,9 +42,11 @@ export const BuilderSidebar = ({
   onSectionChange,
   onTemplateSelect,
   onOpenPreview,
+  macroTab = "appearance",
+  onMacroTabChange,
 }: BuilderSidebarProps) => {
   const [activeSection, setActiveSection] = useState<Section>("template");
-  const [tab, setTab] = useState<"appearance" | "data">("appearance");
+  
 
   const allSections = [...APPEARANCE_SECTIONS, ...DATA_SECTIONS];
   const sectionLabels = allSections.reduce((acc, section) => {
@@ -359,8 +364,9 @@ export const BuilderSidebar = ({
       {/* Single Header - Mobile/Desktop */}
       <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-white/80 backdrop-blur text-xs font-medium">
         <div className="flex items-center gap-2">
-          <button type="button" role="tab" aria-selected={tab==="appearance"} onClick={()=>setTab("appearance")} className={`px-3 py-1.5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${tab==="appearance"?"bg-muted text-foreground":"text-muted-foreground hover:text-foreground"}`}>Aspetto</button>
-          <button type="button" role="tab" aria-selected={tab==="data"} onClick={()=>setTab("data")} className={`px-3 py-1.5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${tab==="data"?"bg-muted text-foreground":"text-muted-foreground hover:text-foreground"}`}>Dati</button>
+          <button type="button" role="tab" aria-selected={macroTab === "logo"} onClick={() => { onMacroTabChange?.("logo"); setActiveSection("logo"); onSectionChange?.("logo"); }} className={`px-3 py-1.5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${macroTab === "logo" ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground"}`}>Logo</button>
+          <button type="button" role="tab" aria-selected={macroTab === "appearance"} onClick={() => { onMacroTabChange?.("appearance"); }} className={`px-3 py-1.5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${macroTab === "appearance" ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground"}`}>Aspetto</button>
+          <button type="button" role="tab" aria-selected={macroTab === "data"} onClick={() => { onMacroTabChange?.("data"); }} className={`px-3 py-1.5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${macroTab === "data" ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground"}`}>Dati</button>
         </div>
         <div className="flex items-center gap-2">
           <button type="button" onClick={onOpenPreview} className="lg:hidden inline-flex items-center gap-1.5 rounded-lg bg-primary text-primary-foreground px-2.5 py-1.5 text-xs font-medium" aria-label="Apri anteprima">
@@ -382,7 +388,7 @@ export const BuilderSidebar = ({
       <div className="flex flex-1 overflow-hidden min-h-0">
         {/* Subnavigation (no icon column) */}
         <div className="w-10 2xl:w-36 border-r border-border bg-white/50 backdrop-blur flex flex-col py-2 2xl:py-4 flex-shrink-0" role="navigation" aria-label="Sezioni">
-          {(tab === "appearance" ? APPEARANCE_SECTIONS : DATA_SECTIONS).map((section) => {
+          {(macroTab === "logo" ? [{ id: "logo", label: "Logo" }] : (macroTab === "appearance" ? APPEARANCE_SECTIONS : DATA_SECTIONS)).map((section: any) => {
             const isActive = activeSection === section.id;
             return (
               <button
@@ -404,11 +410,9 @@ export const BuilderSidebar = ({
         <ScrollArea className="flex-1 min-w-0">
           <div className="p-4 2xl:p-6">
             {/* Animated section content */}
-            {(tab === "appearance" || tab === "data") && (
-              <div>
-                {renderSectionContent()}
-              </div>
-            )}
+            <div>
+              {renderSectionContent()}
+            </div>
           </div>
         </ScrollArea>
       </div>

@@ -1,12 +1,14 @@
 import { HeroContent } from "./HeroContent";
 import { BuilderSidebar } from "./BuilderSidebar";
 import { TemplatePreview } from "./TemplatePreview";
+import { LogoPreview } from "./LogoPreview";
 import { X } from "lucide-react";
 
 import { useBuilderState } from "../hooks/useBuilderState";
 import { ParallaxOrbs } from "@/components/visual/ParallaxOrbs";
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
+import { useState } from "react";
 
 
 export const Builder = () => {
@@ -18,6 +20,7 @@ export const Builder = () => {
     previewData,
     actions,
   } = useBuilderState();
+  const [macroTab, setMacroTab] = useState<"logo" | "appearance" | "data">("appearance");
 
   return (
     <div className="min-h-screen h-full flex flex-col lg:flex-row overflow-hidden relative luxe-gradient-bg">
@@ -49,6 +52,8 @@ export const Builder = () => {
               onSectionChange={actions.changeSection}
               onClose={actions.closeSidebar}
               onOpenPreview={actions.openPreview}
+              macroTab={macroTab}
+              onMacroTabChange={setMacroTab}
             />
           </>
         )}
@@ -57,11 +62,15 @@ export const Builder = () => {
       {/* Right Column - Preview (desktop always visible, mobile in modal) */}
       <div className="hidden lg:flex flex-1 items-center justify-center p-4 sm:p-6 lg:p-8 min-h-0 lg:min-h-full relative">
         <div className="w-full h-full max-w-7xl">
-          <TemplatePreview
-            data={previewData}
-            activeSection={activeSection}
-            fontFamily={builderData?.fontFamily}
-          />
+          {macroTab === "logo" ? (
+            <LogoPreview data={previewData} />
+          ) : (
+            <TemplatePreview
+              data={previewData}
+              activeSection={activeSection}
+              fontFamily={builderData?.fontFamily}
+            />
+          )}
         </div>
       </div>
 
@@ -112,12 +121,16 @@ export const Builder = () => {
 
             {/* Modal Content */}
             <div className="flex-1 overflow-y-auto bg-white">
-              <TemplatePreview
-                data={previewData}
-                activeSection={activeSection}
-                fontFamily={builderData?.fontPrimary || builderData?.fontFamily}
-                hideHeader={true}
-              />
+              {macroTab === "logo" ? (
+               <LogoPreview data={previewData} />
+             ) : (
+               <TemplatePreview
+                 data={previewData}
+                 activeSection={activeSection}
+                 fontFamily={builderData?.fontPrimary || builderData?.fontFamily}
+                 hideHeader={true}
+               />
+             )}
             </div>
           </div>
         </>
