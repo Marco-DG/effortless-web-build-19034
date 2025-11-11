@@ -10,17 +10,22 @@ import { getAllFonts, ensureGoogleFontLoaded } from '@/lib/fonts';
 import { OptionList } from '@/components/ui/option-list';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { NewsletterEditor, DeliveryEditor, ContactEditor, HoursEditor, LocationEditor } from './site-editors';
+import { TemplateSelector } from '../templates/TemplateSelector';
+import { ComponentsManager } from './ComponentsManager';
 
 // Sezioni semplici - ogni sezione = un componente template
 const TEMPLATE_SECTIONS = [
+  // TEMPLATE
+  { id: 'template', label: 'Template', icon: LayoutTemplate, category: 'template' },
+  
   // ESSENZIALI
+  { id: 'components', label: 'Componenti', icon: Navigation2, category: 'essential' },
   { id: 'hero', label: 'Hero', icon: Monitor, category: 'essential' },
   { id: 'typography', label: 'Tipografia', icon: Type, category: 'essential' },
   
   // CONTENUTI
   { id: 'about', label: 'Chi siamo', icon: Info, category: 'content' },
   { id: 'gallery', label: 'Galleria', icon: Images, category: 'content' },
-  { id: 'features', label: 'Caratteristiche', icon: Coffee, category: 'content' },
   { id: 'newsletter', label: 'Newsletter', icon: Mail, category: 'content' },
   
   // INFORMAZIONI
@@ -42,12 +47,16 @@ interface SimpleSiteBuilderProps {
 
 export const SimpleSiteBuilder: React.FC<SimpleSiteBuilderProps> = ({ onSwitchBuilder }) => {
   const { activeProject, updateProject, closeSidebar } = useAppStore();
-  const [activeSection, setActiveSection] = useState<TemplateSectionId>('hero');
+  const [activeSection, setActiveSection] = useState<TemplateSectionId>('template');
   
   if (!activeProject) return null;
 
   const renderSectionEditor = () => {
     switch (activeSection) {
+      case 'template':
+        return <TemplateSelector project={activeProject} onUpdate={updateProject} />;
+      case 'components':
+        return <ComponentsManager project={activeProject} onUpdate={updateProject} />;
       case 'typography':
         return <TypographyEditor project={activeProject} onUpdate={updateProject} />;
       case 'hero':
@@ -56,8 +65,6 @@ export const SimpleSiteBuilder: React.FC<SimpleSiteBuilderProps> = ({ onSwitchBu
         return <AboutEditor project={activeProject} onUpdate={updateProject} />;
       case 'gallery':
         return <GalleryEditor project={activeProject} onUpdate={updateProject} />;
-      case 'features':
-        return <FeaturesEditor project={activeProject} onUpdate={updateProject} />;
       case 'newsletter':
         return <NewsletterEditor project={activeProject} onUpdate={updateProject} />;
       case 'reviews':
@@ -195,11 +202,18 @@ interface EditorProps {
 }
 
 
+// TemplateEditor rimosso - ora usiamo TemplateSelector
+
 const TypographyEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   const [applyTarget, setApplyTarget] = React.useState<"fontPrimary" | "fontSecondary">("fontSecondary");
+  
+  // Ottieni i font dal tema del template
+  const theme = project.data.site?.theme || {};
+  const fonts = theme.fonts || {};
+  
   const selectedFont = applyTarget === "fontSecondary"
-    ? (project.data.site?.theme?.fontSecondary || project.data.site?.theme?.fontPrimary || "Inter")
-    : (project.data.site?.theme?.fontPrimary || "Inter");
+    ? (fonts.heading || theme.fontSecondary || "Playfair Display")
+    : (fonts.body || theme.fontPrimary || "Inter");
 
   const [query, setQuery] = React.useState("");
   const [category, setCategory] = React.useState<"Tutti"|"Sans-serif"|"Serif"|"Monospace"|"Display"|"Preferiti">("Tutti");
@@ -211,23 +225,23 @@ const TypographyEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
     } catch { return []; }
   });
 
-  const fonts = React.useMemo(() => getAllFonts(), []);
+  const allFonts = React.useMemo(() => getAllFonts(), []);
 
   const filtered = React.useMemo(() => {
     const q = query.trim().toLowerCase();
     const favActive = category === "Preferiti";
-    return fonts.filter((f: any) => {
+    return allFonts.filter((f: any) => {
       const mq = !q || f.name.toLowerCase().includes(q);
       const mc = category === "Tutti" || category === "Preferiti" || f.category === category;
       const mf = !favActive || favorites.includes(f.id);
       return mq && mc && mf;
     });
-  }, [query, category, favorites, fonts]);
+  }, [query, category, favorites, allFonts]);
 
   React.useEffect(() => {
-    const current = fonts.find((f: any) => f.id === selectedFont);
+    const current = allFonts.find((f: any) => f.id === selectedFont);
     if (current) ensureGoogleFontLoaded(current.id, current.google);
-  }, [selectedFont, fonts]);
+  }, [selectedFont, allFonts]);
 
   const toggleFavorite = (id: string) => {
     setFavorites(prev => {
@@ -239,23 +253,37 @@ const TypographyEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
 
   const handleSelect = (font: any) => {
     ensureGoogleFontLoaded(font.id, font.google);
+    
+    const currentTheme = project.data.site?.theme || {};
+    const currentFonts = currentTheme.fonts || {};
+    
     if (applyTarget === "fontPrimary") {
+      // Font per il corpo del testo
       onUpdate({ 
         site: { 
           ...project.data.site, 
           theme: { 
-            ...project.data.site?.theme, 
-            fontPrimary: font.id 
+            ...currentTheme,
+            fonts: {
+              ...currentFonts,
+              body: font.id
+            },
+            fontPrimary: font.id // mantieni per compatibilità
           } 
         } 
       });
     } else {
+      // Font per i titoli  
       onUpdate({ 
         site: { 
           ...project.data.site, 
           theme: { 
-            ...project.data.site?.theme, 
-            fontSecondary: font.id 
+            ...currentTheme,
+            fonts: {
+              ...currentFonts,
+              heading: font.id
+            },
+            fontSecondary: font.id // mantieni per compatibilità
           } 
         } 
       });
@@ -661,141 +689,3 @@ const GalleryEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   );
 };
 
-const FeaturesEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
-  const features = project.data.site?.sections?.find((s: any) => s.type === 'features')?.data || {};
-  const featuresList = features.features || [];
-  
-  const updateFeaturesSection = (updates: any) => {
-    const sections = project.data.site?.sections || [];
-    const featuresSection = sections.find((s: any) => s.type === 'features');
-    if (featuresSection) {
-      featuresSection.data = { ...featuresSection.data, ...updates };
-    } else {
-      sections.push({
-        id: 'features_main',
-        type: 'features',
-        enabled: true,
-        order: 3,
-        data: { ...updates, features: featuresList.length > 0 ? featuresList : [
-          { id: 'f1', title: 'Ingredienti Freschi', description: 'Utilizziamo solo ingredienti di qualità, selezionati ogni giorno', icon: '🌿' },
-          { id: 'f2', title: 'Ambiente Accogliente', description: 'Un atmosfera calda e familiare per ogni occasione', icon: '🏠' },
-          { id: 'f3', title: 'Chef Esperti', description: 'La nostra brigata di cucina ha anni di esperienza nel settore', icon: '👨‍🍳' },
-        ] }
-      });
-    }
-    onUpdate({ site: { ...project.data.site, sections } });
-  };
-
-  const addFeature = () => {
-    const newFeatures = [...featuresList, {
-      id: `f_${Date.now()}`,
-      title: 'Nuova Caratteristica',
-      description: 'Descrizione della caratteristica',
-      icon: '⭐'
-    }];
-    updateFeaturesSection({ features: newFeatures });
-  };
-
-  const updateFeature = (index: number, field: string, value: string) => {
-    const newFeatures = [...featuresList];
-    newFeatures[index] = { ...newFeatures[index], [field]: value };
-    updateFeaturesSection({ features: newFeatures });
-  };
-
-  const removeFeature = (index: number) => {
-    const newFeatures = featuresList.filter((_: any, i: number) => i !== index);
-    updateFeaturesSection({ features: newFeatures });
-  };
-
-  return (
-    <div className="space-y-6">
-      <div>
-        <h4 className="font-semibold mb-4">Caratteristiche del Ristorante</h4>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-2">Titolo Sezione</label>
-            <input 
-              type="text"
-              value={features.title || 'Perché Scegliere Noi'}
-              onChange={(e) => updateFeaturesSection({ title: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Perché Scegliere Noi"
-            />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium mb-2">Sottotitolo</label>
-            <input 
-              type="text"
-              value={features.subtitle || ''}
-              onChange={(e) => updateFeaturesSection({ subtitle: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Quello che ci rende speciali"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <h4 className="font-semibold">Caratteristiche ({featuresList.length})</h4>
-          <button 
-            onClick={addFeature}
-            className="px-3 py-1 bg-primary text-white rounded text-sm hover:bg-primary/90"
-          >
-            Aggiungi
-          </button>
-        </div>
-
-        <div className="space-y-4">
-          {featuresList.map((feature: any, index: number) => (
-            <div key={feature.id} className="border rounded-lg p-4">
-              <div className="grid grid-cols-1 gap-3">
-                <div className="grid grid-cols-4 gap-2">
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Icona</label>
-                    <input 
-                      type="text"
-                      value={feature.icon}
-                      onChange={(e) => updateFeature(index, 'icon', e.target.value)}
-                      className="w-full px-2 py-1 border rounded text-sm text-center"
-                      placeholder="🌿"
-                    />
-                  </div>
-                  <div className="col-span-3">
-                    <label className="block text-sm font-medium mb-1">Titolo</label>
-                    <input 
-                      type="text"
-                      value={feature.title}
-                      onChange={(e) => updateFeature(index, 'title', e.target.value)}
-                      className="w-full px-2 py-1 border rounded text-sm"
-                      placeholder="Titolo caratteristica"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">Descrizione</label>
-                  <textarea 
-                    value={feature.description}
-                    onChange={(e) => updateFeature(index, 'description', e.target.value)}
-                    rows={2}
-                    className="w-full px-2 py-1 border rounded text-sm"
-                    placeholder="Descrizione della caratteristica"
-                  />
-                </div>
-                <div className="flex justify-end">
-                  <button 
-                    onClick={() => removeFeature(index)}
-                    className="px-2 py-1 text-red-600 hover:bg-red-50 rounded text-sm"
-                  >
-                    Rimuovi
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};

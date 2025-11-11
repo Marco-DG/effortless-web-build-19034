@@ -59,10 +59,16 @@ export const WineBarTemplate = ({
 
   const applied = data.customTheme || templateColors;
 
+  // Usa i font dal tema del sito se disponibili
+  const siteTheme = data.site?.theme || {};
+  const siteFonts = siteTheme.fonts || {};
+  const headingFont = siteFonts.heading || siteTheme.fontSecondary || "'Playfair Display', serif";
+  const bodyFont = siteFonts.body || siteTheme.fontPrimary || fontFamily;
+
   const useTextLogo = (data.logoMode === "text") && (data.logoText || data.businessName);
   const logoText = data.logoText || data.businessName || "Il Tuo Locale";
   // Logo should only change font when user explicitly sets logoFont
-  const logoFont = data.logoFont || fontFamily;
+  const logoFont = data.logoFont || headingFont;
 
   useEffect(()=>{
     if (useTextLogo && data.logoFont) {
@@ -72,7 +78,7 @@ export const WineBarTemplate = ({
   return (
     <div
       className="w-full bg-[#0f0d0d] text-[#f4f2ef] overflow-y-auto h-full"
-      style={{ fontFamily }}
+      style={{ fontFamily: bodyFont }}
     >
       <PromoBanner data={data} templateColors={templateColors} />
 
@@ -102,9 +108,27 @@ export const WineBarTemplate = ({
           </div>
           <nav className="hidden md:flex items-center gap-6 text-sm">
             {(() => {
-              const enabled = data.sectionsEnabled || { hero:true, about:true, menu:true, gallery:true, contact:true };
-              const items: Array<[string,string]> = [["Home","home"],["Menu","menu"],["About","about"],["Gallery","gallery"],["Contatti","contact"]].filter(([_,k])=> enabled[k as keyof typeof enabled]);
-              return items.map(([label, key]) => (
+              const siteSections = data.site?.sections || [];
+              
+              // Se ci sono sezioni del nuovo sistema, usale
+              if (siteSections.length > 0) {
+                const enabledSections = siteSections
+                  .filter((s: any) => s.enabled)
+                  .sort((a: any, b: any) => (a.order || 0) - (b.order || 0));
+                
+                const navItems = enabledSections.map((section: any) => {
+                  const labels: Record<string, string> = {
+                    hero: 'Home',
+                    about: 'Chi Siamo', 
+                    menu: 'Menù',
+                    gallery: 'Galleria',
+                    newsletter: 'Newsletter',
+                    contact: 'Contatti'
+                  };
+                  return [labels[section.type] || section.type, section.type];
+                }).filter(([label]) => label);
+                
+                return navItems.map(([label, key]) => (
               singlePage ? (
                 <a
                   key={key as string}
@@ -126,8 +150,37 @@ export const WineBarTemplate = ({
                 >
                   {label}
                 </button>
-              )
-              ));
+                )
+                ));
+              } else {
+                // Fallback al sistema legacy
+                const enabled = data.sectionsEnabled || { hero:true, about:true, menu:true, gallery:true, contact:true };
+                const items: Array<[string,string]> = [["Home","hero"],["Menù","menu"],["Chi Siamo","about"],["Galleria","gallery"],["Contatti","contact"]].filter(([_,k])=> enabled[k as keyof typeof enabled]);
+                return items.map(([label, key]) => (
+                  singlePage ? (
+                    <a
+                      key={key as string}
+                      href={`#${key}`}
+                      onClick={(e)=>{
+                        e.preventDefault();
+                        document.getElementById(String(key))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }}
+                      className={`transition-colors hover:opacity-90 text-white/80`}
+                      style={{ color: applied.accent }}
+                    >
+                      {label}
+                    </a>
+                  ) : (
+                    <button
+                      key={key as string}
+                      onClick={() => setPage(key as any)}
+                      className={`transition-colors hover:opacity-90 ${page === key ? "text-white" : "text-white/70"}`}
+                    >
+                      {label}
+                    </button>
+                  )
+                ));
+              }
             })()}
           </nav>
         </div>
@@ -157,7 +210,7 @@ export const WineBarTemplate = ({
                     <div className="max-w-2xl">
                       <h1
                         className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05]"
-                        style={{ fontFamily: "'Playfair Display', serif" }}
+                        style={{ fontFamily: headingFont }}
                       >
                         {data.heroSlogan || "Wine, Food & Atmosphere"}
                       </h1>
@@ -196,40 +249,47 @@ export const WineBarTemplate = ({
                   <div className="relative lg:col-span-5 hidden lg:block" />
                 </section>
               ),
-              about: (
-                <section className="mx-auto max-w-7xl px-6 py-20 grid md:grid-cols-2 gap-12">
-                  <div>
-                    <img
-                      src={data.about?.imageUrl || "https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=1200&auto=format&fit=crop"}
-                      className="w-full h-[420px] object-cover rounded-2xl"
-                    />
-                  </div>
-                  <div className="flex items-center">
-                    <div>
-                      <h3
-                        className="text-3xl md:text-4xl font-bold mb-4"
-                        style={{
-                          fontFamily: "'Playfair Display', serif",
-                          color: templateColors.accent,
-                        }}
-                      >
-                        {data.about?.heading || "La nostra enoteca"}
-                      </h3>
-                      <p className="text-white/80 leading-relaxed">
-                        {data.about?.text || data.about?.story ||
-                          "Selezione curata di etichette e piccoli produttori. Calore, intimità e piatti pensati per accompagnare il calice."}
-                      </p>
+              about: (() => {
+                const siteSections = data.site?.sections || [];
+                const aboutSection = siteSections.find((s: any) => s.type === 'about');
+                const aboutData = aboutSection?.data || data.about || {};
+                
+                return (
+                  <section className="mx-auto max-w-7xl px-6 py-20 grid md:grid-cols-2 gap-12">
+                    <div className={aboutData.imagePosition === 'right' ? 'order-2' : ''}>
+                      <img
+                        src={aboutData.image || aboutData.imageUrl || "https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=1200&auto=format&fit=crop"}
+                        alt={aboutData.title || "Chi siamo"}
+                        className="w-full h-[420px] object-cover rounded-2xl"
+                      />
                     </div>
-                  </div>
-                </section>
-              ),
+                    <div className={`flex items-center ${aboutData.imagePosition === 'right' ? 'order-1' : ''}`}>
+                      <div>
+                        <h3
+                          className="text-3xl md:text-4xl font-bold mb-4"
+                          style={{
+                            fontFamily: headingFont,
+                            color: templateColors.accent,
+                          }}
+                        >
+                          {aboutData.title || aboutData.heading || "La nostra storia"}
+                        </h3>
+                        <p className="text-white/80 leading-relaxed">
+                          {aboutData.content || aboutData.text || aboutData.story ||
+                            "Da tre generazioni portiamo avanti la tradizione culinaria di famiglia. Ogni piatto è preparato con ingredienti freschi e locali."}
+                        </p>
+                      </div>
+                    </div>
+                  </section>
+                );
+              })(),
               menu: (
                 <section className="bg-[#151212] py-20">
                   <div className="mx-auto max-w-7xl px-6">
                     <div className="flex items-end justify-between mb-10">
                       <h4
                         className="text-2xl md:text-3xl font-bold"
-                        style={{ fontFamily: "'Playfair Display', serif" }}
+                        style={{ fontFamily: headingFont }}
                       >
                         Assaggi & Calici
                       </h4>
@@ -265,28 +325,111 @@ export const WineBarTemplate = ({
                   </div>
                 </section>
               ),
-              gallery: (
-                <main id="gallery" className="animate-fade-in scroll-mt-24">
-                  <section className="mx-auto max-w-7xl px-6 py-16 grid md:grid-cols-3 gap-4">
-                    {(data.gallery || []).map((g)=> (
-                      <div key={g.id} className="relative group overflow-hidden rounded-2xl">
-                        <img src={g.url} className="w-full h-[320px] object-cover transition-transform duration-500 group-hover:scale-105" />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+              gallery: (() => {
+                const siteSections = data.site?.sections || [];
+                const gallerySection = siteSections.find((s: any) => s.type === 'gallery');
+                const galleryData = gallerySection?.data || {};
+                const images = galleryData.images || data.gallery || [];
+                const columns = galleryData.columns || 3;
+                
+                if (images.length === 0) return null;
+                
+                return (
+                  <section id="gallery" className="animate-fade-in scroll-mt-24 py-20 bg-[#151212]">
+                    <div className="mx-auto max-w-7xl px-6">
+                      {galleryData.title && (
+                        <div className="text-center mb-12">
+                          <h3
+                            className="text-3xl md:text-4xl font-bold mb-4"
+                            style={{
+                              fontFamily: headingFont,
+                              color: templateColors.accent,
+                            }}
+                          >
+                            {galleryData.title}
+                          </h3>
+                          {galleryData.subtitle && (
+                            <p className="text-white/80 text-lg">
+                              {galleryData.subtitle}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                      <div className={`grid gap-4 ${
+                        columns === 2 ? 'md:grid-cols-2' : 
+                        columns === 4 ? 'md:grid-cols-2 lg:grid-cols-4' : 
+                        'md:grid-cols-3'
+                      }`}>
+                        {images.map((image: any, index: number) => (
+                          <div key={image.id || index} className="relative group overflow-hidden rounded-2xl">
+                            <img 
+                              src={image.url} 
+                              alt={image.caption || image.alt || `Galleria immagine ${index + 1}`}
+                              className="w-full h-[320px] object-cover transition-transform duration-500 group-hover:scale-105" 
+                            />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                            {image.caption && (
+                              <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+                                <p className="text-white text-sm">{image.caption}</p>
+                              </div>
+                            )}
+                          </div>
+                        ))}
                       </div>
-                    ))}
+                    </div>
                   </section>
-                </main>
-              ),
-              newsletter: (
-               <section id="newsletter" className="animate-fade-in scroll-mt-24">
-                 <SiteNewsletter data={data} templateColors={templateColors} />
-               </section>
-             ),
+                );
+              })(),
+              newsletter: (() => {
+                const siteSections = data.site?.sections || [];
+                const newsletterSection = siteSections.find((s: any) => s.type === 'newsletter');
+                const newsletterData = newsletterSection?.data || {};
+                
+                return (
+                  <section id="newsletter" className="animate-fade-in scroll-mt-24 py-20 bg-gradient-to-r from-[#2a1a1d] to-[#1a1a1d]">
+                    <div className="mx-auto max-w-4xl px-6 text-center">
+                      <h3
+                        className="text-3xl md:text-4xl font-bold mb-4"
+                        style={{
+                          fontFamily: headingFont,
+                          color: templateColors.accent,
+                        }}
+                      >
+                        {newsletterData.title || "Resta Aggiornato"}
+                      </h3>
+                      <p className="text-white/80 text-lg mb-8">
+                        {newsletterData.subtitle || "Iscriviti alla nostra newsletter per ricevere offerte esclusive e novità dal nostro wine bar"}
+                      </p>
+                      <div className="max-w-md mx-auto">
+                        <div className="flex gap-2">
+                          <input
+                            type="email"
+                            placeholder="La tua email"
+                            className="flex-1 px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-accent"
+                          />
+                          <button
+                            className="px-6 py-3 rounded-lg font-semibold transition-colors"
+                            style={{ 
+                              backgroundColor: templateColors.accent, 
+                              color: '#0f0d0d' 
+                            }}
+                          >
+                            Iscriviti
+                          </button>
+                        </div>
+                        <p className="text-xs text-white/60 mt-3">
+                          Rispettiamo la tua privacy. Puoi annullare l'iscrizione in qualsiasi momento.
+                        </p>
+                      </div>
+                    </div>
+                  </section>
+                );
+              })(),
              contact: (
                 <main id="contact" className="animate-fade-in scroll-mt-24">
                   <section className="mx-auto max-w-4xl px-6 py-16 grid md:grid-cols-2 gap-10">
                     <div>
-                      <h2 className="text-3xl font-bold mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>Contatti</h2>
+                      <h2 className="text-3xl font-bold mb-4" style={{ fontFamily: headingFont }}>Contatti</h2>
                       <p className="text-white/80">{data.address || "Via della Vite 12, Roma"}</p>
                       <p className="text-white/80">{data.phone || "+39 02 1234567"}</p>
                       <p className="text-white/80">{data.email || "info@winebar.it"}</p>
@@ -304,14 +447,33 @@ export const WineBarTemplate = ({
               ),
             };
 
-            const orderedSections = data.sectionsOrder || ["hero","about","menu","gallery","newsletter","contact"];
-            const enabledSections = data.sectionsEnabled || { hero: true, about: true, menu: true, gallery: true, newsletter: true, contact: true };
+            // Usa le sezioni dal nuovo sistema site builder se disponibili
+            const siteSections = data.site?.sections || [];
+            
+            if (siteSections.length > 0) {
+              // Ordina e filtra le sezioni abilitate dal site builder
+              const orderedEnabledSections = siteSections
+                .filter((s: any) => s.enabled)
+                .sort((a: any, b: any) => (a.order || 0) - (b.order || 0));
+              
+              return orderedEnabledSections.map((section: any) => 
+                components[section.type] ? (
+                  <div key={section.id} id={section.type}>
+                    {components[section.type]}
+                  </div>
+                ) : null
+              );
+            } else {
+              // Fallback al sistema legacy
+              const orderedSections = data.sectionsOrder || ["hero","about","menu","gallery","newsletter","contact"];
+              const enabledSections = data.sectionsEnabled || { hero: true, about: true, menu: true, gallery: true, newsletter: true, contact: true };
 
-            return orderedSections.map((sectionId) =>
-              enabledSections[sectionId as keyof typeof enabledSections]
-                ? components[sectionId]
-                : null,
-            );
+              return orderedSections.map((sectionId) =>
+                enabledSections[sectionId as keyof typeof enabledSections]
+                  ? components[sectionId]
+                  : null,
+              );
+            }
           })()}
 
           <SiteFooter data={data} templateColors={templateColors} variant="wine" />
@@ -329,7 +491,7 @@ export const WineBarTemplate = ({
           >
             <h2
               className="text-5xl font-bold"
-              style={{ fontFamily: "'Playfair Display', serif" }}
+              style={{ fontFamily: headingFont }}
             >
               Menu
             </h2>
@@ -348,7 +510,7 @@ export const WineBarTemplate = ({
             <div>
               <h2
                 className="text-4xl font-bold mb-4"
-                style={{ fontFamily: "'Playfair Display', serif" }}
+                style={{ fontFamily: headingFont }}
               >
                 {data.about?.heading || "La nostra storia"}
               </h2>
@@ -395,7 +557,7 @@ export const WineBarTemplate = ({
             <div>
               <h2
                 className="text-3xl font-bold mb-4"
-                style={{ fontFamily: "'Playfair Display', serif" }}
+                style={{ fontFamily: headingFont }}
               >
                 Contatti
               </h2>
