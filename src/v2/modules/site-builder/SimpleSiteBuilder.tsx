@@ -1,0 +1,444 @@
+import React, { useState } from 'react';
+import { useAppStore } from '../../store/app-store';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { 
+  Type, Monitor, Info, 
+  Images, Star, Calendar, Phone, Clock, MapPin, Mail, 
+  LayoutTemplate, Navigation2, Coffee, Truck
+} from 'lucide-react';
+import { getAllFonts, ensureGoogleFontLoaded } from '@/lib/fonts';
+import { OptionList } from '@/components/ui/option-list';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+// Sezioni semplici - ogni sezione = un componente template
+const TEMPLATE_SECTIONS = [
+  // ESSENZIALI
+  { id: 'hero', label: 'Hero', icon: Monitor, category: 'essential' },
+  { id: 'typography', label: 'Tipografia', icon: Type, category: 'essential' },
+  
+  // CONTENUTI
+  { id: 'about', label: 'Chi siamo', icon: Info, category: 'content' },
+  { id: 'gallery', label: 'Galleria', icon: Images, category: 'content' },
+  
+  // INFORMAZIONI
+  { id: 'contact', label: 'Contatti', icon: Phone, category: 'info' },
+  { id: 'hours', label: 'Orari', icon: Clock, category: 'info' },
+  { id: 'location', label: 'Posizione', icon: MapPin, category: 'info' },
+  
+  // SOCIAL & MARKETING
+  { id: 'reviews', label: 'Recensioni', icon: Star, category: 'marketing' },
+  { id: 'events', label: 'Eventi', icon: Calendar, category: 'marketing' },
+  { id: 'delivery', label: 'Delivery', icon: Truck, category: 'marketing' },
+] as const;
+
+type TemplateSectionId = typeof TEMPLATE_SECTIONS[number]['id'];
+
+interface SimpleSiteBuilderProps {
+  onSwitchBuilder?: (builder: 'logo' | 'menu' | 'site') => void;
+}
+
+export const SimpleSiteBuilder: React.FC<SimpleSiteBuilderProps> = ({ onSwitchBuilder }) => {
+  const { activeProject, updateProject, closeSidebar } = useAppStore();
+  const [activeSection, setActiveSection] = useState<TemplateSectionId>('hero');
+  
+  if (!activeProject) return null;
+
+  const renderSectionEditor = () => {
+    switch (activeSection) {
+      case 'typography':
+        return <TypographyEditor project={activeProject} onUpdate={updateProject} />;
+      case 'hero':
+        return <HeroEditor project={activeProject} onUpdate={updateProject} />;
+      case 'about':
+        return <AboutEditor project={activeProject} onUpdate={updateProject} />;
+      case 'gallery':
+        return <GalleryEditor project={activeProject} onUpdate={updateProject} />;
+      case 'reviews':
+        return <ReviewsEditor project={activeProject} onUpdate={updateProject} />;
+      case 'contact':
+        return <ContactEditor project={activeProject} onUpdate={updateProject} />;
+      case 'hours':
+        return <HoursEditor project={activeProject} onUpdate={updateProject} />;
+      default:
+        return <div className="p-6 text-center text-muted-foreground">Sezione in sviluppo...</div>;
+    }
+  };
+
+  const currentSection = TEMPLATE_SECTIONS.find(s => s.id === activeSection);
+
+  return (
+    <div className="h-full w-full lg:w-auto flex flex-col bg-white lg:rounded-l-2xl border-r border-border shadow-lg overflow-hidden">
+      
+      {/* Header con tab condivisa */}
+      {onSwitchBuilder && (
+        <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-white/80 backdrop-blur text-xs font-medium">
+          <div className="flex items-center gap-2">
+            <button 
+              type="button" 
+              onClick={() => onSwitchBuilder('logo')} 
+              className="px-3 py-1.5 rounded text-muted-foreground hover:text-foreground"
+            >
+              Logo
+            </button>
+            <button 
+              type="button" 
+              onClick={() => onSwitchBuilder('menu')} 
+              className="px-3 py-1.5 rounded text-muted-foreground hover:text-foreground"
+            >
+              Menù
+            </button>
+            <button 
+              type="button" 
+              onClick={() => onSwitchBuilder('site')} 
+              className="px-3 py-1.5 rounded bg-muted text-foreground"
+            >
+              Sito Web
+            </button>
+          </div>
+          <div className="flex items-center gap-2">
+            <button 
+              type="button" 
+              className="lg:hidden inline-flex items-center gap-1.5 rounded-lg bg-primary text-primary-foreground px-2.5 py-1.5 text-xs font-medium"
+            >
+              <Monitor className="w-3.5 h-3.5" /> Anteprima
+            </button>
+            <button
+              onClick={closeSidebar}
+              className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-200"
+            >
+              <LayoutTemplate className="w-4 h-4 text-gray-600" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Main Content */}
+      <div className="flex flex-1 overflow-hidden min-h-0">
+        
+        {/* Sidebar Navigation */}
+        <div className="w-10 2xl:w-40 border-r border-border bg-white/50 backdrop-blur flex flex-col py-2 flex-shrink-0">
+          <ScrollArea className="flex-1">
+            <div className="space-y-1 px-1">
+              {TEMPLATE_SECTIONS.map((section) => {
+                const isActive = activeSection === section.id;
+                return (
+                  <button
+                    key={section.id}
+                    onClick={() => setActiveSection(section.id)}
+                    className={`w-full flex items-center justify-center 2xl:justify-start px-2 py-3 2xl:px-3 2xl:py-2.5 text-sm transition-all duration-200 rounded-lg group ${
+                      isActive
+                        ? 'bg-primary text-primary-foreground shadow-sm'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                    }`}
+                  >
+                    <section.icon className="w-5 h-5 flex-shrink-0" />
+                    <span className="hidden 2xl:block ml-3 text-left font-medium">
+                      {section.label}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </ScrollArea>
+        </div>
+
+        {/* Section Editor */}
+        <div className="flex-1 min-w-0 flex flex-col">
+          {/* Section Header */}
+          <div className="px-6 py-4 border-b bg-white/80 backdrop-blur">
+            <div className="flex items-center gap-3">
+              {currentSection && (
+                <>
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <currentSection.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold">{currentSection.label}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Personalizza questo componente del template
+                    </p>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Section Content */}
+          <ScrollArea className="flex-1">
+            <div className="p-6">
+              {renderSectionEditor()}
+            </div>
+          </ScrollArea>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Componenti Editor Semplici
+interface EditorProps {
+  project: any;
+  onUpdate: (updates: any) => void;
+}
+
+
+const TypographyEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
+  const [applyTarget, setApplyTarget] = React.useState<"fontPrimary" | "fontSecondary">("fontSecondary");
+  const selectedFont = applyTarget === "fontSecondary"
+    ? (project.data.site?.theme?.fontSecondary || project.data.site?.theme?.fontPrimary || "Inter")
+    : (project.data.site?.theme?.fontPrimary || "Inter");
+
+  const [query, setQuery] = React.useState("");
+  const [category, setCategory] = React.useState<"Tutti"|"Sans-serif"|"Serif"|"Monospace"|"Display"|"Preferiti">("Tutti");
+  const [favorites, setFavorites] = React.useState<string[]>(() => {
+    try {
+      const raw = localStorage.getItem("favoriteFonts");
+      const arr = raw ? JSON.parse(raw) : [];
+      return Array.isArray(arr) ? arr : [];
+    } catch { return []; }
+  });
+
+  const fonts = React.useMemo(() => getAllFonts(), []);
+
+  const filtered = React.useMemo(() => {
+    const q = query.trim().toLowerCase();
+    const favActive = category === "Preferiti";
+    return fonts.filter((f: any) => {
+      const mq = !q || f.name.toLowerCase().includes(q);
+      const mc = category === "Tutti" || category === "Preferiti" || f.category === category;
+      const mf = !favActive || favorites.includes(f.id);
+      return mq && mc && mf;
+    });
+  }, [query, category, favorites, fonts]);
+
+  React.useEffect(() => {
+    const current = fonts.find((f: any) => f.id === selectedFont);
+    if (current) ensureGoogleFontLoaded(current.id, current.google);
+  }, [selectedFont, fonts]);
+
+  const toggleFavorite = (id: string) => {
+    setFavorites(prev => {
+      const next = prev.includes(id) ? prev.filter(f=>f!==id) : [...prev, id];
+      try { localStorage.setItem("favoriteFonts", JSON.stringify(next)); } catch {}
+      return next;
+    });
+  };
+
+  const handleSelect = (font: any) => {
+    ensureGoogleFontLoaded(font.id, font.google);
+    if (applyTarget === "fontPrimary") {
+      onUpdate({ 
+        site: { 
+          ...project.data.site, 
+          theme: { 
+            ...project.data.site?.theme, 
+            fontPrimary: font.id 
+          } 
+        } 
+      });
+    } else {
+      onUpdate({ 
+        site: { 
+          ...project.data.site, 
+          theme: { 
+            ...project.data.site?.theme, 
+            fontSecondary: font.id 
+          } 
+        } 
+      });
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h4 className="font-semibold mb-4">Tipografia del Sito</h4>
+        <div className="grid grid-cols-2 gap-3">
+          {([
+            { key: "fontSecondary", label: "Titoli", value: project.data.site?.theme?.fontSecondary || "Inter" },
+            { key: "fontPrimary", label: "Sottotitoli", value: project.data.site?.theme?.fontPrimary || "Inter" },
+          ] as const).map(({ key, label, value }) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() => setApplyTarget(key as any)}
+              className={`text-left p-3 rounded-lg border hover:bg-muted/50 transition-colors ${applyTarget === key ? "border-primary bg-primary/5" : "border-border"}`}
+            >
+              <div className="text-xs text-muted-foreground mb-1">{label}</div>
+              <div className="text-sm font-medium truncate" style={{ fontFamily: value }}>{value}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <h4 className="font-semibold">Scegli Font per {applyTarget === "fontSecondary" ? "Titoli" : "Sottotitoli"}</h4>
+        
+        <OptionList
+          enableSearch
+          searchPlaceholder="Cerca font..."
+          onSearchChange={setQuery}
+          searchAddon={(
+            <Select value={category} onValueChange={(v)=> setCategory(v as any)}>
+              <SelectTrigger className="w-[140px] h-9 text-xs">
+                <SelectValue placeholder="Categoria" />
+              </SelectTrigger>
+              <SelectContent className="text-xs">
+                {(["Tutti","Preferiti","Sans-serif","Serif","Monospace","Display"] as const).map(c => (
+                  <SelectItem key={c} value={c} className="text-xs">{c}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+          items={filtered.map((font: any) => ({
+            id: font.id,
+            title: font.name,
+            description: font.category,
+            meta: (
+              <span
+                role="button"
+                tabIndex={0}
+                onClick={(e)=>{ e.stopPropagation(); toggleFavorite(font.id); }}
+                onKeyDown={(e)=>{ if(e.key==='Enter'){ e.stopPropagation(); toggleFavorite(font.id); } }}
+                className={`p-1 rounded hover:bg-white/60 transition-colors ${favorites.includes(font.id) ? "text-yellow-500" : "text-muted-foreground"}`}
+                aria-label={favorites.includes(font.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
+              >
+                <Star className={`w-4 h-4 ${favorites.includes(font.id) ? "fill-yellow-400" : ""}`} />
+              </span>
+            )
+          }))}
+          selectedId={selectedFont}
+          onSelect={(id)=> {
+            const font = filtered.find((f:any)=> f.id === id);
+            if (font) handleSelect(font);
+          }}
+          ariaLabel="Seleziona font"
+          showSelectedCheck
+        />
+      </div>
+    </div>
+  );
+};
+
+const HeroEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
+  const hero = project.data.site?.sections?.find((s: any) => s.type === 'hero')?.data || {};
+  
+  return (
+    <div className="space-y-6">
+      <div>
+        <h4 className="font-semibold mb-4">Sezione Hero</h4>
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-2">Titolo Principale</label>
+            <input 
+              type="text"
+              value={hero.title || project.data.business?.name || ''}
+              onChange={(e) => {
+                const sections = project.data.site?.sections || [];
+                const heroSection = sections.find((s: any) => s.type === 'hero');
+                if (heroSection) {
+                  heroSection.data = { ...heroSection.data, title: e.target.value };
+                } else {
+                  sections.push({
+                    id: 'hero_main',
+                    type: 'hero',
+                    enabled: true,
+                    order: 0,
+                    data: { title: e.target.value }
+                  });
+                }
+                onUpdate({
+                  site: { ...project.data.site, sections }
+                });
+              }}
+              className="w-full px-3 py-2 border rounded-lg"
+              placeholder="Benvenuti al nostro ristorante"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium mb-2">Sottotitolo</label>
+            <input 
+              type="text"
+              value={hero.subtitle || project.data.business?.tagline || ''}
+              onChange={(e) => {
+                const sections = project.data.site?.sections || [];
+                const heroSection = sections.find((s: any) => s.type === 'hero');
+                if (heroSection) {
+                  heroSection.data = { ...heroSection.data, subtitle: e.target.value };
+                } else {
+                  sections.push({
+                    id: 'hero_main',
+                    type: 'hero',
+                    enabled: true,
+                    order: 0,
+                    data: { subtitle: e.target.value }
+                  });
+                }
+                onUpdate({
+                  site: { ...project.data.site, sections }
+                });
+              }}
+              className="w-full px-3 py-2 border rounded-lg"
+              placeholder="La tua tagline"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Descrizione</label>
+            <textarea 
+              value={hero.description || project.data.business?.description || ''}
+              onChange={(e) => {
+                const sections = project.data.site?.sections || [];
+                const heroSection = sections.find((s: any) => s.type === 'hero');
+                if (heroSection) {
+                  heroSection.data = { ...heroSection.data, description: e.target.value };
+                } else {
+                  sections.push({
+                    id: 'hero_main',
+                    type: 'hero',
+                    enabled: true,
+                    order: 0,
+                    data: { description: e.target.value }
+                  });
+                }
+                onUpdate({
+                  site: { ...project.data.site, sections }
+                });
+              }}
+              rows={4}
+              className="w-full px-3 py-2 border rounded-lg"
+              placeholder="Descrizione del tuo ristorante..."
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Preview */}
+      <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg p-8 text-center">
+        <h1 
+          className="text-3xl font-bold mb-4"
+          style={{ color: project.data.site?.theme?.colors?.primary || '#8B4513' }}
+        >
+          {hero.title || project.data.business?.name || 'Il Tuo Ristorante'}
+        </h1>
+        <p 
+          className="text-xl mb-4"
+          style={{ color: project.data.site?.theme?.colors?.secondary || '#D2691E' }}
+        >
+          {hero.subtitle || project.data.business?.tagline || 'La tua tagline'}
+        </p>
+        <p className="text-muted-foreground">
+          {hero.description || project.data.business?.description || 'Descrizione del ristorante...'}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+// Placeholder per altri editor
+const AboutEditor: React.FC<EditorProps> = () => <div className="text-center py-8 text-muted-foreground">Editor Chi Siamo - In sviluppo</div>;
+const GalleryEditor: React.FC<EditorProps> = () => <div className="text-center py-8 text-muted-foreground">Editor Galleria - In sviluppo</div>;
+const ReviewsEditor: React.FC<EditorProps> = () => <div className="text-center py-8 text-muted-foreground">Editor Recensioni - In sviluppo</div>;
+const ContactEditor: React.FC<EditorProps> = () => <div className="text-center py-8 text-muted-foreground">Editor Contatti - In sviluppo</div>;
+const HoursEditor: React.FC<EditorProps> = () => <div className="text-center py-8 text-muted-foreground">Editor Orari - In sviluppo</div>;

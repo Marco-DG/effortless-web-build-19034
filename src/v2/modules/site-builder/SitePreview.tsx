@@ -4,6 +4,7 @@ import { PreviewLayout } from '../../ui/Layout';
 import { Button } from '../../ui/Button';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, MapPin, Phone, Mail, Clock, Star } from 'lucide-react';
+import { ensureGoogleFontLoaded } from '@/lib/fonts';
 
 interface SitePreviewProps {
   project: Project;
@@ -17,13 +18,26 @@ export const SitePreview: React.FC<SitePreviewProps> = ({ project }) => {
 
   const theme = project.data.site.theme;
 
-  // Applica stili CSS custom per il tema
+  // Applica stili CSS custom per il tema e carica font
   React.useEffect(() => {
     const root = document.documentElement;
+    
+    // Applica colori
     if (theme?.colors) {
       Object.entries(theme.colors).forEach(([key, value]) => {
         root.style.setProperty(`--theme-${key}`, value);
       });
+    }
+    
+    // Carica e applica font
+    if (theme?.fontPrimary) {
+      ensureGoogleFontLoaded(theme.fontPrimary);
+      root.style.setProperty('--theme-font-primary', theme.fontPrimary);
+    }
+    
+    if (theme?.fontSecondary) {
+      ensureGoogleFontLoaded(theme.fontSecondary);
+      root.style.setProperty('--theme-font-secondary', theme.fontSecondary);
     }
     
     // Cleanup
@@ -31,6 +45,8 @@ export const SitePreview: React.FC<SitePreviewProps> = ({ project }) => {
       Object.keys(theme?.colors || {}).forEach(key => {
         root.style.removeProperty(`--theme-${key}`);
       });
+      root.style.removeProperty('--theme-font-primary');
+      root.style.removeProperty('--theme-font-secondary');
     };
   }, [theme]);
 
@@ -136,7 +152,7 @@ const HeroSection: React.FC<{ data: any; theme: any; project: any }> = ({ data, 
           <h1 
             className="text-4xl md:text-6xl font-bold mb-6"
             style={{ 
-              fontFamily: theme.fonts.heading,
+              fontFamily: 'var(--theme-font-secondary, Inter)',
               color: data.style === 'image-background' ? 'white' : theme.colors.primary
             }}
           >
@@ -147,6 +163,7 @@ const HeroSection: React.FC<{ data: any; theme: any; project: any }> = ({ data, 
             <p 
               className="text-xl mb-8"
               style={{ 
+                fontFamily: 'var(--theme-font-primary, Inter)',
                 color: data.style === 'image-background' ? 'rgba(255,255,255,0.9)' : theme.colors.secondary 
               }}
             >
@@ -197,14 +214,20 @@ const AboutSection: React.FC<{ data: any; theme: any }> = ({ data, theme }) => (
         <div className={data.imagePosition === 'left' ? 'order-2' : 'order-1'}>
           <h2 
             className="text-3xl md:text-4xl font-bold mb-6"
-            style={{ color: theme.colors.primary }}
+            style={{ 
+              fontFamily: 'var(--theme-font-secondary, Inter)',
+              color: theme.colors.primary 
+            }}
           >
             {data.title}
           </h2>
           
           <div 
             className="text-lg leading-relaxed whitespace-pre-line"
-            style={{ color: theme.colors.text }}
+            style={{ 
+              fontFamily: 'var(--theme-font-primary, Inter)',
+              color: theme.colors.text 
+            }}
           >
             {data.content}
           </div>
@@ -268,7 +291,10 @@ const MenuSection: React.FC<{ data: any; theme: any; project: any }> = ({ data, 
       <div className="container mx-auto max-w-6xl">
         <h2 
           className="text-3xl md:text-4xl font-bold text-center mb-12"
-          style={{ color: theme.colors.primary }}
+          style={{ 
+            fontFamily: 'var(--theme-font-secondary, Inter)',
+            color: theme.colors.primary 
+          }}
         >
           {project.data.menu.title}
         </h2>
@@ -278,7 +304,13 @@ const MenuSection: React.FC<{ data: any; theme: any; project: any }> = ({ data, 
             <div key={item.id} className="flex justify-between items-start p-4 border-b hover:bg-muted/20 transition-colors">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
-                  <h3 className="font-semibold" style={{ color: theme.colors.primary }}>
+                  <h3 
+                    className="font-semibold" 
+                    style={{ 
+                      fontFamily: 'var(--theme-font-primary, Inter)',
+                      color: theme.colors.primary 
+                    }}
+                  >
                     {item.name}
                   </h3>
                   {item.featured && (
@@ -327,7 +359,10 @@ const GallerySection: React.FC<{ data: any; theme: any }> = ({ data, theme }) =>
       <div className="text-center mb-12">
         <h2 
           className="text-3xl md:text-4xl font-bold mb-4"
-          style={{ color: theme.colors.primary }}
+          style={{ 
+            fontFamily: 'var(--theme-font-secondary, Inter)',
+            color: theme.colors.primary 
+          }}
         >
           {data.title}
         </h2>
@@ -371,7 +406,10 @@ const ContactSection: React.FC<{ data: any; theme: any; project: any }> = ({ dat
     <div className="container mx-auto max-w-6xl">
       <h2 
         className="text-3xl md:text-4xl font-bold text-center mb-12"
-        style={{ color: theme.colors.primary }}
+        style={{ 
+          fontFamily: 'var(--theme-font-secondary, Inter)',
+          color: theme.colors.primary 
+        }}
       >
         {data.title || 'Contattaci'}
       </h2>
@@ -412,7 +450,10 @@ const HoursSection: React.FC<{ data: any; theme: any; project: any }> = ({ data,
       <Clock className="w-12 h-12 mx-auto mb-6" style={{ color: theme.colors.primary }} />
       <h2 
         className="text-3xl font-bold mb-8"
-        style={{ color: theme.colors.primary }}
+        style={{ 
+          fontFamily: 'var(--theme-font-secondary, Inter)',
+          color: theme.colors.primary 
+        }}
       >
         {data.title || 'Orari di Apertura'}
       </h2>
@@ -438,7 +479,10 @@ const NewsletterSection: React.FC<{ data: any; theme: any }> = ({ data, theme })
     style={{ backgroundColor: theme.colors.primary }}
   >
     <div className="container mx-auto max-w-4xl text-center">
-      <h2 className="text-3xl md:text-4xl font-bold mb-4">
+      <h2 
+        className="text-3xl md:text-4xl font-bold mb-4"
+        style={{ fontFamily: 'var(--theme-font-secondary, Inter)' }}
+      >
         {data.title}
       </h2>
       {data.subtitle && (
@@ -466,7 +510,13 @@ const ReviewsSection: React.FC<{ data: any; theme: any }> = ({ data, theme }) =>
   <section className="py-20 px-6">
     <div className="container mx-auto max-w-4xl text-center">
       <Star className="w-12 h-12 mx-auto mb-6" style={{ color: theme.colors.primary }} />
-      <h2 className="text-3xl font-bold mb-8" style={{ color: theme.colors.primary }}>
+      <h2 
+        className="text-3xl font-bold mb-8" 
+        style={{ 
+          fontFamily: 'var(--theme-font-secondary, Inter)',
+          color: theme.colors.primary 
+        }}
+      >
         {data.title || 'Recensioni'}
       </h2>
       <p className="text-muted-foreground">Sezione recensioni in sviluppo...</p>
@@ -478,7 +528,13 @@ const EventsSection: React.FC<{ data: any; theme: any }> = ({ data, theme }) => 
   <section className="py-20 px-6">
     <div className="container mx-auto max-w-4xl text-center">
       <Calendar className="w-12 h-12 mx-auto mb-6" style={{ color: theme.colors.primary }} />
-      <h2 className="text-3xl font-bold mb-8" style={{ color: theme.colors.primary }}>
+      <h2 
+        className="text-3xl font-bold mb-8" 
+        style={{ 
+          fontFamily: 'var(--theme-font-secondary, Inter)',
+          color: theme.colors.primary 
+        }}
+      >
         {data.title || 'Eventi'}
       </h2>
       <p className="text-muted-foreground">Sezione eventi in sviluppo...</p>

@@ -25,9 +25,9 @@ export const RestaurantSaasV2: React.FC = () => {
 
     switch (activeMode) {
       case 'logo':
-        return <LogoBuilder />;
+        return <LogoBuilder onSwitchBuilder={(mode) => useAppStore.getState().setActiveMode(mode)} />;
       case 'menu':
-        return <MenuBuilder />;
+        return <MenuBuilder onSwitchBuilder={(mode) => useAppStore.getState().setActiveMode(mode)} />;
       case 'site':
         return <SiteBuilder />;
       default:

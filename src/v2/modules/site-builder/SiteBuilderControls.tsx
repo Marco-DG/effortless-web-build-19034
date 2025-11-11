@@ -22,10 +22,12 @@ import {
   FileStack, 
   PenTool,
   FileText,
-  LayoutGrid as LayoutGridIcon
+  LayoutGrid as LayoutGridIcon,
+  Puzzle
 } from 'lucide-react';
 import { SectionType } from './types';
 import { TemplateManager } from '../templates/TemplateManager';
+import { SimpleSiteBuilder } from './SimpleSiteBuilder';
 
 // Import dei componenti step dal vecchio builder (li adatteremo)
 import { BuilderStep0 } from './steps/BuilderStep0';
@@ -42,6 +44,7 @@ import { MenuBuilderStep } from './steps/MenuBuilderStep';
 
 // Icone per le sezioni (come nel vecchio builder)
 const SECTION_ICONS: Record<string, any> = {
+  components: Puzzle,  // NUOVO - Sistema modulare
   logo: PenTool,
   template: LayoutTemplate,
   typography: Type,
@@ -59,19 +62,20 @@ const SECTION_ICONS: Record<string, any> = {
   reservation: Rocket
 };
 
-// Sezioni divise come nel vecchio builder
+// Sezioni ridotte - alcune sono ora gestite dal ComponentBuilder
 const APPEARANCE_SECTIONS = [
+  { id: 'components', label: 'Componenti' }, // NUOVO - Sistema modulare
   { id: 'template', label: 'Template' },
-  { id: 'logo', label: 'Logo' },
   { id: 'pages', label: 'Pagine' },
-  { id: 'typography', label: 'Tipografia' },
-  { id: 'hero', label: 'Hero' },
-  { id: 'about', label: 'Chi siamo' },
-  { id: 'menu', label: 'Menù' },
-  { id: 'gallery', label: 'Galleria' }
+  { id: 'typography', label: 'Tipografia' }
 ];
 
 const DATA_SECTIONS = [
+  { id: 'logo', label: 'Logo' },
+  { id: 'hero', label: 'Hero' },
+  { id: 'about', label: 'Chi siamo' },
+  { id: 'menu', label: 'Menù' },
+  { id: 'gallery', label: 'Galleria' },
   { id: 'events', label: 'Eventi' },
   { id: 'reviews', label: 'Recensioni' },
   { id: 'faq', label: 'FAQ' },
@@ -80,7 +84,7 @@ const DATA_SECTIONS = [
   { id: 'delivery', label: 'Delivery' }
 ];
 
-type BuilderSection = 'template' | 'logo' | 'typography' | 'pages' | 'hero' | 'about' | 'menu' | 'gallery' | 'events' | 'reviews' | 'faq' | 'contact' | 'hours' | 'delivery' | 'reservation';
+type BuilderSection = 'components' | 'template' | 'logo' | 'typography' | 'pages' | 'hero' | 'about' | 'menu' | 'gallery' | 'events' | 'reviews' | 'faq' | 'contact' | 'hours' | 'delivery' | 'reservation';
 
 interface SiteBuilderControlsProps {
   macroTab?: 'logo' | 'menu' | 'site';
@@ -88,7 +92,11 @@ interface SiteBuilderControlsProps {
 
 export const SiteBuilderControls: React.FC<SiteBuilderControlsProps> = ({ macroTab = 'site' }) => {
   const { activeProject, updateProject } = useAppStore();
-  const [activeSection, setActiveSection] = useState<BuilderSection>(macroTab === 'logo' ? 'logo' : macroTab === 'menu' ? 'menu' : 'template');
+  const [activeSection, setActiveSection] = useState<BuilderSection>(
+    macroTab === 'logo' ? 'logo' : 
+    macroTab === 'menu' ? 'menu' : 
+    'components' // Inizia con il nuovo sistema modulare
+  );
   
   if (!activeProject) return null;
 
@@ -260,12 +268,14 @@ export const SiteBuilderControls: React.FC<SiteBuilderControlsProps> = ({ macroT
   // Renderizza il contenuto della sezione attiva (come nel vecchio builder)
   const renderSectionContent = () => {
     switch (activeSection) {
+      case 'components':
+        return <SimpleSiteBuilder />;
       case 'template':
         return (
           <BuilderStep0
             data={builderData}
             onUpdate={handleUpdateData}
-            onNext={() => setActiveSection('logo')}
+            onNext={() => setActiveSection('components')}
           />
         );
       case 'logo':
