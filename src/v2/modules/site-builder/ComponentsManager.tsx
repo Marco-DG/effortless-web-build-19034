@@ -15,8 +15,11 @@ const AVAILABLE_COMPONENTS = [
   { id: 'about', name: 'Chi Siamo', icon: Info, description: 'Informazioni sul ristorante', required: false, order: 1 },
   { id: 'menu', name: 'Menù', icon: Coffee, description: 'Anteprima del menù', required: true, order: 2 },
   { id: 'gallery', name: 'Galleria', icon: Images, description: 'Galleria foto del ristorante', required: false, order: 3 },
-  { id: 'newsletter', name: 'Newsletter', icon: Mail, description: 'Iscrizione newsletter', required: false, order: 4 },
-  { id: 'contact', name: 'Contatti', icon: Phone, description: 'Informazioni di contatto', required: false, order: 5 },
+  { id: 'reviews', name: 'Recensioni', icon: Star, description: 'Recensioni dei clienti', required: false, order: 4 },
+  { id: 'events', name: 'Eventi', icon: Calendar, description: 'Eventi e manifestazioni', required: false, order: 5 },
+  { id: 'newsletter', name: 'Newsletter', icon: Mail, description: 'Iscrizione newsletter', required: false, order: 6 },
+  { id: 'location', name: 'Posizione', icon: MapPin, description: 'Mappa e indicazioni', required: false, order: 7 },
+  { id: 'contact', name: 'Contatti', icon: Phone, description: 'Informazioni di contatto', required: false, order: 8 },
 ];
 
 export const ComponentsManager: React.FC<ComponentsManagerProps> = ({ project, onUpdate }) => {
@@ -270,11 +273,58 @@ function getDefaultSectionData(sectionType: string) {
         images: [],
         columns: 3
       };
+    case 'reviews':
+      return {
+        title: 'Cosa Dicono di Noi',
+        subtitle: 'Le recensioni dei nostri clienti',
+        reviews: [
+          {
+            id: 'review_1',
+            author: 'Marco R.',
+            text: 'Esperienza fantastica! Cibo ottimo e servizio impeccabile.',
+            rating: 5,
+            date: '2024-01-15'
+          },
+          {
+            id: 'review_2', 
+            author: 'Giulia S.',
+            text: 'Atmosfera accogliente e piatti deliziosi. Ci torneremo sicuramente!',
+            rating: 5,
+            date: '2024-01-10'
+          }
+        ],
+        showStars: true
+      };
+    case 'events':
+      return {
+        title: 'I Nostri Eventi',
+        subtitle: 'Non perdere le nostre serate speciali',
+        events: [
+          {
+            id: 'event_1',
+            title: 'Serata Jazz',
+            description: 'Musica dal vivo ogni venerdì sera',
+            date: '2024-02-16',
+            time: '21:00',
+            image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&auto=format&fit=crop'
+          }
+        ],
+        showImages: true
+      };
     case 'newsletter':
       return {
         title: 'Resta Aggiornato',
         subtitle: 'Iscriviti alla nostra newsletter per ricevere offerte esclusive e novità dal nostro wine bar',
         style: 'centered'
+      };
+    case 'location':
+      return {
+        title: 'Dove Siamo',
+        subtitle: 'Vieni a trovarci nel cuore della città',
+        address: 'Via del Borgo 12, 00100 Roma',
+        mapUrl: 'https://maps.google.com/?q=41.9028,12.4964',
+        showMap: true,
+        showDirections: true
       };
     case 'contact':
       return {

@@ -141,10 +141,58 @@ const createDefaultProject = (name: string, template: TemplateType = 'wine-bar')
         }
       },
       { 
+        id: 'reviews_default', 
+        type: 'reviews', 
+        enabled: true, 
+        order: 4, 
+        data: {
+          title: 'Cosa Dicono di Noi',
+          subtitle: 'Le recensioni dei nostri clienti',
+          reviews: [
+            {
+              id: 'review_1',
+              author: 'Marco R.',
+              text: 'Esperienza fantastica! Cibo ottimo e servizio impeccabile.',
+              rating: 5,
+              date: '2024-01-15'
+            },
+            {
+              id: 'review_2', 
+              author: 'Giulia S.',
+              text: 'Atmosfera accogliente e piatti deliziosi. Ci torneremo sicuramente!',
+              rating: 5,
+              date: '2024-01-10'
+            }
+          ],
+          showStars: true
+        }
+      },
+      { 
+        id: 'events_default', 
+        type: 'events', 
+        enabled: true, 
+        order: 5, 
+        data: {
+          title: 'I Nostri Eventi',
+          subtitle: 'Non perdere le nostre serate speciali',
+          events: [
+            {
+              id: 'event_1',
+              title: 'Serata Jazz',
+              description: 'Musica dal vivo ogni venerdì sera',
+              date: '2024-02-16',
+              time: '21:00',
+              image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&auto=format&fit=crop'
+            }
+          ],
+          showImages: true
+        }
+      },
+      { 
         id: 'newsletter_default', 
         type: 'newsletter', 
         enabled: true, 
-        order: 4, 
+        order: 6, 
         data: {
           title: 'Resta Aggiornato',
           subtitle: 'Iscriviti alla nostra newsletter per ricevere offerte esclusive e novità dal nostro wine bar',
@@ -152,10 +200,24 @@ const createDefaultProject = (name: string, template: TemplateType = 'wine-bar')
         }
       },
       { 
+        id: 'location_default', 
+        type: 'location', 
+        enabled: true, 
+        order: 7, 
+        data: {
+          title: 'Dove Siamo',
+          subtitle: 'Vieni a trovarci nel cuore della città',
+          address: 'Via del Borgo 12, 00100 Roma',
+          mapUrl: 'https://maps.google.com/?q=41.9028,12.4964',
+          showMap: true,
+          showDirections: true
+        }
+      },
+      { 
         id: 'contact_default', 
         type: 'contact', 
         enabled: true, 
-        order: 5, 
+        order: 8, 
         data: {
           title: 'Contatti',
           showMap: true,

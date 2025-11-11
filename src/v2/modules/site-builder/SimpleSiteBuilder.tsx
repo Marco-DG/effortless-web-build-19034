@@ -11,6 +11,7 @@ import { getAllFonts, ensureGoogleFontLoaded } from '@/lib/fonts';
 import { OptionList } from '@/components/ui/option-list';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { NewsletterEditor, DeliveryEditor, ContactEditor, HoursEditor, LocationEditor } from './site-editors';
+import { ReviewsEditor, EventsEditor } from './additional-editors';
 import { TemplateSelector } from '../templates/TemplateSelector';
 import { ComponentsManager } from './ComponentsManager';
 
@@ -66,12 +67,12 @@ export const SimpleSiteBuilder: React.FC<SimpleSiteBuilderProps> = ({ onSwitchBu
         return <AboutEditor project={activeProject} onUpdate={updateProject} />;
       case 'gallery':
         return <GalleryEditor project={activeProject} onUpdate={updateProject} />;
-      case 'newsletter':
-        return <NewsletterEditor project={activeProject} onUpdate={updateProject} />;
       case 'reviews':
         return <ReviewsEditor project={activeProject} onUpdate={updateProject} />;
       case 'events':
         return <EventsEditor project={activeProject} onUpdate={updateProject} />;
+      case 'newsletter':
+        return <NewsletterEditor project={activeProject} onUpdate={updateProject} />;
       case 'delivery':
         return <DeliveryEditor project={activeProject} onUpdate={updateProject} />;
       case 'contact':

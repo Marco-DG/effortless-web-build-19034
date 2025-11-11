@@ -52,16 +52,6 @@ export const NewsletterEditor: React.FC<EditorProps> = ({ project, onUpdate }) =
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-2">Testo del Pulsante</label>
-            <input 
-              type="text"
-              value={newsletter.buttonText || 'Iscriviti'}
-              onChange={(e) => updateNewsletterSection({ buttonText: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Iscriviti"
-            />
-          </div>
         </div>
       </div>
     </div>
@@ -210,17 +200,6 @@ export const ContactEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
         <h4 className="font-semibold mb-4">Informazioni di Contatto</h4>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-2">Titolo Sezione</label>
-            <input 
-              type="text"
-              value={contact.title || 'Contattaci'}
-              onChange={(e) => updateContactSection({ title: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Contattaci"
-            />
-          </div>
-
-          <div>
             <label className="block text-sm font-medium mb-2">Indirizzo</label>
             <textarea 
               value={project.data.contact?.address || ''}
@@ -255,7 +234,7 @@ export const ContactEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-2">WhatsApp</label>
               <input 
@@ -275,6 +254,17 @@ export const ContactEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
                 onChange={(e) => updateContactData('instagram', e.target.value)}
                 className="w-full px-3 py-2 border rounded-lg"
                 placeholder="@ristorante"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Facebook</label>
+              <input 
+                type="text"
+                value={project.data.contact?.facebook || ''}
+                onChange={(e) => updateContactData('facebook', e.target.value)}
+                className="w-full px-3 py-2 border rounded-lg"
+                placeholder="RistoranteNome"
               />
             </div>
           </div>
