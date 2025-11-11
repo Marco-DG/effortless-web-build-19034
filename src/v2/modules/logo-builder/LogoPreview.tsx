@@ -1,5 +1,5 @@
 import React from 'react';
-import { LogoConfig } from '../../types';
+import { LogoConfig, CanvasElement } from '../../types';
 import { PreviewLayout } from '../../ui/Layout';
 import { cn } from '@/lib/utils';
 
@@ -23,7 +23,125 @@ export const LogoPreview: React.FC<LogoPreviewProps> = ({
   
   const isImageMode = config.mode === 'image';
   const isHybridMode = config.mode === 'hybrid';
+  const isCanvasMode = config.mode === 'canvas' || config.mode === 'advanced';
   const hasImage = config.imageUrl && (isImageMode || isHybridMode);
+
+  // Funzione per renderizzare un elemento canvas
+  const renderCanvasElement = (element: CanvasElement, index: number) => {
+    const baseProps = {
+      key: element.id,
+      style: {
+        transform: `translate(${element.x}px, ${element.y}px) rotate(${element.rotation}deg)`,
+        position: 'absolute' as const,
+        zIndex: element.zIndex || index,
+        opacity: element.opacity || 1,
+      }
+    };
+
+    if (element.type === 'text') {
+      return (
+        <div
+          {...baseProps}
+          style={{
+            ...baseProps.style,
+            fontFamily: element.style?.fontFamily || 'Inter',
+            fontSize: `${element.style?.fontSize || 16}px`,
+            fontWeight: element.style?.fontWeight || 'normal',
+            color: element.style?.color || '#000',
+            textAlign: (element.style?.textAlign as any) || 'center',
+            letterSpacing: element.style?.letterSpacing || 'normal',
+            textShadow: element.style?.textShadow,
+            filter: element.style?.filter,
+            mixBlendMode: element.style?.mixBlendMode as any,
+            width: `${element.width}px`,
+            height: `${element.height}px`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {element.content || displayText}
+        </div>
+      );
+    }
+
+    if (element.type === 'shape') {
+      if (element.subtype === 'circle') {
+        return (
+          <div
+            {...baseProps}
+            style={{
+              ...baseProps.style,
+              width: `${element.width}px`,
+              height: `${element.height}px`,
+              borderRadius: '50%',
+              background: element.style?.fill || '#ccc',
+              border: element.style?.stroke ? `${element.style?.strokeWidth || 1}px solid ${element.style.stroke}` : 'none',
+              filter: element.style?.filter,
+            }}
+          />
+        );
+      }
+
+      if (element.subtype === 'rectangle') {
+        return (
+          <div
+            {...baseProps}
+            style={{
+              ...baseProps.style,
+              width: `${element.width}px`,
+              height: `${element.height}px`,
+              background: element.style?.fill || '#ccc',
+              border: element.style?.stroke ? `${element.style?.strokeWidth || 1}px solid ${element.style.stroke}` : 'none',
+              filter: element.style?.filter,
+            }}
+          />
+        );
+      }
+
+      if (element.subtype === 'line') {
+        return (
+          <div
+            {...baseProps}
+            style={{
+              ...baseProps.style,
+              width: `${element.width}px`,
+              height: `${element.style?.strokeWidth || 2}px`,
+              background: element.style?.stroke || '#000',
+              transformOrigin: 'left center',
+            }}
+          />
+        );
+      }
+
+      // Per path e forme complesse, usa SVG
+      if (element.subtype === 'path' || element.style?.pathData) {
+        return (
+          <svg
+            {...baseProps}
+            width={element.width}
+            height={element.height}
+            style={{
+              ...baseProps.style,
+              overflow: 'visible'
+            }}
+          >
+            <path
+              d={element.style?.pathData || ''}
+              fill={element.style?.fill || 'none'}
+              stroke={element.style?.stroke || 'none'}
+              strokeWidth={element.style?.strokeWidth || 1}
+              strokeLinecap={element.style?.strokeLinecap as any}
+              strokeLinejoin={element.style?.strokeLinejoin as any}
+              filter={element.style?.filter}
+            />
+          </svg>
+        );
+      }
+    }
+
+    return null;
+  };
 
   // Calcola le dimensioni responsive
   const responsiveFontSize = Math.min(fontSize, 64);
@@ -125,8 +243,25 @@ export const LogoPreview: React.FC<LogoPreviewProps> = ({
               </div>
             )}
 
+            {/* Canvas Mode (Template) */}
+            {isCanvasMode && (config.elements || config.template?.elements) && (
+              <div 
+                className="relative"
+                style={{
+                  width: `${config.canvasSize?.width || config.template?.canvasSize?.width || 400}px`,
+                  height: `${config.canvasSize?.height || config.template?.canvasSize?.height || 300}px`,
+                  transform: 'scale(0.8)', // Scale down for preview
+                  transformOrigin: 'center center'
+                }}
+              >
+                {(config.elements || config.template?.elements || []).map((element, index) => 
+                  renderCanvasElement(element, index)
+                )}
+              </div>
+            )}
+
             {/* Text Only Mode (Default) */}
-            {(!isImageMode && !isHybridMode) && (
+            {(!isImageMode && !isHybridMode && !isCanvasMode) && (
               <div className={cn(
                 'transition-all duration-300',
                 layout === 'vertical' && 'space-y-4',
@@ -190,7 +325,10 @@ export const LogoPreview: React.FC<LogoPreviewProps> = ({
         <div className="absolute top-8 right-8 flex flex-col gap-2">
           {config.mode && (
             <div className="bg-white/80 backdrop-blur px-3 py-1 rounded-full text-xs font-medium border">
-              {config.mode === 'text' ? '📝 Testo' : config.mode === 'image' ? '🖼️ Immagine' : '🎨 Misto'}
+              {config.mode === 'text' ? '📝 Testo' : 
+               config.mode === 'image' ? '🖼️ Immagine' : 
+               config.mode === 'canvas' || config.mode === 'advanced' ? '🎨 Template' : 
+               '🎨 Misto'}
             </div>
           )}
           {config.layout && tagline && (

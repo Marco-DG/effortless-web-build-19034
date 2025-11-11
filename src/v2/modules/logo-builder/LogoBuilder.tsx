@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+import { ExtremeTemplateSelector } from './ExtremeTemplateSelector';
+import { PremiumFontSelector } from './PremiumFontSelector';
+import { PremiumFont } from './PremiumFonts';
 import { useAppStore } from '../../store/app-store';
 import { SidebarLayout } from '../../ui/Layout';
-import { Download, Eye, Type, Image, Square, Palette, Layers, RotateCw } from 'lucide-react';
+import { Download, Eye, Type, Image, Square, Palette, Layers, RotateCw, Sparkles, Crown } from 'lucide-react';
 
 interface LogoBuilderProps {
   onSwitchBuilder?: (builder: 'logo' | 'menu' | 'site') => void;
 }
 
-type ActiveTool = 'templates' | 'text' | 'style' | 'layout' | 'export';
+type ActiveTool = 'templates' | 'text' | 'style' | 'canvas' | 'layout' | 'export';
 
 export const LogoBuilder: React.FC<LogoBuilderProps> = ({ onSwitchBuilder }) => {
   const { activeProject, updateProject } = useAppStore();
@@ -73,9 +76,10 @@ export const LogoBuilder: React.FC<LogoBuilderProps> = ({ onSwitchBuilder }) => 
   const renderNavigation = () => (
     <div className="p-2 space-y-1">
       {[
-        { id: 'templates' as ActiveTool, icon: Palette, label: 'Template' },
-        { id: 'text' as ActiveTool, icon: Type, label: 'Testo' },
-        { id: 'style' as ActiveTool, icon: Square, label: 'Stile' },
+        { id: 'templates' as ActiveTool, icon: Crown, label: 'Template Estremi' },
+        { id: 'text' as ActiveTool, icon: Type, label: 'Font Premium' },
+        { id: 'style' as ActiveTool, icon: Palette, label: 'Stile' },
+        { id: 'canvas' as ActiveTool, icon: Sparkles, label: 'Canvas Avanzato' },
         { id: 'layout' as ActiveTool, icon: Layers, label: 'Layout' },
         { id: 'export' as ActiveTool, icon: Download, label: 'Export' }
       ].map((tool) => (
@@ -100,97 +104,33 @@ export const LogoBuilder: React.FC<LogoBuilderProps> = ({ onSwitchBuilder }) => 
 
   // Template Editor
   const renderTemplateEditor = () => (
-    <div className="p-4 space-y-6">
-      <div>
-        <h3 className="font-semibold mb-2">Template Logo</h3>
-        <p className="text-sm text-muted-foreground mb-4">
-          Scegli uno stile predefinito per il tuo logo
-        </p>
-      </div>
-
-      <div className="space-y-3">
-        {/* Template Wine Bar */}
-        <button
-          onClick={() => handleUpdateLogo({
-            mode: 'text',
-            text: activeProject.data.business.name,
-            font: 'Playfair Display',
-            size: 48,
-            color: '#8B4513',
-            tagline: 'Wine Bar',
-            layout: 'vertical'
-          })}
-          className="w-full p-4 border rounded-lg text-left hover:border-primary transition-colors"
-        >
-          <div className="font-medium text-sm mb-1">🍷 Wine Bar Elegante</div>
-          <div className="text-xs text-muted-foreground">Font serif elegante con colori caldi</div>
-        </button>
-
-        {/* Template Moderno */}
-        <button
-          onClick={() => handleUpdateLogo({
-            mode: 'text',
-            text: activeProject.data.business.name,
-            font: 'Inter',
-            size: 42,
-            color: '#2C3E50',
-            tagline: 'Restaurant',
-            layout: 'horizontal'
-          })}
-          className="w-full p-4 border rounded-lg text-left hover:border-primary transition-colors"
-        >
-          <div className="font-medium text-sm mb-1">🏢 Moderno Minimal</div>
-          <div className="text-xs text-muted-foreground">Design pulito e contemporaneo</div>
-        </button>
-
-        {/* Template Script */}
-        <button
-          onClick={() => handleUpdateLogo({
-            mode: 'text',
-            text: activeProject.data.business.name,
-            font: 'Dancing Script',
-            size: 52,
-            color: '#C0392B',
-            tagline: 'Autentica Cucina',
-            layout: 'vertical'
-          })}
-          className="w-full p-4 border rounded-lg text-left hover:border-primary transition-colors"
-        >
-          <div className="font-medium text-sm mb-1">✨ Script Elegante</div>
-          <div className="text-xs text-muted-foreground">Font corsivo per un tocco personale</div>
-        </button>
-
-        {/* Template Vintage */}
-        <button
-          onClick={() => handleUpdateLogo({
-            mode: 'text',
-            text: activeProject.data.business.name,
-            font: 'Merriweather',
-            size: 38,
-            color: '#8B4513',
-            tagline: 'EST. 1962',
-            layout: 'stacked'
-          })}
-          className="w-full p-4 border rounded-lg text-left hover:border-primary transition-colors"
-        >
-          <div className="font-medium text-sm mb-1">📜 Vintage Classico</div>
-          <div className="text-xs text-muted-foreground">Stile retrò con carattere tradizionale</div>
-        </button>
-      </div>
+    <div className="p-4">
+      <ExtremeTemplateSelector 
+        onSelectTemplate={(template) => {
+          console.log('Template selezionato:', template);
+          // TODO: Implementare applicazione template al logo
+          handleUpdateLogo({
+            mode: 'canvas',
+            template: template,
+            elements: template.elements
+          });
+        }}
+      />
     </div>
   );
 
   // Text Editor
   const renderTextEditor = () => (
-    <div className="p-4 space-y-6">
-      <div>
-        <h3 className="font-semibold mb-2">Testo e Contenuto</h3>
-        <p className="text-sm text-muted-foreground mb-4">
-          Personalizza il testo del tuo logo
-        </p>
-      </div>
+    <div className="space-y-6">
+      {/* Controlli di base per il testo */}
+      <div className="p-4 space-y-4 border-b">
+        <div>
+          <h3 className="font-semibold mb-2">Contenuto del Logo</h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            Personalizza il testo del tuo logo
+          </p>
+        </div>
 
-      <div className="space-y-4">
         <div>
           <label className="block text-sm font-medium mb-2">Testo Principale</label>
           <input
@@ -212,36 +152,28 @@ export const LogoBuilder: React.FC<LogoBuilderProps> = ({ onSwitchBuilder }) => 
             placeholder="Wine Bar, Restaurant, etc."
           />
         </div>
+      </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-2">Font</label>
-          <select
-            value={logoConfig.font || 'Inter'}
-            onChange={(e) => handleUpdateLogo({ font: e.target.value })}
-            className="w-full px-3 py-2 border rounded-lg"
-          >
-            <option value="Playfair Display">Playfair Display (Elegante)</option>
-            <option value="Inter">Inter (Moderno)</option>
-            <option value="Merriweather">Merriweather (Classico)</option>
-            <option value="Dancing Script">Dancing Script (Script)</option>
-            <option value="Montserrat">Montserrat (Sans Serif)</option>
-            <option value="Cormorant Garamond">Cormorant Garamond (Serif)</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            Dimensione ({logoConfig.size || 48}px)
-          </label>
-          <input
-            type="range"
-            min="24"
-            max="80"
-            value={logoConfig.size || 48}
-            onChange={(e) => handleUpdateLogo({ size: parseInt(e.target.value) })}
-            className="w-full"
-          />
-        </div>
+      {/* Selettore font premium */}
+      <div className="px-4">
+        <PremiumFontSelector
+          selectedFont={logoConfig.font}
+          fontSize={logoConfig.size}
+          fontWeight={logoConfig.fontWeight || '400'}
+          onFontSelect={(font: PremiumFont) => {
+            handleUpdateLogo({ 
+              font: font.family,
+              fontCategory: font.category,
+              fontRarity: font.rarity 
+            });
+          }}
+          onFontSizeChange={(size: number) => {
+            handleUpdateLogo({ size });
+          }}
+          onWeightChange={(weight: string) => {
+            handleUpdateLogo({ fontWeight: weight });
+          }}
+        />
       </div>
     </div>
   );
@@ -426,12 +358,140 @@ export const LogoBuilder: React.FC<LogoBuilderProps> = ({ onSwitchBuilder }) => 
     </div>
   );
 
+  // Canvas Editor Avanzato
+  const renderCanvasEditor = () => (
+    <div className="p-4 space-y-6">
+      <div>
+        <h3 className="font-semibold mb-2 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          ✨ Canvas Avanzato
+        </h3>
+        <p className="text-sm text-muted-foreground mb-4">
+          Controlli professionali per la manipolazione degli elementi
+        </p>
+      </div>
+
+      {/* Modalità di editing */}
+      <div className="space-y-3">
+        <label className="block text-sm font-medium">Modalità di Editing</label>
+        <div className="grid grid-cols-2 gap-2">
+          <button className="p-3 border rounded-lg text-left hover:border-primary transition-colors">
+            <div className="text-sm font-medium">🎯 Selezione</div>
+            <div className="text-xs text-muted-foreground">Seleziona e modifica elementi</div>
+          </button>
+          <button className="p-3 border rounded-lg text-left hover:border-primary transition-colors">
+            <div className="text-sm font-medium">✍️ Testo</div>
+            <div className="text-xs text-muted-foreground">Aggiungi elementi testo</div>
+          </button>
+          <button className="p-3 border rounded-lg text-left hover:border-primary transition-colors">
+            <div className="text-sm font-medium">🎨 Forme</div>
+            <div className="text-xs text-muted-foreground">Inserisci forme geometriche</div>
+          </button>
+          <button className="p-3 border rounded-lg text-left hover:border-primary transition-colors">
+            <div className="text-sm font-medium">🖼️ Immagini</div>
+            <div className="text-xs text-muted-foreground">Carica e posiziona immagini</div>
+          </button>
+        </div>
+      </div>
+
+      {/* Controlli di trasformazione */}
+      <div className="space-y-3">
+        <label className="block text-sm font-medium">Trasformazioni Avanzate</label>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-xs">Rotazione:</span>
+            <input type="range" min="-180" max="180" className="flex-1 mx-3" />
+            <span className="text-xs w-8">0°</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-xs">Scala X:</span>
+            <input type="range" min="0.1" max="3" step="0.1" className="flex-1 mx-3" />
+            <span className="text-xs w-8">1x</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-xs">Scala Y:</span>
+            <input type="range" min="0.1" max="3" step="0.1" className="flex-1 mx-3" />
+            <span className="text-xs w-8">1x</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-xs">Opacità:</span>
+            <input type="range" min="0" max="100" className="flex-1 mx-3" />
+            <span className="text-xs w-8">100%</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Effetti avanzati */}
+      <div className="space-y-3">
+        <label className="block text-sm font-medium">Effetti Professionali</label>
+        <div className="grid grid-cols-1 gap-2">
+          <button className="p-2 border rounded text-left text-xs hover:border-primary transition-colors">
+            💫 Ombra Esterna
+          </button>
+          <button className="p-2 border rounded text-left text-xs hover:border-primary transition-colors">
+            🌟 Ombra Interna
+          </button>
+          <button className="p-2 border rounded text-left text-xs hover:border-primary transition-colors">
+            🎨 Gradiente
+          </button>
+          <button className="p-2 border rounded text-left text-xs hover:border-primary transition-colors">
+            ✨ Contorno
+          </button>
+          <button className="p-2 border rounded text-left text-xs hover:border-primary transition-colors">
+            🔥 Bagliore
+          </button>
+        </div>
+      </div>
+
+      {/* Guide e snap */}
+      <div className="space-y-3">
+        <label className="block text-sm font-medium">Guide e Allineamento</label>
+        <div className="space-y-2">
+          <label className="flex items-center space-x-2">
+            <input type="checkbox" className="rounded" />
+            <span className="text-xs">Snap alla griglia</span>
+          </label>
+          <label className="flex items-center space-x-2">
+            <input type="checkbox" className="rounded" />
+            <span className="text-xs">Guide intelligenti</span>
+          </label>
+          <label className="flex items-center space-x-2">
+            <input type="checkbox" className="rounded" />
+            <span className="text-xs">Righelli</span>
+          </label>
+        </div>
+      </div>
+
+      {/* Livelli */}
+      <div className="space-y-3">
+        <label className="block text-sm font-medium">Gestione Livelli</label>
+        <div className="border rounded-lg p-2 space-y-1 max-h-32 overflow-y-auto">
+          <div className="flex items-center justify-between p-1 rounded text-xs bg-muted">
+            <span>👁️ Testo Principale</span>
+            <button className="text-xs">🗑️</button>
+          </div>
+          <div className="flex items-center justify-between p-1 rounded text-xs">
+            <span>👁️ Sottotitolo</span>
+            <button className="text-xs">🗑️</button>
+          </div>
+          <div className="flex items-center justify-between p-1 rounded text-xs">
+            <span>👁️ Background</span>
+            <button className="text-xs">🗑️</button>
+          </div>
+        </div>
+        <button className="w-full p-2 border border-dashed rounded-lg text-xs text-muted-foreground hover:border-primary transition-colors">
+          + Aggiungi Livello
+        </button>
+      </div>
+    </div>
+  );
+
   // Content router
   const renderContent = () => {
     switch (activeTool) {
       case 'templates': return renderTemplateEditor();
       case 'text': return renderTextEditor();
       case 'style': return renderStyleEditor();
+      case 'canvas': return renderCanvasEditor();
       case 'layout': return renderLayoutEditor();
       case 'export': return renderExportEditor();
       default: return null;

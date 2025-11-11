@@ -3,7 +3,7 @@
 export interface LogoTemplate {
   id: string;
   name: string;
-  category: 'minimalist' | 'vintage' | 'modern' | 'elegant' | 'playful' | 'restaurant' | 'wine-bar';
+  category: 'minimalist' | 'vintage' | 'modern' | 'elegant' | 'playful' | 'restaurant' | 'wine-bar' | 'luxury' | 'experimental' | 'artisanal';
   preview: string;
   elements: import('../../types').CanvasElement[];
   canvasSize: {

@@ -1,0 +1,728 @@
+import { LogoTemplate } from './types';
+
+// Template ESTREMI e ULTRA PARTICOLARI - Design Award-Winning
+// Questi sono design che spingono i confini della creatività
+
+export const EXTREME_DESIGN_TEMPLATES: LogoTemplate[] = [
+  // === TIPOGRAFIA IMPOSSIBILE ===
+  {
+    id: 'impossible-typography',
+    name: 'Impossible Typography',
+    category: 'modern',
+    preview: 'data:image/svg+xml;base64,...',
+    canvasSize: { width: 600, height: 400 },
+    tags: ['impossible', 'typography', 'illusion', 'award-winning'],
+    elements: [
+      // Background con gradient complesso
+      {
+        id: 'complex-bg',
+        type: 'shape',
+        subtype: 'rectangle',
+        x: 0,
+        y: 0,
+        width: 600,
+        height: 400,
+        rotation: 0,
+        style: {
+          fill: 'conic-gradient(from 45deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%)',
+          stroke: 'none',
+        },
+        zIndex: 0,
+      },
+      // Lettera "M" con effetto Penrose (impossibile)
+      {
+        id: 'impossible-m-1',
+        type: 'shape',
+        subtype: 'path',
+        x: 200,
+        y: 150,
+        width: 80,
+        height: 100,
+        rotation: 0,
+        style: {
+          fill: 'none',
+          stroke: '#ffffff',
+          strokeWidth: 8,
+          strokeLinecap: 'round',
+          strokeLinejoin: 'round',
+          pathData: 'M 0 100 L 0 0 L 20 40 L 40 0 L 40 100',
+          filter: 'drop-shadow(0 0 20px rgba(255,255,255,0.5))',
+        },
+        zIndex: 2,
+      },
+      // Elemento che crea l'illusione ottica
+      {
+        id: 'illusion-element',
+        type: 'shape',
+        subtype: 'path',
+        x: 220,
+        y: 170,
+        width: 40,
+        height: 60,
+        rotation: 0,
+        style: {
+          fill: 'rgba(255,255,255,0.3)',
+          stroke: '#ffffff',
+          strokeWidth: 4,
+          pathData: 'M 0 0 L 20 20 L 40 0 L 40 60 L 20 40 L 0 60 Z',
+        },
+        zIndex: 3,
+      },
+      // Testo che "attraversa" la geometria impossibile
+      {
+        id: 'impossible-text',
+        type: 'text',
+        content: 'MIRAGE',
+        x: 300,
+        y: 200,
+        width: 200,
+        height: 50,
+        rotation: 0,
+        style: {
+          fontFamily: 'Orbitron',
+          fontSize: 42,
+          fontWeight: '900',
+          color: '#ffffff',
+          textAlign: 'center',
+          letterSpacing: '6px',
+          textShadow: '0 0 30px rgba(255,255,255,0.8)',
+          mixBlendMode: 'difference',
+        },
+        zIndex: 4,
+      },
+    ],
+  },
+
+  // === SURREALISMO CULINARIO ===
+  {
+    id: 'surreal-culinary',
+    name: 'Surreal Culinary',
+    category: 'elegant',
+    preview: 'data:image/svg+xml;base64,...',
+    canvasSize: { width: 500, height: 500 },
+    tags: ['surreal', 'dalí', 'culinary', 'artistic'],
+    elements: [
+      // Background che simula un cielo di Dalí
+      {
+        id: 'dali-sky',
+        type: 'shape',
+        subtype: 'rectangle',
+        x: 0,
+        y: 0,
+        width: 500,
+        height: 500,
+        rotation: 0,
+        style: {
+          fill: 'linear-gradient(180deg, #ffd89b 0%, #19547b 50%, #1a1a2e 100%)',
+          stroke: 'none',
+        },
+        zIndex: 0,
+      },
+      // Orologio che si scioglie (forchetta che si piega)
+      {
+        id: 'melting-fork',
+        type: 'shape',
+        subtype: 'path',
+        x: 150,
+        y: 200,
+        width: 200,
+        height: 150,
+        rotation: 0,
+        style: {
+          fill: '#c0c0c0',
+          stroke: '#999999',
+          strokeWidth: 2,
+          pathData: 'M 50 0 L 55 0 L 55 80 Q 55 100 75 110 Q 100 120 130 115 Q 160 110 180 130 Q 190 140 185 150 L 50 150 Z',
+          filter: 'drop-shadow(5px 5px 15px rgba(0,0,0,0.3))',
+        },
+        zIndex: 2,
+      },
+      // Denti della forchetta che si sciolgono
+      {
+        id: 'fork-tines',
+        type: 'shape',
+        subtype: 'path',
+        x: 190,
+        y: 180,
+        width: 30,
+        height: 40,
+        rotation: 0,
+        style: {
+          fill: '#c0c0c0',
+          stroke: '#999999',
+          strokeWidth: 1,
+          pathData: 'M 5 0 L 7 0 L 7 20 Q 7 30 15 35 L 25 40 M 15 0 L 17 0 L 17 25 Q 17 35 22 38 M 25 0 L 27 0 L 27 20',
+        },
+        zIndex: 3,
+      },
+      // Ombra surreale
+      {
+        id: 'surreal-shadow',
+        type: 'shape',
+        subtype: 'ellipse',
+        x: 120,
+        y: 380,
+        width: 260,
+        height: 60,
+        rotation: -15,
+        style: {
+          fill: 'rgba(0,0,0,0.2)',
+          stroke: 'none',
+        },
+        zIndex: 1,
+      },
+      // Nome del ristorante con font surrealista
+      {
+        id: 'surreal-name',
+        type: 'text',
+        content: 'DALÍ BISTRO',
+        x: 250,
+        y: 420,
+        width: 300,
+        height: 50,
+        rotation: 0,
+        style: {
+          fontFamily: 'Creepster',
+          fontSize: 36,
+          fontWeight: '400',
+          color: '#2c3e50',
+          textAlign: 'center',
+          letterSpacing: '3px',
+          transform: 'perspective(100px) rotateX(15deg)',
+        },
+        zIndex: 3,
+      },
+    ],
+  },
+
+  // === DECOSTRUZIONE BAUHAUS ===
+  {
+    id: 'bauhaus-deconstruction',
+    name: 'Bauhaus Deconstruction',
+    category: 'modern',
+    preview: 'data:image/svg+xml;base64,...',
+    canvasSize: { width: 400, height: 400 },
+    tags: ['bauhaus', 'deconstruction', 'geometric', 'modernist'],
+    elements: [
+      // Background bianco puro
+      {
+        id: 'pure-white',
+        type: 'shape',
+        subtype: 'rectangle',
+        x: 0,
+        y: 0,
+        width: 400,
+        height: 400,
+        rotation: 0,
+        style: {
+          fill: '#ffffff',
+          stroke: 'none',
+        },
+        zIndex: 0,
+      },
+      // Cerchio rosso primario Bauhaus
+      {
+        id: 'bauhaus-circle',
+        type: 'shape',
+        subtype: 'circle',
+        x: 80,
+        y: 80,
+        width: 120,
+        height: 120,
+        rotation: 0,
+        style: {
+          fill: '#ff0000',
+          stroke: 'none',
+        },
+        zIndex: 1,
+      },
+      // Triangolo giallo che si interseca
+      {
+        id: 'bauhaus-triangle',
+        type: 'shape',
+        subtype: 'path',
+        x: 160,
+        y: 120,
+        width: 140,
+        height: 140,
+        rotation: 0,
+        style: {
+          fill: '#ffff00',
+          stroke: 'none',
+          pathData: 'M 70 0 L 140 120 L 0 120 Z',
+          mixBlendMode: 'multiply',
+        },
+        zIndex: 2,
+      },
+      // Quadrato blu che completa la composizione
+      {
+        id: 'bauhaus-square',
+        type: 'shape',
+        subtype: 'rectangle',
+        x: 240,
+        y: 200,
+        width: 80,
+        height: 80,
+        rotation: 45,
+        style: {
+          fill: '#0000ff',
+          stroke: 'none',
+        },
+        zIndex: 3,
+      },
+      // Linee nere che strutturano la composizione
+      {
+        id: 'structure-line-1',
+        type: 'shape',
+        subtype: 'rectangle',
+        x: 0,
+        y: 198,
+        width: 400,
+        height: 4,
+        rotation: 0,
+        style: {
+          fill: '#000000',
+          stroke: 'none',
+        },
+        zIndex: 4,
+      },
+      {
+        id: 'structure-line-2',
+        type: 'shape',
+        subtype: 'rectangle',
+        x: 198,
+        y: 0,
+        width: 4,
+        height: 400,
+        rotation: 0,
+        style: {
+          fill: '#000000',
+          stroke: 'none',
+        },
+        zIndex: 4,
+      },
+      // Tipografia Bauhaus ultra-semplificata
+      {
+        id: 'bauhaus-text',
+        type: 'text',
+        content: 'HAUS',
+        x: 200,
+        y: 340,
+        width: 200,
+        height: 40,
+        rotation: 0,
+        style: {
+          fontFamily: 'Helvetica',
+          fontSize: 32,
+          fontWeight: '900',
+          color: '#000000',
+          textAlign: 'center',
+          letterSpacing: '8px',
+        },
+        zIndex: 5,
+      },
+    ],
+  },
+
+  // === BIOMECCANICO CYBERPUNK ===
+  {
+    id: 'biomechanical-cyberpunk',
+    name: 'Biomechanical Cyberpunk',
+    category: 'modern',
+    preview: 'data:image/svg+xml;base64,...',
+    canvasSize: { width: 600, height: 400 },
+    tags: ['cyberpunk', 'biomechanical', 'giger', 'futuristic'],
+    elements: [
+      // Background cyber con glitch
+      {
+        id: 'cyber-bg',
+        type: 'shape',
+        subtype: 'rectangle',
+        x: 0,
+        y: 0,
+        width: 600,
+        height: 400,
+        rotation: 0,
+        style: {
+          fill: 'linear-gradient(135deg, #0a0a0a 0%, #1a0033 30%, #330066 60%, #000000 100%)',
+          stroke: 'none',
+        },
+        zIndex: 0,
+      },
+      // Struttura biomeccanica centrale
+      {
+        id: 'bio-structure-1',
+        type: 'shape',
+        subtype: 'path',
+        x: 200,
+        y: 150,
+        width: 200,
+        height: 100,
+        rotation: 0,
+        style: {
+          fill: 'none',
+          stroke: '#00ff41',
+          strokeWidth: 3,
+          pathData: 'M 0 50 Q 50 0 100 50 Q 150 100 200 50 M 20 50 Q 70 20 120 50 Q 170 80 200 50',
+          filter: 'drop-shadow(0 0 10px #00ff41)',
+        },
+        zIndex: 2,
+      },
+      // Connettori neurali
+      {
+        id: 'neural-connector-1',
+        type: 'shape',
+        subtype: 'circle',
+        x: 220,
+        y: 180,
+        width: 8,
+        height: 8,
+        rotation: 0,
+        style: {
+          fill: '#ff0080',
+          stroke: '#ffffff',
+          strokeWidth: 1,
+          filter: 'drop-shadow(0 0 5px #ff0080)',
+        },
+        zIndex: 3,
+      },
+      {
+        id: 'neural-connector-2',
+        type: 'shape',
+        subtype: 'circle',
+        x: 270,
+        y: 160,
+        width: 6,
+        height: 6,
+        rotation: 0,
+        style: {
+          fill: '#0080ff',
+          stroke: '#ffffff',
+          strokeWidth: 1,
+          filter: 'drop-shadow(0 0 5px #0080ff)',
+        },
+        zIndex: 3,
+      },
+      {
+        id: 'neural-connector-3',
+        type: 'shape',
+        subtype: 'circle',
+        x: 320,
+        y: 185,
+        width: 5,
+        height: 5,
+        rotation: 0,
+        style: {
+          fill: '#ffff00',
+          stroke: '#ffffff',
+          strokeWidth: 1,
+          filter: 'drop-shadow(0 0 5px #ffff00)',
+        },
+        zIndex: 3,
+      },
+      // Cables che collegano i connettori
+      {
+        id: 'bio-cable-1',
+        type: 'shape',
+        subtype: 'path',
+        x: 224,
+        y: 184,
+        width: 50,
+        height: 30,
+        rotation: 0,
+        style: {
+          fill: 'none',
+          stroke: '#00ff41',
+          strokeWidth: 2,
+          pathData: 'M 0 0 Q 25 -15 50 -24',
+        },
+        zIndex: 1,
+      },
+      {
+        id: 'bio-cable-2',
+        type: 'shape',
+        subtype: 'path',
+        x: 274,
+        y: 164,
+        width: 50,
+        height: 30,
+        rotation: 0,
+        style: {
+          fill: 'none',
+          stroke: '#ff0080',
+          strokeWidth: 1.5,
+          pathData: 'M 0 0 Q 25 15 50 21',
+        },
+        zIndex: 1,
+      },
+      // Testo cyber con effetto glitch
+      {
+        id: 'cyber-text',
+        type: 'text',
+        content: 'NEXUS',
+        x: 300,
+        y: 280,
+        width: 200,
+        height: 50,
+        rotation: 0,
+        style: {
+          fontFamily: 'Courier New',
+          fontSize: 38,
+          fontWeight: '900',
+          color: '#00ff41',
+          textAlign: 'center',
+          letterSpacing: '4px',
+          textShadow: '2px 0 #ff0080, -2px 0 #0080ff, 0 2px #ffff00',
+          filter: 'drop-shadow(0 0 15px #00ff41)',
+        },
+        zIndex: 4,
+      },
+      // Sottotitolo con effetto scan-line
+      {
+        id: 'cyber-subtitle',
+        type: 'text',
+        content: 'NEURAL GASTRONOMY',
+        x: 300,
+        y: 310,
+        width: 250,
+        height: 20,
+        rotation: 0,
+        style: {
+          fontFamily: 'Courier New',
+          fontSize: 10,
+          fontWeight: '400',
+          color: '#80ff80',
+          textAlign: 'center',
+          letterSpacing: '2px',
+          opacity: 0.8,
+        },
+        zIndex: 4,
+      },
+    ],
+  },
+
+  // === MINIMAL PERFECTION GIAPPONESE ===
+  {
+    id: 'japanese-minimal-perfection',
+    name: 'Japanese Minimal Perfection',
+    category: 'elegant',
+    preview: 'data:image/svg+xml;base64,...',
+    canvasSize: { width: 400, height: 300 },
+    tags: ['japanese', 'minimal', 'zen', 'perfection'],
+    elements: [
+      // Background con il perfetto bianco giapponese
+      {
+        id: 'zen-white',
+        type: 'shape',
+        subtype: 'rectangle',
+        x: 0,
+        y: 0,
+        width: 400,
+        height: 300,
+        rotation: 0,
+        style: {
+          fill: '#fefefe',
+          stroke: 'none',
+        },
+        zIndex: 0,
+      },
+      // Cerchio zen perfetto (enso)
+      {
+        id: 'enso-circle',
+        type: 'shape',
+        subtype: 'path',
+        x: 150,
+        y: 80,
+        width: 100,
+        height: 100,
+        rotation: 0,
+        style: {
+          fill: 'none',
+          stroke: '#2c2c2c',
+          strokeWidth: 3,
+          strokeLinecap: 'round',
+          pathData: 'M 50 5 Q 90 10 95 50 Q 90 90 50 95 Q 10 90 5 50 Q 10 10 45 5',
+          opacity: 0.8,
+        },
+        zIndex: 2,
+      },
+      // Singolo carattere kanji stilizzato per "gusto"
+      {
+        id: 'kanji-taste',
+        type: 'text',
+        content: '味',
+        x: 200,
+        y: 140,
+        width: 60,
+        height: 60,
+        rotation: 0,
+        style: {
+          fontFamily: 'Noto Serif JP',
+          fontSize: 48,
+          fontWeight: '300',
+          color: '#2c2c2c',
+          textAlign: 'center',
+        },
+        zIndex: 3,
+      },
+      // Nome del ristorante in katakana perfetto
+      {
+        id: 'japanese-name',
+        type: 'text',
+        content: 'ミニマル',
+        x: 200,
+        y: 220,
+        width: 150,
+        height: 30,
+        rotation: 0,
+        style: {
+          fontFamily: 'Noto Sans JP',
+          fontSize: 18,
+          fontWeight: '300',
+          color: '#666666',
+          textAlign: 'center',
+          letterSpacing: '2px',
+        },
+        zIndex: 2,
+      },
+      // Traduzione minimalista
+      {
+        id: 'minimal-translation',
+        type: 'text',
+        content: 'MINIMAL',
+        x: 200,
+        y: 245,
+        width: 150,
+        height: 15,
+        rotation: 0,
+        style: {
+          fontFamily: 'Helvetica Neue',
+          fontSize: 8,
+          fontWeight: '300',
+          color: '#999999',
+          textAlign: 'center',
+          letterSpacing: '4px',
+        },
+        zIndex: 2,
+      },
+    ],
+  },
+
+  // === ART NOUVEAU ESTREMO ===
+  {
+    id: 'extreme-art-nouveau',
+    name: 'Extreme Art Nouveau',
+    category: 'vintage',
+    preview: 'data:image/svg+xml;base64,...',
+    canvasSize: { width: 500, height: 600 },
+    tags: ['art-nouveau', 'mucha', 'organic', 'ornamental'],
+    elements: [
+      // Background con texture art nouveau
+      {
+        id: 'nouveau-bg',
+        type: 'shape',
+        subtype: 'rectangle',
+        x: 0,
+        y: 0,
+        width: 500,
+        height: 600,
+        rotation: 0,
+        style: {
+          fill: 'linear-gradient(180deg, #f4e4bc 0%, #e8d5b7 25%, #f0e68c 50%, #daa520 75%, #b8860b 100%)',
+          stroke: 'none',
+        },
+        zIndex: 0,
+      },
+      // Cornice ornamentale Art Nouveau
+      {
+        id: 'nouveau-frame-top',
+        type: 'shape',
+        subtype: 'path',
+        x: 50,
+        y: 50,
+        width: 400,
+        height: 80,
+        rotation: 0,
+        style: {
+          fill: 'none',
+          stroke: '#8b4513',
+          strokeWidth: 3,
+          pathData: 'M 0 40 Q 100 0 200 40 Q 300 80 400 40 Q 350 20 300 40 Q 200 60 100 40 Q 50 20 0 40',
+        },
+        zIndex: 1,
+      },
+      // Elemento floreale sinuoso
+      {
+        id: 'art-nouveau-vine-1',
+        type: 'shape',
+        subtype: 'path',
+        x: 100,
+        y: 200,
+        width: 300,
+        height: 200,
+        rotation: 0,
+        style: {
+          fill: 'none',
+          stroke: '#228b22',
+          strokeWidth: 4,
+          pathData: 'M 0 100 Q 50 50 100 100 Q 150 150 200 100 Q 250 50 300 100 Q 280 120 250 100 Q 200 80 150 100 Q 100 120 50 100 Q 20 80 0 100',
+        },
+        zIndex: 2,
+      },
+      // Fiori ornamentali
+      {
+        id: 'nouveau-flower-1',
+        type: 'shape',
+        subtype: 'path',
+        x: 180,
+        y: 280,
+        width: 40,
+        height: 40,
+        rotation: 0,
+        style: {
+          fill: '#dc143c',
+          stroke: '#8b0000',
+          strokeWidth: 1,
+          pathData: 'M 20 20 Q 10 10 0 20 Q 10 30 20 20 Q 30 10 40 20 Q 30 30 20 20 M 20 20 Q 15 5 20 0 Q 25 5 20 20 Q 15 35 20 40 Q 25 35 20 20',
+        },
+        zIndex: 3,
+      },
+      // Testo Art Nouveau con font ornamentale
+      {
+        id: 'nouveau-text',
+        type: 'text',
+        content: 'CAFÉ MUCHA',
+        x: 250,
+        y: 450,
+        width: 300,
+        height: 60,
+        rotation: 0,
+        style: {
+          fontFamily: 'Cinzel Decorative',
+          fontSize: 32,
+          fontWeight: '600',
+          color: '#8b4513',
+          textAlign: 'center',
+          letterSpacing: '2px',
+        },
+        zIndex: 4,
+      },
+    ],
+  },
+];
+
+// Combina tutti i template estremi
+export const getAllExtremeTemplates = () => EXTREME_DESIGN_TEMPLATES;
+
+// Funzione per template per difficoltà di realizzazione
+export const getTemplatesByComplexity = (level: 'extreme' | 'master' | 'legendary') => {
+  const complexityMap = {
+    extreme: ['impossible-typography', 'bauhaus-deconstruction'],
+    master: ['surreal-culinary', 'biomechanical-cyberpunk', 'extreme-art-nouveau'],
+    legendary: ['japanese-minimal-perfection'],
+  };
+  
+  return EXTREME_DESIGN_TEMPLATES.filter(template => 
+    complexityMap[level].includes(template.id)
+  );
+};

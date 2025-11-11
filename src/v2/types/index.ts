@@ -26,9 +26,12 @@ export interface Project {
 
 // Logo Builder Types
 export interface LogoConfig {
-  mode: 'text' | 'image' | 'hybrid' | 'advanced';
+  mode: 'text' | 'image' | 'hybrid' | 'advanced' | 'canvas';
   text?: string;
   font?: string;
+  fontWeight?: string;
+  fontCategory?: string;
+  fontRarity?: string;
   size?: number;
   color?: string;
   imageUrl?: string;
@@ -36,6 +39,10 @@ export interface LogoConfig {
   layout?: 'horizontal' | 'vertical' | 'stacked';
   templateId?: string; // Template ID for current design
   selectedElement?: string; // Currently selected element in canvas
+  
+  // Template data
+  template?: any; // Template completo selezionato
+  elements?: CanvasElement[]; // Elementi del template
   
   // Advanced template elements (for canvas mode)
   advancedElements?: any[]; // Advanced logo elements
@@ -53,15 +60,48 @@ export interface LogoConfig {
 export interface CanvasElement {
   id: string;
   type: 'text' | 'image' | 'shape';
+  subtype?: string; // Per forme specifiche (circle, rectangle, line, path, etc.)
   x: number;
   y: number;
   width: number;
   height: number;
   rotation: number;
   zIndex: number;
-  locked: boolean;
-  selected: boolean;
+  locked?: boolean;
+  selected?: boolean;
   opacity?: number;
+  
+  // Per elementi text
+  content?: string;
+  
+  // Stili generici per tutti gli elementi
+  style?: {
+    // Text styles
+    fontFamily?: string;
+    fontSize?: number;
+    fontWeight?: string;
+    color?: string;
+    textAlign?: 'left' | 'center' | 'right';
+    letterSpacing?: string;
+    
+    // Shape styles
+    fill?: string;
+    stroke?: string;
+    strokeWidth?: number;
+    strokeLinecap?: string;
+    strokeLinejoin?: string;
+    strokeDasharray?: string;
+    pathData?: string; // Per path SVG
+    
+    // Effects
+    filter?: string;
+    textShadow?: string;
+    mixBlendMode?: string;
+    transform?: string;
+    
+    // Altri
+    [key: string]: any;
+  };
 }
 
 export interface TextElement extends CanvasElement {
