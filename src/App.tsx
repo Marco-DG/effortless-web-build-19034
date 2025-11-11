@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Index from "./pages/Index";
 import Preview from "./pages/Preview";
+import TestV2 from "./TestV2";
 import { CursorGlow } from "@/components/visual/CursorGlow";
 import { AICommandPalette } from "@/components/ai/AICommandPalette";
 import NotFound from "./pages/NotFound";
@@ -27,6 +28,7 @@ const RouteWrapper = () => {
         <Routes location={location}>
           <Route path="/" element={<Index />} />
           <Route path="/preview" element={<Preview />} />
+          <Route path="/v2" element={<TestV2 />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </motion.div>
