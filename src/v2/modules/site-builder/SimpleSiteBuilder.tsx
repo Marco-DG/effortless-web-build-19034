@@ -9,6 +9,7 @@ import {
 import { getAllFonts, ensureGoogleFontLoaded } from '@/lib/fonts';
 import { OptionList } from '@/components/ui/option-list';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { NewsletterEditor, DeliveryEditor, ContactEditor, HoursEditor, LocationEditor } from './site-editors';
 
 // Sezioni semplici - ogni sezione = un componente template
 const TEMPLATE_SECTIONS = [
@@ -19,6 +20,8 @@ const TEMPLATE_SECTIONS = [
   // CONTENUTI
   { id: 'about', label: 'Chi siamo', icon: Info, category: 'content' },
   { id: 'gallery', label: 'Galleria', icon: Images, category: 'content' },
+  { id: 'features', label: 'Caratteristiche', icon: Coffee, category: 'content' },
+  { id: 'newsletter', label: 'Newsletter', icon: Mail, category: 'content' },
   
   // INFORMAZIONI
   { id: 'contact', label: 'Contatti', icon: Phone, category: 'info' },
@@ -53,12 +56,22 @@ export const SimpleSiteBuilder: React.FC<SimpleSiteBuilderProps> = ({ onSwitchBu
         return <AboutEditor project={activeProject} onUpdate={updateProject} />;
       case 'gallery':
         return <GalleryEditor project={activeProject} onUpdate={updateProject} />;
+      case 'features':
+        return <FeaturesEditor project={activeProject} onUpdate={updateProject} />;
+      case 'newsletter':
+        return <NewsletterEditor project={activeProject} onUpdate={updateProject} />;
       case 'reviews':
         return <ReviewsEditor project={activeProject} onUpdate={updateProject} />;
+      case 'events':
+        return <EventsEditor project={activeProject} onUpdate={updateProject} />;
+      case 'delivery':
+        return <DeliveryEditor project={activeProject} onUpdate={updateProject} />;
       case 'contact':
         return <ContactEditor project={activeProject} onUpdate={updateProject} />;
       case 'hours':
         return <HoursEditor project={activeProject} onUpdate={updateProject} />;
+      case 'location':
+        return <LocationEditor project={activeProject} onUpdate={updateProject} />;
       default:
         return <div className="p-6 text-center text-muted-foreground">Sezione in sviluppo...</div>;
     }
@@ -436,9 +449,353 @@ const HeroEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   );
 };
 
-// Placeholder per altri editor
-const AboutEditor: React.FC<EditorProps> = () => <div className="text-center py-8 text-muted-foreground">Editor Chi Siamo - In sviluppo</div>;
-const GalleryEditor: React.FC<EditorProps> = () => <div className="text-center py-8 text-muted-foreground">Editor Galleria - In sviluppo</div>;
-const ReviewsEditor: React.FC<EditorProps> = () => <div className="text-center py-8 text-muted-foreground">Editor Recensioni - In sviluppo</div>;
-const ContactEditor: React.FC<EditorProps> = () => <div className="text-center py-8 text-muted-foreground">Editor Contatti - In sviluppo</div>;
-const HoursEditor: React.FC<EditorProps> = () => <div className="text-center py-8 text-muted-foreground">Editor Orari - In sviluppo</div>;
+const AboutEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
+  const about = project.data.site?.sections?.find((s: any) => s.type === 'about')?.data || {};
+  
+  const updateAboutSection = (updates: any) => {
+    const sections = project.data.site?.sections || [];
+    const aboutSection = sections.find((s: any) => s.type === 'about');
+    if (aboutSection) {
+      aboutSection.data = { ...aboutSection.data, ...updates };
+    } else {
+      sections.push({
+        id: 'about_main',
+        type: 'about',
+        enabled: true,
+        order: 1,
+        data: updates
+      });
+    }
+    onUpdate({ site: { ...project.data.site, sections } });
+  };
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h4 className="font-semibold mb-4">Chi Siamo</h4>
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-2">Titolo Sezione</label>
+            <input 
+              type="text"
+              value={about.title || 'Chi Siamo'}
+              onChange={(e) => updateAboutSection({ title: e.target.value })}
+              className="w-full px-3 py-2 border rounded-lg"
+              placeholder="Chi Siamo"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium mb-2">Contenuto</label>
+            <textarea 
+              value={about.content || ''}
+              onChange={(e) => updateAboutSection({ content: e.target.value })}
+              rows={6}
+              className="w-full px-3 py-2 border rounded-lg"
+              placeholder="Raccontaci la storia del vostro ristorante, la vostra filosofia culinaria e quello che vi rende speciali..."
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Immagine URL</label>
+            <input 
+              type="url"
+              value={about.image || ''}
+              onChange={(e) => updateAboutSection({ image: e.target.value })}
+              className="w-full px-3 py-2 border rounded-lg"
+              placeholder="https://example.com/restaurant-image.jpg"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Posizione Immagine</label>
+            <select 
+              value={about.imagePosition || 'left'}
+              onChange={(e) => updateAboutSection({ imagePosition: e.target.value })}
+              className="w-full px-3 py-2 border rounded-lg"
+            >
+              <option value="left">Sinistra</option>
+              <option value="right">Destra</option>
+              <option value="top">Sopra</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const GalleryEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
+  const gallery = project.data.site?.sections?.find((s: any) => s.type === 'gallery')?.data || {};
+  const images = gallery.images || [];
+  
+  const updateGallerySection = (updates: any) => {
+    const sections = project.data.site?.sections || [];
+    const gallerySection = sections.find((s: any) => s.type === 'gallery');
+    if (gallerySection) {
+      gallerySection.data = { ...gallerySection.data, ...updates };
+    } else {
+      sections.push({
+        id: 'gallery_main',
+        type: 'gallery',
+        enabled: true,
+        order: 2,
+        data: updates
+      });
+    }
+    onUpdate({ site: { ...project.data.site, sections } });
+  };
+
+  const addImage = () => {
+    const newImages = [...images, {
+      id: `img_${Date.now()}`,
+      url: '',
+      caption: '',
+      alt: ''
+    }];
+    updateGallerySection({ images: newImages });
+  };
+
+  const updateImage = (index: number, field: string, value: string) => {
+    const newImages = [...images];
+    newImages[index] = { ...newImages[index], [field]: value };
+    updateGallerySection({ images: newImages });
+  };
+
+  const removeImage = (index: number) => {
+    const newImages = images.filter((_: any, i: number) => i !== index);
+    updateGallerySection({ images: newImages });
+  };
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h4 className="font-semibold mb-4">Galleria Foto</h4>
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-2">Titolo Galleria</label>
+            <input 
+              type="text"
+              value={gallery.title || 'La Nostra Galleria'}
+              onChange={(e) => updateGallerySection({ title: e.target.value })}
+              className="w-full px-3 py-2 border rounded-lg"
+              placeholder="La Nostra Galleria"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Sottotitolo</label>
+            <input 
+              type="text"
+              value={gallery.subtitle || ''}
+              onChange={(e) => updateGallerySection({ subtitle: e.target.value })}
+              className="w-full px-3 py-2 border rounded-lg"
+              placeholder="Scopri l'atmosfera e i piatti del nostro ristorante"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Colonne</label>
+            <select 
+              value={gallery.columns || 3}
+              onChange={(e) => updateGallerySection({ columns: parseInt(e.target.value) })}
+              className="w-full px-3 py-2 border rounded-lg"
+            >
+              <option value={2}>2 Colonne</option>
+              <option value={3}>3 Colonne</option>
+              <option value={4}>4 Colonne</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="font-semibold">Immagini ({images.length})</h4>
+          <button 
+            onClick={addImage}
+            className="px-3 py-1 bg-primary text-white rounded text-sm hover:bg-primary/90"
+          >
+            Aggiungi Immagine
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          {images.map((image: any, index: number) => (
+            <div key={image.id} className="border rounded-lg p-4">
+              <div className="grid grid-cols-1 gap-3">
+                <div>
+                  <label className="block text-sm font-medium mb-1">URL Immagine</label>
+                  <input 
+                    type="url"
+                    value={image.url}
+                    onChange={(e) => updateImage(index, 'url', e.target.value)}
+                    className="w-full px-2 py-1 border rounded text-sm"
+                    placeholder="https://example.com/image.jpg"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Didascalia</label>
+                  <input 
+                    type="text"
+                    value={image.caption}
+                    onChange={(e) => updateImage(index, 'caption', e.target.value)}
+                    className="w-full px-2 py-1 border rounded text-sm"
+                    placeholder="Descrizione dell'immagine"
+                  />
+                </div>
+                <div className="flex justify-end">
+                  <button 
+                    onClick={() => removeImage(index)}
+                    className="px-2 py-1 text-red-600 hover:bg-red-50 rounded text-sm"
+                  >
+                    Rimuovi
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const FeaturesEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
+  const features = project.data.site?.sections?.find((s: any) => s.type === 'features')?.data || {};
+  const featuresList = features.features || [];
+  
+  const updateFeaturesSection = (updates: any) => {
+    const sections = project.data.site?.sections || [];
+    const featuresSection = sections.find((s: any) => s.type === 'features');
+    if (featuresSection) {
+      featuresSection.data = { ...featuresSection.data, ...updates };
+    } else {
+      sections.push({
+        id: 'features_main',
+        type: 'features',
+        enabled: true,
+        order: 3,
+        data: { ...updates, features: featuresList.length > 0 ? featuresList : [
+          { id: 'f1', title: 'Ingredienti Freschi', description: 'Utilizziamo solo ingredienti di qualità, selezionati ogni giorno', icon: '🌿' },
+          { id: 'f2', title: 'Ambiente Accogliente', description: 'Un atmosfera calda e familiare per ogni occasione', icon: '🏠' },
+          { id: 'f3', title: 'Chef Esperti', description: 'La nostra brigata di cucina ha anni di esperienza nel settore', icon: '👨‍🍳' },
+        ] }
+      });
+    }
+    onUpdate({ site: { ...project.data.site, sections } });
+  };
+
+  const addFeature = () => {
+    const newFeatures = [...featuresList, {
+      id: `f_${Date.now()}`,
+      title: 'Nuova Caratteristica',
+      description: 'Descrizione della caratteristica',
+      icon: '⭐'
+    }];
+    updateFeaturesSection({ features: newFeatures });
+  };
+
+  const updateFeature = (index: number, field: string, value: string) => {
+    const newFeatures = [...featuresList];
+    newFeatures[index] = { ...newFeatures[index], [field]: value };
+    updateFeaturesSection({ features: newFeatures });
+  };
+
+  const removeFeature = (index: number) => {
+    const newFeatures = featuresList.filter((_: any, i: number) => i !== index);
+    updateFeaturesSection({ features: newFeatures });
+  };
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h4 className="font-semibold mb-4">Caratteristiche del Ristorante</h4>
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-2">Titolo Sezione</label>
+            <input 
+              type="text"
+              value={features.title || 'Perché Scegliere Noi'}
+              onChange={(e) => updateFeaturesSection({ title: e.target.value })}
+              className="w-full px-3 py-2 border rounded-lg"
+              placeholder="Perché Scegliere Noi"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium mb-2">Sottotitolo</label>
+            <input 
+              type="text"
+              value={features.subtitle || ''}
+              onChange={(e) => updateFeaturesSection({ subtitle: e.target.value })}
+              className="w-full px-3 py-2 border rounded-lg"
+              placeholder="Quello che ci rende speciali"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="font-semibold">Caratteristiche ({featuresList.length})</h4>
+          <button 
+            onClick={addFeature}
+            className="px-3 py-1 bg-primary text-white rounded text-sm hover:bg-primary/90"
+          >
+            Aggiungi
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          {featuresList.map((feature: any, index: number) => (
+            <div key={feature.id} className="border rounded-lg p-4">
+              <div className="grid grid-cols-1 gap-3">
+                <div className="grid grid-cols-4 gap-2">
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Icona</label>
+                    <input 
+                      type="text"
+                      value={feature.icon}
+                      onChange={(e) => updateFeature(index, 'icon', e.target.value)}
+                      className="w-full px-2 py-1 border rounded text-sm text-center"
+                      placeholder="🌿"
+                    />
+                  </div>
+                  <div className="col-span-3">
+                    <label className="block text-sm font-medium mb-1">Titolo</label>
+                    <input 
+                      type="text"
+                      value={feature.title}
+                      onChange={(e) => updateFeature(index, 'title', e.target.value)}
+                      className="w-full px-2 py-1 border rounded text-sm"
+                      placeholder="Titolo caratteristica"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Descrizione</label>
+                  <textarea 
+                    value={feature.description}
+                    onChange={(e) => updateFeature(index, 'description', e.target.value)}
+                    rows={2}
+                    className="w-full px-2 py-1 border rounded text-sm"
+                    placeholder="Descrizione della caratteristica"
+                  />
+                </div>
+                <div className="flex justify-end">
+                  <button 
+                    onClick={() => removeFeature(index)}
+                    className="px-2 py-1 text-red-600 hover:bg-red-50 rounded text-sm"
+                  >
+                    Rimuovi
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
