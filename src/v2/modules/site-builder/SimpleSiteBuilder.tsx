@@ -4,7 +4,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { 
   Type, Monitor, Info, 
   Images, Star, Calendar, Phone, Clock, MapPin, Mail, 
-  LayoutTemplate, Navigation2, Coffee, Truck
+  LayoutTemplate, Navigation2, Coffee, Truck,
+  Palette
 } from 'lucide-react';
 import { getAllFonts, ensureGoogleFontLoaded } from '@/lib/fonts';
 import { OptionList } from '@/components/ui/option-list';
@@ -16,10 +17,10 @@ import { ComponentsManager } from './ComponentsManager';
 // Sezioni semplici - ogni sezione = un componente template
 const TEMPLATE_SECTIONS = [
   // TEMPLATE
-  { id: 'template', label: 'Template', icon: LayoutTemplate, category: 'template' },
+  { id: 'template', label: 'Template', icon: Palette, category: 'template' },
   
   // ESSENZIALI
-  { id: 'components', label: 'Componenti', icon: Navigation2, category: 'essential' },
+  { id: 'components', label: 'Componenti', icon: LayoutTemplate, category: 'essential' },
   { id: 'hero', label: 'Hero', icon: Monitor, category: 'essential' },
   { id: 'typography', label: 'Tipografia', icon: Type, category: 'essential' },
   
@@ -296,8 +297,8 @@ const TypographyEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
         <h4 className="font-semibold mb-4">Tipografia del Sito</h4>
         <div className="grid grid-cols-2 gap-3">
           {([
-            { key: "fontSecondary", label: "Titoli", value: project.data.site?.theme?.fontSecondary || "Inter" },
-            { key: "fontPrimary", label: "Sottotitoli", value: project.data.site?.theme?.fontPrimary || "Inter" },
+            { key: "fontSecondary", label: "Titoli", value: fonts.heading || theme.fontSecondary || "Playfair Display" },
+            { key: "fontPrimary", label: "Corpo", value: fonts.body || theme.fontPrimary || "Inter" },
           ] as const).map(({ key, label, value }) => (
             <button
               key={key}
@@ -313,7 +314,7 @@ const TypographyEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
       </div>
 
       <div className="space-y-4">
-        <h4 className="font-semibold">Scegli Font per {applyTarget === "fontSecondary" ? "Titoli" : "Sottotitoli"}</h4>
+        <h4 className="font-semibold">Scegli Font per {applyTarget === "fontSecondary" ? "Titoli" : "Corpo del Testo"}</h4>
         
         <OptionList
           enableSearch
@@ -364,6 +365,30 @@ const TypographyEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
 const HeroEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   const hero = project.data.site?.sections?.find((s: any) => s.type === 'hero')?.data || {};
   
+  const updateHeroSection = (updates: any) => {
+    const sections = project.data.site?.sections || [];
+    const heroSection = sections.find((s: any) => s.type === 'hero');
+    if (heroSection) {
+      heroSection.data = { ...heroSection.data, ...updates };
+    } else {
+      sections.push({
+        id: 'hero_main',
+        type: 'hero',
+        enabled: true,
+        order: 0,
+        data: { 
+          title: project.data.business?.name || 'Wine, Food & Atmosphere',
+          subtitle: 'Un luogo dedicato al gusto, tra calici e piccoli piatti',
+          imageUrl: 'https://images.unsplash.com/photo-1527169402691-feff5539e52c?q=80&w=1600&auto=format&fit=crop',
+          ...updates 
+        }
+      });
+    }
+    onUpdate({
+      site: { ...project.data.site, sections }
+    });
+  };
+  
   return (
     <div className="space-y-6">
       <div>
@@ -373,27 +398,10 @@ const HeroEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
             <label className="block text-sm font-medium mb-2">Titolo Principale</label>
             <input 
               type="text"
-              value={hero.title || project.data.business?.name || ''}
-              onChange={(e) => {
-                const sections = project.data.site?.sections || [];
-                const heroSection = sections.find((s: any) => s.type === 'hero');
-                if (heroSection) {
-                  heroSection.data = { ...heroSection.data, title: e.target.value };
-                } else {
-                  sections.push({
-                    id: 'hero_main',
-                    type: 'hero',
-                    enabled: true,
-                    order: 0,
-                    data: { title: e.target.value }
-                  });
-                }
-                onUpdate({
-                  site: { ...project.data.site, sections }
-                });
-              }}
+              value={hero.title || project.data.business?.name || 'Wine, Food & Atmosphere'}
+              onChange={(e) => updateHeroSection({ title: e.target.value })}
               className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Benvenuti al nostro ristorante"
+              placeholder="Wine, Food & Atmosphere"
             />
           </div>
           
@@ -401,77 +409,36 @@ const HeroEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
             <label className="block text-sm font-medium mb-2">Sottotitolo</label>
             <input 
               type="text"
-              value={hero.subtitle || project.data.business?.tagline || ''}
-              onChange={(e) => {
-                const sections = project.data.site?.sections || [];
-                const heroSection = sections.find((s: any) => s.type === 'hero');
-                if (heroSection) {
-                  heroSection.data = { ...heroSection.data, subtitle: e.target.value };
-                } else {
-                  sections.push({
-                    id: 'hero_main',
-                    type: 'hero',
-                    enabled: true,
-                    order: 0,
-                    data: { subtitle: e.target.value }
-                  });
-                }
-                onUpdate({
-                  site: { ...project.data.site, sections }
-                });
-              }}
+              value={hero.subtitle || 'Un luogo dedicato al gusto, tra calici e piccoli piatti'}
+              onChange={(e) => updateHeroSection({ subtitle: e.target.value })}
               className="w-full px-3 py-2 border rounded-lg"
-              placeholder="La tua tagline"
+              placeholder="Un luogo dedicato al gusto, tra calici e piccoli piatti"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Descrizione</label>
-            <textarea 
-              value={hero.description || project.data.business?.description || ''}
-              onChange={(e) => {
-                const sections = project.data.site?.sections || [];
-                const heroSection = sections.find((s: any) => s.type === 'hero');
-                if (heroSection) {
-                  heroSection.data = { ...heroSection.data, description: e.target.value };
-                } else {
-                  sections.push({
-                    id: 'hero_main',
-                    type: 'hero',
-                    enabled: true,
-                    order: 0,
-                    data: { description: e.target.value }
-                  });
-                }
-                onUpdate({
-                  site: { ...project.data.site, sections }
-                });
-              }}
-              rows={4}
+            <label className="block text-sm font-medium mb-2">Immagine di Sfondo</label>
+            <input 
+              type="url"
+              value={hero.imageUrl || 'https://images.unsplash.com/photo-1527169402691-feff5539e52c?q=80&w=1600&auto=format&fit=crop'}
+              onChange={(e) => updateHeroSection({ imageUrl: e.target.value })}
               className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Descrizione del tuo ristorante..."
+              placeholder="https://images.unsplash.com/photo-1527169402691-feff5539e52c?q=80&w=1600&auto=format&fit=crop"
             />
+            {hero.imageUrl && (
+              <div className="mt-2">
+                <img 
+                  src={hero.imageUrl} 
+                  alt="Anteprima Hero" 
+                  className="w-full h-32 object-cover rounded-lg border"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+              </div>
+            )}
           </div>
         </div>
-      </div>
-
-      {/* Preview */}
-      <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg p-8 text-center">
-        <h1 
-          className="text-3xl font-bold mb-4"
-          style={{ color: project.data.site?.theme?.colors?.primary || '#8B4513' }}
-        >
-          {hero.title || project.data.business?.name || 'Il Tuo Ristorante'}
-        </h1>
-        <p 
-          className="text-xl mb-4"
-          style={{ color: project.data.site?.theme?.colors?.secondary || '#D2691E' }}
-        >
-          {hero.subtitle || project.data.business?.tagline || 'La tua tagline'}
-        </p>
-        <p className="text-muted-foreground">
-          {hero.description || project.data.business?.description || 'Descrizione del ristorante...'}
-        </p>
       </div>
     </div>
   );
@@ -491,7 +458,13 @@ const AboutEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
         type: 'about',
         enabled: true,
         order: 1,
-        data: updates
+        data: {
+          title: 'La nostra storia',
+          content: 'Da tre generazioni portiamo avanti la tradizione culinaria di famiglia. Ogni piatto è preparato con ingredienti freschi e locali, rispettando le ricette della tradizione italiana e l\'arte dell\'ospitalità.',
+          image: 'https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=1200&auto=format&fit=crop',
+          imagePosition: 'left',
+          ...updates
+        }
       });
     }
     onUpdate({ site: { ...project.data.site, sections } });
@@ -506,21 +479,21 @@ const AboutEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
             <label className="block text-sm font-medium mb-2">Titolo Sezione</label>
             <input 
               type="text"
-              value={about.title || 'Chi Siamo'}
+              value={about.title || 'La nostra storia'}
               onChange={(e) => updateAboutSection({ title: e.target.value })}
               className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Chi Siamo"
+              placeholder="La nostra storia"
             />
           </div>
           
           <div>
             <label className="block text-sm font-medium mb-2">Contenuto</label>
             <textarea 
-              value={about.content || ''}
+              value={about.content || 'Da tre generazioni portiamo avanti la tradizione culinaria di famiglia. Ogni piatto è preparato con ingredienti freschi e locali, rispettando le ricette della tradizione italiana e l\'arte dell\'ospitalità.'}
               onChange={(e) => updateAboutSection({ content: e.target.value })}
               rows={6}
               className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Raccontaci la storia del vostro ristorante, la vostra filosofia culinaria e quello che vi rende speciali..."
+              placeholder="Da tre generazioni portiamo avanti la tradizione culinaria di famiglia..."
             />
           </div>
 
@@ -528,10 +501,10 @@ const AboutEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
             <label className="block text-sm font-medium mb-2">Immagine URL</label>
             <input 
               type="url"
-              value={about.image || ''}
+              value={about.image || 'https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=1200&auto=format&fit=crop'}
               onChange={(e) => updateAboutSection({ image: e.target.value })}
               className="w-full px-3 py-2 border rounded-lg"
-              placeholder="https://example.com/restaurant-image.jpg"
+              placeholder="https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=1200&auto=format&fit=crop"
             />
           </div>
 

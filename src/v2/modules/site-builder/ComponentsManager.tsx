@@ -248,9 +248,9 @@ function getDefaultSectionData(sectionType: string) {
   switch (sectionType) {
     case 'hero':
       return {
-        title: '',
-        subtitle: '',
-        description: '',
+        title: 'Wine, Food & Atmosphere',
+        subtitle: 'Un luogo dedicato al gusto, tra calici e piccoli piatti',
+        imageUrl: 'https://images.unsplash.com/photo-1527169402691-feff5539e52c?q=80&w=1600&auto=format&fit=crop',
         style: 'gradient',
         alignment: 'center',
         ctaText: 'Scopri il Menu',
@@ -259,9 +259,9 @@ function getDefaultSectionData(sectionType: string) {
     case 'about':
       return {
         title: 'La nostra storia',
-        content: 'Da tre generazioni portiamo avanti la tradizione culinaria di famiglia.',
+        content: 'Da tre generazioni portiamo avanti la tradizione culinaria di famiglia. Ogni piatto è preparato con ingredienti freschi e locali, rispettando le ricette della tradizione italiana e l\'arte dell\'ospitalità.',
         imagePosition: 'left',
-        image: ''
+        image: 'https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=1200&auto=format&fit=crop'
       };
     case 'gallery':
       return {
@@ -273,7 +273,7 @@ function getDefaultSectionData(sectionType: string) {
     case 'newsletter':
       return {
         title: 'Resta Aggiornato',
-        subtitle: 'Iscriviti alla nostra newsletter per ricevere offerte esclusive',
+        subtitle: 'Iscriviti alla nostra newsletter per ricevere offerte esclusive e novità dal nostro wine bar',
         style: 'centered'
       };
     case 'contact':
