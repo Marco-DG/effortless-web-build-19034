@@ -206,15 +206,17 @@ interface EditorProps {
 // TemplateEditor rimosso - ora usiamo TemplateSelector
 
 const TypographyEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
-  const [applyTarget, setApplyTarget] = React.useState<"fontPrimary" | "fontSecondary">("fontSecondary");
+  const [applyTarget, setApplyTarget] = React.useState<"fontHeading" | "fontSubheading" | "fontBody">("fontHeading");
   
   // Ottieni i font dal tema del template
   const theme = project.data.site?.theme || {};
   const fonts = theme.fonts || {};
   
-  const selectedFont = applyTarget === "fontSecondary"
-    ? (fonts.heading || theme.fontSecondary || "Playfair Display")
-    : (fonts.body || theme.fontPrimary || "Inter");
+  const selectedFont = applyTarget === "fontHeading"
+    ? (fonts.heading || "Playfair Display")
+    : applyTarget === "fontSubheading" 
+    ? (fonts.subheading || "Inter")
+    : (fonts.body || "Inter");
 
   const [query, setQuery] = React.useState("");
   const [category, setCategory] = React.useState<"Tutti"|"Sans-serif"|"Serif"|"Monospace"|"Display"|"Preferiti">("Tutti");
@@ -258,47 +260,39 @@ const TypographyEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
     const currentTheme = project.data.site?.theme || {};
     const currentFonts = currentTheme.fonts || {};
     
-    if (applyTarget === "fontPrimary") {
-      // Font per il corpo del testo
-      onUpdate({ 
-        site: { 
-          ...project.data.site, 
-          theme: { 
-            ...currentTheme,
-            fonts: {
-              ...currentFonts,
-              body: font.id
-            },
-            fontPrimary: font.id // mantieni per compatibilità
-          } 
-        } 
-      });
+    const updatedFonts = { ...currentFonts };
+    
+    if (applyTarget === "fontHeading") {
+      updatedFonts.heading = font.id;
+    } else if (applyTarget === "fontSubheading") {
+      updatedFonts.subheading = font.id;
     } else {
-      // Font per i titoli  
-      onUpdate({ 
-        site: { 
-          ...project.data.site, 
-          theme: { 
-            ...currentTheme,
-            fonts: {
-              ...currentFonts,
-              heading: font.id
-            },
-            fontSecondary: font.id // mantieni per compatibilità
-          } 
-        } 
-      });
+      updatedFonts.body = font.id;
     }
+    
+    onUpdate({ 
+      site: { 
+        ...project.data.site, 
+        theme: { 
+          ...currentTheme,
+          fonts: updatedFonts,
+          // Mantieni compatibilità con sistema legacy
+          fontPrimary: updatedFonts.body || currentTheme.fontPrimary,
+          fontSecondary: updatedFonts.heading || currentTheme.fontSecondary
+        } 
+      } 
+    });
   };
 
   return (
     <div className="space-y-6">
       <div>
         <h4 className="font-semibold mb-4">Tipografia del Sito</h4>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3">
           {([
-            { key: "fontSecondary", label: "Titoli", value: fonts.heading || theme.fontSecondary || "Playfair Display" },
-            { key: "fontPrimary", label: "Corpo", value: fonts.body || theme.fontPrimary || "Inter" },
+            { key: "fontHeading", label: "Titoli", value: fonts.heading || "Playfair Display" },
+            { key: "fontSubheading", label: "Sottotitoli", value: fonts.subheading || "Inter" },
+            { key: "fontBody", label: "Corpo", value: fonts.body || "Inter" },
           ] as const).map(({ key, label, value }) => (
             <button
               key={key}
@@ -314,7 +308,11 @@ const TypographyEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
       </div>
 
       <div className="space-y-4">
-        <h4 className="font-semibold">Scegli Font per {applyTarget === "fontSecondary" ? "Titoli" : "Corpo del Testo"}</h4>
+        <h4 className="font-semibold">Scegli Font per {
+          applyTarget === "fontHeading" ? "Titoli" : 
+          applyTarget === "fontSubheading" ? "Sottotitoli" : 
+          "Corpo del Testo"
+        }</h4>
         
         <OptionList
           enableSearch
@@ -377,8 +375,8 @@ const HeroEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
         enabled: true,
         order: 0,
         data: { 
-          title: project.data.business?.name || 'Wine, Food & Atmosphere',
-          subtitle: 'Un luogo dedicato al gusto, tra calici e piccoli piatti',
+          title: 'Osteria del Borgo',
+          subtitle: 'Tradizione e sapori autentici nel cuore della città',
           imageUrl: 'https://images.unsplash.com/photo-1527169402691-feff5539e52c?q=80&w=1600&auto=format&fit=crop',
           ...updates 
         }
@@ -398,10 +396,10 @@ const HeroEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
             <label className="block text-sm font-medium mb-2">Titolo Principale</label>
             <input 
               type="text"
-              value={hero.title || project.data.business?.name || 'Wine, Food & Atmosphere'}
+              value={hero.title || 'Osteria del Borgo'}
               onChange={(e) => updateHeroSection({ title: e.target.value })}
               className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Wine, Food & Atmosphere"
+              placeholder="Osteria del Borgo"
             />
           </div>
           
@@ -409,10 +407,10 @@ const HeroEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
             <label className="block text-sm font-medium mb-2">Sottotitolo</label>
             <input 
               type="text"
-              value={hero.subtitle || 'Un luogo dedicato al gusto, tra calici e piccoli piatti'}
+              value={hero.subtitle || 'Tradizione e sapori autentici nel cuore della città'}
               onChange={(e) => updateHeroSection({ subtitle: e.target.value })}
               className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Un luogo dedicato al gusto, tra calici e piccoli piatti"
+              placeholder="Tradizione e sapori autentici nel cuore della città"
             />
           </div>
 
@@ -517,7 +515,6 @@ const AboutEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
             >
               <option value="left">Sinistra</option>
               <option value="right">Destra</option>
-              <option value="top">Sopra</option>
             </select>
           </div>
         </div>

@@ -24,16 +24,12 @@ interface AppStore extends AppState {
   saveProject: () => Promise<void>;
 }
 
-const createDefaultProject = (name: string, template: TemplateType): ProjectData => ({
+const createDefaultProject = (name: string, template: TemplateType = 'wine-bar'): ProjectData => ({
   business: {
     name,
     type: 'restaurant',
     description: '',
-    tagline: template === 'wine-bar' 
-      ? 'Vini d\'autore. Atmosfera intima.'
-      : template === 'fine-dining' 
-      ? 'Cucina d\'autore in ogni dettaglio'
-      : 'Sapori Autentici della Tradizione Italiana'
+    tagline: 'Vini d\'autore. Atmosfera intima.'
   },
   
   contact: {
@@ -84,12 +80,9 @@ const createDefaultProject = (name: string, template: TemplateType): ProjectData
         enabled: true, 
         order: 0, 
         data: {
-          title: name,
-          subtitle: template === 'wine-bar' 
-            ? 'Vini d\'autore. Atmosfera intima.'
-            : template === 'fine-dining' 
-            ? 'Cucina d\'autore in ogni dettaglio'
-            : 'Sapori Autentici della Tradizione Italiana',
+          title: 'Osteria del Borgo',
+          subtitle: 'Tradizione e sapori autentici nel cuore della città',
+          imageUrl: 'https://images.unsplash.com/photo-1527169402691-feff5539e52c?q=80&w=1600&auto=format&fit=crop',
           description: 'Benvenuti nel nostro locale, dove ogni piatto racconta una storia di passione e tradizione.',
           style: 'gradient',
           alignment: 'center',
@@ -100,12 +93,13 @@ const createDefaultProject = (name: string, template: TemplateType): ProjectData
       { 
         id: 'about_default', 
         type: 'about', 
-        enabled: false, 
+        enabled: true, 
         order: 1, 
         data: {
           title: 'La nostra storia',
-          content: 'Da tre generazioni portiamo avanti la tradizione culinaria di famiglia. Ogni piatto è preparato con ingredienti freschi e locali, seguendo ricette tramandate nel tempo ma con un tocco di innovazione contemporanea.',
-          imagePosition: 'right'
+          content: 'Da tre generazioni portiamo avanti la tradizione culinaria di famiglia. Ogni piatto è preparato con ingredienti freschi e locali, rispettando le ricette della tradizione italiana e l\'arte dell\'ospitalità.',
+          image: 'https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=1200&auto=format&fit=crop',
+          imagePosition: 'left'
         }
       },
       { 
@@ -119,15 +113,54 @@ const createDefaultProject = (name: string, template: TemplateType): ProjectData
         }
       },
       { 
-        id: 'contact_default', 
-        type: 'contact', 
-        enabled: false, 
+        id: 'gallery_default', 
+        type: 'gallery', 
+        enabled: true, 
         order: 3, 
         data: {
-          title: 'Vieni a trovarci',
+          title: 'La Nostra Galleria',
+          subtitle: 'Scopri l\'atmosfera e i piatti del nostro ristorante',
+          images: [
+            {
+              id: 'default_1',
+              url: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&auto=format&fit=crop',
+              caption: 'Il nostro ambiente elegante'
+            },
+            {
+              id: 'default_2', 
+              url: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&auto=format&fit=crop',
+              caption: 'I nostri piatti signature'
+            },
+            {
+              id: 'default_3',
+              url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&auto=format&fit=crop',
+              caption: 'Selezione di vini pregiati'
+            }
+          ],
+          columns: 3
+        }
+      },
+      { 
+        id: 'newsletter_default', 
+        type: 'newsletter', 
+        enabled: true, 
+        order: 4, 
+        data: {
+          title: 'Resta Aggiornato',
+          subtitle: 'Iscriviti alla nostra newsletter per ricevere offerte esclusive e novità dal nostro wine bar',
+          style: 'centered'
+        }
+      },
+      { 
+        id: 'contact_default', 
+        type: 'contact', 
+        enabled: true, 
+        order: 5, 
+        data: {
+          title: 'Contatti',
           showMap: true,
           mapStyle: 'google',
-          showForm: false,
+          showForm: true,
           showHours: true,
           showSocialLinks: true
         }
@@ -135,14 +168,15 @@ const createDefaultProject = (name: string, template: TemplateType): ProjectData
     ],
     theme: {
       colors: {
-        primary: template === 'wine-bar' ? '#8B4513' : template === 'fine-dining' ? '#2C3E50' : '#D2691E',
-        secondary: template === 'wine-bar' ? '#D2691E' : template === 'fine-dining' ? '#34495E' : '#8B4513',
-        accent: template === 'wine-bar' ? '#F4E4C1' : template === 'fine-dining' ? '#95A5A6' : '#DEB887',
+        primary: '#2a1a1d',
+        secondary: '#6b3a2e',
+        accent: '#d9b99b',
         background: '#FFFFFF',
         text: '#2C3E50'
       },
       fonts: {
-        heading: template === 'wine-bar' ? 'Playfair Display' : template === 'fine-dining' ? 'Cormorant Garamond' : 'Merriweather',
+        heading: 'Playfair Display',
+        subheading: 'Inter',
         body: 'Inter'
       },
       spacing: {

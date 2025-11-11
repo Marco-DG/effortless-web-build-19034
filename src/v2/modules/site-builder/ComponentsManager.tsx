@@ -29,7 +29,7 @@ export const ComponentsManager: React.FC<ComponentsManagerProps> = ({ project, o
       const defaultSections = AVAILABLE_COMPONENTS.map(comp => ({
         id: `${comp.id}_main`,
         type: comp.id,
-        enabled: comp.required || comp.id === 'about', // Abilita hero, menu e about di default
+        enabled: true, // Abilita tutti i componenti di default
         order: comp.order,
         data: getDefaultSectionData(comp.id)
       }));
@@ -41,7 +41,7 @@ export const ComponentsManager: React.FC<ComponentsManagerProps> = ({ project, o
         }
       });
     }
-  }, []);
+  }, [siteSections.length, onUpdate]);
 
   // Crea mappa delle sezioni per tipo
   const sectionMap = new Map(siteSections.map((s: any) => [s.type, s]));
@@ -248,8 +248,8 @@ function getDefaultSectionData(sectionType: string) {
   switch (sectionType) {
     case 'hero':
       return {
-        title: 'Wine, Food & Atmosphere',
-        subtitle: 'Un luogo dedicato al gusto, tra calici e piccoli piatti',
+        title: 'Osteria del Borgo',
+        subtitle: 'Tradizione e sapori autentici nel cuore della città',
         imageUrl: 'https://images.unsplash.com/photo-1527169402691-feff5539e52c?q=80&w=1600&auto=format&fit=crop',
         style: 'gradient',
         alignment: 'center',

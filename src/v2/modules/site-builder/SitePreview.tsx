@@ -169,11 +169,17 @@ const WineBarTemplate: React.FC<{ data: any; theme: any; project: any }> = ({ da
   };
 
   const applied = builderData.customTheme || templateColors;
-  const fontFamily = theme?.fontPrimary || theme?.fontSecondary || 'Inter';
+  
+  // Usa i font dal tema del sito se disponibili
+  const siteTheme = project.data.site?.theme || {};
+  const siteFonts = siteTheme.fonts || {};
+  const headingFont = siteFonts.heading || siteTheme.fontSecondary || "'Playfair Display', serif";
+  const subheadingFont = siteFonts.subheading || "'Inter', sans-serif";
+  const bodyFont = siteFonts.body || siteTheme.fontPrimary || "'Inter', sans-serif";
   
   const useTextLogo = (builderData.logoMode === "text") && (builderData.logoText || builderData.businessName);
   const logoText = builderData.logoText || builderData.businessName || "Il Tuo Locale";
-  const logoFont = builderData.logoFont || fontFamily;
+  const logoFont = builderData.logoFont || headingFont;
 
   React.useEffect(() => {
     const onScroll = () => setNavSolid(window.scrollY > 24);
@@ -185,7 +191,7 @@ const WineBarTemplate: React.FC<{ data: any; theme: any; project: any }> = ({ da
   return (
     <div
       className="w-full bg-[#0f0d0d] text-[#f4f2ef] overflow-y-auto h-full"
-      style={{ fontFamily }}
+      style={{ fontFamily: bodyFont }}
     >
       {/* NAVBAR */}
       <header
@@ -268,11 +274,14 @@ const WineBarTemplate: React.FC<{ data: any; theme: any; project: any }> = ({ da
                   <div className="max-w-2xl">
                     <h1
                       className="text-4xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05]"
-                      style={{ fontFamily: "'Playfair Display', serif" }}
+                      style={{ fontFamily: headingFont }}
                     >
                       {builderData.heroSlogan || "Wine, Food & Atmosphere"}
                     </h1>
-                    <p className="mt-4 text-lg md:text-2xl text-white/90">
+                    <p 
+                      className="mt-4 text-lg md:text-2xl text-white/90"
+                      style={{ fontFamily: subheadingFont }}
+                    >
                       {builderData.heroDescription ||
                         "Un luogo dedicato al gusto, tra calici e piccoli piatti."}
                     </p>
@@ -317,7 +326,7 @@ const WineBarTemplate: React.FC<{ data: any; theme: any; project: any }> = ({ da
                     <h3
                       className="text-3xl md:text-4xl font-bold mb-4"
                       style={{
-                        fontFamily: theme?.fonts?.heading || "'Playfair Display', serif",
+                        fontFamily: headingFont,
                         color: templateColors.accent,
                       }}
                     >
@@ -337,7 +346,7 @@ const WineBarTemplate: React.FC<{ data: any; theme: any; project: any }> = ({ da
                   <div className="flex items-end justify-between mb-10">
                     <h4
                       className="text-2xl md:text-3xl font-bold"
-                      style={{ fontFamily: "'Playfair Display', serif" }}
+                      style={{ fontFamily: headingFont }}
                     >
                       Assaggi & Calici
                     </h4>
@@ -375,14 +384,17 @@ const WineBarTemplate: React.FC<{ data: any; theme: any; project: any }> = ({ da
                       <h3
                         className="text-3xl md:text-4xl font-bold mb-4"
                         style={{
-                          fontFamily: theme?.fonts?.heading || "'Playfair Display', serif",
+                          fontFamily: headingFont,
                           color: templateColors.accent,
                         }}
                       >
                         {builderData.galleryTitle || "La Nostra Galleria"}
                       </h3>
                       {builderData.gallerySubtitle && (
-                        <p className="text-white/80 text-lg">
+                        <p 
+                          className="text-white/80 text-lg"
+                          style={{ fontFamily: subheadingFont }}
+                        >
                           {builderData.gallerySubtitle}
                         </p>
                       )}
@@ -424,7 +436,10 @@ const WineBarTemplate: React.FC<{ data: any; theme: any; project: any }> = ({ da
                   >
                     {builderData.newsletterTitle}
                   </h3>
-                  <p className="text-white/80 text-lg mb-8">
+                  <p 
+                    className="text-white/80 text-lg mb-8"
+                    style={{ fontFamily: subheadingFont }}
+                  >
                     {builderData.newsletterDescription}
                   </p>
                   <div className="max-w-md mx-auto">
@@ -454,7 +469,7 @@ const WineBarTemplate: React.FC<{ data: any; theme: any; project: any }> = ({ da
             contact: (
               <section className="mx-auto max-w-4xl px-6 py-16 grid md:grid-cols-2 gap-10">
                 <div>
-                  <h2 className="text-3xl font-bold mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>Contatti</h2>
+                  <h2 className="text-3xl font-bold mb-4" style={{ fontFamily: headingFont }}>Contatti</h2>
                   <p className="text-white/80">{builderData.address || "Via della Vite 12, Roma"}</p>
                   <p className="text-white/80">{builderData.phone || "+39 02 1234567"}</p>
                   <p className="text-white/80">{builderData.email || "info@winebar.it"}</p>

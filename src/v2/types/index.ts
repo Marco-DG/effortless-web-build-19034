@@ -2,7 +2,7 @@
 
 export type BuilderMode = 'logo' | 'menu' | 'site';
 
-export type TemplateType = 'wine-bar' | 'fine-dining' | 'trattoria';
+export type TemplateType = 'wine-bar';
 
 export interface AppState {
   activeMode: BuilderMode;
@@ -89,6 +89,7 @@ export interface ThemeConfig {
   };
   fonts: {
     heading: string;
+    subheading: string;
     body: string;
   };
   spacing: {
