@@ -226,7 +226,10 @@ const WineBarTemplate: React.FC<{ data: any; theme: any; project: any }> = ({ da
                   about: 'Chi Siamo', 
                   menu: 'Menù',
                   gallery: 'Galleria',
+                  reviews: 'Recensioni',
+                  events: 'Eventi',
                   newsletter: 'Newsletter',
+                  location: 'Posizione',
                   contact: 'Contatti'
                 };
                 return [labels[sectionType] || sectionType, sectionType === 'hero' ? 'home' : sectionType];
@@ -466,6 +469,217 @@ const WineBarTemplate: React.FC<{ data: any; theme: any; project: any }> = ({ da
                 </div>
               </section>
             ),
+            reviews: (() => {
+              const siteSections = project.data.site?.sections || [];
+              const reviewsSection = siteSections.find((s: any) => s.type === 'reviews');
+              const reviewsData = reviewsSection?.data || {};
+              const reviews = reviewsData.reviews || [];
+              
+              if (reviews.length === 0) return null;
+              
+              return (
+                <section id="reviews" className="py-20 bg-[#151212]">
+                  <div className="mx-auto max-w-7xl px-6">
+                    <div className="text-center mb-12">
+                      <h3
+                        className="text-3xl md:text-4xl font-bold mb-4"
+                        style={{
+                          fontFamily: headingFont,
+                          color: templateColors.accent,
+                        }}
+                      >
+                        {reviewsData.title || "Cosa Dicono di Noi"}
+                      </h3>
+                      {reviewsData.subtitle && (
+                        <p 
+                          className="text-white/80 text-lg"
+                          style={{ fontFamily: subheadingFont }}
+                        >
+                          {reviewsData.subtitle}
+                        </p>
+                      )}
+                    </div>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {reviews.map((review: any) => (
+                        <div key={review.id} className="bg-white/5 rounded-lg p-6 border border-white/10">
+                          <div className="flex items-center mb-4">
+                            <div className="flex text-yellow-400">
+                              {Array.from({ length: 5 }, (_, i) => (
+                                <span key={i} className={i < review.rating ? "text-yellow-400" : "text-gray-400"}>
+                                  ⭐
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                          <p 
+                            className="text-white/80 mb-4 italic"
+                            style={{ fontFamily: bodyFont }}
+                          >
+                            "{review.text}"
+                          </p>
+                          <div className="text-right">
+                            <p 
+                              className="text-white font-semibold"
+                              style={{ fontFamily: subheadingFont }}
+                            >
+                              — {review.author}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+              );
+            })(),
+            events: (() => {
+              const siteSections = project.data.site?.sections || [];
+              const eventsSection = siteSections.find((s: any) => s.type === 'events');
+              const eventsData = eventsSection?.data || {};
+              const events = eventsData.events || [];
+              
+              if (events.length === 0) return null;
+              
+              return (
+                <section id="events" className="py-20 bg-[#0f0d0d]">
+                  <div className="mx-auto max-w-7xl px-6">
+                    <div className="text-center mb-12">
+                      <h3
+                        className="text-3xl md:text-4xl font-bold mb-4"
+                        style={{
+                          fontFamily: headingFont,
+                          color: templateColors.accent,
+                        }}
+                      >
+                        {eventsData.title || "I Nostri Eventi"}
+                      </h3>
+                      {eventsData.subtitle && (
+                        <p 
+                          className="text-white/80 text-lg"
+                          style={{ fontFamily: subheadingFont }}
+                        >
+                          {eventsData.subtitle}
+                        </p>
+                      )}
+                    </div>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                      {events.map((event: any) => (
+                        <div key={event.id} className="bg-white/5 rounded-lg overflow-hidden border border-white/10">
+                          {event.image && (
+                            <img 
+                              src={event.image} 
+                              alt={event.title}
+                              className="w-full h-48 object-cover"
+                            />
+                          )}
+                          <div className="p-6">
+                            <h4 
+                              className="text-xl font-bold mb-3"
+                              style={{ 
+                                fontFamily: headingFont,
+                                color: templateColors.accent 
+                              }}
+                            >
+                              {event.title}
+                            </h4>
+                            <p 
+                              className="text-white/80 mb-4"
+                              style={{ fontFamily: bodyFont }}
+                            >
+                              {event.description}
+                            </p>
+                            <div 
+                              className="text-sm text-white/60"
+                              style={{ fontFamily: subheadingFont }}
+                            >
+                              {event.date && (
+                                <div className="mb-1">
+                                  📅 {new Date(event.date).toLocaleDateString('it-IT')}
+                                </div>
+                              )}
+                              {event.time && (
+                                <div>🕒 {event.time}</div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+              );
+            })(),
+            location: (() => {
+              const siteSections = project.data.site?.sections || [];
+              const locationSection = siteSections.find((s: any) => s.type === 'location');
+              const locationData = locationSection?.data || {};
+              
+              return (
+                <section id="location" className="py-20 bg-[#151212]">
+                  <div className="mx-auto max-w-7xl px-6">
+                    <div className="text-center mb-12">
+                      <h3
+                        className="text-3xl md:text-4xl font-bold mb-4"
+                        style={{
+                          fontFamily: headingFont,
+                          color: templateColors.accent,
+                        }}
+                      >
+                        {locationData.title || "Dove Siamo"}
+                      </h3>
+                      {locationData.subtitle && (
+                        <p 
+                          className="text-white/80 text-lg"
+                          style={{ fontFamily: subheadingFont }}
+                        >
+                          {locationData.subtitle}
+                        </p>
+                      )}
+                    </div>
+                    
+                    <div className="grid md:grid-cols-2 gap-8 items-center">
+                      <div>
+                        <div 
+                          className="text-lg mb-4"
+                          style={{ fontFamily: bodyFont }}
+                        >
+                          <div className="flex items-center gap-3 text-white/80">
+                            <span>📍</span>
+                            <span>{locationData.address || "Via del Borgo 12, 00100 Roma"}</span>
+                          </div>
+                        </div>
+                        
+                        {locationData.showDirections && (
+                          <div className="mt-6">
+                            <a
+                              href={locationData.mapUrl || "https://maps.google.com/?q=41.9028,12.4964"}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-colors"
+                              style={{ 
+                                backgroundColor: templateColors.accent, 
+                                color: '#0f0d0d' 
+                              }}
+                            >
+                              🗺️ Ottieni Indicazioni
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                      
+                      {locationData.showMap && (
+                        <div className="bg-white/10 rounded-lg h-64 flex items-center justify-center border border-white/20">
+                          <div className="text-center text-white/60">
+                            <div className="text-4xl mb-2">🗺️</div>
+                            <p>Mappa Interattiva</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </section>
+              );
+            })(),
             contact: (
               <section className="mx-auto max-w-4xl px-6 py-16 grid md:grid-cols-2 gap-10">
                 <div>

@@ -17,28 +17,24 @@ import { ComponentsManager } from './ComponentsManager';
 
 // Sezioni semplici - ogni sezione = un componente template
 const TEMPLATE_SECTIONS = [
-  // TEMPLATE
-  { id: 'template', label: 'Template', icon: Palette, category: 'template' },
+  // CONFIGURAZIONE
+  { id: 'template', label: 'Template', icon: Palette, category: 'config' },
+  { id: 'components', label: 'Componenti', icon: LayoutTemplate, category: 'config' },
+  { id: 'typography', label: 'Tipografia', icon: Type, category: 'config' },
   
-  // ESSENZIALI
-  { id: 'components', label: 'Componenti', icon: LayoutTemplate, category: 'essential' },
-  { id: 'hero', label: 'Hero', icon: Monitor, category: 'essential' },
-  { id: 'typography', label: 'Tipografia', icon: Type, category: 'essential' },
+  // ASPETTO 
+  { id: 'hero', label: 'Hero', icon: Monitor, category: 'appearance' },
+  { id: 'about', label: 'Chi siamo', icon: Info, category: 'appearance' },
+  { id: 'gallery', label: 'Galleria', icon: Images, category: 'appearance' },
+  { id: 'reviews', label: 'Recensioni', icon: Star, category: 'appearance' },
+  { id: 'events', label: 'Eventi', icon: Calendar, category: 'appearance' },
+  { id: 'newsletter', label: 'Newsletter', icon: Mail, category: 'appearance' },
+  { id: 'location', label: 'Posizione', icon: MapPin, category: 'appearance' },
   
-  // CONTENUTI
-  { id: 'about', label: 'Chi siamo', icon: Info, category: 'content' },
-  { id: 'gallery', label: 'Galleria', icon: Images, category: 'content' },
-  { id: 'newsletter', label: 'Newsletter', icon: Mail, category: 'content' },
-  
-  // INFORMAZIONI
-  { id: 'contact', label: 'Contatti', icon: Phone, category: 'info' },
-  { id: 'hours', label: 'Orari', icon: Clock, category: 'info' },
-  { id: 'location', label: 'Posizione', icon: MapPin, category: 'info' },
-  
-  // SOCIAL & MARKETING
-  { id: 'reviews', label: 'Recensioni', icon: Star, category: 'marketing' },
-  { id: 'events', label: 'Eventi', icon: Calendar, category: 'marketing' },
-  { id: 'delivery', label: 'Delivery', icon: Truck, category: 'marketing' },
+  // DATI
+  { id: 'contact', label: 'Contatti', icon: Phone, category: 'data' },
+  { id: 'hours', label: 'Orari', icon: Clock, category: 'data' },
+  { id: 'delivery', label: 'Delivery', icon: Truck, category: 'data' },
 ] as const;
 
 type TemplateSectionId = typeof TEMPLATE_SECTIONS[number]['id'];
@@ -141,25 +137,46 @@ export const SimpleSiteBuilder: React.FC<SimpleSiteBuilderProps> = ({ onSwitchBu
         <div className="w-10 2xl:w-40 border-r border-border bg-white/50 backdrop-blur flex flex-col py-2 flex-shrink-0">
           <ScrollArea className="flex-1">
             <div className="space-y-1 px-1">
-              {TEMPLATE_SECTIONS.map((section) => {
-                const isActive = activeSection === section.id;
-                return (
-                  <button
-                    key={section.id}
-                    onClick={() => setActiveSection(section.id)}
-                    className={`w-full flex items-center justify-center 2xl:justify-start px-2 py-3 2xl:px-3 2xl:py-2.5 text-sm transition-all duration-200 rounded-lg group ${
-                      isActive
-                        ? 'bg-primary text-primary-foreground shadow-sm'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                    }`}
-                  >
-                    <section.icon className="w-5 h-5 flex-shrink-0" />
-                    <span className="hidden 2xl:block ml-3 text-left font-medium">
-                      {section.label}
-                    </span>
-                  </button>
-                );
-              })}
+              {(() => {
+                const categories = [
+                  { id: 'config', label: 'Configurazione', sections: TEMPLATE_SECTIONS.filter(s => s.category === 'config') },
+                  { id: 'appearance', label: 'Aspetto', sections: TEMPLATE_SECTIONS.filter(s => s.category === 'appearance') },
+                  { id: 'data', label: 'Dati', sections: TEMPLATE_SECTIONS.filter(s => s.category === 'data') }
+                ];
+
+                return categories.map((category) => (
+                  <div key={category.id} className="space-y-1">
+                    {/* Divisore categoria - visibile solo su schermi larghi */}
+                    <div className="hidden 2xl:flex items-center gap-2 px-2 py-2 mt-4 first:mt-2">
+                      <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                        {category.label}
+                      </h3>
+                      <div className="flex-1 h-px bg-border" />
+                    </div>
+                    
+                    {/* Sezioni della categoria */}
+                    {category.sections.map((section) => {
+                      const isActive = activeSection === section.id;
+                      return (
+                        <button
+                          key={section.id}
+                          onClick={() => setActiveSection(section.id)}
+                          className={`w-full flex items-center justify-center 2xl:justify-start px-2 py-3 2xl:px-3 2xl:py-2.5 text-sm transition-all duration-200 rounded-lg group ${
+                            isActive
+                              ? 'bg-primary text-primary-foreground shadow-sm'
+                              : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                          }`}
+                        >
+                          <section.icon className="w-5 h-5 flex-shrink-0" />
+                          <span className="hidden 2xl:block ml-3 text-left font-medium">
+                            {section.label}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                ));
+              })()}
             </div>
           </ScrollArea>
         </div>
