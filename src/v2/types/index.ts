@@ -26,7 +26,7 @@ export interface Project {
 
 // Logo Builder Types
 export interface LogoConfig {
-  mode: 'text' | 'image' | 'hybrid';
+  mode: 'text' | 'image' | 'hybrid' | 'advanced';
   text?: string;
   font?: string;
   size?: number;
@@ -34,6 +34,65 @@ export interface LogoConfig {
   imageUrl?: string;
   tagline?: string;
   layout?: 'horizontal' | 'vertical' | 'stacked';
+  templateId?: string; // Template ID for current design
+  selectedElement?: string; // Currently selected element in canvas
+  
+  // Advanced template elements (for canvas mode)
+  advancedElements?: any[]; // Advanced logo elements
+  canvasSize?: { width: number; height: number };
+  
+  // Legacy canvas config (future expansion)
+  canvas?: {
+    elements: CanvasElement[];
+    canvasSize: { width: number; height: number };
+    templateId?: string;
+  };
+}
+
+// Canvas Logo Builder Types
+export interface CanvasElement {
+  id: string;
+  type: 'text' | 'image' | 'shape';
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  rotation: number;
+  zIndex: number;
+  locked: boolean;
+  selected: boolean;
+  opacity?: number;
+}
+
+export interface TextElement extends CanvasElement {
+  type: 'text';
+  content: string;
+  fontFamily: string;
+  fontSize: number;
+  fontWeight: 'normal' | 'bold' | 'light';
+  fontStyle: 'normal' | 'italic';
+  textAlign: 'left' | 'center' | 'right';
+  color: string;
+  letterSpacing: number;
+  lineHeight: number;
+  textDecoration: 'none' | 'underline' | 'line-through';
+}
+
+export interface ImageElement extends CanvasElement {
+  type: 'image';
+  src: string;
+  alt: string;
+  borderRadius: number;
+  filter?: string;
+}
+
+export interface ShapeElement extends CanvasElement {
+  type: 'shape';
+  shape: 'rectangle' | 'circle' | 'triangle' | 'star';
+  fill: string;
+  stroke: string;
+  strokeWidth: number;
+  borderRadius?: number;
 }
 
 // Menu Builder Types  
@@ -73,7 +132,7 @@ export interface SiteConfig {
 
 export interface SiteSection {
   id: string;
-  type: 'hero' | 'about' | 'menu' | 'gallery' | 'contact' | 'reviews' | 'events';
+  type: 'hero' | 'about' | 'menu' | 'gallery' | 'contact' | 'reviews' | 'events' | 'newsletter' | 'location';
   enabled: boolean;
   order: number;
   data: any; // Specifico per ogni sezione

@@ -62,6 +62,7 @@ export const RestaurantSaasV2: React.FC = () => {
           <LogoPreview 
             config={project.data.logo}
             businessName={project.data.business.name}
+            onUpdate={(updates) => updateProject({ logo: { ...project.data.logo, ...updates } })}
           />
         );
       case 'menu':
