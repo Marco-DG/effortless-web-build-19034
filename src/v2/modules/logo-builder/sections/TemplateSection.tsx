@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Button } from '../../../../components/ui/button';
 import { getAwardWinningTemplates, getExtremeTemplates } from '../AdvancedLogoTemplates';
 import { LogoTemplate } from '../types';
@@ -34,65 +33,32 @@ export const TemplateSection: React.FC<TemplateSectionProps> = ({
     });
   };
 
-  // Render template preview con gli elementi del template
+  // Usa l'immagine preview del template o fallback
   const renderTemplatePreview = (template: LogoTemplate) => {
     return (
-      <div 
-        className="w-full h-full bg-gradient-to-br from-gray-50 to-white flex items-center justify-center relative overflow-hidden"
-        style={{
-          minHeight: '120px'
-        }}
-      >
-        <div className="relative" style={{ 
-          transform: 'scale(0.6)', 
-          transformOrigin: 'center'
-        }}>
-          {template.elements.map((element, index) => {
-            if (element.type === 'text') {
-              return (
-                <div
-                  key={index}
-                  className="absolute select-none"
-                  style={{
-                    left: element.x,
-                    top: element.y,
-                    width: element.width,
-                    height: element.height,
-                    fontFamily: element.style?.fontFamily || 'Inter',
-                    fontSize: `${(element.style?.fontSize || 16) * 0.8}px`,
-                    fontWeight: element.style?.fontWeight || 'normal',
-                    color: element.style?.color || '#000',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    textAlign: 'center'
-                  }}
-                >
-                  {element.content || 'Logo'}
-                </div>
-              );
-            }
-            
-            if (element.type === 'shape') {
-              return (
-                <div
-                  key={index}
-                  className="absolute"
-                  style={{
-                    left: element.x,
-                    top: element.y,
-                    width: element.width,
-                    height: element.height,
-                    backgroundColor: element.style?.fill || '#ccc',
-                    borderRadius: element.subtype === 'circle' ? '50%' : '0',
-                    border: element.style?.stroke ? `${element.style?.strokeWidth || 1}px solid ${element.style.stroke}` : 'none',
-                  }}
-                />
-              );
-            }
-            
-            return null;
-          })}
+      <div className="w-full h-full bg-gradient-to-br from-gray-50 to-white flex items-center justify-center relative overflow-hidden">
+        {template.preview ? (
+          <img 
+            src={template.preview}
+            alt={template.name}
+            className="w-full h-full object-cover rounded-sm"
+            onError={(e) => {
+              // Fallback se l'immagine non carica
+              const target = e.target as HTMLImageElement;
+              target.style.display = 'none';
+              target.nextElementSibling?.classList.remove('hidden');
+            }}
+          />
+        ) : null}
+        
+        {/* Fallback sempre presente ma nascosto */}
+        <div className={`text-center p-4 ${template.preview ? 'hidden' : ''}`}>
+          <div className="w-12 h-12 mx-auto mb-2 bg-primary/10 rounded-lg flex items-center justify-center">
+            <span className="text-lg">🎨</span>
+          </div>
+          <div className="text-xs font-medium text-gray-600">
+            {template.name}
+          </div>
         </div>
       </div>
     );
@@ -104,11 +70,8 @@ export const TemplateSection: React.FC<TemplateSectionProps> = ({
       <div className="flex-1 overflow-y-auto p-4">
         <div className="grid grid-cols-2 gap-3">
           {allTemplates.map((template, index) => (
-            <motion.div
+            <div
               key={template.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
               className={`relative cursor-pointer rounded-lg border-2 overflow-hidden transition-all duration-200 ${
                 selectedTemplate?.id === template.id
                   ? 'border-primary ring-2 ring-primary/20'
@@ -139,7 +102,7 @@ export const TemplateSection: React.FC<TemplateSectionProps> = ({
                   <div className="w-2 h-2 rounded-full bg-current"></div>
                 </div>
               )}
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
