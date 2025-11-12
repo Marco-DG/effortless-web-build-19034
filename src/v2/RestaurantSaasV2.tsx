@@ -3,7 +3,7 @@ import { useAppStore } from './store/app-store';
 import { AppLayout, BuilderLayout, PreviewLayout } from './ui/Layout';
 import { Hero } from './components/Hero';
 import { LogoBuilderRedesigned, InteractiveLogoCanvas } from './modules/logo-builder';
-import { MenuBuilder } from './modules/menu-builder/MenuBuilder';
+import { MenuBuilderRedesigned } from './modules/menu-builder/MenuBuilderRedesigned';
 import { MenuPreview } from './modules/menu-builder/MenuPreview';
 import { SiteBuilder } from './modules/site-builder/SiteBuilder';
 import { SitePreview } from './modules/site-builder/SitePreview';
@@ -27,7 +27,7 @@ export const RestaurantSaasV2: React.FC = () => {
       case 'logo':
         return <LogoBuilderRedesigned onSwitchBuilder={(mode) => useAppStore.getState().setActiveMode(mode)} />;
       case 'menu':
-        return <MenuBuilder onSwitchBuilder={(mode) => useAppStore.getState().setActiveMode(mode)} />;
+        return <MenuBuilderRedesigned onSwitchBuilder={(mode) => useAppStore.getState().setActiveMode(mode)} />;
       case 'site':
         return <SiteBuilder />;
       default:
