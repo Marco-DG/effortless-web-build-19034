@@ -320,9 +320,9 @@ export const PremiumLanding: React.FC<PremiumLandingProps> = ({ onStartBuilding 
               },
               {
                 icon: BarChart3,
-                title: 'Analytics Avanzati',
-                description: 'Dashboard completa con insights IA. Scopri cosa funziona e ottimizza automaticamente.',
-                metric: '+40% conversioni'
+                title: 'Campagne Pubblicitarie IA',
+                description: 'Google Ads e Facebook automatici. Budget personalizzabile, ottimizzazione continua, ROI garantito.',
+                metric: '+320% clienti'
               },
               {
                 icon: MapPin,
@@ -335,6 +335,12 @@ export const PremiumLanding: React.FC<PremiumLandingProps> = ({ onStartBuilding 
                 title: 'CRM & Gestionale',
                 description: 'Cliente unico, dati unificati. Prenotazioni, ordini, pagamenti, tutto sotto controllo.',
                 metric: 'ROI +180%'
+              },
+              {
+                icon: TrendingUp,
+                title: 'Analytics Avanzati',
+                description: 'Dashboard completa con insights IA. Traccia ROI campagne, ottimizza automaticamente.',
+                metric: '+40% conversioni'
               },
               {
                 icon: Headphones,
@@ -401,6 +407,419 @@ export const PremiumLanding: React.FC<PremiumLandingProps> = ({ onStartBuilding 
               </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Marketing Campaigns Section */}
+      <section className="py-24 bg-gradient-to-br from-slate-900 to-gray-800 text-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
+          
+          {/* Header */}
+          <div className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-4xl lg:text-5xl font-black mb-6">
+                Advertising Intelligence integrata
+              </h2>
+              <p className="text-xl text-purple-200 max-w-4xl mx-auto leading-relaxed">
+                <strong className="text-white">Google Ads e Meta Ads</strong> gestite da algoritmi proprietari di ottimizzazione. 
+                <br />Budget personalizzabile, performance tracking avanzato, ROI garantito.
+              </p>
+            </motion.div>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            
+            {/* Left: How it Works */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-8"
+            >
+              <h3 className="text-2xl font-semibold mb-8 text-gray-200">Implementation Process</h3>
+              
+              {[
+                {
+                  step: "01",
+                  title: "Budget allocation",
+                  desc: "Definisci l'investimento mensile. Modificabile in qualsiasi momento."
+                },
+                {
+                  step: "02", 
+                  title: "Optimization engine",
+                  desc: "Algoritmi proprietari analizzano il mercato locale e ottimizzano le campagne."
+                },
+                {
+                  step: "03",
+                  title: "Lead generation",
+                  desc: "Acquisizione clienti qualificati attraverso targeting avanzato multi-piattaforma."
+                },
+                {
+                  step: "04",
+                  title: "Performance analytics",
+                  desc: "Dashboard real-time con ROI tracking. Garanzia di performance o rimborso."
+                }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.2 }}
+                  viewport={{ once: true }}
+                  className="flex items-start gap-6"
+                >
+                  <div className="flex-shrink-0">
+                    <div className="w-10 h-10 bg-slate-700 border border-slate-600 rounded-lg flex items-center justify-center mb-2">
+                      <div className="text-sm font-semibold text-slate-300">{item.step}</div>
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-semibold mb-2 text-white">{item.title}</h4>
+                    <p className="text-gray-300 leading-relaxed text-sm">{item.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Right: Animated ROI Chart */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div className="bg-white/5 backdrop-blur rounded-2xl p-8 border border-white/10">
+                <h3 className="text-xl font-semibold text-center mb-8 text-gray-200">
+                  Performance vs Investment
+                </h3>
+
+                {/* Apple-style Line Chart */}
+                <div className="relative h-64 mb-6">
+                  <svg className="w-full h-full" viewBox="0 0 400 200">
+                    {/* Grid Lines */}
+                    <defs>
+                      <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#10b981" />
+                        <stop offset="60%" stopColor="#f59e0b" />
+                        <stop offset="100%" stopColor="#10b981" />
+                      </linearGradient>
+                      <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#10b981" stopOpacity="0.3" />
+                        <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+                      </linearGradient>
+                    </defs>
+                    
+                    {/* Y-axis Grid */}
+                    <g stroke="rgba(255,255,255,0.1)" strokeWidth="1">
+                      <line x1="40" y1="20" x2="380" y2="20" />
+                      <line x1="40" y1="70" x2="380" y2="70" />
+                      <line x1="40" y1="120" x2="380" y2="120" />
+                      <line x1="40" y1="170" x2="380" y2="170" />
+                    </g>
+
+                    {/* X-axis Grid */}
+                    <g stroke="rgba(255,255,255,0.1)" strokeWidth="1">
+                      <line x1="80" y1="20" x2="80" y2="180" />
+                      <line x1="140" y1="20" x2="140" y2="180" />
+                      <line x1="200" y1="20" x2="200" y2="180" />
+                      <line x1="260" y1="20" x2="260" y2="180" />
+                      <line x1="320" y1="20" x2="320" y2="180" />
+                    </g>
+
+                    {/* Realistic Logarithmic ROI Curve */}
+                    <motion.path
+                      d="M 60 170 Q 120 100 180 70 Q 240 50 300 55 Q 340 60 360 75"
+                      fill="none"
+                      stroke="url(#lineGradient)"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      initial={{ pathLength: 0 }}
+                      whileInView={{ pathLength: 1 }}
+                      transition={{ duration: 2.5, ease: "easeOut" }}
+                      viewport={{ once: true }}
+                    />
+
+                    {/* Area under curve */}
+                    <motion.path
+                      d="M 60 170 Q 120 100 180 70 Q 240 50 300 55 Q 340 60 360 75 L 360 180 L 60 180 Z"
+                      fill="url(#areaGradient)"
+                      initial={{ pathLength: 0 }}
+                      whileInView={{ pathLength: 1 }}
+                      transition={{ duration: 2.5, delay: 0.3, ease: "easeOut" }}
+                      viewport={{ once: true }}
+                    />
+
+                    {/* Optimal Point Marker */}
+                    <motion.circle
+                      cx="200"
+                      cy="65"
+                      r="6"
+                      fill="#10b981"
+                      stroke="#ffffff"
+                      strokeWidth="2"
+                      initial={{ scale: 0 }}
+                      whileInView={{ scale: 1 }}
+                      transition={{ delay: 3, type: "spring" }}
+                      viewport={{ once: true }}
+                    />
+
+                    {/* Saturation Point Marker */}
+                    <motion.circle
+                      cx="300"
+                      cy="55"
+                      r="6"
+                      fill="#ef4444"
+                      stroke="#ffffff"
+                      strokeWidth="2"
+                      initial={{ scale: 0 }}
+                      whileInView={{ scale: 1 }}
+                      transition={{ delay: 3.3, type: "spring" }}
+                      viewport={{ once: true }}
+                    />
+
+                    {/* X-axis Labels */}
+                    <g fill="rgba(255,255,255,0.7)" fontSize="12" textAnchor="middle">
+                      <text x="100" y="195">€100</text>
+                      <text x="160" y="195">€300</text>
+                      <text x="240" y="195">€600</text>
+                      <text x="320" y="195">€1000+</text>
+                    </g>
+                    
+                    {/* X-axis title */}
+                    <text x="200" y="210" fill="rgba(255,255,255,0.6)" fontSize="11" textAnchor="middle">
+                      Budget Mensile
+                    </text>
+
+                    {/* Y-axis Labels */}
+                    <g fill="rgba(255,255,255,0.6)" fontSize="11" textAnchor="end">
+                      <text x="55" y="40">Alto</text>
+                      <text x="55" y="100">ROI</text>
+                      <text x="55" y="160">Basso</text>
+                    </g>
+
+                    {/* Optimal Point Label */}
+                    <motion.text 
+                      x="200" 
+                      y="45" 
+                      fill="#ffffff" 
+                      fontSize="14" 
+                      textAnchor="middle" 
+                      fontWeight="bold"
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ delay: 3.2 }}
+                      viewport={{ once: true }}
+                    >
+                      Ottimale
+                    </motion.text>
+
+                    {/* Saturation Point Label */}
+                    <motion.text 
+                      x="300" 
+                      y="35" 
+                      fill="#ffffff" 
+                      fontSize="14" 
+                      textAnchor="middle" 
+                      fontWeight="bold"
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      transition={{ delay: 3.5 }}
+                      viewport={{ once: true }}
+                    >
+                      Saturazione
+                    </motion.text>
+                  </svg>
+
+                </div>
+              </div>
+
+            </motion.div>
+          </div>
+
+          {/* Bottom CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+            viewport={{ once: true }}
+            className="text-center mt-16"
+          >
+            <div className="bg-white/5 backdrop-blur rounded-2xl p-6 border border-white/10 max-w-4xl mx-auto">
+              <div className="grid md:grid-cols-3 gap-6 text-center">
+                <div className="p-4">
+                  <div className="text-lg font-semibold text-gray-300 mb-1">€100-300</div>
+                  <div className="text-sm text-gray-400">Testing iniziale</div>
+                </div>
+                <div className="p-4 border border-white/20 rounded-lg">
+                  <div className="text-lg font-semibold text-white mb-1">€300-600</div>
+                  <div className="text-sm text-gray-300">Range ottimale</div>
+                </div>
+                <div className="p-4">
+                  <div className="text-lg font-semibold text-gray-400 mb-1">€600+</div>
+                  <div className="text-sm text-gray-500">Saturazione</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-6">
+          
+          {/* Header */}
+          <div className="text-center mb-20">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-4xl lg:text-5xl font-black text-gray-900 mb-6">
+                Enterprise Solutions & Investment Plans
+              </h2>
+              <p className="text-xl text-gray-700 max-w-4xl mx-auto">
+                Piani di investimento scalabili con <strong className="text-purple-600">performance tracking avanzato</strong> e garanzie di risultato. 
+                <br />Commitment trimestrale per risultati misurabili.
+              </p>
+            </motion.div>
+          </div>
+
+          {/* Pricing Cards */}
+          <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
+            
+            {/* Base Plan */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-3xl p-8 border-2 border-gray-200 hover:shadow-xl transition-all duration-300"
+            >
+              <div className="text-center mb-8">
+                <h3 className="text-3xl font-bold text-gray-900 mb-2">Professional</h3>
+                <p className="text-gray-600 mb-6">Piattaforma completa per business locali</p>
+                <div className="text-6xl font-black text-gray-900 mb-2">€47</div>
+                <div className="text-gray-600">/mese</div>
+                <div className="text-sm text-purple-600 font-semibold mt-2">Commitment trimestrale • Performance garantita</div>
+              </div>
+
+              <ul className="space-y-4 mb-8">
+                {[
+                  'Brand identity completo (Logo, Menu, Website)',
+                  'Advertising automation su Google e Meta',
+                  'Enterprise hosting + SSL certificato',
+                  'Google My Business sync avanzato',
+                  'Analytics suite e dashboard real-time',
+                  'CRM integrato con reservation system',
+                  'Priority support e onboarding',
+                  'Optimization algorithms illimitati'
+                ].map((feature, i) => (
+                  <li key={i} className="flex items-center text-sm">
+                    <Check className="w-5 h-5 text-emerald-500 mr-3 flex-shrink-0" />
+                    <span className="font-medium">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Budget Selector Base */}
+              <div className="mb-6 p-4 bg-gray-50 rounded-xl border">
+                <div className="text-center mb-3">
+                  <div className="text-sm font-semibold text-gray-800 mb-2">Budget Pubblicità Aggiuntiva</div>
+                  <select className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-800 text-sm bg-white">
+                    <option value="0">€0/mese - Solo piano base</option>
+                    <option value="200">€200/mese - Crescita locale</option>
+                    <option value="500">€500/mese - Accelerazione</option>
+                    <option value="1000">€1.000/mese - Espansione rapida</option>
+                    <option value="custom">Budget personalizzato</option>
+                  </select>
+                </div>
+                <div className="text-xs text-gray-600 text-center">
+                  Investiamo subito il tuo abbonamento in marketing
+                </div>
+              </div>
+
+              <Button
+                onClick={() => onStartBuilding('logo')}
+                className="w-full bg-gray-900 hover:bg-black text-white py-4 text-lg font-bold"
+              >
+                Inizia Ora • 3 Mesi
+              </Button>
+              
+              <div className="mt-4 text-center">
+                <div className="text-xs text-gray-600">Pagamento trimestrale: €141</div>
+                <div className="text-xs text-emerald-600 font-semibold">ROI garantito o rimborso 100%</div>
+              </div>
+            </motion.div>
+
+            {/* Enterprise Plan */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              viewport={{ once: true }}
+              className="bg-slate-800 border border-slate-700 rounded-3xl p-8 text-white relative shadow-xl"
+            >
+              <div className="text-center mb-8">
+                <h3 className="text-3xl font-bold mb-2">Enterprise</h3>
+                <p className="text-purple-100 mb-6">Multi-location & franchise solutions</p>
+                <div className="text-4xl font-black mb-1">€297</div>
+                <div className="text-purple-200 text-lg">/mese</div>
+                <div className="text-sm text-yellow-300 font-semibold mt-2">Include €200 advertising budget mensile</div>
+              </div>
+
+              <ul className="space-y-4 mb-8">
+                {[
+                  'Multi-location management (fino a 5 sedi)',
+                  'Performance acceleration garantita (90 giorni)',
+                  'Centralized operations dashboard',
+                  'Dedicated account manager 24/7',
+                  'Custom algorithms per location',
+                  'Enterprise analytics e reporting',
+                  'Advanced ROI optimization suite',
+                  'SLA enterprise 99.9% con support priority'
+                ].map((feature, i) => (
+                  <li key={i} className="flex items-center text-sm">
+                    <Check className="w-5 h-5 text-yellow-300 mr-3 flex-shrink-0" />
+                    <span className="font-medium">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Budget Selector Enterprise */}
+              <div className="mb-6 p-4 bg-white/10 backdrop-blur rounded-xl border border-white/20">
+                <div className="text-center mb-3">
+                  <div className="text-sm font-medium text-gray-300 mb-2">Advertising Budget Aggiuntivo</div>
+                  <select className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm">
+                    <option value="0">€200/mese incluso nel piano</option>
+                    <option value="300">€500/mese totale (+€300 extra)</option>
+                    <option value="800">€1.000/mese totale (+€800 extra)</option>
+                    <option value="1800">€2.000/mese totale (+€1.800 extra)</option>
+                    <option value="custom">Budget personalizzato</option>
+                  </select>
+                </div>
+                <div className="text-xs text-gray-400 text-center">
+                  Multi-location budget allocation
+                </div>
+              </div>
+
+              <Button
+                onClick={() => onStartBuilding('site')}
+                className="w-full bg-white text-slate-800 hover:bg-gray-100 py-4 text-lg font-semibold"
+              >
+                Richiedi Consulenza
+              </Button>
+              
+              <div className="mt-4 text-center">
+                <div className="text-xs text-gray-400">Performance optimization framework</div>
+                <div className="text-xs text-gray-300 font-medium">Contratto annuale • SLA garantito</div>
+              </div>
+            </motion.div>
+          </div>
+
         </div>
       </section>
 
