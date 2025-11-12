@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button } from '../../../../components/ui/button';
+import { Button } from '@/components/ui/button';
 import { getAwardWinningTemplates, getExtremeTemplates } from '../AdvancedLogoTemplates';
 import { LogoTemplate } from '../types';
 import { LogoConfig } from '../../../types';

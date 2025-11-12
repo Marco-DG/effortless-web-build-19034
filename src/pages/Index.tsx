@@ -1,11 +1,7 @@
-import { Builder } from "@/features/builder";
+import RestaurantSaasV2 from "@/RestaurantSaasV2";
 
 const Index = () => {
-  return (
-    <main className="h-screen overflow-hidden luxe-gradient-bg">
-      <Builder />
-    </main>
-  );
+  return <RestaurantSaasV2 />;
 };
 
 export default Index;
