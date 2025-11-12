@@ -2,8 +2,7 @@ import React from 'react';
 import { useAppStore } from './store/app-store';
 import { AppLayout, BuilderLayout, PreviewLayout } from './ui/Layout';
 import { Hero } from './components/Hero';
-import { LogoBuilder } from './modules/logo-builder/LogoBuilder';
-import { LogoPreview } from './modules/logo-builder/LogoPreview';
+import { LogoBuilderRedesigned, InteractiveLogoCanvas } from './modules/logo-builder';
 import { MenuBuilder } from './modules/menu-builder/MenuBuilder';
 import { MenuPreview } from './modules/menu-builder/MenuPreview';
 import { SiteBuilder } from './modules/site-builder/SiteBuilder';
@@ -16,7 +15,8 @@ export const RestaurantSaasV2: React.FC = () => {
     activeProject,
     ui,
     closeSidebar,
-    closePreview
+    closePreview,
+    updateProject
   } = useAppStore();
 
 
@@ -25,7 +25,7 @@ export const RestaurantSaasV2: React.FC = () => {
 
     switch (activeMode) {
       case 'logo':
-        return <LogoBuilder onSwitchBuilder={(mode) => useAppStore.getState().setActiveMode(mode)} />;
+        return <LogoBuilderRedesigned onSwitchBuilder={(mode) => useAppStore.getState().setActiveMode(mode)} />;
       case 'menu':
         return <MenuBuilder onSwitchBuilder={(mode) => useAppStore.getState().setActiveMode(mode)} />;
       case 'site':
@@ -59,10 +59,20 @@ export const RestaurantSaasV2: React.FC = () => {
     switch (activeMode) {
       case 'logo':
         return (
-          <LogoPreview 
+          <InteractiveLogoCanvas
             config={project.data.logo}
             businessName={project.data.business.name}
-            onUpdate={(updates) => updateProject({ logo: { ...project.data.logo, ...updates } })}
+            onElementUpdate={(elementId, updates) => {
+              const currentElements = project.data.logo.elements || [];
+              const updatedElements = currentElements.map(element =>
+                element.id === elementId ? { ...element, ...updates } : element
+              );
+              updateProject({
+                logo: { ...project.data.logo, elements: updatedElements }
+              });
+            }}
+            onElementSelect={() => {}} // Gestiamo la selezione nella sidebar se necessario
+            selectedElementId={null}
           />
         );
       case 'menu':
@@ -108,13 +118,14 @@ export const RestaurantSaasV2: React.FC = () => {
     );
   }
 
+
   return (
     <AppLayout>
       {!isBuilding ? (
         // Landing/Hero View
         <Hero />
       ) : (
-        // Builder View
+        // Altri Builder usano il layout standard
         <BuilderLayout
           hero={<Hero />}
           sidebar={renderSidebar()}
