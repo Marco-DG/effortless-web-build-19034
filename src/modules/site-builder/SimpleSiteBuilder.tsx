@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useAppStore } from '../../store/app-store';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { 
   Type, Monitor, Info, 
   Images, Star, Calendar, Phone, Clock, MapPin, Mail, 
   LayoutTemplate, Navigation2, Coffee, Truck,
   Palette
 } from 'lucide-react';
+import { UnifiedBuilderLayout, BuilderSection } from '../../components/UnifiedBuilderLayout';
 import { getAllFonts, ensureGoogleFontLoaded } from '@/lib/fonts';
 import { OptionList } from '@/components/ui/option-list';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -16,26 +16,26 @@ import { TemplateSelector } from '../templates/TemplateSelector';
 import { ComponentsManager } from './ComponentsManager';
 
 // Sezioni semplici - ogni sezione = un componente template
-const TEMPLATE_SECTIONS = [
+const TEMPLATE_SECTIONS: readonly BuilderSection[] = [
   // CONFIGURAZIONE
-  { id: 'template', label: 'Template', icon: Palette, category: 'config' },
-  { id: 'components', label: 'Componenti', icon: LayoutTemplate, category: 'config' },
-  { id: 'typography', label: 'Tipografia', icon: Type, category: 'config' },
+  { id: 'template', label: 'Template', icon: Palette, category: 'config', description: 'Scegli il design del tuo sito' },
+  { id: 'components', label: 'Componenti', icon: LayoutTemplate, category: 'config', description: 'Gestisci sezioni e layout' },
+  { id: 'typography', label: 'Tipografia', icon: Type, category: 'config', description: 'Font e stili di testo' },
   
   // ASPETTO 
-  { id: 'hero', label: 'Hero', icon: Monitor, category: 'appearance' },
-  { id: 'about', label: 'Chi siamo', icon: Info, category: 'appearance' },
-  { id: 'gallery', label: 'Galleria', icon: Images, category: 'appearance' },
-  { id: 'reviews', label: 'Recensioni', icon: Star, category: 'appearance' },
-  { id: 'events', label: 'Eventi', icon: Calendar, category: 'appearance' },
-  { id: 'newsletter', label: 'Newsletter', icon: Mail, category: 'appearance' },
-  { id: 'location', label: 'Posizione', icon: MapPin, category: 'appearance' },
+  { id: 'hero', label: 'Hero', icon: Monitor, category: 'appearance', description: 'Sezione principale della homepage' },
+  { id: 'about', label: 'Chi siamo', icon: Info, category: 'appearance', description: 'Descrizione del ristorante' },
+  { id: 'gallery', label: 'Galleria', icon: Images, category: 'appearance', description: 'Immagini e foto del locale' },
+  { id: 'reviews', label: 'Recensioni', icon: Star, category: 'appearance', description: 'Testimonianze clienti' },
+  { id: 'events', label: 'Eventi', icon: Calendar, category: 'appearance', description: 'Eventi e promozioni' },
+  { id: 'newsletter', label: 'Newsletter', icon: Mail, category: 'appearance', description: 'Iscrizione mailing list' },
+  { id: 'location', label: 'Posizione', icon: MapPin, category: 'appearance', description: 'Mappa e indicazioni' },
   
   // DATI
-  { id: 'contact', label: 'Contatti', icon: Phone, category: 'data' },
-  { id: 'hours', label: 'Orari', icon: Clock, category: 'data' },
-  { id: 'delivery', label: 'Delivery', icon: Truck, category: 'data' },
-] as const;
+  { id: 'contact', label: 'Contatti', icon: Phone, category: 'data', description: 'Informazioni di contatto' },
+  { id: 'hours', label: 'Orari', icon: Clock, category: 'data', description: 'Orari di apertura' },
+  { id: 'delivery', label: 'Delivery', icon: Truck, category: 'data', description: 'Servizio di consegna' },
+];
 
 type TemplateSectionId = typeof TEMPLATE_SECTIONS[number]['id'];
 
@@ -82,135 +82,16 @@ export const SimpleSiteBuilder: React.FC<SimpleSiteBuilderProps> = ({ onSwitchBu
     }
   };
 
-  const currentSection = TEMPLATE_SECTIONS.find(s => s.id === activeSection);
-
   return (
-    <div className="h-full w-full lg:w-auto flex flex-col bg-white lg:rounded-l-2xl border-r border-border shadow-lg overflow-hidden">
-      
-      {/* Header con tab condivisa */}
-      {onSwitchBuilder && (
-        <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-white/80 backdrop-blur text-xs font-medium">
-          <div className="flex items-center gap-2">
-            <button 
-              type="button" 
-              onClick={() => onSwitchBuilder('logo')} 
-              className="px-3 py-1.5 rounded text-muted-foreground hover:text-foreground"
-            >
-              Logo
-            </button>
-            <button 
-              type="button" 
-              onClick={() => onSwitchBuilder('menu')} 
-              className="px-3 py-1.5 rounded text-muted-foreground hover:text-foreground"
-            >
-              Menù
-            </button>
-            <button 
-              type="button" 
-              onClick={() => onSwitchBuilder('site')} 
-              className="px-3 py-1.5 rounded bg-muted text-foreground"
-            >
-              Sito Web
-            </button>
-          </div>
-          <div className="flex items-center gap-2">
-            <button 
-              type="button" 
-              className="lg:hidden inline-flex items-center gap-1.5 rounded-lg bg-primary text-primary-foreground px-2.5 py-1.5 text-xs font-medium"
-            >
-              <Monitor className="w-3.5 h-3.5" /> Anteprima
-            </button>
-            <button
-              onClick={closeSidebar}
-              className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-200"
-            >
-              <LayoutTemplate className="w-4 h-4 text-gray-600" />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Main Content */}
-      <div className="flex flex-1 overflow-hidden min-h-0">
-        
-        {/* Sidebar Navigation */}
-        <div className="w-10 2xl:w-40 border-r border-border bg-white/50 backdrop-blur flex flex-col py-2 flex-shrink-0">
-          <ScrollArea className="flex-1">
-            <div className="space-y-1 px-1">
-              {(() => {
-                const categories = [
-                  { id: 'config', label: 'Configurazione', sections: TEMPLATE_SECTIONS.filter(s => s.category === 'config') },
-                  { id: 'appearance', label: 'Aspetto', sections: TEMPLATE_SECTIONS.filter(s => s.category === 'appearance') },
-                  { id: 'data', label: 'Dati', sections: TEMPLATE_SECTIONS.filter(s => s.category === 'data') }
-                ];
-
-                return categories.map((category) => (
-                  <div key={category.id} className="space-y-1">
-                    {/* Divisore categoria - visibile solo su schermi larghi */}
-                    <div className="hidden 2xl:flex items-center gap-2 px-2 py-2 mt-4 first:mt-2">
-                      <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                        {category.label}
-                      </h3>
-                      <div className="flex-1 h-px bg-border" />
-                    </div>
-                    
-                    {/* Sezioni della categoria */}
-                    {category.sections.map((section) => {
-                      const isActive = activeSection === section.id;
-                      return (
-                        <button
-                          key={section.id}
-                          onClick={() => setActiveSection(section.id)}
-                          className={`w-full flex items-center justify-center 2xl:justify-start px-2 py-3 2xl:px-3 2xl:py-2.5 text-sm transition-all duration-200 rounded-lg group ${
-                            isActive
-                              ? 'bg-primary text-primary-foreground shadow-sm'
-                              : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                          }`}
-                        >
-                          <section.icon className="w-5 h-5 flex-shrink-0" />
-                          <span className="hidden 2xl:block ml-3 text-left font-medium">
-                            {section.label}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                ));
-              })()}
-            </div>
-          </ScrollArea>
-        </div>
-
-        {/* Section Editor */}
-        <div className="flex-1 min-w-0 flex flex-col">
-          {/* Section Header */}
-          <div className="px-6 py-4 border-b bg-white/80 backdrop-blur">
-            <div className="flex items-center gap-3">
-              {currentSection && (
-                <>
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <currentSection.icon className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold">{currentSection.label}</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Personalizza questo componente del template
-                    </p>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-
-          {/* Section Content */}
-          <ScrollArea className="flex-1">
-            <div className="p-6">
-              {renderSectionEditor()}
-            </div>
-          </ScrollArea>
-        </div>
-      </div>
-    </div>
+    <UnifiedBuilderLayout
+      builderType="site"
+      sections={TEMPLATE_SECTIONS}
+      activeSection={activeSection}
+      onSectionChange={setActiveSection}
+      onSwitchBuilder={onSwitchBuilder}
+    >
+      {renderSectionEditor()}
+    </UnifiedBuilderLayout>
   );
 };
 
