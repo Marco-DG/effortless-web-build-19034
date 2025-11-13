@@ -149,6 +149,18 @@ All colors MUST be HSL.
 .viewport-mobile .hidden.md\\:block { display: none !important; }
 .viewport-mobile .hidden.lg\\:block { display: none !important; }
 
+/* Scrollbar utilities */
+.scrollbar-hide {
+  /* Firefox */
+  scrollbar-width: none;
+  /* Safari and Chrome */
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Grid overrides for mobile */
 .viewport-mobile .grid.grid-cols-1.lg\\:grid-cols-12 { grid-template-columns: 1fr !important; }
 .viewport-mobile .grid.md\\:grid-cols-2 { grid-template-columns: 1fr !important; }

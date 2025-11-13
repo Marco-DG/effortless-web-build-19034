@@ -80,7 +80,7 @@ export const SitePreview: React.FC<SitePreviewProps> = ({ project }) => {
 
   return (
     <PreviewLayout mode="site">
-      <div className="h-full overflow-y-auto">
+      <div className="h-full overflow-y-auto scrollbar-hide">
         <div className="min-h-full bg-white">
           {defaultSections.map(renderSection)}
         </div>

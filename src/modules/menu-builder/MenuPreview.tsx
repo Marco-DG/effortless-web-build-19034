@@ -44,7 +44,7 @@ export const MenuPreview: React.FC<MenuPreviewProps> = ({
 
   return (
     <PreviewLayout mode="menu">
-      <div className="h-full overflow-y-auto">
+      <div className="h-full overflow-y-auto scrollbar-hide">
         <div className="p-8 max-w-4xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
