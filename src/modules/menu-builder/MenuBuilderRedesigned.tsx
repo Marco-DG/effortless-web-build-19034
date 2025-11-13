@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useAppStore } from '../../store/app-store';
-import { Plus, Settings, List, Palette, Layout } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { UnifiedBuilderLayout, BuilderSection } from '../../components/UnifiedBuilderLayout';
 import { MenuConfigSection } from './sections/MenuConfigSection';
 import { MenuItemsSection } from './sections/MenuItemsSection';
 import { MenuStyleSection } from './sections/MenuStyleSection';
 import { MenuLayoutSection } from './sections/MenuLayoutSection';
+import { ConfigIcon, MenuItemsIcon, StyleIcon, LayoutIcon } from '../../components/icons/PremiumIcons';
 
 interface MenuBuilderRedesignedProps {
   onSwitchBuilder?: (builder: 'logo' | 'menu' | 'site') => void;
@@ -14,12 +15,12 @@ interface MenuBuilderRedesignedProps {
 // Sezioni del Menu Builder seguendo lo stesso pattern
 const MENU_SECTIONS: readonly BuilderSection[] = [
   // GESTIONE
-  { id: 'config', label: 'Configurazione', icon: Settings, category: 'management', description: 'Impostazioni generali del menu' },
-  { id: 'items', label: 'Elementi', icon: List, category: 'management', description: 'Gestisci piatti e bevande' },
+  { id: 'config', label: 'Configurazione', icon: ConfigIcon, category: 'management', description: 'Impostazioni generali del menu' },
+  { id: 'items', label: 'Elementi', icon: MenuItemsIcon, category: 'management', description: 'Gestisci piatti e bevande' },
   
   // ASPETTO
-  { id: 'style', label: 'Stile', icon: Palette, category: 'appearance', description: 'Colori e tipografia' },
-  { id: 'layout', label: 'Layout', icon: Layout, category: 'appearance', description: 'Struttura e visualizzazione' }
+  { id: 'style', label: 'Stile', icon: StyleIcon, category: 'appearance', description: 'Colori e tipografia' },
+  { id: 'layout', label: 'Layout', icon: LayoutIcon, category: 'appearance', description: 'Struttura e visualizzazione' }
 ];
 
 type MenuSectionId = typeof MENU_SECTIONS[number]['id'];
@@ -95,10 +96,10 @@ export const MenuBuilderRedesigned: React.FC<MenuBuilderRedesignedProps> = ({
   const addItemAction = (
     <button
       onClick={handleAddItem}
-      className="p-2 hover:bg-white/60 rounded-xl transition-all duration-200"
+      className="p-2.5 hover:bg-white/80 rounded-[12px] transition-all duration-200 group"
       title="Aggiungi elemento"
     >
-      <Plus className="w-4 h-4 text-slate-600" />
+      <Plus className="w-4 h-4 text-slate-500 group-hover:text-slate-700" />
     </button>
   );
 

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useAppStore } from '../../store/app-store';
-import { Palette, Layers, Settings } from 'lucide-react';
 import { TemplateSection } from './sections/TemplateSection';
 import { CanvasSection } from './sections/CanvasSection';
 import { LayersSection } from './sections/LayersSection';
 import { UnifiedBuilderLayout, BuilderSection } from '../../components/UnifiedBuilderLayout';
+import { TemplateIcon, LayersIcon, CanvasIcon } from '../../components/icons/PremiumIcons';
 
 interface LogoBuilderRedesignedProps {
   onSwitchBuilder?: (builder: 'logo' | 'menu' | 'site') => void;
@@ -13,11 +13,11 @@ interface LogoBuilderRedesignedProps {
 // Sezioni del Logo Builder seguendo lo stesso pattern del SiteBuilder
 const LOGO_SECTIONS: readonly BuilderSection[] = [
   // DESIGN
-  { id: 'templates', label: 'Template', icon: Palette, category: 'design', description: 'Scegli un design base' },
+  { id: 'templates', label: 'Template', icon: TemplateIcon, category: 'design', description: 'Scegli un design base' },
   
   // CONTROLLI
-  { id: 'layers', label: 'Livelli', icon: Layers, category: 'controls', description: 'Gestisci elementi e livelli' },
-  { id: 'canvas', label: 'Canvas', icon: Settings, category: 'controls', description: 'Impostazioni canvas' }
+  { id: 'layers', label: 'Livelli', icon: LayersIcon, category: 'controls', description: 'Gestisci elementi e livelli' },
+  { id: 'canvas', label: 'Canvas', icon: CanvasIcon, category: 'controls', description: 'Impostazioni canvas' }
 ];
 
 type LogoSectionId = typeof LOGO_SECTIONS[number]['id'];

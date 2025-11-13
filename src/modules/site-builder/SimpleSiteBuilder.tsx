@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useAppStore } from '../../store/app-store';
 import { 
-  Type, Monitor, Info, 
-  Images, Star, Calendar, Phone, Clock, MapPin, Mail, 
-  LayoutTemplate, Navigation2, Coffee, Truck,
-  Palette
+  Star, Calendar, Phone, Clock, MapPin, Mail, 
+  Coffee, Truck
 } from 'lucide-react';
 import { UnifiedBuilderLayout, BuilderSection } from '../../components/UnifiedBuilderLayout';
+import { 
+  TemplateIcon, ComponentsIcon, TypographyIcon, CanvasIcon,
+  InfoIcon, GalleryIcon
+} from '../../components/icons/PremiumIcons';
 import { getAllFonts, ensureGoogleFontLoaded } from '@/lib/fonts';
 import { OptionList } from '@/components/ui/option-list';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -18,14 +20,14 @@ import { ComponentsManager } from './ComponentsManager';
 // Sezioni semplici - ogni sezione = un componente template
 const TEMPLATE_SECTIONS: readonly BuilderSection[] = [
   // CONFIGURAZIONE
-  { id: 'template', label: 'Template', icon: Palette, category: 'config', description: 'Scegli il design del tuo sito' },
-  { id: 'components', label: 'Componenti', icon: LayoutTemplate, category: 'config', description: 'Gestisci sezioni e layout' },
-  { id: 'typography', label: 'Tipografia', icon: Type, category: 'config', description: 'Font e stili di testo' },
+  { id: 'template', label: 'Template', icon: TemplateIcon, category: 'config', description: 'Scegli il design del tuo sito' },
+  { id: 'components', label: 'Componenti', icon: ComponentsIcon, category: 'config', description: 'Gestisci sezioni e layout' },
+  { id: 'typography', label: 'Tipografia', icon: TypographyIcon, category: 'config', description: 'Font e stili di testo' },
   
   // ASPETTO 
-  { id: 'hero', label: 'Hero', icon: Monitor, category: 'appearance', description: 'Sezione principale della homepage' },
-  { id: 'about', label: 'Chi siamo', icon: Info, category: 'appearance', description: 'Descrizione del ristorante' },
-  { id: 'gallery', label: 'Galleria', icon: Images, category: 'appearance', description: 'Immagini e foto del locale' },
+  { id: 'hero', label: 'Hero', icon: CanvasIcon, category: 'appearance', description: 'Sezione principale della homepage' },
+  { id: 'about', label: 'Chi siamo', icon: InfoIcon, category: 'appearance', description: 'Descrizione del ristorante' },
+  { id: 'gallery', label: 'Galleria', icon: GalleryIcon, category: 'appearance', description: 'Immagini e foto del locale' },
   { id: 'reviews', label: 'Recensioni', icon: Star, category: 'appearance', description: 'Testimonianze clienti' },
   { id: 'events', label: 'Eventi', icon: Calendar, category: 'appearance', description: 'Eventi e promozioni' },
   { id: 'newsletter', label: 'Newsletter', icon: Mail, category: 'appearance', description: 'Iscrizione mailing list' },

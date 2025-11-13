@@ -64,34 +64,40 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
   };
 
   return (
-    <div className="h-full w-full lg:w-auto flex flex-col bg-slate-50/80 backdrop-blur-xl lg:rounded-l-3xl border-r border-slate-200/60 shadow-2xl shadow-slate-900/5 overflow-hidden">
+    <div className="h-full w-full lg:w-auto flex flex-col sidebar-premium lg:rounded-l-[2rem] shadow-2xl shadow-slate-900/8 overflow-hidden font-geist">
       
       {/* Header con tab condivisa */}
       {onSwitchBuilder && (
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200/60 bg-white/70 backdrop-blur-xl text-xs font-semibold tracking-wide">
-          <div className="flex items-center gap-1">
+        <div className="flex items-center justify-between px-8 py-6 border-b border-slate-200/30 bg-white/60 backdrop-blur-xl">
+          <div className="flex items-center gap-2">
             {(['logo', 'menu', 'site'] as const).map((type) => (
               <button
                 key={type}
                 type="button"
                 onClick={() => onSwitchBuilder(type)}
-                className={`px-4 py-2 rounded-xl font-medium transition-all duration-200 ${
+                className={`relative px-5 py-2.5 font-medium text-sm transition-all duration-300 ease-out overflow-hidden rounded-[14px] ${
                   builderType === type
-                    ? 'bg-slate-800 text-white shadow-lg shadow-slate-900/20'
-                    : 'text-slate-600 hover:text-slate-800 hover:bg-white/60'
-                }`}
+                    ? 'bg-slate-900 text-white shadow-lg shadow-slate-900/25'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
+                } hover:scale-[1.02] active:scale-[0.98]`}
               >
-                {getBuilderLabel(type)}
+                <span className="relative z-10 font-geist font-medium tracking-[-0.01em]">
+                  {getBuilderLabel(type)}
+                </span>
+                {builderType !== type && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/40 via-white/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-[14px]" />
+                )}
               </button>
             ))}
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <button 
               type="button" 
-              className="lg:hidden inline-flex items-center gap-1.5 rounded-xl bg-slate-800 text-white px-3 py-2 text-xs font-medium shadow-lg shadow-slate-900/20"
+              className="lg:hidden inline-flex items-center gap-2 rounded-[12px] bg-slate-900 text-white px-4 py-2.5 text-sm font-medium shadow-lg shadow-slate-900/20 hover:bg-slate-800 transition-all duration-200"
             >
-              <Eye className="w-3.5 h-3.5" /> Anteprima
+              <Eye className="w-4 h-4" /> 
+              <span className="font-geist font-medium tracking-[-0.01em]">Anteprima</span>
             </button>
             
             {/* Extra actions (like Add Item for Menu) */}
@@ -100,10 +106,10 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
             {onExport && (
               <button
                 onClick={onExport}
-                className="p-2 hover:bg-white/60 rounded-xl transition-all duration-200"
+                className="p-2.5 hover:bg-white/80 rounded-[12px] transition-all duration-200 group"
                 title="Esporta"
               >
-                <Download className="w-4 h-4 text-slate-600" />
+                <Download className="w-4 h-4 text-slate-500 group-hover:text-slate-700" />
               </button>
             )}
           </div>
@@ -114,34 +120,42 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
       <div className="flex flex-1 overflow-hidden min-h-0">
         
         {/* Sidebar Navigation */}
-        <div className="w-12 2xl:w-44 border-r border-slate-200/60 bg-gradient-to-b from-white/40 to-slate-50/60 backdrop-blur-sm flex flex-col py-4 flex-shrink-0">
+        <div className="w-16 2xl:w-52 flex flex-col py-6 flex-shrink-0 relative">
+          <div className="absolute right-0 top-0 bottom-0 sidebar-divider"></div>
           <ScrollArea className="flex-1">
-            <div className="space-y-1 px-1">
-              {categories.map((category) => (
-                <div key={category.id} className="space-y-1">
+            <div className="space-y-2 px-3">
+              {categories.map((category, categoryIndex) => (
+                <div key={category.id} className="space-y-1.5">
                   {/* Divisore categoria - visibile solo su schermi larghi */}
-                  <div className="hidden 2xl:flex items-center gap-3 px-3 py-3 mt-6 first:mt-2">
-                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-[0.1em] leading-none">
-                      {category.label}
-                    </h3>
-                    <div className="flex-1 h-px bg-gradient-to-r from-slate-300 to-transparent" />
+                  <div className="hidden 2xl:block px-1 py-6 mt-8 first:mt-2">
+                    <div className="relative">
+                      <h3 className="text-[11px] font-semibold text-slate-400 font-geist tracking-[0.08em] leading-none mb-3 pl-1">
+                        {category.label}
+                      </h3>
+                      <div className="h-[1px] bg-gradient-to-r from-slate-200 via-slate-100 to-transparent opacity-60" />
+                    </div>
                   </div>
                   
                   {/* Sezioni della categoria */}
-                  {category.sections.map((section) => {
+                  {category.sections.map((section, sectionIndex) => {
                     const isActive = activeSection === section.id;
                     return (
                       <button
                         key={section.id}
                         onClick={() => onSectionChange(section.id)}
-                        className={`w-full flex items-center justify-center 2xl:justify-start px-2 py-4 2xl:px-4 2xl:py-3 text-sm transition-all duration-300 rounded-2xl group ${
-                          isActive
-                            ? 'bg-slate-800 text-white shadow-xl shadow-slate-900/25 scale-105'
-                            : 'text-slate-600 hover:text-slate-800 hover:bg-white/70 hover:shadow-lg hover:shadow-slate-900/10 hover:scale-102'
-                        }`}
+                        className={`sidebar-nav-item ${isActive ? 'active' : ''} 
+                          w-full flex items-center justify-center 2xl:justify-start 
+                          px-3 py-3.5 2xl:px-4 2xl:py-3 text-sm 
+                          rounded-[16px] group font-medium`}
                       >
-                        <section.icon className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110" />
-                        <span className="hidden 2xl:block ml-3 text-left font-semibold tracking-wide">
+                        <section.icon 
+                          className={`w-5 h-5 flex-shrink-0 transition-all duration-300 ${
+                            isActive ? 'text-slate-800' : 'text-slate-500 group-hover:text-slate-700'
+                          }`} 
+                        />
+                        <span className={`hidden 2xl:block ml-3.5 text-left font-geist font-medium tracking-[-0.01em] transition-all duration-300 ${
+                          isActive ? 'text-slate-800 font-semibold' : 'text-slate-700 group-hover:text-slate-900'
+                        }`}>
                           {section.label}
                         </span>
                       </button>
@@ -156,16 +170,18 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
         {/* Section Editor */}
         <div className="flex-1 min-w-0 flex flex-col">
           {/* Section Header */}
-          <div className="px-8 py-6 border-b border-slate-200/60 bg-white/60 backdrop-blur-xl">
-            <div className="flex items-center gap-3">
+          <div className="px-10 py-8 border-b border-slate-200/30 bg-white/40 backdrop-blur-xl">
+            <div className="flex items-start gap-5">
               {currentSection && (
                 <>
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200/70 border border-slate-200/80 flex items-center justify-center shadow-lg shadow-slate-900/5">
+                  <div className="w-14 h-14 rounded-[18px] bg-gradient-to-br from-white via-slate-50 to-slate-100/80 border border-slate-200/50 flex items-center justify-center shadow-lg shadow-slate-900/8 backdrop-blur-sm">
                     <currentSection.icon className="w-6 h-6 text-slate-700" />
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-slate-800 tracking-tight">{currentSection.label}</h3>
-                    <p className="text-sm text-slate-500 font-medium">
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold text-slate-900 tracking-[-0.02em] font-geist leading-tight mb-2">
+                      {currentSection.label}
+                    </h3>
+                    <p className="text-sm text-slate-500 font-medium font-geist tracking-[-0.01em] leading-relaxed">
                       {currentSection.description}
                     </p>
                   </div>
@@ -176,7 +192,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
 
           {/* Section Content */}
           <ScrollArea className="flex-1">
-            <div className="p-8 bg-gradient-to-b from-white/20 to-slate-50/40">
+            <div className="p-10 bg-gradient-to-b from-white/30 via-slate-50/20 to-slate-50/40">
               {children}
             </div>
           </ScrollArea>
