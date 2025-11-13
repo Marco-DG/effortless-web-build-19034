@@ -706,6 +706,260 @@ const WineBarTemplate: React.FC<{ data: any; theme: any; project: any }> = ({ da
           );
         })()}
       </main>
+      
+      {/* FOOTER */}
+      <footer
+        className="text-white py-16 px-6"
+        style={{ backgroundColor: templateColors.primary }}
+      >
+        <div className="container mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            {/* Logo e Info */}
+            <div>
+              <h3 
+                className="text-xl font-bold mb-4"
+                style={{ fontFamily: headingFont }}
+              >
+                {builderData.businessName || "Il Tuo Locale"}
+              </h3>
+              {builderData.tagline && (
+                <p 
+                  className="text-sm opacity-90 mb-4"
+                  style={{ fontFamily: bodyFont }}
+                >
+                  {builderData.tagline}
+                </p>
+              )}
+              <div className="flex gap-4">
+                {project.data.social?.facebook && (
+                  <a
+                    href={project.data.social.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-80 transition-opacity"
+                    aria-label="Facebook"
+                  >
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                  </a>
+                )}
+                {project.data.social?.instagram && (
+                  <a
+                    href={project.data.social.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-80 transition-opacity"
+                    aria-label="Instagram"
+                  >
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 6.62 5.367 11.987 11.988 11.987 6.62 0 11.987-5.367 11.987-11.987C24.014 5.367 18.637.001 12.017.001zM8.449 20.312c-1.357-.107-2.095-.325-2.584-.539-.649-.252-1.112-.553-1.597-1.039-.485-.485-.787-.948-1.039-1.597-.214-.489-.432-1.227-.539-2.584C2.595 13.42 2.55 13.126 2.55 12s.045-1.42.14-2.553c.107-1.357.325-2.095.539-2.584.252-.649.553-1.112 1.039-1.597.485-.485.948-.787 1.597-1.039.489-.214 1.227-.432 2.584-.539C10.58 3.595 10.874 3.55 12 3.55s1.42.045 2.553.14c1.357.107 2.095.325 2.584.539.649.252 1.112.553 1.597 1.039.485.485.787.948 1.039 1.597.214.489.432 1.227.539 2.584.095 1.133.14 1.427.14 2.553s-.045 1.42-.14 2.553c-.107 1.357-.325 2.095-.539 2.584-.252.649-.553 1.112-1.039 1.597-.485.485-.948.787-1.597 1.039-.489.214-1.227.432-2.584.539-1.133.095-1.427.14-2.553.14s-1.42-.045-2.553-.14z"/>
+                      <circle cx="12" cy="12" r="3.405"/>
+                      <circle cx="15.805" cy="8.195" r="0.796"/>
+                    </svg>
+                  </a>
+                )}
+              </div>
+            </div>
+
+            {/* Link Rapidi */}
+            <div>
+              <h4 
+                className="font-semibold mb-4"
+                style={{ 
+                  color: templateColors.accent,
+                  fontFamily: subheadingFont
+                }}
+              >
+                Link Rapidi
+              </h4>
+              <ul 
+                className="space-y-2 text-sm"
+                style={{ fontFamily: bodyFont }}
+              >
+                <li>
+                  <a 
+                    href="#home" 
+                    className="hover:opacity-80 transition-opacity"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document.getElementById('home')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }}
+                  >
+                    Home
+                  </a>
+                </li>
+                {builderData.sectionsEnabled.menu && (
+                  <li>
+                    <a 
+                      href="#menu" 
+                      className="hover:opacity-80 transition-opacity"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }}
+                    >
+                      Menu
+                    </a>
+                  </li>
+                )}
+                {builderData.sectionsEnabled.about && (
+                  <li>
+                    <a 
+                      href="#about" 
+                      className="hover:opacity-80 transition-opacity"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById('about')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }}
+                    >
+                      Chi Siamo
+                    </a>
+                  </li>
+                )}
+                {builderData.sectionsEnabled.events && (
+                  <li>
+                    <a 
+                      href="#events" 
+                      className="hover:opacity-80 transition-opacity"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById('events')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }}
+                    >
+                      Eventi
+                    </a>
+                  </li>
+                )}
+                {builderData.sectionsEnabled.contact && (
+                  <li>
+                    <a 
+                      href="#contact" 
+                      className="hover:opacity-80 transition-opacity"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }}
+                    >
+                      Contatti
+                    </a>
+                  </li>
+                )}
+              </ul>
+            </div>
+
+            {/* Contatti */}
+            <div>
+              <h4 
+                className="font-semibold mb-4"
+                style={{ 
+                  color: templateColors.accent,
+                  fontFamily: subheadingFont
+                }}
+              >
+                Contatti
+              </h4>
+              <ul 
+                className="space-y-2 text-sm"
+                style={{ fontFamily: bodyFont }}
+              >
+                {builderData.address && (
+                  <li className="flex items-start gap-2">
+                    <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                    <span>{builderData.address}</span>
+                  </li>
+                )}
+                {builderData.phone && (
+                  <li className="flex items-center gap-2">
+                    <Phone className="w-4 h-4 flex-shrink-0" />
+                    <a 
+                      href={`tel:${builderData.phone}`} 
+                      className="hover:opacity-80 transition-opacity"
+                    >
+                      {builderData.phone}
+                    </a>
+                  </li>
+                )}
+                {builderData.email && (
+                  <li className="flex items-center gap-2">
+                    <Mail className="w-4 h-4 flex-shrink-0" />
+                    <a
+                      href={`mailto:${builderData.email}`}
+                      className="hover:opacity-80 transition-opacity"
+                    >
+                      {builderData.email}
+                    </a>
+                  </li>
+                )}
+              </ul>
+            </div>
+          </div>
+
+          {/* Orari di Apertura */}
+          {project.data.business?.openingHours && (
+            <div className="mb-8 pt-8 border-t border-white/20">
+              <h4 
+                className="font-semibold mb-4"
+                style={{ 
+                  color: templateColors.accent,
+                  fontFamily: subheadingFont
+                }}
+              >
+                Orari di Apertura
+              </h4>
+              <div 
+                className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm"
+                style={{ fontFamily: bodyFont }}
+              >
+                {Object.entries(project.data.business.openingHours).map(([day, hours]: [string, any]) => {
+                  const dayLabels: Record<string, string> = {
+                    monday: "Lun",
+                    tuesday: "Mar",
+                    wednesday: "Mer",
+                    thursday: "Gio",
+                    friday: "Ven",
+                    saturday: "Sab",
+                    sunday: "Dom",
+                  };
+                  return (
+                    <div key={day}>
+                      <span className="font-medium">{dayLabels[day]}: </span>
+                      {hours.closed ? (
+                        <span className="opacity-75">Chiuso</span>
+                      ) : (
+                        <span>{hours.open} - {hours.close}</span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Copyright */}
+          <div 
+            className="pt-8 border-t border-white/20 text-center text-sm opacity-75"
+            style={{ fontFamily: bodyFont }}
+          >
+            <p>
+              © {new Date().getFullYear()} {builderData.businessName || "Il Tuo Locale"}. Tutti i diritti riservati.
+            </p>
+            <div className="flex justify-center gap-4 mt-2">
+              <a href="#privacy" className="hover:opacity-80 transition-opacity">
+                Privacy Policy
+              </a>
+              <span>•</span>
+              <a href="#cookie" className="hover:opacity-80 transition-opacity">
+                Cookie Policy
+              </a>
+              <span>•</span>
+              <a href="#termini" className="hover:opacity-80 transition-opacity">
+                Termini di Servizio
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
