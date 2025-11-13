@@ -304,7 +304,7 @@ export const InteractiveLogoCanvas: React.FC<InteractiveLogoCanvasProps> = ({
 
   return (
     <PreviewLayout mode="logo">
-      <div className="w-full h-full flex items-center justify-center p-8 bg-gradient-to-br from-gray-50 to-white">
+      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-white">
         {/* Canvas Container */}
         <div className="relative">
           {/* Canvas */}
@@ -350,25 +350,25 @@ export const InteractiveLogoCanvas: React.FC<InteractiveLogoCanvasProps> = ({
             </AnimatePresence>
 
             {/* Canvas Info */}
-            <div className="absolute top-2 left-2 text-xs text-gray-400 font-mono bg-white/80 px-1 rounded">
+            <div className="absolute top-2 left-2 text-xs text-gray-400 font-mono bg-white/80 px-2 py-1 rounded">
               {canvasWidth}×{canvasHeight}
             </div>
           </div>
 
           {/* Zoom Controls */}
-          <div className="absolute bottom-4 right-4 flex items-center gap-2 bg-white/90 backdrop-blur rounded-lg border p-2">
+          <div className="absolute bottom-4 right-4 flex items-center gap-2 bg-white/90 backdrop-blur rounded-lg border p-2 shadow-sm">
             <button
               onClick={() => setZoom(Math.max(0.25, zoom - 0.25))}
-              className="w-6 h-6 rounded border hover:bg-gray-100 flex items-center justify-center text-sm"
+              className="w-6 h-6 rounded border hover:bg-gray-100 flex items-center justify-center text-sm font-semibold transition-colors"
             >
               -
             </button>
-            <span className="text-xs font-mono px-2">
+            <span className="text-xs font-mono px-2 min-w-[3rem] text-center">
               {Math.round(zoom * 100)}%
             </span>
             <button
               onClick={() => setZoom(Math.min(2, zoom + 0.25))}
-              className="w-6 h-6 rounded border hover:bg-gray-100 flex items-center justify-center text-sm"
+              className="w-6 h-6 rounded border hover:bg-gray-100 flex items-center justify-center text-sm font-semibold transition-colors"
             >
               +
             </button>
@@ -376,8 +376,8 @@ export const InteractiveLogoCanvas: React.FC<InteractiveLogoCanvasProps> = ({
 
           {/* Element Count */}
           {elements.length > 0 && (
-            <div className="absolute top-4 right-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-medium">
-              {elements.length} elementi
+            <div className="absolute top-4 right-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-medium shadow-sm">
+              {elements.length} {elements.length === 1 ? 'elemento' : 'elementi'}
             </div>
           )}
         </div>

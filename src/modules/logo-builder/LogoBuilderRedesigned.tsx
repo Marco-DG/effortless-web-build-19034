@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useAppStore } from '../../store/app-store';
-import { Download, Eye, Palette, Type, Layers, Settings } from 'lucide-react';
+import { Download, Eye, Palette, Layers, Settings } from 'lucide-react';
 import { TemplateSection } from './sections/TemplateSection';
-import { FontSection } from './sections/FontSection';
-import { StyleSection } from './sections/StyleSection';
 import { CanvasSection } from './sections/CanvasSection';
+import { LayersSection } from './sections/LayersSection';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface LogoBuilderRedesignedProps {
@@ -14,12 +13,11 @@ interface LogoBuilderRedesignedProps {
 // Sezioni del Logo Builder seguendo lo stesso pattern del SiteBuilder
 const LOGO_SECTIONS = [
   // DESIGN
-  { id: 'templates' as const, label: 'Template', icon: Layers, category: 'design', description: 'Scegli un design base' },
-  { id: 'fonts' as const, label: 'Font & Testo', icon: Type, category: 'design', description: 'Typography e contenuti' },
+  { id: 'templates' as const, label: 'Template', icon: Palette, category: 'design', description: 'Scegli un design base' },
   
-  // ASPETTO
-  { id: 'style' as const, label: 'Stile', icon: Palette, category: 'appearance', description: 'Colori e aspetto' },
-  { id: 'canvas' as const, label: 'Canvas', icon: Settings, category: 'appearance', description: 'Controlli avanzati' }
+  // CONTROLLI
+  { id: 'layers' as const, label: 'Livelli', icon: Layers, category: 'controls', description: 'Gestisci elementi e livelli' },
+  { id: 'canvas' as const, label: 'Canvas', icon: Settings, category: 'controls', description: 'Impostazioni canvas' }
 ];
 
 type LogoSectionId = typeof LOGO_SECTIONS[number]['id'];
@@ -55,16 +53,9 @@ export const LogoBuilderRedesigned: React.FC<LogoBuilderRedesignedProps> = ({
             onUpdateLogo={handleUpdateLogo}
           />
         );
-      case 'fonts':
+      case 'layers':
         return (
-          <FontSection
-            logoConfig={logoConfig}
-            onUpdateLogo={handleUpdateLogo}
-          />
-        );
-      case 'style':
-        return (
-          <StyleSection
+          <LayersSection
             logoConfig={logoConfig}
             onUpdateLogo={handleUpdateLogo}
           />
@@ -140,7 +131,7 @@ export const LogoBuilderRedesigned: React.FC<LogoBuilderRedesignedProps> = ({
               {(() => {
                 const categories = [
                   { id: 'design', label: 'Design', sections: LOGO_SECTIONS.filter(s => s.category === 'design') },
-                  { id: 'appearance', label: 'Aspetto', sections: LOGO_SECTIONS.filter(s => s.category === 'appearance') }
+                  { id: 'controls', label: 'Controlli', sections: LOGO_SECTIONS.filter(s => s.category === 'controls') }
                 ];
 
                 return categories.map((category) => (

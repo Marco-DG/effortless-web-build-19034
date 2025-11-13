@@ -188,18 +188,11 @@ export const PreviewLayout: React.FC<PreviewLayoutProps> = ({
 }) => {
   return (
     <div className={cn(
-      'h-full w-full flex items-center justify-center p-6',
+      'h-full w-full',
       'bg-gradient-to-br from-muted/20 via-background to-muted/40',
       className
     )}>
-      <div className={cn(
-        'w-full h-full rounded-2xl border shadow-xl overflow-hidden bg-white',
-        mode === 'logo' && 'max-w-4xl aspect-video',
-        mode === 'menu' && 'max-w-5xl',
-        mode === 'site' && 'max-w-full'
-      )}>
-        {children}
-      </div>
+      {children}
     </div>
   );
 };
