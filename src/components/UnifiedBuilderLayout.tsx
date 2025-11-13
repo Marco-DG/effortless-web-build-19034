@@ -64,11 +64,15 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
   };
 
   return (
-    <div className="h-full w-full lg:w-auto flex flex-col sidebar-premium lg:rounded-l-[2rem] shadow-2xl shadow-slate-900/8 overflow-hidden font-geist">
+    <div className="h-full w-full lg:w-auto flex flex-col sidebar-premium lg:rounded-tl-[2rem] overflow-hidden font-geist relative">
+      
+      {/* Premium Border Divisor */}
+      <div className="absolute right-0 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-slate-200/40 to-transparent"></div>
+      <div className="absolute right-0 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-slate-300/60 to-transparent blur-[0.5px]"></div>
       
       {/* Header con tab condivisa */}
       {onSwitchBuilder && (
-        <div className="flex items-center justify-between px-8 py-6 border-b border-slate-200/30 bg-white/60 backdrop-blur-xl">
+        <div className="flex items-center justify-between px-8 py-4 border-b border-slate-200/30 bg-white/60 backdrop-blur-xl">
           <div className="flex items-center gap-2">
             {(['logo', 'menu', 'site'] as const).map((type) => (
               <button
@@ -120,16 +124,16 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
       <div className="flex flex-1 overflow-hidden min-h-0">
         
         {/* Sidebar Navigation */}
-        <div className="w-16 2xl:w-52 flex flex-col py-6 flex-shrink-0 relative">
+        <div className="w-16 2xl:w-52 flex flex-col flex-shrink-0 relative">
           <div className="absolute right-0 top-0 bottom-0 sidebar-divider"></div>
-          <ScrollArea className="flex-1">
-            <div className="space-y-2 px-3">
+          <ScrollArea className="flex-1 scrollbar-premium">
+            <div className="space-y-2 px-3 py-3">
               {categories.map((category, categoryIndex) => (
                 <div key={category.id} className="space-y-1.5">
                   {/* Divisore categoria - visibile solo su schermi larghi */}
-                  <div className="hidden 2xl:block px-1 py-6 mt-8 first:mt-2">
+                  <div className="hidden 2xl:block px-1 pt-6 pb-2 mt-6 first:mt-2">
                     <div className="relative">
-                      <h3 className="text-[11px] font-semibold text-slate-400 font-geist tracking-[0.08em] leading-none mb-3 pl-1">
+                      <h3 className="text-[11px] font-semibold text-slate-400 font-geist tracking-[0.08em] leading-none mb-2 pl-1">
                         {category.label}
                       </h3>
                       <div className="h-[1px] bg-gradient-to-r from-slate-200 via-slate-100 to-transparent opacity-60" />
