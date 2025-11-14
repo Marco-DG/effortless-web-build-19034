@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/app-store';
 import { AppLayout, BuilderLayout, PreviewLayout } from '../ui/Layout';
-import { Hero } from '../components/Hero';
 import { LogoBuilderRedesigned, InteractiveLogoCanvas } from '../modules/logo-builder';
 import { MenuBuilderRedesigned } from '../modules/menu-builder/MenuBuilderRedesigned';
 import { MenuPreview } from '../modules/menu-builder/MenuPreview';
@@ -9,14 +9,30 @@ import { SiteBuilder } from '../modules/site-builder/SiteBuilder';
 import { SitePreview } from '../modules/site-builder/SitePreview';
 
 const Builders: React.FC = () => {
+  const navigate = useNavigate();
   const {
     activeMode,
     activeProject,
     ui,
+    openSidebar,
     closeSidebar,
     closePreview,
-    updateProject
+    updateProject,
+    createProject,
+    startBuilding
   } = useAppStore();
+
+  // Se non c'è un progetto attivo al refresh, crea un progetto di default
+  useEffect(() => {
+    if (!activeProject) {
+      createProject('Nuovo Progetto', 'wine-bar');
+      startBuilding('site'); // Imposta modalità di default
+      // Assicurati che la sidebar sia aperta
+      if (!ui.sidebarOpen) {
+        openSidebar();
+      }
+    }
+  }, [activeProject, createProject, startBuilding, ui.sidebarOpen, openSidebar]);
 
   const renderSidebar = () => {
     if (!activeProject) return null;
@@ -39,19 +55,15 @@ const Builders: React.FC = () => {
         <PreviewLayout mode="site">
           <div className="h-full flex items-center justify-center p-8">
             <div className="text-center space-y-4">
-              <div className="w-16 h-16 mx-auto bg-muted rounded-2xl flex items-center justify-center">
-                <span className="text-2xl">🍽️</span>
+              <div className="w-16 h-16 mx-auto bg-gradient-to-br from-slate-100/80 to-slate-200/60 rounded-2xl flex items-center justify-center shadow-sm">
+                <span className="text-2xl">⏳</span>
               </div>
-              <h3 className="text-lg font-semibold">Nessun progetto attivo</h3>
-              <p className="text-muted-foreground">
-                Inizia creando un nuovo progetto dalla landing page
+              <h3 className="text-lg font-semibold text-slate-800 font-geist tracking-[-0.01em]">
+                Caricamento progetto...
+              </h3>
+              <p className="text-slate-600 font-medium font-geist tracking-[-0.01em]">
+                Inizializzazione dell'area di lavoro
               </p>
-              <a 
-                href="/"
-                className="inline-block px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
-              >
-                Torna alla Home
-              </a>
             </div>
           </div>
         </PreviewLayout>
@@ -100,7 +112,6 @@ const Builders: React.FC = () => {
   return (
     <AppLayout>
       <BuilderLayout
-        hero={<Hero />}
         sidebar={renderSidebar()}
         preview={renderPreview()}
         sidebarOpen={ui.sidebarOpen}
