@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MenuConfig, MenuItem } from '../../types';
 import { PreviewLayout } from '../../ui/Layout';
-import { Badge } from '@/components/ui/badge';
+// Badge legacy rimosso - usando inline premium style
 import { Button } from '../../ui/Button';
 import { cn } from '@/lib/utils';
 
@@ -178,14 +178,14 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
               {item.name}
             </h3>
             {config.showBadges && item.badges?.map(badge => (
-              <Badge key={badge} variant="secondary" className="text-xs">
+              <span key={badge} className="inline-flex items-center px-2 py-1 text-xs font-medium bg-slate-100/80 text-slate-700 rounded-full border border-slate-200/50 backdrop-blur-sm">
                 {badge}
-              </Badge>
+              </span>
             ))}
             {item.featured && (
-              <Badge className="text-xs bg-amber-100 text-amber-800">
+              <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-amber-100/80 text-amber-700 rounded-full border border-amber-200/50 backdrop-blur-sm">
                 In evidenza
-              </Badge>
+              </span>
             )}
           </div>
           
@@ -252,14 +252,14 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
         {config.showBadges && (
           <div className="flex flex-wrap gap-1">
             {item.badges?.map(badge => (
-              <Badge key={badge} variant="secondary" className="text-xs">
+              <span key={badge} className="inline-flex items-center px-2 py-1 text-xs font-medium bg-slate-100/80 text-slate-700 rounded-full border border-slate-200/50 backdrop-blur-sm">
                 {badge}
-              </Badge>
+              </span>
             ))}
             {item.featured && (
-              <Badge className="text-xs bg-amber-100 text-amber-800">
+              <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-amber-100/80 text-amber-700 rounded-full border border-amber-200/50 backdrop-blur-sm">
                 In evidenza
-              </Badge>
+              </span>
             )}
           </div>
         )}
