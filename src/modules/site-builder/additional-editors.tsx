@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSectionUpdater } from '../../hooks/useSectionUpdater';
 import { PremiumCard, PremiumTextInput, PremiumSelect, PremiumActionButton, PremiumNumberInput } from '../../components/forms';
 
 interface EditorProps {
@@ -10,22 +11,8 @@ export const ReviewsEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   const reviews = project.data.site?.sections?.find((s: any) => s.type === 'reviews')?.data || {};
   const reviewsList = reviews.reviews || [];
   
-  const updateReviewsSection = (updates: any) => {
-    const sections = project.data.site?.sections || [];
-    const reviewsSection = sections.find((s: any) => s.type === 'reviews');
-    if (reviewsSection) {
-      reviewsSection.data = { ...reviewsSection.data, ...updates };
-    } else {
-      sections.push({
-        id: 'reviews_main',
-        type: 'reviews',
-        enabled: true,
-        order: 4,
-        data: updates
-      });
-    }
-    onUpdate({ site: { ...project.data.site, sections } });
-  };
+  const { createSectionUpdater } = useSectionUpdater({ project, onUpdate });
+  const updateReviewsSection = createSectionUpdater('reviews', 'reviews_main', 4);
 
   const addReview = () => {
     const newReviews = [...reviewsList, {
@@ -150,22 +137,8 @@ export const EventsEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   const events = project.data.site?.sections?.find((s: any) => s.type === 'events')?.data || {};
   const eventsList = events.events || [];
   
-  const updateEventsSection = (updates: any) => {
-    const sections = project.data.site?.sections || [];
-    const eventsSection = sections.find((s: any) => s.type === 'events');
-    if (eventsSection) {
-      eventsSection.data = { ...eventsSection.data, ...updates };
-    } else {
-      sections.push({
-        id: 'events_main',
-        type: 'events',
-        enabled: true,
-        order: 5,
-        data: updates
-      });
-    }
-    onUpdate({ site: { ...project.data.site, sections } });
-  };
+  const { createSectionUpdater } = useSectionUpdater({ project, onUpdate });
+  const updateEventsSection = createSectionUpdater('events', 'events_main', 5);
 
   const addEvent = () => {
     const newEvents = [...eventsList, {

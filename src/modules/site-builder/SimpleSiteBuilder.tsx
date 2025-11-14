@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSectionUpdater } from '../../hooks/useSectionUpdater';
 import { useAppStore } from '../../store/app-store';
 import { 
   Star, Calendar, Phone, Clock, MapPin, Mail, 
@@ -310,30 +311,9 @@ const TypographyEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
 
 const HeroEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   const hero = project.data.site?.sections?.find((s: any) => s.type === 'hero')?.data || {};
+  const { createSectionUpdater } = useSectionUpdater({ project, onUpdate });
   
-  const updateHeroSection = (updates: any) => {
-    const sections = project.data.site?.sections || [];
-    const heroSection = sections.find((s: any) => s.type === 'hero');
-    if (heroSection) {
-      heroSection.data = { ...heroSection.data, ...updates };
-    } else {
-      sections.push({
-        id: 'hero_main',
-        type: 'hero',
-        enabled: true,
-        order: 0,
-        data: { 
-          title: 'Osteria del Borgo',
-          subtitle: 'Tradizione e sapori autentici nel cuore della città',
-          imageUrl: 'https://images.unsplash.com/photo-1527169402691-feff5539e52c?q=80&w=1600&auto=format&fit=crop',
-          ...updates 
-        }
-      });
-    }
-    onUpdate({
-      site: { ...project.data.site, sections }
-    });
-  };
+  const updateHeroSection = createSectionUpdater('hero', 'hero_main', 0);
   
   return (
     <PremiumCard
@@ -387,29 +367,9 @@ const HeroEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
 
 const AboutEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   const about = project.data.site?.sections?.find((s: any) => s.type === 'about')?.data || {};
+  const { createSectionUpdater } = useSectionUpdater({ project, onUpdate });
   
-  const updateAboutSection = (updates: any) => {
-    const sections = project.data.site?.sections || [];
-    const aboutSection = sections.find((s: any) => s.type === 'about');
-    if (aboutSection) {
-      aboutSection.data = { ...aboutSection.data, ...updates };
-    } else {
-      sections.push({
-        id: 'about_main',
-        type: 'about',
-        enabled: true,
-        order: 1,
-        data: {
-          title: 'La nostra storia',
-          content: 'Da tre generazioni portiamo avanti la tradizione culinaria di famiglia. Ogni piatto è preparato con ingredienti freschi e locali, rispettando le ricette della tradizione italiana e l\'arte dell\'ospitalità.',
-          image: 'https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=1200&auto=format&fit=crop',
-          imagePosition: 'left',
-          ...updates
-        }
-      });
-    }
-    onUpdate({ site: { ...project.data.site, sections } });
-  };
+  const updateAboutSection = createSectionUpdater('about', 'about_main', 1);
 
   return (
     <PremiumCard
@@ -481,23 +441,9 @@ const AboutEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
 const GalleryEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   const gallery = project.data.site?.sections?.find((s: any) => s.type === 'gallery')?.data || {};
   const images = gallery.images || [];
+  const { createSectionUpdater } = useSectionUpdater({ project, onUpdate });
   
-  const updateGallerySection = (updates: any) => {
-    const sections = project.data.site?.sections || [];
-    const gallerySection = sections.find((s: any) => s.type === 'gallery');
-    if (gallerySection) {
-      gallerySection.data = { ...gallerySection.data, ...updates };
-    } else {
-      sections.push({
-        id: 'gallery_main',
-        type: 'gallery',
-        enabled: true,
-        order: 2,
-        data: updates
-      });
-    }
-    onUpdate({ site: { ...project.data.site, sections } });
-  };
+  const updateGallerySection = createSectionUpdater('gallery', 'gallery_main', 2);
 
   const addImage = () => {
     const newImages = [...images, {

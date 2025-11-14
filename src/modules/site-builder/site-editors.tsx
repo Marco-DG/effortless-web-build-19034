@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSectionUpdater } from '../../hooks/useSectionUpdater';
 import { PremiumCard, PremiumTextInput, PremiumToggle, PremiumSelect, PremiumActionButton } from '../../components/forms';
 
 interface EditorProps {
@@ -8,23 +9,9 @@ interface EditorProps {
 
 export const NewsletterEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   const newsletter = project.data.site?.sections?.find((s: any) => s.type === 'newsletter')?.data || {};
+  const { createSectionUpdater } = useSectionUpdater({ project, onUpdate });
   
-  const updateNewsletterSection = (updates: any) => {
-    const sections = project.data.site?.sections || [];
-    const newsletterSection = sections.find((s: any) => s.type === 'newsletter');
-    if (newsletterSection) {
-      newsletterSection.data = { ...newsletterSection.data, ...updates };
-    } else {
-      sections.push({
-        id: 'newsletter_main',
-        type: 'newsletter',
-        enabled: true,
-        order: 4,
-        data: updates
-      });
-    }
-    onUpdate({ site: { ...project.data.site, sections } });
-  };
+  const updateNewsletterSection = createSectionUpdater('newsletter', 'newsletter_main', 4);
 
   return (
     <PremiumCard
@@ -62,23 +49,9 @@ export const NewsletterEditor: React.FC<EditorProps> = ({ project, onUpdate }) =
 
 export const DeliveryEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   const delivery = project.data.site?.sections?.find((s: any) => s.type === 'delivery')?.data || {};
+  const { createSectionUpdater } = useSectionUpdater({ project, onUpdate });
   
-  const updateDeliverySection = (updates: any) => {
-    const sections = project.data.site?.sections || [];
-    const deliverySection = sections.find((s: any) => s.type === 'delivery');
-    if (deliverySection) {
-      deliverySection.data = { ...deliverySection.data, ...updates };
-    } else {
-      sections.push({
-        id: 'delivery_main',
-        type: 'delivery',
-        enabled: true,
-        order: 7,
-        data: updates
-      });
-    }
-    onUpdate({ site: { ...project.data.site, sections } });
-  };
+  const updateDeliverySection = createSectionUpdater('delivery', 'delivery_main', 7);
 
   return (
     <PremiumCard
@@ -154,23 +127,9 @@ export const DeliveryEditor: React.FC<EditorProps> = ({ project, onUpdate }) => 
 
 export const ContactEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   const contact = project.data.site?.sections?.find((s: any) => s.type === 'contact')?.data || {};
+  const { createSectionUpdater } = useSectionUpdater({ project, onUpdate });
   
-  const updateContactSection = (updates: any) => {
-    const sections = project.data.site?.sections || [];
-    const contactSection = sections.find((s: any) => s.type === 'contact');
-    if (contactSection) {
-      contactSection.data = { ...contactSection.data, ...updates };
-    } else {
-      sections.push({
-        id: 'contact_main',
-        type: 'contact',
-        enabled: true,
-        order: 8,
-        data: updates
-      });
-    }
-    onUpdate({ site: { ...project.data.site, sections } });
-  };
+  const updateContactSection = createSectionUpdater('contact', 'contact_main', 8);
 
   const updateContactData = (field: string, value: string) => {
     const contactData = { ...project.data.contact, [field]: value };
@@ -253,22 +212,8 @@ export const HoursEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
     domenica: { open: '12:00', close: '22:00', closed: false },
   };
   
-  const updateHoursSection = (updates: any) => {
-    const sections = project.data.site?.sections || [];
-    const hoursSection = sections.find((s: any) => s.type === 'hours');
-    if (hoursSection) {
-      hoursSection.data = { ...hoursSection.data, ...updates };
-    } else {
-      sections.push({
-        id: 'hours_main',
-        type: 'hours',
-        enabled: true,
-        order: 9,
-        data: updates
-      });
-    }
-    onUpdate({ site: { ...project.data.site, sections } });
-  };
+  const { createSectionUpdater } = useSectionUpdater({ project, onUpdate });
+  const updateHoursSection = createSectionUpdater('hours', 'hours_main', 9);
 
   const updateDayHours = (day: string, field: string, value: string | boolean) => {
     const newHours = { 
@@ -335,23 +280,9 @@ export const HoursEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
 
 export const LocationEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   const location = project.data.site?.sections?.find((s: any) => s.type === 'location')?.data || {};
+  const { createSectionUpdater } = useSectionUpdater({ project, onUpdate });
   
-  const updateLocationSection = (updates: any) => {
-    const sections = project.data.site?.sections || [];
-    const locationSection = sections.find((s: any) => s.type === 'location');
-    if (locationSection) {
-      locationSection.data = { ...locationSection.data, ...updates };
-    } else {
-      sections.push({
-        id: 'location_main',
-        type: 'location',
-        enabled: true,
-        order: 10,
-        data: updates
-      });
-    }
-    onUpdate({ site: { ...project.data.site, sections } });
-  };
+  const updateLocationSection = createSectionUpdater('location', 'location_main', 10);
 
   return (
     <PremiumCard
