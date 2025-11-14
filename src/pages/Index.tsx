@@ -1,7 +1,13 @@
-import RestaurantSaasV2 from "@/RestaurantSaasV2";
+import React from 'react';
+import { AppLayout } from '../ui/Layout';
+import { Hero } from '../components/Hero';
 
 const Index = () => {
-  return <RestaurantSaasV2 />;
+  return (
+    <AppLayout>
+      <Hero />
+    </AppLayout>
+  );
 };
 
 export default Index;
