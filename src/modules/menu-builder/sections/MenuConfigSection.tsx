@@ -1,10 +1,6 @@
 import React from 'react';
 import { MenuConfig } from '../../../types';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../ui/Card';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
+import { PremiumCard, PremiumTextInput, PremiumToggle } from '../../../components/forms';
 
 interface MenuConfigSectionProps {
   config: MenuConfig;
@@ -17,144 +13,103 @@ export const MenuConfigSection: React.FC<MenuConfigSectionProps> = ({
 }) => {
   return (
     <div className="space-y-6">
-      
       {/* Informazioni Base */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Informazioni Generali</CardTitle>
-          <CardDescription>
-            Configura le informazioni principali del menu
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label htmlFor="title">Titolo del Menu</Label>
-            <Input
-              id="title"
-              value={config.title || 'La Nostra Carta'}
-              onChange={(e) => onUpdate({ title: e.target.value })}
-              placeholder="La Nostra Carta"
-            />
-          </div>
+      <PremiumCard
+        title="Informazioni Generali"
+        description="Configura le informazioni principali del menu"
+      >
+        <div className="space-y-4">
+          <PremiumTextInput
+            label="Titolo del Menu"
+            value={config.title || 'La Nostra Carta'}
+            onChange={(value) => onUpdate({ title: value })}
+            placeholder="La Nostra Carta"
+            description="Il titolo principale che apparirà in cima al menu"
+          />
           
-          <div>
-            <Label htmlFor="subtitle">Sottotitolo (opzionale)</Label>
-            <Input
-              id="subtitle"
-              value={config.subtitle || ''}
-              onChange={(e) => onUpdate({ subtitle: e.target.value })}
-              placeholder="Sapori autentici della tradizione italiana"
-            />
-          </div>
+          <PremiumTextInput
+            label="Sottotitolo"
+            value={config.subtitle || ''}
+            onChange={(value) => onUpdate({ subtitle: value })}
+            placeholder="Sapori autentici della tradizione italiana"
+            description="Un sottotitolo opzionale per descrivere la vostra filosofia"
+          />
 
-          <div>
-            <Label htmlFor="description">Descrizione</Label>
-            <Textarea
-              id="description"
-              value={config.description || ''}
-              onChange={(e) => onUpdate({ description: e.target.value })}
-              placeholder="Una breve descrizione del vostro menu..."
-              rows={3}
-            />
-          </div>
-        </CardContent>
-      </Card>
+          <PremiumTextInput
+            label="Descrizione"
+            value={config.description || ''}
+            onChange={(value) => onUpdate({ description: value })}
+            placeholder="Una breve descrizione del vostro menu..."
+            description="Presentate il vostro menu ai clienti"
+            multiline
+            rows={3}
+          />
+        </div>
+      </PremiumCard>
 
       {/* Impostazioni Display */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Impostazioni Visualizzazione</CardTitle>
-          <CardDescription>
-            Controlla come vengono mostrati gli elementi del menu
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <Label>Mostra prezzi</Label>
-              <p className="text-xs text-muted-foreground">
-                Visualizza i prezzi accanto ai piatti
-              </p>
-            </div>
-            <Switch
-              checked={config.showPrices !== false}
-              onCheckedChange={(checked) => onUpdate({ showPrices: checked })}
-            />
-          </div>
+      <PremiumCard
+        title="Impostazioni Visualizzazione"
+        description="Controlla come vengono mostrati gli elementi del menu"
+      >
+        <div className="space-y-4">
+          <PremiumToggle
+            label="Mostra prezzi"
+            description="Visualizza i prezzi accanto ai piatti nel menu"
+            checked={config.showPrices !== false}
+            onChange={(checked) => onUpdate({ showPrices: checked })}
+          />
 
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <Label>Mostra descrizioni</Label>
-              <p className="text-xs text-muted-foreground">
-                Include le descrizioni dei piatti
-              </p>
-            </div>
-            <Switch
-              checked={config.showDescriptions !== false}
-              onCheckedChange={(checked) => onUpdate({ showDescriptions: checked })}
-            />
-          </div>
+          <PremiumToggle
+            label="Mostra descrizioni"
+            description="Include le descrizioni dettagliate dei piatti"
+            checked={config.showDescriptions !== false}
+            onChange={(checked) => onUpdate({ showDescriptions: checked })}
+          />
 
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <Label>Raggruppa per categoria</Label>
-              <p className="text-xs text-muted-foreground">
-                Organizza gli elementi per categoria
-              </p>
-            </div>
-            <Switch
-              checked={config.groupByCategory !== false}
-              onCheckedChange={(checked) => onUpdate({ groupByCategory: checked })}
-            />
-          </div>
+          <PremiumToggle
+            label="Raggruppa per categoria"
+            description="Organizza automaticamente gli elementi per categoria (antipasti, primi, etc.)"
+            checked={config.groupByCategory !== false}
+            onChange={(checked) => onUpdate({ groupByCategory: checked })}
+          />
 
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <Label>Evidenzia piatti speciali</Label>
-              <p className="text-xs text-muted-foreground">
-                Metti in risalto i piatti della casa
-              </p>
-            </div>
-            <Switch
-              checked={config.highlightFeatured !== false}
-              onCheckedChange={(checked) => onUpdate({ highlightFeatured: checked })}
-            />
-          </div>
-        </CardContent>
-      </Card>
+          <PremiumToggle
+            label="Evidenzia piatti speciali"
+            description="Metti in risalto visivamente i piatti della casa e le specialità"
+            checked={config.highlightFeatured !== false}
+            onChange={(checked) => onUpdate({ highlightFeatured: checked })}
+          />
+        </div>
+      </PremiumCard>
 
       {/* Note Aggiuntive */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Note e Avvertenze</CardTitle>
-          <CardDescription>
-            Informazioni aggiuntive per i clienti
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label htmlFor="allergens">Informazioni su allergeni</Label>
-            <Textarea
-              id="allergens"
-              value={config.allergenInfo || ''}
-              onChange={(e) => onUpdate({ allergenInfo: e.target.value })}
-              placeholder="Es: Informate il personale di eventuali allergie o intolleranze alimentari..."
-              rows={2}
-            />
-          </div>
+      <PremiumCard
+        title="Note e Avvertenze"
+        description="Informazioni aggiuntive e importanti per i clienti"
+      >
+        <div className="space-y-4">
+          <PremiumTextInput
+            label="Informazioni su allergeni"
+            value={config.allergenInfo || ''}
+            onChange={(value) => onUpdate({ allergenInfo: value })}
+            placeholder="Es: Informate il personale di eventuali allergie o intolleranze alimentari..."
+            description="Note importanti su allergeni e intolleranze"
+            multiline
+            rows={2}
+          />
 
-          <div>
-            <Label htmlFor="footer">Note a piè di pagina</Label>
-            <Textarea
-              id="footer"
-              value={config.footerNote || ''}
-              onChange={(e) => onUpdate({ footerNote: e.target.value })}
-              placeholder="Es: I prezzi sono comprensivi di IVA e servizio..."
-              rows={2}
-            />
-          </div>
-        </CardContent>
-      </Card>
+          <PremiumTextInput
+            label="Note a piè di pagina"
+            value={config.footerNote || ''}
+            onChange={(value) => onUpdate({ footerNote: value })}
+            placeholder="Es: I prezzi sono comprensivi di IVA e servizio..."
+            description="Informazioni sui prezzi, servizio e altre note generali"
+            multiline
+            rows={2}
+          />
+        </div>
+      </PremiumCard>
     </div>
   );
 };

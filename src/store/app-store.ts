@@ -359,7 +359,9 @@ export const useAppStore = create<AppStore>()(
       name: 'restaurant-saas-v2',
       partialize: (state) => ({ 
         activeProject: state.activeProject,
-        activeMode: state.activeMode
+        activeMode: state.activeMode,
+        isBuilding: state.isBuilding,
+        ui: state.ui  // Persisti anche lo stato UI
       })
     }
   )

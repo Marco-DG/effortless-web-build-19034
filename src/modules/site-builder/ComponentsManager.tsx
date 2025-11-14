@@ -4,6 +4,7 @@ import {
   Mail, Clock, MapPin, Coffee, Truck, GripVertical,
   Eye, EyeOff, ChevronUp, ChevronDown 
 } from 'lucide-react';
+import { PremiumCard, PremiumToggle, PremiumActionButton } from '../../components/forms';
 
 interface ComponentsManagerProps {
   project: any;
@@ -125,76 +126,78 @@ export const ComponentsManager: React.FC<ComponentsManagerProps> = ({ project, o
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h4 className="font-semibold mb-2">Gestione Componenti</h4>
-        <p className="text-sm text-muted-foreground">
-          Abilita, disabilita e riordina i componenti del sito.
-        </p>
-      </div>
+    <PremiumCard
+      title="Gestione Componenti"
+      description="Abilita, disabilita e riordina le sezioni del tuo sito web per creare la struttura perfetta"
+    >
+      <div className="space-y-6">
 
       {/* Componenti Abilitati */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h5 className="font-medium text-sm">Componenti Attivi ({enabledComponents.length})</h5>
+          <h4 className="font-semibold text-slate-800 font-geist tracking-[-0.01em]">
+            Componenti Attivi ({enabledComponents.length})
+          </h4>
         </div>
         
-        <div className="space-y-2">
+        <div className="space-y-3">
           {enabledComponents.map((component, index) => {
             const Icon = component.icon;
             return (
               <div
                 key={component.id}
-                className={`flex items-center justify-between p-3 border rounded-lg transition-all ${
-                  component.required ? 'border-blue-200 bg-blue-50/50' : 'border-border bg-white hover:shadow-sm'
+                className={`relative rounded-[16px] border border-slate-200/50 bg-gradient-to-br from-white/80 via-slate-50/40 to-slate-50/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden ${
+                  component.required ? 'ring-2 ring-blue-200/50' : ''
                 }`}
               >
-                <div className="flex items-center gap-3">
-                  <div className="cursor-grab active:cursor-grabbing">
-                    <GripVertical className="w-4 h-4 text-muted-foreground" />
-                  </div>
-                  <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center">
-                    <Icon className="w-4 h-4 text-primary" />
-                  </div>
-                  <div>
-                    <div className="font-medium text-sm flex items-center gap-2">
-                      {component.name}
-                      {component.required && (
-                        <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">
-                          Obbligatorio
-                        </span>
-                      )}
+                <div className="relative p-4 flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="cursor-grab active:cursor-grabbing">
+                      <GripVertical className="w-4 h-4 text-slate-400" />
                     </div>
-                    <div className="text-xs text-muted-foreground">{component.description}</div>
+                    <div className="w-10 h-10 rounded-[12px] bg-gradient-to-br from-slate-100/80 to-slate-200/60 border border-slate-200/50 flex items-center justify-center shadow-sm">
+                      <Icon className="w-5 h-5 text-slate-600" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-sm font-geist tracking-[-0.01em] flex items-center gap-2 text-slate-800 mb-1">
+                        {component.name}
+                        {component.required && (
+                          <span className="text-xs bg-blue-100/80 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+                            Obbligatorio
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-xs text-slate-500 font-medium font-geist tracking-[-0.005em]">{component.description}</div>
+                    </div>
                   </div>
-                </div>
-                
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => moveComponent(component.id, 'up')}
-                    disabled={index === 0}
-                    className="p-1 hover:bg-gray-100 rounded disabled:opacity-50 disabled:cursor-not-allowed"
-                    title="Sposta su"
-                  >
-                    <ChevronUp className="w-3 h-3" />
-                  </button>
-                  <button
-                    onClick={() => moveComponent(component.id, 'down')}
-                    disabled={index === enabledComponents.length - 1}
-                    className="p-1 hover:bg-gray-100 rounded disabled:opacity-50 disabled:cursor-not-allowed"
-                    title="Sposta giù"
-                  >
-                    <ChevronDown className="w-3 h-3" />
-                  </button>
-                  {!component.required && (
+                  
+                  <div className="flex items-center gap-2">
                     <button
-                      onClick={() => toggleComponent(component.id)}
-                      className="p-1 hover:bg-gray-100 rounded text-muted-foreground"
-                      title="Disabilita componente"
+                      onClick={() => moveComponent(component.id, 'up')}
+                      disabled={index === 0}
+                      className="p-2 hover:bg-slate-100/60 rounded-[10px] text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
+                      title="Sposta su"
                     >
-                      <EyeOff className="w-4 h-4" />
+                      <ChevronUp className="w-4 h-4" />
                     </button>
-                  )}
+                    <button
+                      onClick={() => moveComponent(component.id, 'down')}
+                      disabled={index === enabledComponents.length - 1}
+                      className="p-2 hover:bg-slate-100/60 rounded-[10px] text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
+                      title="Sposta giù"
+                    >
+                      <ChevronDown className="w-4 h-4" />
+                    </button>
+                    {!component.required && (
+                      <button
+                        onClick={() => toggleComponent(component.id)}
+                        className="p-2 hover:bg-red-50/80 rounded-[10px] text-red-600 transition-all duration-200"
+                        title="Disabilita componente"
+                      >
+                        <EyeOff className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             );
@@ -239,10 +242,21 @@ export const ComponentsManager: React.FC<ComponentsManagerProps> = ({ project, o
       )}
 
       {/* Info */}
-      <div className="text-xs text-muted-foreground bg-muted/50 p-3 rounded">
-        💡 I componenti Hero e Menù sono obbligatori e sempre visibili
+      <div className="rounded-[12px] bg-gradient-to-r from-blue-50/80 to-slate-50/60 border border-blue-200/50 p-4">
+        <div className="flex items-start gap-3">
+          <div className="text-lg">💡</div>
+          <div>
+            <h4 className="font-semibold text-sm text-slate-800 font-geist tracking-[-0.01em] mb-1">
+              Componenti Obbligatori
+            </h4>
+            <p className="text-xs text-slate-600 font-medium font-geist tracking-[-0.005em] leading-relaxed">
+              I componenti Hero e Menu sono obbligatori e sempre visibili sul sito per garantire una esperienza utente completa
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
+      </div>
+    </PremiumCard>
   );
 };
 

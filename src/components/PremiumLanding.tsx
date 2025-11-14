@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createGlassCard, createGlassButton, createGlassInput, designTokens } from '../styles/designTokens';
 import { motion } from 'framer-motion';
 import { 
   ArrowRight, ChevronRight, Play, Check, Star, Zap, Crown, 
@@ -35,7 +36,7 @@ export const PremiumLanding: React.FC<PremiumLandingProps> = ({ onStartBuilding 
               <a href="#" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">Funzionalità</a>
               <a href="#" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">Casi Studio</a>
               <a href="#" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">Supporto</a>
-              <Button variant="outline" className="border-gray-300 hover:border-gray-400">
+              <Button variant="outline" className={createGlassButton('secondary')}>
                 Accedi
               </Button>
               <Button className="bg-gradient-to-r from-violet-600 to-purple-700 hover:from-violet-700 hover:to-purple-800 shadow-lg">

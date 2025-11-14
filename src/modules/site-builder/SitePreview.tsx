@@ -2,7 +2,7 @@ import React from 'react';
 import { Project } from '../../types';
 import { PreviewLayout } from '../../ui/Layout';
 import { Button } from '../../ui/Button';
-import { Badge } from '@/components/ui/badge';
+// Badge legacy rimosso - usando inline premium style
 import { Calendar, MapPin, Phone, Mail, Clock, Star, Truck, Menu, X, ChefHat, Wine, Camera, Award, Users, Heart, ArrowRight } from 'lucide-react';
 import { ensureGoogleFontLoaded } from '@/lib/fonts';
 

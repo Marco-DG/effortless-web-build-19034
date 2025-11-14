@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useAppStore } from '../../store/app-store';
 import { SimpleSiteBuilder } from './SimpleSiteBuilder';
-import { LogoBuilder } from '../logo-builder/LogoBuilder';
-import { MenuBuilder } from '../menu-builder/MenuBuilder';
+import { LogoBuilderRedesigned } from '../logo-builder/LogoBuilderRedesigned';
+import { MenuBuilderRedesigned } from '../menu-builder/MenuBuilderRedesigned';
 
 export const SiteBuilder: React.FC = () => {
   const { activeProject, setActiveMode } = useAppStore();
@@ -18,9 +18,9 @@ export const SiteBuilder: React.FC = () => {
   const renderContent = () => {
     switch (macroTab) {
       case 'logo':
-        return <LogoBuilder onSwitchBuilder={handleMacroTabChange} />;
+        return <LogoBuilderRedesigned onSwitchBuilder={handleMacroTabChange} />;
       case 'menu':
-        return <MenuBuilder onSwitchBuilder={handleMacroTabChange} />;
+        return <MenuBuilderRedesigned onSwitchBuilder={handleMacroTabChange} />;
       case 'site':
       default:
         return <SimpleSiteBuilder onSwitchBuilder={handleMacroTabChange} />;

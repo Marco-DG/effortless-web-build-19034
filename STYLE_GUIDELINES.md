@@ -53,6 +53,60 @@ font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
 --tracking-wide: 0.08em    /* Labels */
 ```
 
+### **Icon System**
+```css
+/* SVG Icon Standards */
+viewBox: "0 0 24 24"              /* Standard 24×24 grid */
+stroke-width: 1.5                 /* Consistent line weight */
+fill: "none"                      /* Outline-only approach */
+stroke: "currentColor"            /* Inherits text color */
+
+/* Icon Dimensions */
+--icon-sm: 16px                   /* Small context icons */
+--icon-md: 20px                   /* Standard interface icons */
+--icon-lg: 24px                   /* Large feature icons */
+```
+
+#### **Icon Design Principles**
+- ✅ **Line-based**: Outline style, no filled shapes
+- ✅ **Geometric**: Precise mathematical construction
+- ✅ **Contextual**: Each icon precisely represents its function
+- ✅ **Consistent**: Same stroke-width and visual weight across all icons
+- ✅ **Scalable**: Work at any size without detail loss
+
+#### **Custom Icon Library**
+All icons are custom-designed SVG elements following these specifications:
+```jsx
+// Example Icon Structure
+export const ExampleIcon: React.FC<IconProps> = ({ 
+  className = "w-5 h-5", 
+  size = 20 
+}) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth={1.5}
+    className={className}
+  >
+    {/* Geometric paths with precise coordinates */}
+  </svg>
+);
+```
+
+**Icon Categories:**
+- **Logo Builder**: Template grids, layer management, canvas tools
+- **Menu Builder**: Configuration gears, list items, style palettes, layouts
+- **Site Builder**: Component modules, typography, pages, galleries
+
+**Quality Standards:**
+- Sharp geometric construction on 24×24 grid
+- Mathematical precision in path coordinates
+- Consistent visual weight across all icons
+- Context-appropriate metaphors (no generic symbols)
+
 ---
 
 ## 🏗️ **Component Patterns**
