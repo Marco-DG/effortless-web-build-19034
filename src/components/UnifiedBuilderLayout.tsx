@@ -64,11 +64,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
   };
 
   return (
-    <div className="h-full w-full lg:w-auto flex flex-col sidebar-premium lg:rounded-tl-[2rem] overflow-hidden font-geist relative">
-      
-      {/* Premium Border Divisor */}
-      <div className="absolute right-0 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-slate-200/40 to-transparent"></div>
-      <div className="absolute right-0 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-slate-300/60 to-transparent blur-[0.5px]"></div>
+    <div className="h-full w-full lg:w-auto flex flex-col sidebar-premium lg:rounded-tl-[2rem] overflow-hidden font-geist">
       
       {/* Header con tab condivisa */}
       {onSwitchBuilder && (
@@ -79,11 +75,11 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
                 key={type}
                 type="button"
                 onClick={() => onSwitchBuilder(type)}
-                className={`relative px-5 py-2.5 font-medium text-sm transition-all duration-300 ease-out overflow-hidden rounded-[14px] ${
+                className={`topbar-tab relative px-5 py-2.5 font-medium text-sm transition-all duration-300 ease-out ${
                   builderType === type
-                    ? 'bg-slate-900 text-white shadow-lg shadow-slate-900/25'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
-                } hover:scale-[1.02] active:scale-[0.98]`}
+                    ? 'text-slate-900 topbar-tab-active'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
               >
                 <span className="relative z-10 font-geist font-medium tracking-[-0.01em]">
                   {getBuilderLabel(type)}
@@ -103,19 +99,6 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
               <Eye className="w-4 h-4" /> 
               <span className="font-geist font-medium tracking-[-0.01em]">Anteprima</span>
             </button>
-            
-            {/* Extra actions (like Add Item for Menu) */}
-            {extraHeaderActions}
-            
-            {onExport && (
-              <button
-                onClick={onExport}
-                className="p-2.5 hover:bg-white/80 rounded-[12px] transition-all duration-200 group"
-                title="Esporta"
-              >
-                <Download className="w-4 h-4 text-slate-500 group-hover:text-slate-700" />
-              </button>
-            )}
           </div>
         </div>
       )}
@@ -126,7 +109,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
         {/* Sidebar Navigation */}
         <div className="w-16 2xl:w-52 flex flex-col flex-shrink-0 relative">
           <div className="absolute right-0 top-0 bottom-0 sidebar-divider"></div>
-          <ScrollArea className="flex-1 scrollbar-premium">
+          <ScrollArea className="flex-1">
             <div className="space-y-2 px-3 py-3">
               {categories.map((category, categoryIndex) => (
                 <div key={category.id} className="space-y-1.5">
