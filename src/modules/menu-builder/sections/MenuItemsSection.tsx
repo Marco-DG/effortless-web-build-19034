@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
 import { MenuConfig, MenuItem } from '../../../types';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../ui/Card';
-import { Button } from '../../../ui/Button';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
-import { Switch } from '@/components/ui/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Plus, Trash2, Edit3, Star } from 'lucide-react';
+import { PremiumCard, PremiumTextInput, PremiumSelect, PremiumListItem, PremiumActionButton } from '../../../components/forms';
 
 interface MenuItemsSectionProps {
   config: MenuConfig & { items: MenuItem[] };
@@ -34,6 +26,7 @@ export const MenuItemsSection: React.FC<MenuItemsSectionProps> = ({
 }) => {
   const [editingItem, setEditingItem] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('tutti');
+  const [editFormData, setEditFormData] = useState<Partial<MenuItem>>({});
 
   const filteredItems = selectedCategory === 'tutti' 
     ? config.items 
@@ -51,202 +44,165 @@ export const MenuItemsSection: React.FC<MenuItemsSectionProps> = ({
     onUpdate({ items: updatedItems });
   };
 
-  const handleSaveItem = () => {
+  const handleStartEditing = (item: MenuItem) => {
+    setEditingItem(item.id);
+    setEditFormData({
+      name: item.name,
+      description: item.description,
+      price: item.price,
+      category: item.category,
+      available: item.available,
+      featured: item.featured
+    });
+  };
+
+  const handleSaveEdit = () => {
+    if (editingItem && editFormData) {
+      handleUpdateItem(editingItem, editFormData);
+      setEditingItem(null);
+      setEditFormData({});
+    }
+  };
+
+  const handleCancelEdit = () => {
     setEditingItem(null);
+    setEditFormData({});
   };
 
   return (
     <div className="space-y-6">
-      
-      {/* Header con controlli */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h4 className="text-lg font-semibold">Elementi del Menu</h4>
-          <p className="text-sm text-muted-foreground">
-            {config.items.length} elementi totali
-          </p>
-        </div>
-        <Button onClick={onAddItem} size="sm">
-          <Plus className="w-4 h-4 mr-2" />
-          Aggiungi Elemento
-        </Button>
-      </div>
+      {/* Header con statistiche */}
+      <PremiumCard
+        title="Gestione Elementi"
+        description={`${config.items.length} elementi totali nel menu`}
+      >
+        <div className="grid grid-cols-2 gap-4">
+          <PremiumActionButton
+            variant="primary"
+            icon={() => (
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+            )}
+            onClick={onAddItem}
+          >
+            Aggiungi Elemento
+          </PremiumActionButton>
 
-      {/* Filtro per categoria */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Filtra per categoria</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="tutti">Tutte le categorie</SelectItem>
-              {categories.map((cat) => (
-                <SelectItem key={cat.value} value={cat.value}>
-                  {cat.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </CardContent>
-      </Card>
+          <PremiumSelect
+            label="Filtra per categoria"
+            value={selectedCategory}
+            onChange={setSelectedCategory}
+            options={[
+              { value: 'tutti', label: 'Tutte le categorie' },
+              ...categories
+            ]}
+            description="Visualizza elementi per categoria"
+          />
+        </div>
+      </PremiumCard>
+
+      {/* Form di editing (se attivo) */}
+      {editingItem && (
+        <PremiumCard
+          title="Modifica Elemento"
+          description="Aggiorna le informazioni dell'elemento selezionato"
+        >
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <PremiumTextInput
+                label="Nome piatto"
+                value={editFormData.name || ''}
+                onChange={(value) => setEditFormData({ ...editFormData, name: value })}
+                placeholder="Es: Spaghetti Carbonara"
+                description="Il nome del piatto come apparirà nel menu"
+              />
+
+              <PremiumTextInput
+                label="Prezzo"
+                value={editFormData.price || ''}
+                onChange={(value) => setEditFormData({ ...editFormData, price: value })}
+                placeholder="€15,00"
+                description="Prezzo del piatto"
+              />
+            </div>
+
+            <PremiumTextInput
+              label="Descrizione"
+              value={editFormData.description || ''}
+              onChange={(value) => setEditFormData({ ...editFormData, description: value })}
+              placeholder="Descrizione del piatto..."
+              description="Una breve descrizione degli ingredienti e preparazione"
+              multiline
+              rows={2}
+            />
+
+            <PremiumSelect
+              label="Categoria"
+              value={editFormData.category || ''}
+              onChange={(value) => setEditFormData({ ...editFormData, category: value })}
+              options={categories}
+              description="Categoria di appartenenza del piatto"
+            />
+
+            <div className="flex gap-3 pt-4 border-t border-slate-200/50">
+              <PremiumActionButton
+                variant="primary"
+                onClick={handleSaveEdit}
+              >
+                Salva Modifiche
+              </PremiumActionButton>
+              
+              <PremiumActionButton
+                variant="ghost"
+                onClick={handleCancelEdit}
+              >
+                Annulla
+              </PremiumActionButton>
+            </div>
+          </div>
+        </PremiumCard>
+      )}
 
       {/* Lista elementi */}
-      <div className="space-y-3">
-        {filteredItems.map((item) => (
-          <Card key={item.id} className={!item.available ? 'opacity-60' : ''}>
-            <CardContent className="p-4">
-              {editingItem === item.id ? (
-                /* Modulo di modifica */
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor={`name-${item.id}`}>Nome piatto</Label>
-                      <Input
-                        id={`name-${item.id}`}
-                        value={item.name}
-                        onChange={(e) => handleUpdateItem(item.id, { name: e.target.value })}
-                        placeholder="Nome del piatto"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor={`price-${item.id}`}>Prezzo</Label>
-                      <Input
-                        id={`price-${item.id}`}
-                        value={item.price}
-                        onChange={(e) => handleUpdateItem(item.id, { price: e.target.value })}
-                        placeholder="€0,00"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label htmlFor={`description-${item.id}`}>Descrizione</Label>
-                    <Textarea
-                      id={`description-${item.id}`}
-                      value={item.description}
-                      onChange={(e) => handleUpdateItem(item.id, { description: e.target.value })}
-                      placeholder="Descrizione del piatto..."
-                      rows={2}
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor={`category-${item.id}`}>Categoria</Label>
-                    <Select 
-                      value={item.category} 
-                      onValueChange={(value) => handleUpdateItem(item.id, { category: value })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {categories.map((cat) => (
-                          <SelectItem key={cat.value} value={cat.value}>
-                            {cat.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-6">
-                      <div className="flex items-center space-x-2">
-                        <Switch
-                          id={`available-${item.id}`}
-                          checked={item.available}
-                          onCheckedChange={(checked) => handleUpdateItem(item.id, { available: checked })}
-                        />
-                        <Label htmlFor={`available-${item.id}`}>Disponibile</Label>
-                      </div>
-                      
-                      <div className="flex items-center space-x-2">
-                        <Switch
-                          id={`featured-${item.id}`}
-                          checked={item.featured}
-                          onCheckedChange={(checked) => handleUpdateItem(item.id, { featured: checked })}
-                        />
-                        <Label htmlFor={`featured-${item.id}`}>In evidenza</Label>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm" onClick={handleSaveItem}>
-                        Salva
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        onClick={() => handleDeleteItem(item.id)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                /* Vista normale */
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h4 className="font-medium">{item.name}</h4>
-                      {item.featured && (
-                        <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                      )}
-                      <Badge variant="outline" className="text-xs">
-                        {categories.find(c => c.value === item.category)?.label}
-                      </Badge>
-                      {!item.available && (
-                        <Badge variant="secondary" className="text-xs">
-                          Non disponibile
-                        </Badge>
-                      )}
-                    </div>
-                    
-                    {item.description && (
-                      <p className="text-sm text-muted-foreground mb-2">
-                        {item.description}
-                      </p>
-                    )}
-                    
-                    <div className="text-sm font-medium text-primary">
-                      {item.price}
-                    </div>
-                  </div>
-
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setEditingItem(item.id)}
-                  >
-                    <Edit3 className="w-4 h-4" />
-                  </Button>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        ))}
-
-        {filteredItems.length === 0 && (
-          <Card>
-            <CardContent className="p-8 text-center">
-              <div className="text-muted-foreground">
-                <Plus className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                <p className="text-sm">
-                  {selectedCategory === 'tutti' 
-                    ? 'Nessun elemento nel menu. Clicca "Aggiungi Elemento" per iniziare.'
-                    : `Nessun elemento nella categoria "${categories.find(c => c.value === selectedCategory)?.label}".`
-                  }
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+      <PremiumCard
+        title={`Elementi ${selectedCategory !== 'tutti' ? `- ${categories.find(c => c.value === selectedCategory)?.label}` : ''}`}
+        description={`${filteredItems.length} elementi ${selectedCategory !== 'tutti' ? 'in questa categoria' : 'totali'}`}
+      >
+        {filteredItems.length === 0 ? (
+          <div className="text-center py-12 text-slate-500">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-[18px] bg-gradient-to-br from-slate-100/80 to-slate-200/60 border border-slate-200/50 flex items-center justify-center">
+              <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+              </svg>
+            </div>
+            <h4 className="font-semibold text-sm font-geist tracking-[-0.01em] mb-2">
+              {selectedCategory === 'tutti' ? 'Nessun elemento nel menu' : 'Nessun elemento in questa categoria'}
+            </h4>
+            <p className="text-xs font-medium font-geist tracking-[-0.01em]">
+              Aggiungi il primo elemento per iniziare a creare il tuo menu
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {filteredItems.map((item) => (
+              <PremiumListItem
+                key={item.id}
+                title={item.name}
+                description={item.description}
+                price={item.price}
+                category={categories.find(c => c.value === item.category)?.label}
+                featured={item.featured}
+                available={item.available}
+                onEdit={() => handleStartEditing(item)}
+                onDelete={() => handleDeleteItem(item.id)}
+                onToggleFeatured={() => handleUpdateItem(item.id, { featured: !item.featured })}
+                onToggleAvailable={() => handleUpdateItem(item.id, { available: !item.available })}
+              />
+            ))}
+          </div>
         )}
-      </div>
+      </PremiumCard>
     </div>
   );
 };

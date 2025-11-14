@@ -10,8 +10,7 @@ import {
   InfoIcon, GalleryIcon
 } from '../../components/icons/PremiumIcons';
 import { getAllFonts, ensureGoogleFontLoaded } from '@/lib/fonts';
-import { OptionList } from '@/components/ui/option-list';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { PremiumCard, PremiumTextInput, PremiumSelect, PremiumToggle, PremiumActionButton } from '../../components/forms';
 import { NewsletterEditor, DeliveryEditor, ContactEditor, HoursEditor, LocationEditor } from './site-editors';
 import { ReviewsEditor, EventsEditor } from './additional-editors';
 import { TemplateSelector } from '../templates/TemplateSelector';
@@ -186,78 +185,126 @@ const TypographyEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h4 className="font-semibold mb-4">Tipografia del Sito</h4>
-        <div className="grid grid-cols-1 gap-3">
-          {([
-            { key: "fontHeading", label: "Titoli", value: fonts.heading || "Playfair Display" },
-            { key: "fontSubheading", label: "Sottotitoli", value: fonts.subheading || "Inter" },
-            { key: "fontBody", label: "Corpo", value: fonts.body || "Inter" },
-          ] as const).map(({ key, label, value }) => (
-            <button
-              key={key}
-              type="button"
-              onClick={() => setApplyTarget(key as any)}
-              className={`text-left p-3 rounded-lg border hover:bg-muted/50 transition-colors ${applyTarget === key ? "border-primary bg-primary/5" : "border-border"}`}
-            >
-              <div className="text-xs text-muted-foreground mb-1">{label}</div>
-              <div className="text-sm font-medium truncate" style={{ fontFamily: value }}>{value}</div>
-            </button>
-          ))}
+    <PremiumCard
+      title="Tipografia del Sito"
+      description="Configura i font per titoli, sottotitoli e corpo del testo del tuo sito"
+    >
+      <div className="space-y-6">
+        <div>
+          <h4 className="font-semibold text-slate-800 font-geist tracking-[-0.01em] mb-4">Font Attualmente Utilizzati</h4>
+          <div className="grid grid-cols-1 gap-3">
+            {([
+              { key: "fontHeading", label: "Titoli", value: fonts.heading || "Playfair Display" },
+              { key: "fontSubheading", label: "Sottotitoli", value: fonts.subheading || "Inter" },
+              { key: "fontBody", label: "Corpo", value: fonts.body || "Inter" },
+            ] as const).map(({ key, label, value }) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setApplyTarget(key as any)}
+                className={`text-left p-4 rounded-[12px] border transition-all duration-300 ${
+                  applyTarget === key 
+                    ? "border-slate-400/60 bg-gradient-to-br from-white/90 to-slate-50/60 shadow-sm backdrop-blur-sm" 
+                    : "border-slate-200/50 bg-white/40 hover:bg-white/60 hover:border-slate-300/50"
+                }`}
+              >
+                <div className="text-xs text-slate-500 font-medium font-geist tracking-[-0.005em] mb-1">{label}</div>
+                <div className="text-sm font-semibold truncate text-slate-800 font-geist tracking-[-0.01em]" style={{ fontFamily: value }}>
+                  {value}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <h4 className="font-semibold text-slate-800 font-geist tracking-[-0.01em]">
+            Scegli Font per {
+              applyTarget === "fontHeading" ? "Titoli" : 
+              applyTarget === "fontSubheading" ? "Sottotitoli" : 
+              "Corpo del Testo"
+            }
+          </h4>
+          
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <PremiumTextInput
+                label="Cerca Font"
+                value={query}
+                onChange={setQuery}
+                placeholder="Cerca font..."
+                description="Cerca per nome del font"
+              />
+              
+              <PremiumSelect
+                label="Categoria"
+                value={category}
+                onChange={(value) => setCategory(value as any)}
+                options={[
+                  { value: "Tutti", label: "Tutti i font" },
+                  { value: "Preferiti", label: "I miei preferiti" },
+                  { value: "Sans-serif", label: "Sans-serif - Moderni" },
+                  { value: "Serif", label: "Serif - Classici" },
+                  { value: "Monospace", label: "Monospace - Tecnici" },
+                  { value: "Display", label: "Display - Decorativi" }
+                ]}
+                description="Filtra per categoria di font"
+              />
+            </div>
+
+            <div className="space-y-3 max-h-96 overflow-y-auto">
+              {filtered.map((font: any) => (
+                <div
+                  key={font.id}
+                  onClick={() => handleSelect(font)}
+                  className={`group cursor-pointer p-4 rounded-[12px] border transition-all duration-300 ${
+                    selectedFont === font.id
+                      ? "border-slate-400/60 bg-gradient-to-br from-white/90 to-slate-50/60 shadow-sm"
+                      : "border-slate-200/50 bg-white/40 hover:bg-white/60 hover:border-slate-300/50"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-sm text-slate-800 font-geist tracking-[-0.01em] mb-1" style={{ fontFamily: font.id }}>
+                        {font.name}
+                      </div>
+                      <div className="text-xs text-slate-500 font-medium font-geist tracking-[-0.005em]">
+                        {font.category}
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={(e) => { 
+                          e.stopPropagation(); 
+                          toggleFavorite(font.id); 
+                        }}
+                        className={`p-1.5 rounded-[8px] transition-all duration-200 ${
+                          favorites.includes(font.id) 
+                            ? "text-amber-500 bg-amber-50" 
+                            : "text-slate-400 hover:text-amber-500 hover:bg-amber-50"
+                        }`}
+                        title={favorites.includes(font.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
+                      >
+                        <Star className={`w-4 h-4 ${favorites.includes(font.id) ? "fill-amber-400" : ""}`} />
+                      </button>
+                      
+                      {selectedFont === font.id && (
+                        <div className="w-5 h-5 bg-slate-700 rounded-full flex items-center justify-center">
+                          <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className="space-y-4">
-        <h4 className="font-semibold">Scegli Font per {
-          applyTarget === "fontHeading" ? "Titoli" : 
-          applyTarget === "fontSubheading" ? "Sottotitoli" : 
-          "Corpo del Testo"
-        }</h4>
-        
-        <OptionList
-          enableSearch
-          searchPlaceholder="Cerca font..."
-          onSearchChange={setQuery}
-          searchAddon={(
-            <Select value={category} onValueChange={(v)=> setCategory(v as any)}>
-              <SelectTrigger className="w-[140px] h-9 text-xs">
-                <SelectValue placeholder="Categoria" />
-              </SelectTrigger>
-              <SelectContent className="text-xs">
-                {(["Tutti","Preferiti","Sans-serif","Serif","Monospace","Display"] as const).map(c => (
-                  <SelectItem key={c} value={c} className="text-xs">{c}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
-          items={filtered.map((font: any) => ({
-            id: font.id,
-            title: font.name,
-            description: font.category,
-            meta: (
-              <span
-                role="button"
-                tabIndex={0}
-                onClick={(e)=>{ e.stopPropagation(); toggleFavorite(font.id); }}
-                onKeyDown={(e)=>{ if(e.key==='Enter'){ e.stopPropagation(); toggleFavorite(font.id); } }}
-                className={`p-1 rounded hover:bg-white/60 transition-colors ${favorites.includes(font.id) ? "text-yellow-500" : "text-muted-foreground"}`}
-                aria-label={favorites.includes(font.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
-              >
-                <Star className={`w-4 h-4 ${favorites.includes(font.id) ? "fill-yellow-400" : ""}`} />
-              </span>
-            )
-          }))}
-          selectedId={selectedFont}
-          onSelect={(id)=> {
-            const font = filtered.find((f:any)=> f.id === id);
-            if (font) handleSelect(font);
-          }}
-          ariaLabel="Seleziona font"
-          showSelectedCheck
-        />
-      </div>
-    </div>
+    </PremiumCard>
   );
 };
 
@@ -289,57 +336,52 @@ const HeroEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   };
   
   return (
-    <div className="space-y-6">
-      <div>
-        <h4 className="font-semibold mb-4">Sezione Hero</h4>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-2">Titolo Principale</label>
-            <input 
-              type="text"
-              value={hero.title || 'Osteria del Borgo'}
-              onChange={(e) => updateHeroSection({ title: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Osteria del Borgo"
-            />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium mb-2">Sottotitolo</label>
-            <input 
-              type="text"
-              value={hero.subtitle || 'Tradizione e sapori autentici nel cuore della città'}
-              onChange={(e) => updateHeroSection({ subtitle: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Tradizione e sapori autentici nel cuore della città"
-            />
-          </div>
+    <PremiumCard
+      title="Sezione Hero"
+      description="La sezione principale della homepage che accoglie i visitatori"
+    >
+      <div className="space-y-4">
+        <PremiumTextInput
+          label="Titolo Principale"
+          value={hero.title || 'Osteria del Borgo'}
+          onChange={(value) => updateHeroSection({ title: value })}
+          placeholder="Il nome del tuo ristorante"
+          description="Il titolo principale che apparirà per primo ai visitatori"
+        />
+        
+        <PremiumTextInput
+          label="Sottotitolo"
+          value={hero.subtitle || 'Tradizione e sapori autentici nel cuore della città'}
+          onChange={(value) => updateHeroSection({ subtitle: value })}
+          placeholder="Una breve descrizione del vostro stile"
+          description="Descrizione che cattura l'essenza del vostro ristorante"
+        />
 
-          <div>
-            <label className="block text-sm font-medium mb-2">Immagine di Sfondo</label>
-            <input 
-              type="url"
-              value={hero.imageUrl || 'https://images.unsplash.com/photo-1527169402691-feff5539e52c?q=80&w=1600&auto=format&fit=crop'}
-              onChange={(e) => updateHeroSection({ imageUrl: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="https://images.unsplash.com/photo-1527169402691-feff5539e52c?q=80&w=1600&auto=format&fit=crop"
+        <PremiumTextInput
+          label="Immagine di Sfondo"
+          value={hero.imageUrl || 'https://images.unsplash.com/photo-1527169402691-feff5539e52c?q=80&w=1600&auto=format&fit=crop'}
+          onChange={(value) => updateHeroSection({ imageUrl: value })}
+          placeholder="https://images.unsplash.com/..."
+          description="URL dell'immagine di sfondo per la sezione hero"
+        />
+        
+        {hero.imageUrl && (
+          <div className="rounded-[12px] overflow-hidden border border-slate-200/50 bg-white/60 backdrop-blur-sm p-3">
+            <p className="text-xs text-slate-600 font-medium font-geist tracking-[-0.005em] mb-2">
+              Anteprima immagine:
+            </p>
+            <img 
+              src={hero.imageUrl} 
+              alt="Anteprima Hero" 
+              className="w-full h-32 object-cover rounded-[8px]"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = 'none';
+              }}
             />
-            {hero.imageUrl && (
-              <div className="mt-2">
-                <img 
-                  src={hero.imageUrl} 
-                  alt="Anteprima Hero" 
-                  className="w-full h-32 object-cover rounded-lg border"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
-                />
-              </div>
-            )}
           </div>
-        </div>
+        )}
       </div>
-    </div>
+    </PremiumCard>
   );
 };
 
@@ -370,57 +412,69 @@ const AboutEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h4 className="font-semibold mb-4">Chi Siamo</h4>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-2">Titolo Sezione</label>
-            <input 
-              type="text"
-              value={about.title || 'La nostra storia'}
-              onChange={(e) => updateAboutSection({ title: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="La nostra storia"
-            />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium mb-2">Contenuto</label>
-            <textarea 
-              value={about.content || 'Da tre generazioni portiamo avanti la tradizione culinaria di famiglia. Ogni piatto è preparato con ingredienti freschi e locali, rispettando le ricette della tradizione italiana e l\'arte dell\'ospitalità.'}
-              onChange={(e) => updateAboutSection({ content: e.target.value })}
-              rows={6}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Da tre generazioni portiamo avanti la tradizione culinaria di famiglia..."
-            />
-          </div>
+    <PremiumCard
+      title="Chi Siamo"
+      description="Raccontate la storia del vostro ristorante e create un legame con i clienti"
+    >
+      <div className="space-y-4">
+        <PremiumTextInput
+          label="Titolo Sezione"
+          value={about.title || 'La nostra storia'}
+          onChange={(value) => updateAboutSection({ title: value })}
+          placeholder="La nostra storia"
+          description="Il titolo che introduce la vostra storia"
+        />
+        
+        <PremiumTextInput
+          label="Racconto del Ristorante"
+          value={about.content || 'Da tre generazioni portiamo avanti la tradizione culinaria di famiglia. Ogni piatto è preparato con ingredienti freschi e locali, rispettando le ricette della tradizione italiana e l\'arte dell\'ospitalità.'}
+          onChange={(value) => updateAboutSection({ content: value })}
+          placeholder="Da tre generazioni portiamo avanti..."
+          description="Raccontate la vostra storia, filosofia e tradizione culinaria"
+          multiline
+          rows={6}
+        />
 
-          <div>
-            <label className="block text-sm font-medium mb-2">Immagine URL</label>
-            <input 
-              type="url"
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="lg:col-span-2">
+            <PremiumTextInput
+              label="Immagine del Ristorante"
               value={about.image || 'https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=1200&auto=format&fit=crop'}
-              onChange={(e) => updateAboutSection({ image: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="https://images.unsplash.com/photo-1543007630-9710e4a00a20?q=80&w=1200&auto=format&fit=crop"
+              onChange={(value) => updateAboutSection({ image: value })}
+              placeholder="https://images.unsplash.com/..."
+              description="Foto che rappresenti il vostro locale o la cucina"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-2">Posizione Immagine</label>
-            <select 
-              value={about.imagePosition || 'left'}
-              onChange={(e) => updateAboutSection({ imagePosition: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
-            >
-              <option value="left">Sinistra</option>
-              <option value="right">Destra</option>
-            </select>
-          </div>
+          <PremiumSelect
+            label="Posizione Immagine"
+            value={about.imagePosition || 'left'}
+            onChange={(value) => updateAboutSection({ imagePosition: value })}
+            options={[
+              { value: 'left', label: 'Sinistra - Immagine a sinistra del testo' },
+              { value: 'right', label: 'Destra - Immagine a destra del testo' }
+            ]}
+            description="Come posizionare l'immagine rispetto al testo"
+          />
         </div>
+        
+        {about.image && (
+          <div className="rounded-[12px] overflow-hidden border border-slate-200/50 bg-white/60 backdrop-blur-sm p-3">
+            <p className="text-xs text-slate-600 font-medium font-geist tracking-[-0.005em] mb-2">
+              Anteprima immagine:
+            </p>
+            <img 
+              src={about.image} 
+              alt="Anteprima About" 
+              className="w-full h-32 object-cover rounded-[8px]"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = 'none';
+              }}
+            />
+          </div>
+        )}
       </div>
-    </div>
+    </PremiumCard>
   );
 };
 
@@ -467,96 +521,104 @@ const GalleryEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h4 className="font-semibold mb-4">Galleria Foto</h4>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-2">Titolo Galleria</label>
-            <input 
-              type="text"
-              value={gallery.title || 'La Nostra Galleria'}
-              onChange={(e) => updateGallerySection({ title: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="La Nostra Galleria"
-            />
-          </div>
+    <PremiumCard
+      title="Galleria Foto"
+      description="Mostra le foto del vostro ristorante, piatti e atmosfera"
+    >
+      <div className="space-y-4">
+        <PremiumTextInput
+          label="Titolo Galleria"
+          value={gallery.title || 'La Nostra Galleria'}
+          onChange={(value) => updateGallerySection({ title: value })}
+          placeholder="La Nostra Galleria"
+          description="Il titolo che introduce la galleria fotografica"
+        />
 
-          <div>
-            <label className="block text-sm font-medium mb-2">Sottotitolo</label>
-            <input 
-              type="text"
-              value={gallery.subtitle || ''}
-              onChange={(e) => updateGallerySection({ subtitle: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Scopri l'atmosfera e i piatti del nostro ristorante"
-            />
-          </div>
+        <PremiumTextInput
+          label="Sottotitolo"
+          value={gallery.subtitle || ''}
+          onChange={(value) => updateGallerySection({ subtitle: value })}
+          placeholder="Scopri l'atmosfera e i piatti del nostro ristorante"
+          description="Una descrizione opzionale per la galleria"
+        />
 
-          <div>
-            <label className="block text-sm font-medium mb-2">Colonne</label>
-            <select 
-              value={gallery.columns || 3}
-              onChange={(e) => updateGallerySection({ columns: parseInt(e.target.value) })}
-              className="w-full px-3 py-2 border rounded-lg"
-            >
-              <option value={2}>2 Colonne</option>
-              <option value={3}>3 Colonne</option>
-              <option value={4}>4 Colonne</option>
-            </select>
-          </div>
-        </div>
+        <PremiumSelect
+          label="Layout Colonne"
+          value={gallery.columns?.toString() || '3'}
+          onChange={(value) => updateGallerySection({ columns: parseInt(value) })}
+          options={[
+            { value: '2', label: '2 Colonne - Layout ampio per poche immagini' },
+            { value: '3', label: '3 Colonne - Layout equilibrato (consigliato)' },
+            { value: '4', label: '4 Colonne - Layout compatto per molte foto' }
+          ]}
+          description="Numero di colonne per organizzare le immagini"
+        />
       </div>
 
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h4 className="font-semibold">Immagini ({images.length})</h4>
-          <button 
+          <h4 className="font-semibold text-slate-800 font-geist tracking-[-0.01em]">
+            Immagini ({images.length})
+          </h4>
+          <PremiumActionButton
+            variant="primary"
             onClick={addImage}
-            className="px-3 py-1 bg-primary text-white rounded text-sm hover:bg-primary/90"
+            icon={() => (
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+            )}
           >
             Aggiungi Immagine
-          </button>
+          </PremiumActionButton>
         </div>
 
         <div className="space-y-4">
           {images.map((image: any, index: number) => (
-            <div key={image.id} className="border rounded-lg p-4">
-              <div className="grid grid-cols-1 gap-3">
-                <div>
-                  <label className="block text-sm font-medium mb-1">URL Immagine</label>
-                  <input 
-                    type="url"
-                    value={image.url}
-                    onChange={(e) => updateImage(index, 'url', e.target.value)}
-                    className="w-full px-2 py-1 border rounded text-sm"
-                    placeholder="https://example.com/image.jpg"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">Didascalia</label>
-                  <input 
-                    type="text"
+            <div key={image.id} className="relative rounded-[16px] border border-slate-200/50 bg-gradient-to-br from-white/80 via-slate-50/40 to-slate-50/60 backdrop-blur-sm shadow-sm p-4">
+              <div className="space-y-3">
+                <PremiumTextInput
+                  label="URL Immagine"
+                  value={image.url}
+                  onChange={(value) => updateImage(index, 'url', value)}
+                  placeholder="https://images.unsplash.com/..."
+                  description="URL dell'immagine da aggiungere alla galleria"
+                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <PremiumTextInput
+                    label="Didascalia"
                     value={image.caption}
-                    onChange={(e) => updateImage(index, 'caption', e.target.value)}
-                    className="w-full px-2 py-1 border rounded text-sm"
+                    onChange={(value) => updateImage(index, 'caption', value)}
                     placeholder="Descrizione dell'immagine"
+                    description="Testo che apparirà sotto l'immagine"
+                  />
+                  <PremiumTextInput
+                    label="Testo Alternativo"
+                    value={image.alt}
+                    onChange={(value) => updateImage(index, 'alt', value)}
+                    placeholder="Descrizione per accessibilità"
+                    description="Testo per screen reader (accessibilità)"
                   />
                 </div>
-                <div className="flex justify-end">
-                  <button 
+                <div className="flex justify-end pt-2">
+                  <PremiumActionButton
+                    variant="ghost"
                     onClick={() => removeImage(index)}
-                    className="px-2 py-1 text-red-600 hover:bg-red-50 rounded text-sm"
+                    icon={() => (
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                      </svg>
+                    )}
                   >
                     Rimuovi
-                  </button>
+                  </PremiumActionButton>
                 </div>
               </div>
             </div>
           ))}
         </div>
       </div>
-    </div>
+    </PremiumCard>
   );
 };
 

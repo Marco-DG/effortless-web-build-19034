@@ -1,4 +1,5 @@
 import React from 'react';
+import { PremiumCard, PremiumTextInput, PremiumToggle, PremiumSelect, PremiumActionButton } from '../../components/forms';
 
 interface EditorProps {
   project: any;
@@ -26,35 +27,36 @@ export const NewsletterEditor: React.FC<EditorProps> = ({ project, onUpdate }) =
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h4 className="font-semibold mb-4">Newsletter</h4>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-2">Titolo</label>
-            <input 
-              type="text"
-              value={newsletter.title || 'Rimani Aggiornato'}
-              onChange={(e) => updateNewsletterSection({ title: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Rimani Aggiornato"
-            />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium mb-2">Sottotitolo</label>
-            <input 
-              type="text"
-              value={newsletter.subtitle || 'Iscriviti per ricevere le nostre novità e offerte speciali'}
-              onChange={(e) => updateNewsletterSection({ subtitle: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Iscriviti per ricevere le nostre novità e offerte speciali"
-            />
-          </div>
+    <PremiumCard
+      title="Newsletter"
+      description="Crea una sezione per raccogliere iscrizioni alla vostra newsletter"
+    >
+      <div className="space-y-4">
+        <PremiumTextInput
+          label="Titolo"
+          value={newsletter.title || 'Rimani Aggiornato'}
+          onChange={(value) => updateNewsletterSection({ title: value })}
+          placeholder="Rimani Aggiornato"
+          description="Il titolo che introduce la newsletter"
+        />
+        
+        <PremiumTextInput
+          label="Sottotitolo"
+          value={newsletter.subtitle || 'Iscriviti per ricevere le nostre novità e offerte speciali'}
+          onChange={(value) => updateNewsletterSection({ subtitle: value })}
+          placeholder="Iscriviti per ricevere le nostre novità e offerte speciali"
+          description="Descrivi i vantaggi dell'iscrizione alla newsletter"
+        />
 
-        </div>
+        <PremiumTextInput
+          label="Testo del Pulsante"
+          value={newsletter.buttonText || 'Iscriviti Ora'}
+          onChange={(value) => updateNewsletterSection({ buttonText: value })}
+          placeholder="Iscriviti Ora"
+          description="Il testo del pulsante di iscrizione"
+        />
       </div>
-    </div>
+    </PremiumCard>
   );
 };
 
@@ -79,93 +81,74 @@ export const DeliveryEditor: React.FC<EditorProps> = ({ project, onUpdate }) => 
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h4 className="font-semibold mb-4">Servizio Delivery</h4>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-2">Titolo Sezione</label>
-            <input 
-              type="text"
-              value={delivery.title || 'Ordina a Domicilio'}
-              onChange={(e) => updateDeliverySection({ title: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Ordina a Domicilio"
-            />
-          </div>
+    <PremiumCard
+      title="Servizio Delivery"
+      description="Configura il servizio di consegna a domicilio per i vostri clienti"
+    >
+      <div className="space-y-4">
+        <PremiumTextInput
+          label="Titolo Sezione"
+          value={delivery.title || 'Ordina a Domicilio'}
+          onChange={(value) => updateDeliverySection({ title: value })}
+          placeholder="Ordina a Domicilio"
+          description="Il titolo che introduce il servizio delivery"
+        />
 
-          <div>
-            <label className="block text-sm font-medium mb-2">Descrizione</label>
-            <textarea 
-              value={delivery.description || ''}
-              onChange={(e) => updateDeliverySection({ description: e.target.value })}
-              rows={4}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Descrivi il tuo servizio di delivery..."
-            />
-          </div>
+        <PremiumTextInput
+          label="Descrizione Servizio"
+          value={delivery.description || ''}
+          onChange={(value) => updateDeliverySection({ description: value })}
+          placeholder="Descrivi il tuo servizio di delivery..."
+          description="Spiega come funziona il vostro servizio di consegna"
+          multiline
+          rows={3}
+        />
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">Zona di Consegna</label>
-              <input 
-                type="text"
-                value={delivery.deliveryZone || ''}
-                onChange={(e) => updateDeliverySection({ deliveryZone: e.target.value })}
-                className="w-full px-3 py-2 border rounded-lg"
-                placeholder="es. Entro 5km dal centro"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-2">Costo Consegna</label>
-              <input 
-                type="text"
-                value={delivery.deliveryFee || ''}
-                onChange={(e) => updateDeliverySection({ deliveryFee: e.target.value })}
-                className="w-full px-3 py-2 border rounded-lg"
-                placeholder="es. €3.50"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">Ordine Minimo</label>
-              <input 
-                type="text"
-                value={delivery.minimumOrder || ''}
-                onChange={(e) => updateDeliverySection({ minimumOrder: e.target.value })}
-                className="w-full px-3 py-2 border rounded-lg"
-                placeholder="es. €15.00"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-2">Tempo di Consegna</label>
-              <input 
-                type="text"
-                value={delivery.deliveryTime || ''}
-                onChange={(e) => updateDeliverySection({ deliveryTime: e.target.value })}
-                className="w-full px-3 py-2 border rounded-lg"
-                placeholder="es. 30-45 min"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-2">Link per Ordinare</label>
-            <input 
-              type="url"
-              value={delivery.orderLink || ''}
-              onChange={(e) => updateDeliverySection({ orderLink: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="https://esempio.com/ordina"
-            />
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <PremiumTextInput
+            label="Zona di Consegna"
+            value={delivery.deliveryZone || ''}
+            onChange={(value) => updateDeliverySection({ deliveryZone: value })}
+            placeholder="Entro 5km dal centro"
+            description="Area geografica coperta dal servizio"
+          />
+          
+          <PremiumTextInput
+            label="Costo Consegna"
+            value={delivery.deliveryFee || ''}
+            onChange={(value) => updateDeliverySection({ deliveryFee: value })}
+            placeholder="€3.50"
+            description="Tariffa per la consegna a domicilio"
+          />
         </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <PremiumTextInput
+            label="Ordine Minimo"
+            value={delivery.minimumOrder || ''}
+            onChange={(value) => updateDeliverySection({ minimumOrder: value })}
+            placeholder="€15.00"
+            description="Importo minimo per attivare il delivery"
+          />
+          
+          <PremiumTextInput
+            label="Tempo di Consegna"
+            value={delivery.deliveryTime || ''}
+            onChange={(value) => updateDeliverySection({ deliveryTime: value })}
+            placeholder="30-45 minuti"
+            description="Tempi stimati per la consegna"
+          />
+        </div>
+
+        <PremiumTextInput
+          label="Link per Ordinare"
+          value={delivery.orderLink || ''}
+          onChange={(value) => updateDeliverySection({ orderLink: value })}
+          placeholder="https://esempio.com/ordina"
+          description="Link alla piattaforma per effettuare ordini online"
+        />
       </div>
-    </div>
+    </PremiumCard>
   );
 };
 
@@ -195,82 +178,66 @@ export const ContactEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h4 className="font-semibold mb-4">Informazioni di Contatto</h4>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-2">Indirizzo</label>
-            <textarea 
-              value={project.data.contact?.address || ''}
-              onChange={(e) => updateContactData('address', e.target.value)}
-              rows={3}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Via Example 123, 00100 Roma RM"
-            />
-          </div>
+    <PremiumCard
+      title="Informazioni di Contatto"
+      description="Inserisci tutte le informazioni per permettere ai clienti di contattarvi facilmente"
+    >
+      <div className="space-y-4">
+        <PremiumTextInput
+          label="Indirizzo Completo"
+          value={project.data.contact?.address || ''}
+          onChange={(value) => updateContactData('address', value)}
+          placeholder="Via Example 123, 00100 Roma RM"
+          description="L'indirizzo completo del ristorante con CAP e città"
+          multiline
+          rows={3}
+        />
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">Telefono</label>
-              <input 
-                type="tel"
-                value={project.data.contact?.phone || ''}
-                onChange={(e) => updateContactData('phone', e.target.value)}
-                className="w-full px-3 py-2 border rounded-lg"
-                placeholder="+39 06 123 4567"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-2">Email</label>
-              <input 
-                type="email"
-                value={project.data.contact?.email || ''}
-                onChange={(e) => updateContactData('email', e.target.value)}
-                className="w-full px-3 py-2 border rounded-lg"
-                placeholder="info@ristorante.it"
-              />
-            </div>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <PremiumTextInput
+            label="Numero di Telefono"
+            value={project.data.contact?.phone || ''}
+            onChange={(value) => updateContactData('phone', value)}
+            placeholder="+39 06 123 4567"
+            description="Il numero principale per le prenotazioni"
+          />
+          
+          <PremiumTextInput
+            label="Email di Contatto"
+            value={project.data.contact?.email || ''}
+            onChange={(value) => updateContactData('email', value)}
+            placeholder="info@ristorante.it"
+            description="L'email principale del ristorante"
+          />
+        </div>
 
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">WhatsApp</label>
-              <input 
-                type="tel"
-                value={project.data.contact?.whatsapp || ''}
-                onChange={(e) => updateContactData('whatsapp', e.target.value)}
-                className="w-full px-3 py-2 border rounded-lg"
-                placeholder="+39 328 123 4567"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-2">Instagram</label>
-              <input 
-                type="text"
-                value={project.data.contact?.instagram || ''}
-                onChange={(e) => updateContactData('instagram', e.target.value)}
-                className="w-full px-3 py-2 border rounded-lg"
-                placeholder="@ristorante"
-              />
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <PremiumTextInput
+            label="WhatsApp"
+            value={project.data.contact?.whatsapp || ''}
+            onChange={(value) => updateContactData('whatsapp', value)}
+            placeholder="+39 328 123 4567"
+            description="Numero WhatsApp per contatti rapidi"
+          />
+          
+          <PremiumTextInput
+            label="Instagram"
+            value={project.data.contact?.instagram || ''}
+            onChange={(value) => updateContactData('instagram', value)}
+            placeholder="@ristorante"
+            description="Username Instagram (senza @)"
+          />
 
-            <div>
-              <label className="block text-sm font-medium mb-2">Facebook</label>
-              <input 
-                type="text"
-                value={project.data.contact?.facebook || ''}
-                onChange={(e) => updateContactData('facebook', e.target.value)}
-                className="w-full px-3 py-2 border rounded-lg"
-                placeholder="RistoranteNome"
-              />
-            </div>
-          </div>
+          <PremiumTextInput
+            label="Facebook"
+            value={project.data.contact?.facebook || ''}
+            onChange={(value) => updateContactData('facebook', value)}
+            placeholder="RistoranteNome"
+            description="Nome pagina Facebook"
+          />
         </div>
       </div>
-    </div>
+    </PremiumCard>
   );
 };
 
@@ -312,54 +279,57 @@ export const HoursEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h4 className="font-semibold mb-4">Orari di Apertura</h4>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-2">Titolo Sezione</label>
-            <input 
-              type="text"
-              value={hours.title || 'Orari di Apertura'}
-              onChange={(e) => updateHoursSection({ title: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Orari di Apertura"
-            />
-          </div>
+    <PremiumCard
+      title="Orari di Apertura"
+      description="Configura gli orari di apertura del ristorante per ogni giorno della settimana"
+    >
+      <div className="space-y-4">
+        <PremiumTextInput
+          label="Titolo Sezione"
+          value={hours.title || 'Orari di Apertura'}
+          onChange={(value) => updateHoursSection({ title: value })}
+          placeholder="Orari di Apertura"
+          description="Il titolo che introduce gli orari"
+        />
 
-          <div className="space-y-3">
-            {Object.entries(hoursData).map(([day, dayHours]: [string, any]) => (
-              <div key={day} className="grid grid-cols-4 gap-3 items-center">
-                <div className="font-medium capitalize">{day}</div>
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={!dayHours.closed}
-                    onChange={(e) => updateDayHours(day, 'closed', !e.target.checked)}
-                    className="mr-2"
-                  />
-                  <span className="text-sm">Aperto</span>
+        <div className="space-y-3">
+          {Object.entries(hoursData).map(([day, dayHours]: [string, any]) => (
+            <div key={day} className="relative rounded-[12px] border border-slate-200/50 bg-white/60 backdrop-blur-sm p-4">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-3 items-center">
+                <div className="font-semibold text-slate-800 font-geist tracking-[-0.01em] capitalize">
+                  {day}
                 </div>
-                <input
-                  type="time"
-                  value={dayHours.open}
-                  onChange={(e) => updateDayHours(day, 'open', e.target.value)}
-                  disabled={dayHours.closed}
-                  className="px-2 py-1 border rounded text-sm disabled:bg-gray-100"
+                <PremiumToggle
+                  label="Aperto"
+                  checked={!dayHours.closed}
+                  onChange={(checked) => updateDayHours(day, 'closed', !checked)}
                 />
-                <input
-                  type="time"
-                  value={dayHours.close}
-                  onChange={(e) => updateDayHours(day, 'close', e.target.value)}
-                  disabled={dayHours.closed}
-                  className="px-2 py-1 border rounded text-sm disabled:bg-gray-100"
-                />
+                <div className="space-y-1">
+                  <label className="text-xs text-slate-600 font-medium font-geist">Apertura</label>
+                  <input
+                    type="time"
+                    value={dayHours.open}
+                    onChange={(e) => updateDayHours(day, 'open', e.target.value)}
+                    disabled={dayHours.closed}
+                    className="w-full px-3 py-2 border border-slate-200/50 rounded-[8px] text-sm bg-white/60 disabled:bg-slate-50/40 disabled:text-slate-400"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs text-slate-600 font-medium font-geist">Chiusura</label>
+                  <input
+                    type="time"
+                    value={dayHours.close}
+                    onChange={(e) => updateDayHours(day, 'close', e.target.value)}
+                    disabled={dayHours.closed}
+                    className="w-full px-3 py-2 border border-slate-200/50 rounded-[8px] text-sm bg-white/60 disabled:bg-slate-50/40 disabled:text-slate-400"
+                  />
+                </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
-    </div>
+    </PremiumCard>
   );
 };
 
@@ -384,85 +354,70 @@ export const LocationEditor: React.FC<EditorProps> = ({ project, onUpdate }) => 
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h4 className="font-semibold mb-4">Posizione e Mappa</h4>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-2">Titolo Sezione</label>
-            <input 
-              type="text"
-              value={location.title || 'Dove Siamo'}
-              onChange={(e) => updateLocationSection({ title: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Dove Siamo"
-            />
-          </div>
+    <PremiumCard
+      title="Posizione e Mappa"
+      description="Aiuta i clienti a trovarvi facilmente con informazioni dettagliate sulla posizione"
+    >
+      <div className="space-y-4">
+        <PremiumTextInput
+          label="Titolo Sezione"
+          value={location.title || 'Dove Siamo'}
+          onChange={(value) => updateLocationSection({ title: value })}
+          placeholder="Dove Siamo"
+          description="Il titolo che introduce la posizione"
+        />
 
-          <div>
-            <label className="block text-sm font-medium mb-2">Descrizione</label>
-            <textarea 
-              value={location.description || ''}
-              onChange={(e) => updateLocationSection({ description: e.target.value })}
-              rows={4}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="Siamo nel cuore del centro storico, facilmente raggiungibili..."
-            />
-          </div>
+        <PremiumTextInput
+          label="Descrizione Posizione"
+          value={location.description || ''}
+          onChange={(value) => updateLocationSection({ description: value })}
+          placeholder="Siamo nel cuore del centro storico, facilmente raggiungibili..."
+          description="Descrivi la posizione e come raggiungervi"
+          multiline
+          rows={3}
+        />
 
-          <div>
-            <label className="block text-sm font-medium mb-2">Link Google Maps</label>
-            <input 
-              type="url"
-              value={location.mapLink || ''}
-              onChange={(e) => updateLocationSection({ mapLink: e.target.value })}
-              className="w-full px-3 py-2 border rounded-lg"
-              placeholder="https://maps.google.com/..."
-            />
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <PremiumTextInput
+            label="Link Google Maps"
+            value={location.mapLink || ''}
+            onChange={(value) => updateLocationSection({ mapLink: value })}
+            placeholder="https://maps.google.com/..."
+            description="Link diretto a Google Maps per la navigazione"
+          />
 
-          <div>
-            <label className="block text-sm font-medium mb-2">Iframe Google Maps</label>
-            <textarea 
-              value={location.mapEmbed || ''}
-              onChange={(e) => updateLocationSection({ mapEmbed: e.target.value })}
-              rows={4}
-              className="w-full px-3 py-2 border rounded-lg font-mono text-sm"
-              placeholder='<iframe src="..." width="600" height="450"...></iframe>'
-            />
-            <p className="text-xs text-muted-foreground mt-1">
-              Copia il codice iframe da Google Maps per mostrare la mappa interattiva
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">Parcheggio</label>
-              <select 
-                value={location.parking || 'available'}
-                onChange={(e) => updateLocationSection({ parking: e.target.value })}
-                className="w-full px-3 py-2 border rounded-lg"
-              >
-                <option value="available">Disponibile</option>
-                <option value="limited">Limitato</option>
-                <option value="none">Non disponibile</option>
-                <option value="paid">A pagamento</option>
-              </select>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-2">Trasporti Pubblici</label>
-              <input 
-                type="text"
-                value={location.publicTransport || ''}
-                onChange={(e) => updateLocationSection({ publicTransport: e.target.value })}
-                className="w-full px-3 py-2 border rounded-lg"
-                placeholder="Metro A, Bus 123"
-              />
-            </div>
-          </div>
+          <PremiumSelect
+            label="Disponibilità Parcheggio"
+            value={location.parking || 'available'}
+            onChange={(value) => updateLocationSection({ parking: value })}
+            options={[
+              { value: 'available', label: 'Disponibile - Parcheggio facile' },
+              { value: 'limited', label: 'Limitato - Pochi posti' },
+              { value: 'none', label: 'Non disponibile - Solo trasporti' },
+              { value: 'paid', label: 'A pagamento - Parcheggi nelle vicinanze' }
+            ]}
+            description="Informazioni sul parcheggio per i clienti"
+          />
         </div>
+
+        <PremiumTextInput
+          label="Trasporti Pubblici"
+          value={location.publicTransport || ''}
+          onChange={(value) => updateLocationSection({ publicTransport: value })}
+          placeholder="Metro A, Bus 123, Fermata Centro"
+          description="Mezzi pubblici per raggiungere il ristorante"
+        />
+
+        <PremiumTextInput
+          label="Iframe Google Maps"
+          value={location.mapEmbed || ''}
+          onChange={(value) => updateLocationSection({ mapEmbed: value })}
+          placeholder='<iframe src="..." width="600" height="450"...></iframe>'
+          description="Codice iframe da Google Maps per mostrare la mappa interattiva"
+          multiline
+          rows={4}
+        />
       </div>
-    </div>
+    </PremiumCard>
   );
 };
