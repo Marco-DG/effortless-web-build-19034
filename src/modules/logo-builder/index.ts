@@ -1,5 +1,3 @@
-export { LogoBuilder } from './LogoBuilder';
-export { LogoBuilderV2 } from './LogoBuilderV2';
 export { LogoBuilderRedesigned } from './LogoBuilderRedesigned';
 export { InteractiveLogoCanvas } from './InteractiveLogoCanvas';
 export { LogoPreview } from './LogoPreview';

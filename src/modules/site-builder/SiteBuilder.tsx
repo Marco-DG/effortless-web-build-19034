@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAppStore } from '../../store/app-store';
 import { SimpleSiteBuilder } from './SimpleSiteBuilder';
-import { LogoBuilder } from '../logo-builder/LogoBuilder';
+import { LogoBuilderRedesigned } from '../logo-builder/LogoBuilderRedesigned';
 import { MenuBuilder } from '../menu-builder/MenuBuilder';
 
 export const SiteBuilder: React.FC = () => {
@@ -18,7 +18,7 @@ export const SiteBuilder: React.FC = () => {
   const renderContent = () => {
     switch (macroTab) {
       case 'logo':
-        return <LogoBuilder onSwitchBuilder={handleMacroTabChange} />;
+        return <LogoBuilderRedesigned onSwitchBuilder={handleMacroTabChange} />;
       case 'menu':
         return <MenuBuilder onSwitchBuilder={handleMacroTabChange} />;
       case 'site':
