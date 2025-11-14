@@ -1,5 +1,5 @@
 import React from 'react';
-import { Wine, Check } from 'lucide-react';
+import { Wine } from 'lucide-react';
 import { PremiumCard } from '../../components/forms';
 
 interface TemplateSelectorProps {
@@ -17,10 +17,6 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ project, onU
     >
       <div className="space-y-6">
         <div className="relative rounded-[16px] border border-slate-200/50 bg-gradient-to-br from-white/80 via-slate-50/40 to-slate-50/60 backdrop-blur-sm shadow-sm overflow-hidden">
-          {/* Selected Badge */}
-          <div className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-to-r from-slate-600 to-slate-700 border-2 border-white rounded-full flex items-center justify-center shadow-lg shadow-slate-900/25">
-            <Check className="w-4 h-4 text-white" />
-          </div>
 
           <div className="p-6">
             <div className="flex items-center gap-4">

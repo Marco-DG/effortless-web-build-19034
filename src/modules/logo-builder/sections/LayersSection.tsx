@@ -80,11 +80,6 @@ export const LayersSection: React.FC<LayersSectionProps> = ({
                 >
                   {/* Hover gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-r from-slate-50/20 via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  
-                  {/* Layer Badge */}
-                  <div className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-to-r from-slate-600 to-slate-700 border-2 border-white rounded-full flex items-center justify-center shadow-lg shadow-slate-900/25">
-                    <span className="text-xs font-bold text-white font-geist">{elements.length - index}</span>
-                  </div>
 
                   <div className="relative p-6">
                     {/* Element Info */}
