@@ -1,5 +1,5 @@
 import React from 'react';
-import { Wine } from 'lucide-react';
+import { Wine, Star } from 'lucide-react';
 import { PremiumCard } from '../../components/forms';
 
 interface TemplateSelectorProps {
@@ -8,85 +8,124 @@ interface TemplateSelectorProps {
 }
 
 export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ project, onUpdate }) => {
-  const currentTemplate = project.data.site?.template || 'wine-bar';
+  const currentTemplate = project.data.site?.template?.style || 'wine_bar';
+  
+  const selectTemplate = (templateStyle: string) => {
+    onUpdate({
+      site: {
+        ...project.data.site,
+        template: { 
+          ...project.data.site?.template,
+          style: templateStyle 
+        }
+      }
+    });
+  };
+
+  const templates = [
+    {
+      id: 'wine_bar',
+      name: 'Wine Bar',
+      description: 'Template elegante e raffinato per wine bar, enotece e ristoranti di alta gamma',
+      icon: Wine,
+      colors: ['#2a1a1d', '#6b3a2e', '#d9b99b'],
+      colorNames: ['Nero elegante', 'Marrone caldo', 'Beige dorato']
+    },
+    {
+      id: 'michelin_star',
+      name: 'Michelin Star',
+      description: 'Template ultra-luxury per ristoranti stellati con design cinematografico e minimalista',
+      icon: Star,
+      colors: ['#0a0a0a', '#1a1a1a', '#fbbf24'],
+      colorNames: ['Nero profondo', 'Grigio antracite', 'Oro luxury']
+    }
+  ];
   
   return (
     <PremiumCard
       title="Template Design"
       description="Scegli il template base per il design del tuo sito web"
     >
-      <div className="space-y-6">
-        <div className="relative rounded-[16px] border border-slate-200/50 bg-gradient-to-br from-white/80 via-slate-50/40 to-slate-50/60 backdrop-blur-sm shadow-sm overflow-hidden">
+      <div className="space-y-4">
+        {templates.map((template) => (
+          <div 
+            key={template.id}
+            className={`relative rounded-[16px] border cursor-pointer transition-all duration-300 overflow-hidden ${
+              currentTemplate === template.id
+                ? 'border-blue-300 bg-gradient-to-br from-blue-50/80 via-blue-50/40 to-blue-50/60 shadow-md'
+                : 'border-slate-200/50 bg-gradient-to-br from-white/80 via-slate-50/40 to-slate-50/60 shadow-sm hover:border-slate-300/60 hover:shadow-md'
+            }`}
+            onClick={() => selectTemplate(template.id)}
+          >
 
-          <div className="p-6">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-[14px] bg-gradient-to-br from-slate-100/80 to-slate-200/60 border border-slate-200/50 flex items-center justify-center flex-shrink-0 shadow-sm">
-                <Wine className="w-6 h-6 text-slate-600" />
-              </div>
-              
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="font-semibold text-lg text-slate-800 font-geist tracking-[-0.02em]">
-                    Wine Bar
-                  </h3>
-                </div>
-                <p className="text-sm text-slate-600 font-medium font-geist tracking-[-0.01em] leading-relaxed">
-                  Template elegante e raffinato per wine bar, enotece e ristoranti di alta gamma
-                </p>
-              </div>
-            </div>
-            
-            <div className="mt-4 pt-4 border-t border-slate-200/50">
-              <div className="flex items-center justify-between">
-                <div>
-                  <span className="text-xs text-slate-500 font-medium font-geist tracking-[-0.005em] mb-2 block">
-                    Palette Colori:
-                  </span>
-                  <div className="flex gap-2">
-                    <div 
-                      className="w-6 h-6 rounded-[6px] border border-white/50 shadow-sm" 
-                      style={{ backgroundColor: '#2a1a1d' }}
-                      title="Nero elegante"
-                    />
-                    <div 
-                      className="w-6 h-6 rounded-[6px] border border-white/50 shadow-sm" 
-                      style={{ backgroundColor: '#6b3a2e' }}
-                      title="Marrone caldo"
-                    />
-                    <div 
-                      className="w-6 h-6 rounded-[6px] border border-white/50 shadow-sm" 
-                      style={{ backgroundColor: '#d9b99b' }}
-                      title="Beige dorato"
-                    />
-                  </div>
+            <div className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-[14px] bg-gradient-to-br from-slate-100/80 to-slate-200/60 border border-slate-200/50 flex items-center justify-center flex-shrink-0 shadow-sm">
+                  <template.icon className="w-6 h-6 text-slate-600" />
                 </div>
                 
-                <div className="text-right">
-                  <div className="text-xs text-slate-500 font-medium font-geist tracking-[-0.005em]">
-                    Status
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-semibold text-lg text-slate-800 font-geist tracking-[-0.02em]">
+                      {template.name}
+                    </h3>
+                    {currentTemplate === template.id && (
+                      <div className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
+                        Attivo
+                      </div>
+                    )}
+                    {template.id === 'michelin_star' && (
+                      <div className="px-2 py-1 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full">
+                        Nuovo
+                      </div>
+                    )}
                   </div>
-                  <div className="text-sm font-semibold text-slate-700 font-geist tracking-[-0.01em] mt-0.5">
-                    Attivo
+                  <p className="text-sm text-slate-600 font-medium font-geist tracking-[-0.01em] leading-relaxed">
+                    {template.description}
+                  </p>
+                </div>
+              </div>
+              
+              <div className="mt-4 pt-4 border-t border-slate-200/50">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="text-xs text-slate-500 font-medium font-geist tracking-[-0.005em] mb-2 block">
+                      Palette Colori:
+                    </span>
+                    <div className="flex gap-2">
+                      {template.colors.map((color, index) => (
+                        <div 
+                          key={index}
+                          className="w-6 h-6 rounded-[6px] border border-white/50 shadow-sm" 
+                          style={{ backgroundColor: color }}
+                          title={template.colorNames[index]}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="text-right">
+                    {currentTemplate === template.id ? (
+                      <div className="px-3 py-1.5 bg-blue-500 text-white text-xs font-semibold rounded-lg">
+                        Selezionato
+                      </div>
+                    ) : (
+                      <button 
+                        className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          selectTemplate(template.id);
+                        }}
+                      >
+                        Seleziona
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="rounded-[12px] bg-gradient-to-r from-blue-50/80 to-slate-50/60 border border-blue-200/50 p-4">
-          <div className="flex items-start gap-3">
-            <div className="text-lg">💡</div>
-            <div>
-              <h4 className="font-semibold text-sm text-slate-800 font-geist tracking-[-0.01em] mb-1">
-                Prossimamente
-              </h4>
-              <p className="text-xs text-slate-600 font-medium font-geist tracking-[-0.005em] leading-relaxed">
-                Altri template saranno disponibili nelle prossime versioni per diversi tipi di ristorante e stili di cucina
-              </p>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
     </PremiumCard>
   );
