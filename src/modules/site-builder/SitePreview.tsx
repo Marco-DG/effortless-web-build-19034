@@ -5,6 +5,7 @@ import { Button } from '../../ui/Button';
 // Badge legacy rimosso - usando inline premium style
 import { Calendar, MapPin, Phone, Mail, Clock, Star, Truck, Menu, X, ChefHat, Wine, Camera, Award, Users, Heart, ArrowRight } from 'lucide-react';
 import { ensureGoogleFontLoaded } from '@/lib/fonts';
+import { MichelinStarTemplate } from './MichelinStarTemplate';
 
 interface SitePreviewProps {
   project: Project;
@@ -69,7 +70,9 @@ export const SitePreview: React.FC<SitePreviewProps> = ({ project }) => {
       case 'template':
         // Verifica quale template usare
         const templateStyle = project.data.site?.template?.style || 'wine_bar';
-        if (templateStyle === 'wine_bar') {
+        if (templateStyle === 'michelin_star') {
+          return <MichelinStarTemplate key={section.id} data={section.data} theme={theme} project={project} />;
+        } else if (templateStyle === 'wine_bar') {
           return <WineBarTemplate key={section.id} data={section.data} theme={theme} project={project} />;
         }
         return <FullTemplateSection key={section.id} data={section.data} theme={theme} project={project} />;
