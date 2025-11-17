@@ -13,32 +13,43 @@ export const MichelinStarTemplate: React.FC<MichelinStarTemplateProps> = ({ data
   const [scrollY, setScrollY] = React.useState(0);
   const [isLoaded, setIsLoaded] = React.useState(false);
   
-  // Usa le sezioni del nuovo sistema site builder
-  const siteSections = project.data.site?.sections || [];
+  // Usa i dati del nuovo template system se disponibili
+  const templateData = project.data.site?.templateData || data;
   
   // Mapping dei dati dalle sezioni
   const getSectionData = (type: string) => {
-    const section = siteSections.find(s => s.type === type);
-    return section?.data || {};
+    // Prima prova da project.data.{type}, poi da templateData
+    const directData = project.data?.[type];
+    const templateDataSection = templateData[type];
+    return directData || templateDataSection || {};
   };
 
   // Dati del ristorante con fallback ultra-premium
+  const businessData = getSectionData('business');
+  const heroData = getSectionData('hero');
+  const storyData = getSectionData('story');
+  const contactData = getSectionData('contact');
+  const menuData = getSectionData('menu');
+  const galleryData = getSectionData('gallery');
+  const awardsData = getSectionData('awards');
+  const themeData = getSectionData('theme');
+
   const restaurantData = {
     // Business Info
-    businessName: project.data.business?.name || 'Le Petit Étoile',
+    businessName: businessData.name || project.data.business?.name || 'Le Petit Étoile',
     businessType: 'michelin_star',
-    tagline: project.data.business?.tagline || 'Deux étoiles Michelin',
+    tagline: businessData.tagline || project.data.business?.tagline || 'Deux étoiles Michelin',
     
     // Logo
     logoUrl: project.data.logo?.url || '',
     logoMode: project.data.logo?.mode || 'text',
-    logoText: project.data.logo?.text || project.data.business?.name || 'Le Petit Étoile',
+    logoText: project.data.logo?.text || businessData.name || project.data.business?.name || 'Le Petit Étoile',
     
     // Hero - ultra cinematico
-    heroTitle: getSectionData('hero').title || project.data.business?.name || 'Le Petit Étoile',
-    heroSubtitle: getSectionData('hero').subtitle || 'Deux étoiles Michelin • Paris',
-    heroDescription: getSectionData('hero').description || 'Une expérience culinaire transcendante où chaque plat raconte une histoire',
-    heroImages: [
+    heroTitle: businessData.name || project.data.business?.name || 'Le Petit Étoile',
+    heroSubtitle: businessData.tagline || 'Deux étoiles Michelin • Paris',
+    heroDescription: businessData.description || 'Une expérience culinaire transcendante où chaque plat raconte une histoire',
+    heroImages: heroData.images || [
       'https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?q=80&w=2070&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=2074&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?q=80&w=2081&auto=format&fit=crop'
@@ -46,14 +57,14 @@ export const MichelinStarTemplate: React.FC<MichelinStarTemplateProps> = ({ data
     
     // About - storytelling premium
     about: {
-      heading: getSectionData('about').title || 'Notre Vision',
-      subtitle: 'Chef étoilé Alexandre Dubois',
-      text: getSectionData('about').content || 'Depuis quinze ans, nous cultivons l\'art de la haute gastronomie française avec une approche contemporaine qui respecte les traditions tout en embrassant l\'innovation.',
-      imageUrl: 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?q=80&w=1200&auto=format&fit=crop',
+      heading: storyData.section_title || 'Notre Vision',
+      subtitle: storyData.chef_name || 'Chef étoilé Alexandre Dubois',
+      text: storyData.story_text || 'Depuis quinze ans, nous cultivons l\'art de la haute gastronomie française avec une approche contemporaine qui respecte les traditions tout en embrassant l\'innovation.',
+      imageUrl: storyData.chef_image || 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?q=80&w=1200&auto=format&fit=crop',
     },
     
     // Menu - ultra premium
-    menuSections: [
+    menuSections: menuData.menu_sections || [
       {
         name: 'Menu Dégustation',
         price: '€285',
@@ -83,7 +94,7 @@ export const MichelinStarTemplate: React.FC<MichelinStarTemplateProps> = ({ data
     ],
     
     // Awards & Recognition
-    awards: [
+    awards: awardsData.awards_list || [
       { name: 'Deux étoiles Michelin', year: '2019-2024' },
       { name: 'Gault & Millau', score: '18/20', year: '2024' },
       { name: 'La Liste', ranking: 'Top 100 Mondial', year: '2024' },
@@ -91,7 +102,7 @@ export const MichelinStarTemplate: React.FC<MichelinStarTemplateProps> = ({ data
     ],
     
     // Gallery premium
-    gallery: getSectionData('gallery').images || [
+    gallery: galleryData.gallery_images || [
       'https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=2074&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?q=80&w=2081&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?q=80&w=2070&auto=format&fit=crop',
@@ -99,15 +110,12 @@ export const MichelinStarTemplate: React.FC<MichelinStarTemplateProps> = ({ data
     ],
     
     // Contact premium
-    address: project.data.contact?.address || '15 Rue Saint-Honoré, 75001 Paris',
-    phone: project.data.contact?.phone || '+33 1 42 96 59 04',
-    email: project.data.contact?.email || 'reservation@lepetitetoile.fr',
+    address: contactData.address || project.data.contact?.address || '15 Rue Saint-Honoré, 75001 Paris',
+    phone: contactData.phone || project.data.contact?.phone || '+33 1 42 96 59 04',
+    email: contactData.email || project.data.contact?.email || 'reservation@lepetitetoile.fr',
     
-    // Sezioni abilitate
-    sectionsOrder: siteSections
-      .filter(s => s.enabled)
-      .sort((a, b) => a.order - b.order)
-      .map(s => s.type),
+    // Sezioni abilitate (default order)
+    sectionsOrder: ['hero', 'awards', 'story', 'menu', 'gallery', 'contact'],
   };
 
   // Parallax e scroll effects

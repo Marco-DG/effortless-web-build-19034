@@ -338,9 +338,12 @@ export const useAppStore = create<AppStore>()(
         const current = get().activeProject;
         if (!current) return;
         
+        // Usa direttamente i dati passati (sono già nel formato corretto)
+        const mergedData = updates.data ? updates.data : { ...current.data, ...updates };
+        
         const updated: Project = {
           ...current,
-          data: { ...current.data, ...updates },
+          data: mergedData,
           updatedAt: new Date().toISOString()
         };
         

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Wine, Star } from 'lucide-react';
 import { PremiumCard } from '../../components/forms';
+import { getTemplateDefaults } from '../site-builder/template-defaults';
 
 interface TemplateSelectorProps {
   project: any;
@@ -11,15 +12,40 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ project, onU
   const currentTemplate = project.data.site?.template?.style || 'wine_bar';
   
   const selectTemplate = (templateStyle: string) => {
-    onUpdate({
-      site: {
-        ...project.data.site,
-        template: { 
-          ...project.data.site?.template,
-          style: templateStyle 
+    // Ottieni i defaults per il template selezionato
+    const defaults = getTemplateDefaults(templateStyle);
+    
+    // Se si sta selezionando Michelin Star, inizializza tutti i dati con i defaults
+    if (templateStyle === 'michelin_star') {
+      onUpdate({
+        site: {
+          ...project.data.site,
+          template: { 
+            ...project.data.site?.template,
+            style: templateStyle 
+          }
+        },
+        // Inizializza tutti i dati con i defaults solo se non esistono già
+        business: project.data.business?.name ? project.data.business : defaults.business,
+        story: project.data.story?.section_title ? project.data.story : defaults.story,
+        hero: project.data.hero?.images ? project.data.hero : defaults.hero,
+        awards: project.data.awards?.awards_list ? project.data.awards : defaults.awards,
+        menu: project.data.menu?.menu_sections ? project.data.menu : defaults.menu,
+        gallery: project.data.gallery?.gallery_images ? project.data.gallery : defaults.gallery,
+        contact: project.data.contact?.address ? project.data.contact : defaults.contact,
+      });
+    } else {
+      // Per altri template, aggiorna solo il template style
+      onUpdate({
+        site: {
+          ...project.data.site,
+          template: { 
+            ...project.data.site?.template,
+            style: templateStyle 
+          }
         }
-      }
-    });
+      });
+    }
   };
 
   const templates = [

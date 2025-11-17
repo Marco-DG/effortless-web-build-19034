@@ -3,7 +3,7 @@ import { useSectionUpdater } from '../../hooks/useSectionUpdater';
 import { useAppStore } from '../../store/app-store';
 import { 
   Star, Calendar, Phone, Clock, MapPin, Mail, 
-  Coffee, Truck
+  Coffee, Truck, BookOpen, Award, ChefHat
 } from 'lucide-react';
 import { UnifiedBuilderLayout, BuilderSection } from '../../components/UnifiedBuilderLayout';
 import { 
@@ -16,13 +16,19 @@ import { NewsletterEditor, DeliveryEditor, ContactEditor, HoursEditor, LocationE
 import { ReviewsEditor, EventsEditor } from './additional-editors';
 import { TemplateSelector } from '../templates/TemplateSelector';
 import { ComponentsManager } from './ComponentsManager';
+import { getTemplateDefaults } from './template-defaults';
 
-// Sezioni semplici - ogni sezione = un componente template
-const TEMPLATE_SECTIONS: readonly BuilderSection[] = [
+// Sezioni base comuni a tutti i template
+const BASE_SECTIONS: readonly BuilderSection[] = [
   // CONFIGURAZIONE
   { id: 'template', label: 'Template', icon: TemplateIcon, category: 'config', description: 'Scegli il design del tuo sito' },
-  { id: 'components', label: 'Componenti', icon: ComponentsIcon, category: 'config', description: 'Gestisci sezioni e layout' },
   { id: 'typography', label: 'Tipografia', icon: TypographyIcon, category: 'config', description: 'Font e stili di testo' },
+];
+
+// Sezioni specifiche per Wine Bar (template esistente)
+const WINE_BAR_SECTIONS: readonly BuilderSection[] = [
+  ...BASE_SECTIONS,
+  { id: 'components', label: 'Componenti', icon: ComponentsIcon, category: 'config', description: 'Gestisci sezioni e layout' },
   
   // ASPETTO 
   { id: 'hero', label: 'Hero', icon: CanvasIcon, category: 'appearance', description: 'Sezione principale della homepage' },
@@ -39,7 +45,36 @@ const TEMPLATE_SECTIONS: readonly BuilderSection[] = [
   { id: 'delivery', label: 'Delivery', icon: Truck, category: 'data', description: 'Servizio di consegna' },
 ];
 
-type TemplateSectionId = typeof TEMPLATE_SECTIONS[number]['id'];
+// Sezioni specifiche per Michelin Star (template premium)
+const MICHELIN_STAR_SECTIONS: readonly BuilderSection[] = [
+  ...BASE_SECTIONS,
+  
+  // BUSINESS INFO
+  { id: 'business', label: 'Informazioni Base', icon: InfoIcon, category: 'config', description: 'Nome ristorante, tagline, descrizione' },
+  
+  // ASPETTO PREMIUM
+  { id: 'hero', label: 'Hero Section', icon: CanvasIcon, category: 'appearance', description: 'Carousel immagini cinematografico' },
+  { id: 'story', label: 'La Nostra Storia', icon: BookOpen, category: 'appearance', description: 'Storia chef e filosofia' },
+  { id: 'awards', label: 'Riconoscimenti', icon: Award, category: 'appearance', description: 'Premi e stelle Michelin' },
+  { id: 'menu', label: 'Menu Premium', icon: ChefHat, category: 'appearance', description: 'Menu degustazione e à la carte' },
+  { id: 'gallery', label: 'Galleria', icon: GalleryIcon, category: 'appearance', description: 'Immagini piatti e ambiente' },
+  
+  // CONTATTI
+  { id: 'contact', label: 'Contatti', icon: Phone, category: 'data', description: 'Informazioni di contatto e prenotazioni' },
+];
+
+// Funzione per ottenere le sezioni in base al template
+const getTemplateSection = (templateStyle: string): readonly BuilderSection[] => {
+  switch (templateStyle) {
+    case 'michelin_star':
+      return MICHELIN_STAR_SECTIONS;
+    case 'wine_bar':
+    default:
+      return WINE_BAR_SECTIONS;
+  }
+};
+
+type TemplateSectionId = string;
 
 interface SimpleSiteBuilderProps {
   onSwitchBuilder?: (builder: 'logo' | 'menu' | 'site') => void;
@@ -49,22 +84,22 @@ export const SimpleSiteBuilder: React.FC<SimpleSiteBuilderProps> = ({ onSwitchBu
   const { activeProject, updateProject, closeSidebar } = useAppStore();
   const [activeSection, setActiveSection] = useState<TemplateSectionId>('template');
   
+  // Get current template to customize sections
+  const currentTemplate = activeProject?.data?.site?.template?.style || 'wine_bar';
+  const templateSections = getTemplateSection(currentTemplate);
+  
   if (!activeProject) return null;
 
   const renderSectionEditor = () => {
     switch (activeSection) {
       case 'template':
         return <TemplateSelector project={activeProject} onUpdate={updateProject} />;
-      case 'components':
-        return <ComponentsManager project={activeProject} onUpdate={updateProject} />;
       case 'typography':
         return <TypographyEditor project={activeProject} onUpdate={updateProject} />;
-      case 'hero':
-        return <HeroEditor project={activeProject} onUpdate={updateProject} />;
-      case 'about':
-        return <AboutEditor project={activeProject} onUpdate={updateProject} />;
-      case 'gallery':
-        return <GalleryEditor project={activeProject} onUpdate={updateProject} />;
+      
+      // Sezioni Wine Bar (esistenti)
+      case 'components':
+        return <ComponentsManager project={activeProject} onUpdate={updateProject} />;
       case 'reviews':
         return <ReviewsEditor project={activeProject} onUpdate={updateProject} />;
       case 'events':
@@ -73,12 +108,39 @@ export const SimpleSiteBuilder: React.FC<SimpleSiteBuilderProps> = ({ onSwitchBu
         return <NewsletterEditor project={activeProject} onUpdate={updateProject} />;
       case 'delivery':
         return <DeliveryEditor project={activeProject} onUpdate={updateProject} />;
-      case 'contact':
-        return <ContactEditor project={activeProject} onUpdate={updateProject} />;
       case 'hours':
         return <HoursEditor project={activeProject} onUpdate={updateProject} />;
       case 'location':
         return <LocationEditor project={activeProject} onUpdate={updateProject} />;
+      
+      // Sezioni comuni (adattate per template)
+      case 'hero':
+        return currentTemplate === 'michelin_star' 
+          ? <MichelinHeroEditor project={activeProject} onUpdate={updateProject} />
+          : <HeroEditor project={activeProject} onUpdate={updateProject} />;
+      case 'about':
+        return currentTemplate === 'michelin_star'
+          ? <StoryEditor project={activeProject} onUpdate={updateProject} />
+          : <AboutEditor project={activeProject} onUpdate={updateProject} />;
+      case 'gallery':
+        return currentTemplate === 'michelin_star'
+          ? <MichelinGalleryEditor project={activeProject} onUpdate={updateProject} />
+          : <GalleryEditor project={activeProject} onUpdate={updateProject} />;
+      case 'contact':
+        return currentTemplate === 'michelin_star'
+          ? <MichelinContactEditor project={activeProject} onUpdate={updateProject} />
+          : <ContactEditor project={activeProject} onUpdate={updateProject} />;
+      
+      // Sezioni specifiche Michelin Star
+      case 'business':
+        return <BusinessInfoEditor project={activeProject} onUpdate={updateProject} />;
+      case 'story':
+        return <StoryEditor project={activeProject} onUpdate={updateProject} />;
+      case 'awards':
+        return <AwardsEditor project={activeProject} onUpdate={updateProject} />;
+      case 'menu':
+        return <MenuPremiumEditor project={activeProject} onUpdate={updateProject} />;
+      
       default:
         return <div className="p-6 text-center text-muted-foreground">Sezione in sviluppo...</div>;
     }
@@ -87,7 +149,7 @@ export const SimpleSiteBuilder: React.FC<SimpleSiteBuilderProps> = ({ onSwitchBu
   return (
     <UnifiedBuilderLayout
       builderType="site"
-      sections={TEMPLATE_SECTIONS}
+      sections={templateSections}
       activeSection={activeSection}
       onSectionChange={setActiveSection}
       onSwitchBuilder={onSwitchBuilder}
@@ -102,6 +164,693 @@ interface EditorProps {
   project: any;
   onUpdate: (updates: any) => void;
 }
+
+// Helper per aggiornamenti annidati
+const createNestedUpdater = (project: any, onUpdate: any, section: string) => {
+  return (field: string, value: any) => {
+    onUpdate({
+      data: {
+        ...project.data,
+        [section]: {
+          ...project.data?.[section],
+          [field]: value
+        }
+      }
+    });
+  };
+};
+
+
+// ===== EDITOR SPECIFICI MICHELIN STAR =====
+
+const BusinessInfoEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
+  const currentTemplate = project.data?.site?.template?.style || 'michelin_star';
+  const defaults = getTemplateDefaults(currentTemplate);
+  const updateBusiness = createNestedUpdater(project, onUpdate, 'business');
+  
+  // Usa defaults solo se i valori non esistono già
+  const businessData = project.data?.business || {};
+  
+  // ✅ MEMOIZZA i valori invece di calcolarli ad ogni render
+  const name = React.useMemo(() => 
+    businessData.name !== undefined ? businessData.name : (defaults.business?.name || ''), 
+    [businessData.name, defaults.business?.name]
+  );
+  
+  const tagline = React.useMemo(() => 
+    businessData.tagline !== undefined ? businessData.tagline : (defaults.business?.tagline || ''), 
+    [businessData.tagline, defaults.business?.tagline]
+  );
+  
+  const description = React.useMemo(() => 
+    businessData.description !== undefined ? businessData.description : (defaults.business?.description || ''), 
+    [businessData.description, defaults.business?.description]
+  );
+  
+  return (
+    <PremiumCard
+      title="Informazioni Base del Ristorante"
+      description="Dettagli principali che definiscono la vostra identità culinaria"
+    >
+      <div className="space-y-6">
+        <PremiumTextInput
+          label="Nome Ristorante"
+          description="Il nome del vostro ristorante (massima eleganza)"
+          value={name}
+          onChange={(value) => updateBusiness('name', value)}
+          placeholder="Es. Le Bernardin, Osteria Francescana..."
+        />
+        
+        <PremiumTextInput
+          label="Sottotitolo/Riconoscimenti"
+          description="Stelle Michelin, location, o breve tagline di prestigio"
+          value={tagline}
+          onChange={(value) => updateBusiness('tagline', value)}
+          placeholder="Es. ★★★ Michelin • Milano, Tres estrellas Michelin..."
+        />
+        
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">
+            Descrizione Principale
+          </label>
+          <p className="text-xs text-gray-500 mb-2">
+            Una frase evocativa che descrive la vostra esperienza culinaria
+          </p>
+          <textarea
+            value={description}
+            onChange={(e) => updateBusiness('description', e.target.value)}
+            placeholder="Es. Une expérience culinaire transcendante où chaque plat raconte une histoire..."
+            rows={3}
+            maxLength={150}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+          />
+          <p className="text-xs text-gray-400">
+            Pensa a parole evocative: transcendante, sublimazione, poetry, artistry...
+          </p>
+        </div>
+      </div>
+    </PremiumCard>
+  );
+};
+
+const StoryEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
+  const currentTemplate = project.data?.site?.template?.style || 'michelin_star';
+  const defaults = getTemplateDefaults(currentTemplate);
+  const updateStory = createNestedUpdater(project, onUpdate, 'story');
+  
+  // Usa defaults solo se i valori non esistono già
+  const storyData = project.data?.story || {};
+  
+  const sectionTitle = React.useMemo(() => 
+    storyData.section_title !== undefined ? storyData.section_title : (defaults.story?.section_title || ''), 
+    [storyData.section_title, defaults.story?.section_title]
+  );
+  
+  const chefName = React.useMemo(() => 
+    storyData.chef_name !== undefined ? storyData.chef_name : (defaults.story?.chef_name || ''), 
+    [storyData.chef_name, defaults.story?.chef_name]
+  );
+  
+  const storyText = React.useMemo(() => 
+    storyData.story_text !== undefined ? storyData.story_text : (defaults.story?.story_text || ''), 
+    [storyData.story_text, defaults.story?.story_text]
+  );
+  
+  const chefImage = React.useMemo(() => 
+    storyData.chef_image !== undefined ? storyData.chef_image : (defaults.story?.chef_image || ''), 
+    [storyData.chef_image, defaults.story?.chef_image]
+  );
+  
+  return (
+    <PremiumCard
+      title="La Nostra Storia"
+      description="Racconta la vostra filosofia culinaria e il percorso che vi ha portato all'eccellenza"
+    >
+      <div className="space-y-6">
+        <PremiumTextInput
+          label="Titolo Sezione"
+          value={sectionTitle}
+          onChange={(value) => updateStory('section_title', value)}
+          placeholder="Es. Notre Vision, La Nostra Storia, Our Philosophy..."
+        />
+        
+        <PremiumTextInput
+          label="Nome Chef/Proprietario"
+          value={chefName}
+          onChange={(value) => updateStory('chef_name', value)}
+          placeholder="Es. Chef Massimo Bottura, Chef étoilé Marie Dubois..."
+        />
+        
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">
+            Testo Storia
+          </label>
+          <p className="text-xs text-gray-500 mb-2">
+            La vostra storia, filosofia culinaria, approccio
+          </p>
+          <textarea
+            value={storyText}
+            onChange={(e) => updateStory('story_text', e.target.value)}
+            placeholder="Racconta la passione, la dedizione, l'evoluzione, il rispetto per la tradizione..."
+            rows={5}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+          />
+        </div>
+        
+        <PremiumTextInput
+          label="URL Immagine Chef/Cucina"
+          description="Foto professionale del chef o della brigata"
+          value={chefImage}
+          onChange={(value) => updateStory('chef_image', value)}
+          placeholder="https://..."
+        />
+      </div>
+    </PremiumCard>
+  );
+};
+
+const MichelinHeroEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
+  const currentTemplate = project.data?.site?.template?.style || 'michelin_star';
+  const defaults = getTemplateDefaults(currentTemplate);
+  const updateHero = createNestedUpdater(project, onUpdate, 'hero');
+  
+  // Usa defaults solo se i valori non esistono già
+  const heroData = project.data?.hero || {};
+  
+  const images = React.useMemo(() => 
+    heroData.images !== undefined ? heroData.images : (defaults.hero?.images || []), 
+    [heroData.images, defaults.hero?.images]
+  );
+  
+  const carouselSpeed = React.useMemo(() => 
+    heroData.carousel_speed !== undefined ? heroData.carousel_speed : (defaults.hero?.carousel_speed || 5), 
+    [heroData.carousel_speed, defaults.hero?.carousel_speed]
+  );
+  
+  const parallaxIntensity = React.useMemo(() => 
+    heroData.parallax_intensity !== undefined ? heroData.parallax_intensity : (defaults.hero?.parallax_intensity || 20), 
+    [heroData.parallax_intensity, defaults.hero?.parallax_intensity]
+  );
+  
+  return (
+    <PremiumCard
+      title="Hero Section Cinematografica"
+      description="La prima impressione ultra-premium del vostro ristorante"
+    >
+      <div className="space-y-6">
+        <div className="space-y-4">
+          <h4 className="text-sm font-medium text-gray-700">Carousel Immagini</h4>
+          <p className="text-xs text-gray-500">
+            Aggiungete 3-5 immagini premium per maximum impact
+          </p>
+          
+          {images.map((img: string, index: number) => (
+            <div key={index} className="flex items-center gap-3 p-3 border rounded">
+              <img src={img} alt={`Image ${index + 1}`} className="w-16 h-16 object-cover rounded" />
+              <input
+                value={img}
+                onChange={(e) => {
+                  const newImages = [...images];
+                  newImages[index] = e.target.value;
+                  updateHero('images', newImages);
+                }}
+                placeholder="URL immagine..."
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                onClick={() => {
+                  const newImages = images.filter((_: any, i: number) => i !== index);
+                  updateHero('images', newImages);
+                }}
+                className="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+          
+          {images.length < 5 && (
+            <button
+              onClick={() => updateHero('images', [...images, ''])}
+              className="w-full px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 transition-colors"
+            >
+              + Aggiungi Immagine
+            </button>
+          )}
+        </div>
+        
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Velocità Carousel (secondi)
+            </label>
+            <input
+              type="number"
+              value={carouselSpeed}
+              onChange={(e) => updateHero('carousel_speed', parseInt(e.target.value))}
+              min="3"
+              max="10"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <p className="text-xs text-gray-400 mt-1">5 secondi è ottimale per permettere l'immersione visiva</p>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Intensità Parallax (0-100)
+            </label>
+            <input
+              type="number"
+              value={parallaxIntensity}
+              onChange={(e) => updateHero('parallax_intensity', parseInt(e.target.value))}
+              min="0"
+              max="100"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <p className="text-xs text-gray-400 mt-1">20-30 è ideale per eleganza senza motion sickness</p>
+          </div>
+        </div>
+      </div>
+    </PremiumCard>
+  );
+};
+
+const AwardsEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
+  const currentTemplate = project.data?.site?.template?.style || 'michelin_star';
+  const defaults = getTemplateDefaults(currentTemplate);
+  const updateAwards = createNestedUpdater(project, onUpdate, 'awards');
+  
+  // Usa defaults solo se i valori non esistono già  
+  const awardsData = project.data?.awards || {};
+  
+  const showAwards = React.useMemo(() => 
+    awardsData.show_awards !== undefined ? awardsData.show_awards : (defaults.awards?.show_awards !== false), 
+    [awardsData.show_awards, defaults.awards?.show_awards]
+  );
+  
+  const awardsList = React.useMemo(() => 
+    awardsData.awards_list !== undefined ? awardsData.awards_list : (defaults.awards?.awards_list || []), 
+    [awardsData.awards_list, defaults.awards?.awards_list]
+  );
+  
+  return (
+    <PremiumCard
+      title="Riconoscimenti e Premi"
+      description="Condividi i vostri prestigiosi riconoscimenti culinari"
+    >
+      <div className="space-y-6">
+        <PremiumToggle
+          label="Mostra Sezione Riconoscimenti"
+          description="Abilita/disabilita l'intera sezione awards"
+          checked={showAwards}
+          onChange={(checked) => updateAwards('show_awards', checked)}
+        />
+        
+        {showAwards && (
+          <div className="space-y-4">
+            <h4 className="text-sm font-medium text-gray-700">Lista Riconoscimenti</h4>
+            <p className="text-xs text-gray-500">
+              Aggiungi i tuoi riconoscimenti più prestigiosi. L'ordine determina la priorità.
+            </p>
+            
+            {awardsList.map((award: any, index: number) => (
+              <div key={index} className="p-4 border rounded-lg space-y-3">
+                <div className="grid grid-cols-2 gap-3">
+                  <input
+                    placeholder="Nome riconoscimento..."
+                    value={award.name || ''}
+                    onChange={(e) => {
+                      const newAwards = [...awardsList];
+                      newAwards[index] = { ...award, name: e.target.value };
+                      updateAwards('awards_list', newAwards);
+                    }}
+                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <input
+                    placeholder="Anno/Periodo..."
+                    value={award.year || ''}
+                    onChange={(e) => {
+                      const newAwards = [...awardsList];
+                      newAwards[index] = { ...award, year: e.target.value };
+                      updateAwards('awards_list', newAwards);
+                    }}
+                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <input
+                    placeholder="Punteggio (es. 18/20)..."
+                    value={award.score || ''}
+                    onChange={(e) => {
+                      const newAwards = [...awardsList];
+                      newAwards[index] = { ...award, score: e.target.value };
+                      updateAwards('awards_list', newAwards);
+                    }}
+                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <button
+                    onClick={() => {
+                      const newAwards = awardsList.filter((_: any, i: number) => i !== index);
+                      updateAwards('awards_list', newAwards);
+                    }}
+                    className="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+                  >
+                    Rimuovi
+                  </button>
+                </div>
+              </div>
+            ))}
+            
+            {awardsList.length < 6 && (
+              <button
+                onClick={() => {
+                  updateAwards('awards_list', [...awardsList, { name: '', year: '', score: '' }]);
+                }}
+                className="w-full px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 transition-colors"
+              >
+                + Aggiungi Riconoscimento
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    </PremiumCard>
+  );
+};
+
+const MenuPremiumEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
+  const currentTemplate = project.data?.site?.template?.style || 'michelin_star';
+  const defaults = getTemplateDefaults(currentTemplate);
+  const updateMenu = createNestedUpdater(project, onUpdate, 'menu');
+  
+  // Usa defaults solo se i valori non esistono già
+  const menuData = project.data?.menu || {};
+  
+  const menuSections = React.useMemo(() => 
+    menuData.menu_sections !== undefined ? menuData.menu_sections : (defaults.menu?.menu_sections || []), 
+    [menuData.menu_sections, defaults.menu?.menu_sections]
+  );
+  
+  const menuNote = React.useMemo(() => 
+    menuData.menu_note !== undefined ? menuData.menu_note : (defaults.menu?.menu_note || ''), 
+    [menuData.menu_note, defaults.menu?.menu_note]
+  );
+  
+  return (
+    <PremiumCard
+      title="Menu Premium"
+      description="Crea i tuoi menu degustazione con dettagli di alta gamma"
+    >
+      <div className="space-y-6">
+        {menuSections.map((section: any, sectionIndex: number) => (
+          <div key={sectionIndex} className="p-4 border rounded-lg space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              <input
+                placeholder="Nome menu..."
+                value={section.name || ''}
+                onChange={(e) => {
+                  const newSections = [...menuSections];
+                  newSections[sectionIndex] = { ...section, name: e.target.value };
+                  updateMenu('menu_sections', newSections);
+                }}
+                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <input
+                placeholder="Prezzo (es. €285)..."
+                value={section.price || ''}
+                onChange={(e) => {
+                  const newSections = [...menuSections];
+                  newSections[sectionIndex] = { ...section, price: e.target.value };
+                  updateMenu('menu_sections', newSections);
+                }}
+                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            
+            <textarea
+              placeholder="Descrizione menu..."
+              value={section.description || ''}
+              onChange={(e) => {
+                const newSections = [...menuSections];
+                newSections[sectionIndex] = { ...section, description: e.target.value };
+                updateMenu('menu_sections', newSections);
+              }}
+              rows={2}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+            />
+            
+            <div className="space-y-2">
+              <h5 className="text-sm font-medium">Portate</h5>
+              {(section.items || []).map((item: string, itemIndex: number) => (
+                <div key={itemIndex} className="flex gap-2">
+                  <input
+                    value={item}
+                    onChange={(e) => {
+                      const newSections = [...menuSections];
+                      const newItems = [...(section.items || [])];
+                      newItems[itemIndex] = e.target.value;
+                      newSections[sectionIndex] = { ...section, items: newItems };
+                      updateMenu('menu_sections', newSections);
+                    }}
+                    placeholder="Descrizione portata..."
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <button
+                    onClick={() => {
+                      const newSections = [...menuSections];
+                      const newItems = (section.items || []).filter((_: any, i: number) => i !== itemIndex);
+                      newSections[sectionIndex] = { ...section, items: newItems };
+                      updateMenu('menu_sections', newSections);
+                    }}
+                    className="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+              <button
+                onClick={() => {
+                  const newSections = [...menuSections];
+                  const newItems = [...(section.items || []), ''];
+                  newSections[sectionIndex] = { ...section, items: newItems };
+                  updateMenu('menu_sections', newSections);
+                }}
+                className="w-full px-3 py-2 border border-dashed border-gray-300 rounded hover:border-blue-500"
+              >
+                + Aggiungi Portata
+              </button>
+            </div>
+            
+            <button
+              onClick={() => {
+                const newSections = menuSections.filter((_: any, i: number) => i !== sectionIndex);
+                updateMenu('menu_sections', newSections);
+              }}
+              className="w-full px-3 py-2 bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors"
+            >
+              Rimuovi Menu
+            </button>
+          </div>
+        ))}
+        
+        <button
+          onClick={() => {
+            updateMenu('menu_sections', [
+              ...menuSections, 
+              { name: '', price: '', description: '', items: [''] }
+            ]);
+          }}
+          className="w-full px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 transition-colors"
+        >
+          + Aggiungi Menu
+        </button>
+        
+        <PremiumTextInput
+          label="Nota Menu"
+          description="Informazioni su allergie, personalizzazioni, etc."
+          value={menuNote}
+          onChange={(value) => updateMenu('menu_note', value)}
+          placeholder="Es. Allergie, ingredienti stagionali, possibilità di personalizzazione..."
+        />
+      </div>
+    </PremiumCard>
+  );
+};
+
+const MichelinGalleryEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
+  const currentTemplate = project.data?.site?.template?.style || 'michelin_star';
+  const defaults = getTemplateDefaults(currentTemplate);
+  const updateGallery = createNestedUpdater(project, onUpdate, 'gallery');
+  
+  // Usa defaults solo se i valori non esistono già
+  const galleryData = project.data?.gallery || {};
+  
+  const images = React.useMemo(() => 
+    galleryData.gallery_images !== undefined ? galleryData.gallery_images : (defaults.gallery?.gallery_images || []), 
+    [galleryData.gallery_images, defaults.gallery?.gallery_images]
+  );
+  
+  const galleryLayout = React.useMemo(() => 
+    galleryData.gallery_layout !== undefined ? galleryData.gallery_layout : (defaults.gallery?.gallery_layout || 'masonry'), 
+    [galleryData.gallery_layout, defaults.gallery?.gallery_layout]
+  );
+  
+  return (
+    <PremiumCard
+      title="Galleria Premium"
+      description="Showcase di piatti, ambiente e dettagli del vostro ristorante"
+    >
+      <div className="space-y-6">
+        <div className="space-y-4">
+          <h4 className="text-sm font-medium text-gray-700">Immagini Galleria</h4>
+          <p className="text-xs text-gray-500">
+            Mix di piatti signature, ambiente, dettagli e processo creativo (6-12 immagini)
+          </p>
+          
+          {images.map((img: string, index: number) => (
+            <div key={index} className="flex items-center gap-3 p-3 border rounded">
+              <img src={img} alt={`Gallery ${index + 1}`} className="w-16 h-16 object-cover rounded" />
+              <input
+                value={img}
+                onChange={(e) => {
+                  const newImages = [...images];
+                  newImages[index] = e.target.value;
+                  updateGallery('gallery_images', newImages);
+                }}
+                placeholder="URL immagine..."
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                onClick={() => {
+                  const newImages = images.filter((_: any, i: number) => i !== index);
+                  updateGallery('gallery_images', newImages);
+                }}
+                className="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+          
+          {images.length < 12 && (
+            <button
+              onClick={() => updateGallery('gallery_images', [...images, ''])}
+              className="w-full px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 transition-colors"
+            >
+              + Aggiungi Immagine
+            </button>
+          )}
+        </div>
+        
+        <PremiumSelect
+          label="Layout Galleria"
+          description="Disposizione delle immagini"
+          value={galleryLayout}
+          onChange={(value) => updateGallery('gallery_layout', value)}
+          options={[
+            { label: 'Grid Regolare', value: 'grid' },
+            { label: 'Masonry (Consigliato)', value: 'masonry' },
+            { label: 'Carousel', value: 'carousel' }
+          ]}
+        />
+      </div>
+    </PremiumCard>
+  );
+};
+
+const MichelinContactEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
+  const currentTemplate = project.data?.site?.template?.style || 'michelin_star';
+  const defaults = getTemplateDefaults(currentTemplate);
+  const updateContact = createNestedUpdater(project, onUpdate, 'contact');
+  
+  // Usa defaults solo se i valori non esistono già
+  const contactData = project.data?.contact || {};
+  
+  const address = React.useMemo(() => 
+    contactData.address !== undefined ? contactData.address : (defaults.contact?.address || ''), 
+    [contactData.address, defaults.contact?.address]
+  );
+  
+  const phone = React.useMemo(() => 
+    contactData.phone !== undefined ? contactData.phone : (defaults.contact?.phone || ''), 
+    [contactData.phone, defaults.contact?.phone]
+  );
+  
+  const email = React.useMemo(() => 
+    contactData.email !== undefined ? contactData.email : (defaults.contact?.email || ''), 
+    [contactData.email, defaults.contact?.email]
+  );
+  
+  const reservationUrl = React.useMemo(() => 
+    contactData.reservation_url !== undefined ? contactData.reservation_url : (defaults.contact?.reservation_url || ''), 
+    [contactData.reservation_url, defaults.contact?.reservation_url]
+  );
+  
+  const socialLinks = React.useMemo(() => 
+    contactData.social_links !== undefined ? contactData.social_links : (defaults.contact?.social_links || {}), 
+    [contactData.social_links, defaults.contact?.social_links]
+  );
+  
+  return (
+    <PremiumCard
+      title="Contatti Premium"
+      description="Informazioni di contatto e prenotazioni per il vostro ristorante"
+    >
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">Indirizzo</label>
+          <textarea
+            value={address}
+            onChange={(e) => updateContact('address', e.target.value)}
+            placeholder="Indirizzo completo con CAP"
+            rows={2}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+          />
+        </div>
+        
+        <PremiumTextInput
+          label="Telefono"
+          value={phone}
+          onChange={(value) => updateContact('phone', value)}
+          placeholder="+39 02 1234567"
+        />
+        
+        <PremiumTextInput
+          label="Email"
+          value={email}
+          onChange={(value) => updateContact('email', value)}
+          placeholder="prenotazioni@nomeristorante.it"
+        />
+        
+        <PremiumTextInput
+          label="URL Prenotazioni"
+          description="Link a sistema di prenotazione esterno (opzionale)"
+          value={reservationUrl}
+          onChange={(value) => updateContact('reservation_url', value)}
+          placeholder="https://www.opentable.com/..."
+        />
+        
+        <div className="space-y-4">
+          <h4 className="text-sm font-medium text-gray-700">Link Social</h4>
+          <div className="grid grid-cols-2 gap-4">
+            <PremiumTextInput
+              label="Instagram"
+              value={socialLinks.instagram || ''}
+              onChange={(value) => updateContact('social_links', { ...socialLinks, instagram: value })}
+              placeholder="https://instagram.com/..."
+            />
+            <PremiumTextInput
+              label="Facebook"
+              value={socialLinks.facebook || ''}
+              onChange={(value) => updateContact('social_links', { ...socialLinks, facebook: value })}
+              placeholder="https://facebook.com/..."
+            />
+          </div>
+        </div>
+      </div>
+    </PremiumCard>
+  );
+};
 
 
 // TemplateEditor rimosso - ora usiamo TemplateSelector
@@ -254,9 +1003,9 @@ const TypographyEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
             </div>
 
             <div className="space-y-3 max-h-96 overflow-y-auto">
-              {filtered.map((font: any) => (
+              {filtered.map((font: any, index: number) => (
                 <div
-                  key={font.id}
+                  key={`${font.id}-${index}`}
                   onClick={() => handleSelect(font)}
                   className={`group cursor-pointer p-4 rounded-[12px] border transition-all duration-300 ${
                     selectedFont === font.id
