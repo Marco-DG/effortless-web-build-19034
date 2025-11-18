@@ -1138,10 +1138,10 @@ const AegeanPearlTemplate: React.FC<{ data: any; theme: any; project: any }> = (
   }, []);
 
   return (
-    <div className="w-full bg-[#0B1426] text-white min-h-screen relative overflow-hidden">
+    <div className="aegean-container w-full bg-[#0B1426] text-white min-h-screen relative overflow-hidden">
       
       {/* BACKGROUND CINEMATOGRAFICO STRATIFICATO */}
-      <div className="fixed inset-0 z-0">
+      <div className="absolute inset-0 z-0">
         {/* Layer 1: Video Background Simulato */}
         <div className="absolute inset-0 opacity-30">
           <div 
@@ -1207,8 +1207,14 @@ const AegeanPearlTemplate: React.FC<{ data: any; theme: any; project: any }> = (
         <div className="absolute inset-0 bg-gradient-to-b from-[#0B1426]/20 via-transparent to-[#0B2447]/40"></div>
       </div>
 
-      {/* STILI CSS CUSTOM PER ANIMAZIONI */}
+      {/* STILI CSS CUSTOM PER ANIMAZIONI - SCOPED AL TEMPLATE */}
       <style jsx>{`
+        /* Tutti gli stili sono scoped a questo componente per non uscire dall'anteprima */
+        .aegean-container {
+          position: relative;
+          isolation: isolate;
+        }
+        
         @keyframes slowZoom {
           0% { transform: scale(1.1) rotate(0deg); }
           50% { transform: scale(1.15) rotate(0.5deg); }
@@ -1241,175 +1247,415 @@ const AegeanPearlTemplate: React.FC<{ data: any; theme: any; project: any }> = (
         }
       `}</style>
 
-      {/* Navigation - Autentica Greca con Ornamenti */}
-      <nav className="absolute top-0 left-0 right-0 z-50 bg-gradient-to-r from-white/95 via-blue-50/95 to-white/95 backdrop-blur-md shadow-lg border-b border-blue-200/50">
-        {/* Ornamento Greco Superiore */}
-        <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-60"></div>
-        <div className="absolute -top-1 left-1/2 transform -translate-x-1/2">
-          <svg width="40" height="20" viewBox="0 0 40 20" fill="none">
-            <path d="M0,10 Q10,0 20,10 Q30,20 40,10" stroke="#f59e0b" strokeWidth="2" fill="none"/>
-            <circle cx="20" cy="10" r="3" fill="#f59e0b"/>
-          </svg>
-        </div>
-
-        <div className="flex items-center justify-between max-w-7xl mx-auto px-8 py-6 relative">
+      {/* NAVIGATION FLOTTANTE DIVINA */}
+      <nav className="absolute top-6 left-1/2 transform -translate-x-1/2 z-50 glass-morphism rounded-2xl shadow-2xl border border-[#D4AF37]/30 backdrop-blur-3xl">
+        
+        {/* Aura Dorata Animata */}
+        <div className="absolute -inset-1 bg-gradient-to-r from-[#D4AF37]/40 via-[#4A90E2]/30 to-[#D4AF37]/40 rounded-2xl blur-sm opacity-60 animate-pulse"></div>
+        
+        <div className="relative flex items-center gap-12 px-8 py-4">
           
-          {/* Logo con Ornamento */}
-          <div className="flex items-center gap-4">
-            {/* Colonna Greca Stilizzata */}
-            <div className="hidden lg:block">
-              <svg width="32" height="48" viewBox="0 0 32 48" fill="none" className="text-blue-800">
-                <rect x="6" y="4" width="20" height="3" fill="currentColor"/>
-                <rect x="8" y="7" width="16" height="34" fill="currentColor" opacity="0.8"/>
-                <rect x="4" y="41" width="24" height="4" fill="currentColor"/>
-                <rect x="2" y="45" width="28" height="3" fill="currentColor"/>
-              </svg>
+          {/* LOGO MAGNETICO */}
+          <div className="group relative flex items-center gap-3">
+            
+            {/* Simbolo Olimpico Rotante */}
+            <div className="relative">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#B8860B] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-500">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="text-white group-hover:rotate-180 transition-transform duration-700">
+                  <path d="M10,2 Q14,6 10,10 Q6,6 10,2" fill="currentColor"/>
+                  <circle cx="10" cy="10" r="3" fill="none" stroke="currentColor" strokeWidth="1"/>
+                  <path d="M10,10 Q14,14 10,18 Q6,14 10,10" fill="currentColor"/>
+                </svg>
+              </div>
+              
+              {/* Orbita Dorata */}
+              <div className="absolute inset-0 border border-[#D4AF37]/60 rounded-full animate-spin" style={{animationDuration: '20s'}}></div>
             </div>
             
-            <div 
-              className="text-4xl font-light tracking-wider text-blue-900 relative"
-              style={{ 
-                fontFamily: "'Cinzel', serif",
-                letterSpacing: '0.15em'
-              }}
-            >
-              ΚΟΣΤΑΣ
-              {/* Piccolo ornamento sotto */}
-              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
-                <svg width="60" height="8" viewBox="0 0 60 8" fill="none">
-                  <path d="M0,4 L15,4 M45,4 L60,4" stroke="#f59e0b" strokeWidth="1"/>
-                  <circle cx="30" cy="4" r="2" fill="#f59e0b"/>
-                  <path d="M18,4 Q24,1 30,4 Q36,7 42,4" stroke="#0ea5e9" strokeWidth="1" fill="none"/>
-                </svg>
+            <div className="relative">
+              <div 
+                className="text-2xl font-light shimmer-text group-hover:text-glow transition-all duration-500"
+                style={{ 
+                  fontFamily: "'Cinzel', serif",
+                  letterSpacing: '0.2em'
+                }}
+              >
+                ΚΟΣΤΑΣ
+              </div>
+              
+              {/* Ornamento Liquido Sotto */}
+              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <div className="w-16 h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent rounded-full"></div>
               </div>
             </div>
           </div>
 
-          {/* Menu Navigazione con Stile Greco */}
-          <div className="hidden md:flex items-center gap-8">
+          {/* MENU LINKS MAGNETICI */}
+          <div className="flex items-center gap-8">
             {[
-              { label: 'Η ΙΣΤΟΡΙΑ ΜΑΣ', href: '#storia', icon: '🏛️' },
-              { label: 'ΚΟΥΖΙΝΑ', href: '#menu', icon: '🍇' },
-              { label: 'ΤΟ ΝΗΣΙ ΜΑΣ', href: '#gallery', icon: '🌊' },
-              { label: 'ΤΑ ΓΕΓΟΝΟΤΑ', href: '#events', icon: '🎭' },
-              { label: 'ΕΠΙΚΟΙΝΩΝΙΑ', href: '#contact', icon: '⚓' }
+              { label: 'ΙΣΤΟΡΙΑ', href: '#storia', symbol: '🏛️' },
+              { label: 'ΚΟΥΖΙΝΑ', href: '#menu', symbol: '🥘' },
+              { label: 'ΝΗΣΙ', href: '#gallery', symbol: '🌊' },
+              { label: 'ΕΚΔΗΛΩΣΕΙΣ', href: '#events', symbol: '🎭' }
             ].map((item, index) => (
-              <a 
-                key={index} 
-                href={item.href}
-                className="group relative py-3 px-4 text-blue-800 hover:text-blue-900 transition-all duration-500 flex items-center gap-2"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-                onClick={(e) => {
-                  e.preventDefault();
+              <button
+                key={index}
+                onClick={() => {
                   document.getElementById(item.href.replace('#', ''))?.scrollIntoView({ 
                     behavior: 'smooth', 
                     block: 'start' 
                   });
                 }}
+                className="group relative flex items-center gap-3 px-4 py-2 rounded-xl hover:bg-white/10 transition-all duration-500"
               >
-                <span className="text-lg opacity-70 group-hover:opacity-100 transition-opacity">
-                  {item.icon}
-                </span>
-                <span className="relative text-sm font-light tracking-widest uppercase">
+                
+                {/* Simbolo Animato */}
+                <div className="relative">
+                  <span className="text-lg group-hover:scale-125 transition-transform duration-300 filter group-hover:drop-shadow-lg">
+                    {item.symbol}
+                  </span>
+                  
+                  {/* Glow Effect */}
+                  <div className="absolute inset-0 text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{filter: 'blur(8px) brightness(2)'}}>
+                    {item.symbol}
+                  </div>
+                </div>
+                
+                <span 
+                  className="text-sm font-light tracking-[0.15em] text-white/90 group-hover:text-white transition-colors duration-300"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
+                >
                   {item.label}
-                  <span className="absolute -bottom-2 left-0 w-0 h-px bg-gradient-to-r from-blue-900 to-amber-600 group-hover:w-full transition-all duration-500"></span>
                 </span>
-              </a>
+                
+                {/* Underline Liquid */}
+                <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#4A90E2] to-[#D4AF37] group-hover:w-full transition-all duration-500 rounded-full"></div>
+                
+                {/* Ripple Effect */}
+                <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-30 bg-gradient-to-r from-[#D4AF37]/20 to-[#4A90E2]/20 group-hover:scale-110 transition-all duration-500"></div>
+              </button>
             ))}
           </div>
 
-          {/* Ornamento Destro */}
-          <div className="hidden lg:block">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-amber-600">
-              <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="1"/>
-              <path d="M8,12 L16,12 M12,8 L12,16" stroke="currentColor" strokeWidth="1"/>
-              <circle cx="12" cy="12" r="3" fill="currentColor" opacity="0.3"/>
-            </svg>
+          {/* CONTACT BUTTON MAGNETICO */}
+          <div className="group relative">
+            <div className="absolute -inset-2 bg-gradient-to-r from-[#D4AF37] to-[#4A90E2] rounded-xl blur opacity-0 group-hover:opacity-60 transition-opacity duration-500"></div>
+            <button 
+              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              className="relative flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#D4AF37]/20 to-[#4A90E2]/20 rounded-xl border border-[#D4AF37]/50 text-white hover:border-[#D4AF37] transition-all duration-500 group-hover:scale-105"
+            >
+              <span className="text-xs group-hover:animate-bounce">⚓</span>
+              <span 
+                className="text-xs font-light tracking-wider"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                ΕΠΙΚΟΙΝΩΝΙΑ
+              </span>
+            </button>
           </div>
         </div>
-        
-        {/* Ornamento Greco Inferiore */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg width="100%" height="8" viewBox="0 0 1200 8" fill="none" preserveAspectRatio="none">
-            <pattern id="greekBorder" x="0" y="0" width="40" height="8" patternUnits="userSpaceOnUse">
-              <path d="M4,4 L12,4 M12,2 L12,6 M16,4 L24,4 M28,4 L36,4" stroke="#0ea5e9" strokeWidth="1"/>
-            </pattern>
-            <rect width="100%" height="8" fill="url(#greekBorder)" opacity="0.6"/>
-          </svg>
-        </div>
+
+        {/* Ornamento Liquido Inferiore */}
+        <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-transparent via-[#D4AF37]/60 to-transparent rounded-full blur-sm"></div>
       </nav>
 
-      {/* HERO - CAROUSEL CINEMATOGRAFICO DELL'EGEO */}
-      <section className="relative h-screen overflow-hidden">
+      {/* HERO - ESPERIENZA CINEMATOGRAFICA TOTALE */}
+      <section className="relative min-h-screen overflow-hidden flex items-center justify-center">
         
-        {/* Carousel Background con Transizioni Magiche */}
+        {/* BACKGROUND STRATIFICATO MAGNETICO */}
         <div className="absolute inset-0">
           {heroImages.map((image, index) => (
             <div
               key={index}
-              className={`absolute inset-0 transition-opacity duration-2000 ease-in-out ${
-                index === currentHeroImage ? 'opacity-100' : 'opacity-0'
+              className={`absolute inset-0 transition-all duration-3000 ease-in-out ${
+                index === currentHeroImage ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
               }`}
             >
               <div 
-                className="absolute inset-0 scale-110 transition-transform duration-[25s] ease-out"
+                className="absolute inset-0 transition-transform duration-[30s] ease-out"
                 style={{
-                  backgroundImage: `linear-gradient(135deg, rgba(25, 55, 109, 0.4) 0%, rgba(59, 130, 246, 0.2) 40%, rgba(251, 191, 36, 0.25) 100%), url(${image.url})`,
+                  backgroundImage: `
+                    radial-gradient(circle at 30% 70%, rgba(212, 175, 55, 0.3) 0%, transparent 50%),
+                    radial-gradient(circle at 70% 30%, rgba(74, 144, 226, 0.2) 0%, transparent 50%),
+                    linear-gradient(135deg, rgba(11, 20, 38, 0.4) 0%, transparent 40%, rgba(11, 36, 71, 0.6) 100%),
+                    url(${image.url})
+                  `,
                   backgroundSize: 'cover',
-                  backgroundPosition: 'center center'
+                  backgroundPosition: 'center center',
+                  transform: index === currentHeroImage ? 'scale(1.05)' : 'scale(1.1)'
                 }}
               />
+              
+              {/* Overlay Specifico per Immagine */}
+              <div className={`absolute inset-0 ${
+                index === 0 ? 'bg-gradient-to-br from-amber-900/20 via-transparent to-blue-900/30' :
+                index === 1 ? 'bg-gradient-to-tr from-blue-800/30 via-transparent to-amber-800/20' :
+                'bg-gradient-to-bl from-purple-900/20 via-transparent to-orange-900/30'
+              }`}></div>
             </div>
           ))}
           
-          {/* Sovrapposizioni Artistiche */}
-          <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 via-transparent to-amber-50/30"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/20 via-transparent to-blue-900/20"></div>
-          
-          {/* Particelle di Luce come Stelle */}
-          <div className="absolute inset-0">
-            {Array.from({length: 20}).map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-2 h-2 bg-amber-200 rounded-full opacity-60 animate-pulse"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 3}s`,
-                  animationDuration: `${3 + Math.random() * 2}s`
-                }}
-              />
-            ))}
+          {/* PARTICELLE DIVINE ANIMATE */}
+          <div className="absolute inset-0 pointer-events-none">
+            {Array.from({length: 80}).map((_, i) => {
+              const size = 2 + Math.random() * 6;
+              const isGolden = i % 4 === 0;
+              return (
+                <div
+                  key={i}
+                  className="absolute rounded-full opacity-70"
+                  style={{
+                    width: `${size}px`,
+                    height: `${size}px`,
+                    background: isGolden 
+                      ? 'radial-gradient(circle, #D4AF37 0%, #F4E19C 100%)' 
+                      : i % 2 === 0 
+                        ? 'radial-gradient(circle, #4A90E2 0%, #87CEEB 100%)'
+                        : 'radial-gradient(circle, #F8F9FA 0%, #E6F3FF 100%)',
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                    animation: `floatDivine ${15 + Math.random() * 25}s linear infinite`,
+                    animationDelay: `${Math.random() * 15}s`,
+                    filter: 'drop-shadow(0 0 6px rgba(255,255,255,0.6))'
+                  }}
+                />
+              );
+            })}
+          </div>
+
+          {/* ONDE LIQUIDE MULTISTRATO */}
+          <div className="absolute bottom-0 left-0 right-0 h-32 overflow-hidden opacity-60">
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1400 200" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="waveGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.8"/>
+                  <stop offset="100%" stopColor="#4A90E2" stopOpacity="0.3"/>
+                </linearGradient>
+                <linearGradient id="waveGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#4A90E2" stopOpacity="0.6"/>
+                  <stop offset="100%" stopColor="#0B2447" stopOpacity="0.4"/>
+                </linearGradient>
+              </defs>
+              
+              <g className="animate-pulse" style={{animationDuration: '6s'}}>
+                <path d="M0,80 Q350,20 700,80 T1400,60 V200 H0 Z" fill="url(#waveGrad1)" transform="translateY(20)"/>
+              </g>
+              <g className="animate-pulse" style={{animationDuration: '9s', animationDelay: '2s'}}>
+                <path d="M0,100 Q450,40 900,100 T1400,80 V200 H0 Z" fill="url(#waveGrad2)" transform="translateY(0)"/>
+              </g>
+            </svg>
           </div>
         </div>
 
-        {/* Indicatori Carousel con Stile Greco */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
-          <div className="flex items-center gap-4">
-            {heroImages.map((_, index) => (
+        {/* CONTENUTO EPICO CENTRALE */}
+        <div className="relative z-20 max-w-6xl mx-auto px-8 text-center">
+          
+          {/* ORNAMENTO SUPERIORE ANIMATO */}
+          <div className="mb-16 relative">
+            <div className="flex items-center justify-center mb-8">
+              <svg width="300" height="80" viewBox="0 0 300 80" className="animate-pulse" style={{animationDuration: '4s'}}>
+                <defs>
+                  <linearGradient id="ornamentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#D4AF37"/>
+                    <stop offset="50%" stopColor="#F4E19C"/>
+                    <stop offset="100%" stopColor="#4A90E2"/>
+                  </linearGradient>
+                </defs>
+                <path d="M0,40 Q75,10 150,40 Q225,70 300,40" stroke="url(#ornamentGrad)" strokeWidth="3" fill="none"/>
+                <circle cx="75" cy="40" r="8" fill="#D4AF37" opacity="0.8"/>
+                <circle cx="150" cy="40" r="12" fill="#F4E19C"/>
+                <circle cx="225" cy="40" r="8" fill="#4A90E2" opacity="0.8"/>
+                
+                {/* Delfini decorativi */}
+                <path d="M50,30 Q55,20 65,30 Q60,40 50,30" fill="#4A90E2" opacity="0.6"/>
+                <path d="M235,30 Q245,20 255,30 Q250,40 235,30" fill="#4A90E2" opacity="0.6"/>
+              </svg>
+            </div>
+            
+            <div 
+              className="text-3xl font-light text-[#D4AF37] tracking-[0.4em] mb-6 shimmer-text"
+              style={{ fontFamily: "'Cinzel', serif" }}
+            >
+              ΠΑΡΑΔΟΣΙΑΚΗ ΚΟΥΖΙΝΑ ΤΟΥ ΑΙΓΑΙΟΥ
+            </div>
+          </div>
+
+          {/* TITOLO OLIMPICO CON EFFETTI DIVINI */}
+          <div className="mb-20 relative">
+            
+            {/* Aura di Potere */}
+            <div className="absolute inset-0 text-glow opacity-30">
+              <h1 
+                className="text-9xl md:text-[12rem] font-light leading-[0.8]"
+                style={{ 
+                  fontFamily: "'Cinzel', serif",
+                  letterSpacing: '0.05em'
+                }}
+              >
+                ΚΟΣΤΑΣ
+              </h1>
+            </div>
+            
+            {/* Titolo Principale */}
+            <h1 
+              className="text-9xl md:text-[12rem] font-light leading-[0.8] shimmer-text text-glow relative z-10"
+              style={{ 
+                fontFamily: "'Cinzel', serif",
+                letterSpacing: '0.05em',
+                filter: 'drop-shadow(0 8px 32px rgba(212, 175, 55, 0.4))'
+              }}
+            >
+              ΚΟΣΤΑΣ
+            </h1>
+            
+            <div className="mt-8">
+              <div 
+                className="text-4xl md:text-5xl font-light text-[#87CEEB] tracking-[0.2em]"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                {defaultData.business.tagline}
+              </div>
+            </div>
+          </div>
+
+          {/* TAGLINE POETICA CON EFFETTI */}
+          <div className="mb-16 relative">
+            <div className="max-w-6xl mx-auto">
+              <p 
+                className="text-4xl md:text-5xl font-light text-white/95 leading-relaxed italic mb-8"
+                style={{ 
+                  fontFamily: "'Playfair Display', serif",
+                  textShadow: '0 4px 20px rgba(0, 0, 0, 0.7), 0 0 40px rgba(212, 175, 55, 0.3)'
+                }}
+              >
+                "Στην αγκαλιά του Αιγαίου,<br />
+                όπου η παράδοση γίνεται νόστιμη ανάμνηση"
+              </p>
+              <p 
+                className="text-2xl md:text-3xl font-light text-[#B0E0E6] leading-relaxed"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                Nell'abbraccio dell'Egeo, dove la tradizione diventa gustoso ricordo
+              </p>
+            </div>
+            
+            {/* Ornamento liquido sotto */}
+            <div className="flex items-center justify-center mt-12">
+              <div className="w-80 h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent rounded-full opacity-80"></div>
+            </div>
+          </div>
+
+          {/* CALL TO ACTION DIVINI */}
+          <div className="flex flex-col lg:flex-row gap-8 justify-center items-center mb-16">
+            
+            {/* Scopri la Storia */}
+            <div className="group relative">
+              <div className="absolute -inset-4 bg-gradient-to-r from-[#D4AF37]/40 via-[#F4E19C]/20 to-[#D4AF37]/40 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-1000"></div>
+              <button 
+                onClick={() => document.getElementById('storia')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                className="relative flex items-center gap-4 px-12 py-6 glass-morphism rounded-2xl border border-[#D4AF37]/50 hover:border-[#D4AF37] transition-all duration-700 group-hover:scale-105"
+              >
+                <div className="relative">
+                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" className="text-[#D4AF37] group-hover:rotate-12 transition-transform duration-500">
+                    <path d="M4,4 L24,4 M8,4 L8,24 M20,4 L20,24 M4,24 L24,24" stroke="currentColor" strokeWidth="2"/>
+                    <circle cx="14" cy="14" r="4" fill="currentColor" opacity="0.6"/>
+                    <path d="M10,10 L18,10 M10,14 L18,14 M10,18 L18,18" stroke="#0B1426" strokeWidth="1"/>
+                  </svg>
+                  <div className="absolute inset-0 blur-lg opacity-50">
+                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" className="text-[#D4AF37]">
+                      <circle cx="14" cy="14" r="14" fill="currentColor"/>
+                    </svg>
+                  </div>
+                </div>
+                
+                <div className="text-left">
+                  <div 
+                    className="text-xl font-light text-white group-hover:text-[#F4E19C] transition-colors duration-300"
+                    style={{ fontFamily: "'Cinzel', serif" }}
+                  >
+                    ΓΝΩΡΙΣΤΕ ΤΗΝ ΙΣΤΟΡΙΑ
+                  </div>
+                  <div className="text-sm text-white/70 font-light">
+                    100 anni di tradizione familiare
+                  </div>
+                </div>
+              </button>
+            </div>
+
+            {/* Gustare i Sapori */}
+            <div className="group relative">
+              <div className="absolute -inset-4 bg-gradient-to-r from-[#4A90E2]/40 via-[#87CEEB]/20 to-[#4A90E2]/40 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-1000"></div>
+              <button 
+                onClick={() => document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                className="relative flex items-center gap-4 px-12 py-6 bg-gradient-to-r from-[#4A90E2]/30 to-[#87CEEB]/20 rounded-2xl border border-[#4A90E2]/60 hover:border-[#4A90E2] transition-all duration-700 group-hover:scale-105"
+              >
+                <div className="relative">
+                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" className="text-[#87CEEB] group-hover:rotate-12 transition-transform duration-500">
+                    <circle cx="14" cy="14" r="6" fill="none" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M14,4 Q18,8 14,14 Q10,8 14,4" fill="currentColor" opacity="0.8"/>
+                    <path d="M14,14 Q18,20 14,24 Q10,20 14,14" fill="currentColor" opacity="0.8"/>
+                    <circle cx="14" cy="14" r="2" fill="currentColor"/>
+                  </svg>
+                  <div className="absolute inset-0 blur-lg opacity-50">
+                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" className="text-[#4A90E2]">
+                      <circle cx="14" cy="14" r="14" fill="currentColor"/>
+                    </svg>
+                  </div>
+                </div>
+                
+                <div className="text-left">
+                  <div 
+                    className="text-xl font-light text-white group-hover:text-[#87CEEB] transition-colors duration-300"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    ΓΕΥΣΕΙΣ ΤΟΥ ΑΙΓΑΙΟΥ
+                  </div>
+                  <div className="text-sm text-white/70 font-light">
+                    Menu autentico delle Cicladi
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          {/* INFO DINAMICA DELL'IMMAGINE */}
+          <div className="absolute bottom-8 right-8 glass-morphism p-6 rounded-xl border border-[#D4AF37]/30 max-w-sm hidden lg:block">
+            <h4 
+              className="text-lg font-light mb-2 text-[#D4AF37] shimmer-text"
+              style={{ fontFamily: "'Cinzel', serif" }}
+            >
+              {heroImages[currentHeroImage].title}
+            </h4>
+            <p className="text-sm text-white/80 leading-relaxed">
+              {heroImages[currentHeroImage].subtitle}
+            </p>
+          </div>
+        </div>
+
+        {/* INDICATORI CAROUSEL DIVINI */}
+        <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-30">
+          <div className="flex items-center gap-6">
+            {heroImages.map((image, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentHeroImage(index)}
-                className={`relative group transition-all duration-500 ${
+                className={`group relative transition-all duration-700 ${
                   index === currentHeroImage ? 'scale-125' : 'scale-100 hover:scale-110'
                 }`}
               >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <circle 
-                    cx="8" 
-                    cy="8" 
-                    r="6" 
-                    fill={index === currentHeroImage ? "#f59e0b" : "#ffffff80"}
-                    stroke="#ffffff"
-                    strokeWidth="1"
-                  />
-                  {index === currentHeroImage && (
-                    <circle cx="8" cy="8" r="3" fill="#ffffff" opacity="0.8"/>
-                  )}
-                </svg>
-                <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-                    {heroImages[index].subtitle}
+                <div className={`w-4 h-4 rounded-full border-2 transition-all duration-500 ${
+                  index === currentHeroImage 
+                    ? 'border-[#D4AF37] bg-[#D4AF37]/50' 
+                    : 'border-white/60 bg-white/20 hover:border-[#D4AF37]/60'
+                }`}></div>
+                
+                {index === currentHeroImage && (
+                  <div className="absolute inset-0 rounded-full border-2 border-[#D4AF37] animate-ping"></div>
+                )}
+                
+                <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                  <div className="bg-black/80 backdrop-blur-sm text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap border border-[#D4AF37]/30">
+                    {image.subtitle}
                   </div>
                 </div>
               </button>
@@ -1417,174 +1663,25 @@ const AegeanPearlTemplate: React.FC<{ data: any; theme: any; project: any }> = (
           </div>
         </div>
 
-        <div className="absolute inset-0 flex items-center justify-center z-10">
-          <div className="text-center max-w-7xl px-8 relative">
-            
-            {/* Ornamenti Greci Laterali */}
-            <div className="absolute left-0 top-1/2 transform -translate-y-1/2 opacity-30 hidden xl:block">
-              <svg width="120" height="300" viewBox="0 0 120 300" fill="none" className="text-amber-200">
-                <path d="M20,50 Q60,20 100,50 Q60,80 20,50" fill="currentColor" opacity="0.3"/>
-                <circle cx="60" cy="50" r="8" fill="currentColor"/>
-                <path d="M20,150 L100,150 M60,130 L60,170" stroke="currentColor" strokeWidth="2"/>
-                <path d="M20,250 Q60,220 100,250 Q60,280 20,250" fill="currentColor" opacity="0.3"/>
-                <circle cx="60" cy="250" r="8" fill="currentColor"/>
-              </svg>
-            </div>
-            
-            <div className="absolute right-0 top-1/2 transform -translate-y-1/2 opacity-30 hidden xl:block">
-              <svg width="120" height="300" viewBox="0 0 120 300" fill="none" className="text-amber-200">
-                <path d="M100,50 Q60,20 20,50 Q60,80 100,50" fill="currentColor" opacity="0.3"/>
-                <circle cx="60" cy="50" r="8" fill="currentColor"/>
-                <path d="M100,150 L20,150 M60,130 L60,170" stroke="currentColor" strokeWidth="2"/>
-                <path d="M100,250 Q60,220 20,250 Q60,280 100,250" fill="currentColor" opacity="0.3"/>
-                <circle cx="60" cy="250" r="8" fill="currentColor"/>
-              </svg>
-            </div>
-
-            {/* Ornamento Superiore con Motivo Marino */}
-            <div className="mb-12 relative">
-              <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
-                <svg width="200" height="40" viewBox="0 0 200 40" fill="none">
-                  <path d="M0,20 Q50,5 100,20 Q150,35 200,20" stroke="#f59e0b" strokeWidth="2" fill="none"/>
-                  <circle cx="50" cy="20" r="4" fill="#f59e0b" opacity="0.8"/>
-                  <circle cx="100" cy="20" r="6" fill="#f59e0b"/>
-                  <circle cx="150" cy="20" r="4" fill="#f59e0b" opacity="0.8"/>
-                  {/* Delfini stilizzati */}
-                  <path d="M30,15 Q35,10 40,15 Q35,20 30,15" fill="#0ea5e9" opacity="0.6"/>
-                  <path d="M160,15 Q165,10 170,15 Q165,20 160,15" fill="#0ea5e9" opacity="0.6"/>
-                </svg>
-              </div>
-              
-              <div 
-                className="text-3xl text-amber-300 font-light tracking-[0.3em] mb-6 relative"
-                style={{ fontFamily: "'Cinzel', serif" }}
-              >
-                ΠΑΡΑΔΟΣΙΑΚΗ ΚΟΥΖΙΝΑ
-                <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
-                  <svg width="120" height="8" viewBox="0 0 120 8" fill="none">
-                    <path d="M0,4 Q30,1 60,4 Q90,7 120,4" stroke="#f59e0b" strokeWidth="2" fill="none"/>
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            {/* Titolo con Effetti Divini */}
-            <div className="mb-16 relative">
-              <h1 
-                className="text-8xl md:text-9xl font-light leading-[0.85] mb-8 relative"
-                style={{ 
-                  fontFamily: "'Cinzel', serif",
-                  textShadow: '0 8px 32px rgba(30, 58, 138, 0.6), 0 0 100px rgba(251, 191, 36, 0.3)',
-                  letterSpacing: '0.05em'
-                }}
-              >
-                <span className="block text-white/95 relative">
-                  ΚΟΣΤΑΣ
-                  {/* Effetto bagliore */}
-                  <span className="absolute inset-0 text-amber-300 animate-pulse opacity-50">ΚΟΣΤΑΣ</span>
-                </span>
-                <span 
-                  className="block text-5xl md:text-6xl text-amber-200 font-light tracking-[0.2em] mt-6"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  {defaultData.business.tagline}
-                </span>
-              </h1>
-              
-              {/* Ornamento centrale sotto il titolo */}
-              <div className="flex items-center justify-center mb-8">
-                <svg width="300" height="30" viewBox="0 0 300 30" fill="none">
-                  <path d="M0,15 Q75,5 150,15 Q225,25 300,15" stroke="#f59e0b" strokeWidth="3" fill="none"/>
-                  <circle cx="150" cy="15" r="8" fill="#f59e0b"/>
-                  <circle cx="75" cy="15" r="4" fill="#0ea5e9" opacity="0.8"/>
-                  <circle cx="225" cy="15" r="4" fill="#0ea5e9" opacity="0.8"/>
-                  {/* Motivo a onde */}
-                  <path d="M50,10 Q55,8 60,10 Q55,12 50,10" fill="#0ea5e9" opacity="0.6"/>
-                  <path d="M240,10 Q245,8 250,10 Q245,12 240,10" fill="#0ea5e9" opacity="0.6"/>
-                </svg>
-              </div>
-              
-              <div className="max-w-5xl mx-auto">
-                <p 
-                  className="text-3xl md:text-4xl font-light text-blue-100/95 leading-relaxed italic mb-6"
-                  style={{ 
-                    fontFamily: "'Playfair Display', serif",
-                    textShadow: '0 2px 20px rgba(0, 0, 0, 0.5)'
-                  }}
-                >
-                  "Στην αγκαλιά του Αιγαίου, όπου η παράδοση γίνεται νόστιμη ανάμνηση"
-                </p>
-                <p 
-                  className="text-xl md:text-2xl font-light text-white/85 leading-relaxed"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  Nell'abbraccio dell'Egeo, dove la tradizione diventa gustoso ricordo
-                </p>
-              </div>
-            </div>
-
-            {/* Call to Action Artistici */}
-            <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
-              <div className="group relative">
-                <div className="absolute -inset-2 bg-gradient-to-r from-blue-600 to-amber-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000"></div>
-                <button 
-                  onClick={() => document.getElementById('storia')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                  className="relative flex items-center gap-4 px-12 py-5 bg-white/15 backdrop-blur-md border border-white/30 rounded-xl hover:bg-white/25 transition-all duration-700 group"
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-amber-300">
-                    <path d="M3,3 L21,3 M6,3 L6,21 M18,3 L18,21 M3,21 L21,21" stroke="currentColor" strokeWidth="2"/>
-                    <circle cx="12" cy="12" r="3" fill="currentColor" opacity="0.6"/>
-                  </svg>
-                  <span 
-                    className="text-xl font-light text-white tracking-[0.1em] group-hover:text-amber-100"
-                    style={{ fontFamily: "'Cinzel', serif" }}
-                  >
-                    ΓΝΩΡΙΣΤΕ ΤΗΝ ΙΣΤΟΡΙΑ
-                  </span>
-                </button>
-              </div>
-              
-              <div className="group relative">
-                <div className="absolute -inset-2 bg-gradient-to-r from-amber-600 to-orange-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000"></div>
-                <button 
-                  onClick={() => document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                  className="relative flex items-center gap-4 px-12 py-5 bg-amber-600/80 hover:bg-amber-500/90 backdrop-blur-md rounded-xl transition-all duration-700 group"
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-white">
-                    <path d="M12,2 Q16,6 12,10 Q8,6 12,2" fill="currentColor" opacity="0.8"/>
-                    <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M12,14 Q16,18 12,22 Q8,18 12,14" fill="currentColor" opacity="0.8"/>
-                  </svg>
-                  <span 
-                    className="text-xl font-light text-white tracking-[0.1em] group-hover:text-amber-100"
-                    style={{ fontFamily: "'Inter', sans-serif" }}
-                  >
-                    Γεύσεις του Αιγαίου
-                  </span>
-                </button>
-              </div>
-            </div>
-
-            {/* Informazioni dinamiche sull'immagine */}
-            <div className="absolute bottom-20 right-8 bg-black/60 backdrop-blur-md text-white p-4 rounded-lg opacity-80 hidden lg:block">
-              <h4 
-                className="text-lg font-light mb-1 text-amber-200"
-                style={{ fontFamily: "'Cinzel', serif" }}
-              >
-                {heroImages[currentHeroImage].title}
-              </h4>
-              <p className="text-sm opacity-90">
-                {heroImages[currentHeroImage].subtitle}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg className="w-full h-32" viewBox="0 0 1200 120" fill="none">
-            <path d="M0,60 C300,20 500,100 600,60 C700,20 900,100 1200,60 V120 H0 Z" fill="white" />
-          </svg>
-        </div>
+        {/* Aggiungo gli stili CSS custom per le nuove animazioni */}
+        <style jsx>{`
+          @keyframes floatDivine {
+            0% { 
+              transform: translateY(120vh) rotate(0deg) scale(0.8); 
+              opacity: 0; 
+            }
+            5% { opacity: 1; }
+            50% { 
+              transform: translateY(50vh) rotate(180deg) scale(1.2); 
+              opacity: 0.8; 
+            }
+            95% { opacity: 1; }
+            100% { 
+              transform: translateY(-20vh) rotate(360deg) scale(0.6); 
+              opacity: 0; 
+            }
+          }
+        `}</style>
       </section>
 
       {/* STORIA DELLA FAMIGLIA */}
@@ -1848,68 +1945,307 @@ const AegeanPearlTemplate: React.FC<{ data: any; theme: any; project: any }> = (
         </div>
       </section>
 
-      {/* MENU AUTENTICO */}
-      <section id="menu" className="relative py-40 bg-gradient-to-br from-blue-900 via-blue-800 to-slate-900 text-white overflow-hidden">
+      {/* MENU ESPERIENZIALE - GUSTARE CON GLI OCCHI */}
+      <section id="menu" className="relative py-32 bg-gradient-to-br from-[#0B1426] via-[#1A2332] to-[#0B2447] text-white overflow-hidden">
+        
+        {/* BACKGROUND ATMOSFERICO */}
+        <div className="absolute inset-0">
+          {/* Vapore di Cucina Animato */}
+          <div className="absolute inset-0 opacity-30">
+            {Array.from({length: 15}).map((_, i) => (
+              <div
+                key={i}
+                className="absolute rounded-full bg-gradient-to-t from-white/20 to-transparent"
+                style={{
+                  width: `${20 + Math.random() * 40}px`,
+                  height: `${60 + Math.random() * 80}px`,
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animation: `steamRise ${8 + Math.random() * 12}s ease-in-out infinite`,
+                  animationDelay: `${Math.random() * 8}s`,
+                  filter: 'blur(2px)'
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Bokeh di Ingredienti */}
+          <div className="absolute inset-0 opacity-40">
+            {Array.from({length: 30}).map((_, i) => (
+              <div
+                key={i}
+                className="absolute rounded-full"
+                style={{
+                  width: `${8 + Math.random() * 16}px`,
+                  height: `${8 + Math.random() * 16}px`,
+                  background: i % 5 === 0 ? '#D4AF37' : // Oro (spezie)
+                             i % 5 === 1 ? '#228B22' : // Verde (erbe)
+                             i % 5 === 2 ? '#FF6347' : // Rosso (pomodori)
+                             i % 5 === 3 ? '#4A90E2' : // Blu (mare)
+                             '#F8F8FF', // Bianco (formaggi)
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animation: `float ${6 + Math.random() * 8}s ease-in-out infinite`,
+                  animationDelay: `${Math.random() * 6}s`,
+                  filter: 'blur(1px)',
+                  opacity: 0.6
+                }}
+              />
+            ))}
+          </div>
+        </div>
+        
         <div className="relative max-w-7xl mx-auto px-8">
           
+          {/* HEADER DIVINO */}
           <div className="text-center mb-20">
+            
+            {/* Ornamento Culinario */}
+            <div className="flex items-center justify-center mb-12">
+              <svg width="400" height="100" viewBox="0 0 400 100" className="animate-pulse" style={{animationDuration: '5s'}}>
+                <defs>
+                  <linearGradient id="menuGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#D4AF37"/>
+                    <stop offset="25%" stopColor="#228B22"/>
+                    <stop offset="50%" stopColor="#FF6347"/>
+                    <stop offset="75%" stopColor="#4A90E2"/>
+                    <stop offset="100%" stopColor="#D4AF37"/>
+                  </linearGradient>
+                </defs>
+                
+                {/* Piatto centrale */}
+                <circle cx="200" cy="50" r="25" fill="none" stroke="url(#menuGrad)" strokeWidth="3"/>
+                <circle cx="200" cy="50" r="15" fill="#D4AF37" opacity="0.3"/>
+                
+                {/* Forchetta sinistra */}
+                <path d="M120,30 L120,70 M115,30 L115,45 M125,30 L125,45" stroke="#D4AF37" strokeWidth="2"/>
+                
+                {/* Coltello destro */}
+                <path d="M280,30 L280,70 M275,30 L285,35 L275,40" stroke="#D4AF37" strokeWidth="2"/>
+                
+                {/* Erbe decorative */}
+                <path d="M80,50 Q90,40 100,50 Q90,60 80,50" fill="#228B22" opacity="0.6"/>
+                <path d="M300,50 Q310,40 320,50 Q310,60 300,50" fill="#228B22" opacity="0.6"/>
+                
+                {/* Onde culinarie */}
+                <path d="M0,50 Q100,30 200,50 Q300,70 400,50" stroke="url(#menuGrad)" strokeWidth="2" fill="none" opacity="0.6"/>
+              </svg>
+            </div>
+            
             <div 
-              className="text-4xl font-light text-amber-300 tracking-[0.3em] mb-8"
+              className="text-4xl font-light text-[#D4AF37] tracking-[0.4em] mb-8 shimmer-text"
               style={{ fontFamily: "'Cinzel', serif" }}
             >
               Η ΚΟΥΖΙΝΑ ΤΗΣ ΓΙΑΓΙΑΣ ΜΑΡΙΑΣ
             </div>
             <h2 
-              className="text-7xl md:text-8xl font-light leading-[0.9] text-white mb-8"
+              className="text-7xl md:text-8xl font-light leading-[0.9] text-white mb-8 text-glow"
               style={{ fontFamily: "'Cinzel', serif" }}
             >
-              I Sapori del<br />
-              <span className="text-amber-300">Mare Nostrum</span>
+              Sapori che<br />
+              <span className="shimmer-text">Raccontano Storie</span>
             </h2>
-            <div className="w-32 h-px bg-gradient-to-r from-transparent via-amber-300 to-transparent mx-auto mb-8"></div>
+            <div className="w-40 h-1 bg-gradient-to-r from-[#228B22] via-[#D4AF37] to-[#4A90E2] mx-auto mb-8 rounded-full"></div>
             <p 
-              className="text-2xl font-light text-blue-100 italic max-w-5xl mx-auto leading-relaxed"
-              style={{ fontFamily: "'Playfair Display', serif" }}
+              className="text-3xl font-light text-[#B0E0E6] italic max-w-6xl mx-auto leading-relaxed"
+              style={{ 
+                fontFamily: "'Playfair Display', serif",
+                textShadow: '0 2px 10px rgba(0,0,0,0.5)'
+              }}
             >
-              "Κάθε πιάτο είναι μια αγκαλιά από τη γιαγιά"<br />
-              <span className="text-xl text-white/80">Ogni piatto è un abbraccio della nonna</span>
+              "Κάθε πιάτο είναι μια αγκαλιά από τη γιαγιά, κάθε γεύση μια ανάμνηση"<br />
+              <span className="text-xl text-white/80">
+                Ogni piatto è un abbraccio della nonna, ogni sapore un ricordo
+              </span>
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
-            {defaultData.menu.menu_sections.map((section, index) => (
-              <div key={index} className="bg-black/20 backdrop-blur-md border border-amber-600/30 p-8">
-                <div className="text-center mb-8">
-                  <div 
-                    className="text-2xl font-light text-amber-300 tracking-[0.2em] mb-4"
-                    style={{ fontFamily: "'Cinzel', serif" }}
-                  >
-                    {section.name}
-                  </div>
-                  <div className="w-16 h-px bg-amber-300 mx-auto mb-6"></div>
-                  <p className="text-blue-200 text-sm">{section.description}</p>
-                  <p className="text-amber-200 font-medium mt-2">{section.price}</p>
-                </div>
+          {/* MENU CARDS IMMERSIVE */}
+          <div className="grid lg:grid-cols-3 gap-12 mb-20">
+            {defaultData.menu.menu_sections.map((section, sectionIndex) => (
+              <div key={sectionIndex} className="group relative">
                 
-                <div className="space-y-6">
-                  {section.items.map((item, itemIndex) => (
-                    <div key={itemIndex} className="border-b border-amber-600/20 pb-4">
-                      <p className="text-sm text-blue-100/80 leading-relaxed">{item}</p>
+                {/* Glow Effect Esterno */}
+                <div className={`absolute -inset-4 rounded-3xl blur-xl opacity-0 group-hover:opacity-60 transition-all duration-1000 ${
+                  sectionIndex === 0 ? 'bg-gradient-to-br from-[#228B22]/40 to-[#D4AF37]/40' :
+                  sectionIndex === 1 ? 'bg-gradient-to-br from-[#4A90E2]/40 to-[#87CEEB]/40' :
+                  'bg-gradient-to-br from-[#CD853F]/40 to-[#D4AF37]/40'
+                }`}></div>
+                
+                {/* Card Principale */}
+                <div className="relative glass-morphism rounded-3xl border border-[#D4AF37]/30 p-8 h-full group-hover:scale-105 transition-all duration-700">
+                  
+                  {/* Header della Sezione */}
+                  <div className="text-center mb-10">
+                    
+                    {/* Icona Tematica */}
+                    <div className="mb-6 flex justify-center">
+                      <div className={`w-20 h-20 rounded-full flex items-center justify-center ${
+                        sectionIndex === 0 ? 'bg-gradient-to-br from-[#228B22] to-[#6B8E23]' :
+                        sectionIndex === 1 ? 'bg-gradient-to-br from-[#4A90E2] to-[#87CEEB]' :
+                        'bg-gradient-to-br from-[#CD853F] to-[#D2691E]'
+                      } group-hover:scale-110 transition-transform duration-500`}>
+                        {sectionIndex === 0 ? (
+                          // Mezze - Oliva
+                          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" className="text-white">
+                            <ellipse cx="16" cy="16" rx="6" ry="10" fill="currentColor"/>
+                            <path d="M16,6 Q20,10 16,16 Q12,10 16,6" fill="currentColor" opacity="0.8"/>
+                            <circle cx="16" cy="20" r="3" fill="currentColor" opacity="0.9"/>
+                          </svg>
+                        ) : sectionIndex === 1 ? (
+                          // Mare - Pesce
+                          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" className="text-white">
+                            <path d="M8,16 Q12,12 20,16 Q12,20 8,16" fill="currentColor"/>
+                            <path d="M20,16 L26,12 L26,20 Z" fill="currentColor"/>
+                            <circle cx="18" cy="14" r="1.5" fill="#0B1426"/>
+                            <path d="M4,16 Q6,14 8,16 Q6,18 4,16" fill="currentColor" opacity="0.8"/>
+                          </svg>
+                        ) : (
+                          // Terra - Agnello
+                          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" className="text-white">
+                            <circle cx="16" cy="18" r="8" fill="currentColor" opacity="0.8"/>
+                            <circle cx="13" cy="12" r="4" fill="currentColor"/>
+                            <circle cx="19" cy="12" r="4" fill="currentColor"/>
+                            <path d="M12,8 Q16,6 20,8" stroke="currentColor" strokeWidth="2" fill="none"/>
+                          </svg>
+                        )}
+                      </div>
                     </div>
-                  ))}
+                    
+                    <div 
+                      className="text-3xl font-light text-[#D4AF37] tracking-[0.2em] mb-4 shimmer-text"
+                      style={{ fontFamily: "'Cinzel', serif" }}
+                    >
+                      {section.name}
+                    </div>
+                    
+                    <div className={`w-20 h-1 mx-auto mb-6 rounded-full ${
+                      sectionIndex === 0 ? 'bg-gradient-to-r from-[#228B22] to-[#6B8E23]' :
+                      sectionIndex === 1 ? 'bg-gradient-to-r from-[#4A90E2] to-[#87CEEB]' :
+                      'bg-gradient-to-r from-[#CD853F] to-[#D2691E]'
+                    }`}></div>
+                    
+                    <p className="text-[#B0E0E6] text-sm leading-relaxed mb-3">{section.description}</p>
+                    <div 
+                      className="text-2xl font-light text-[#D4AF37]"
+                      style={{ fontFamily: "'Inter', sans-serif" }}
+                    >
+                      {section.price}
+                    </div>
+                  </div>
+                  
+                  {/* Items del Menu */}
+                  <div className="space-y-6">
+                    {section.items.map((item, itemIndex) => {
+                      const [dishName, description] = item.split(' • ');
+                      return (
+                        <div key={itemIndex} className="group/item relative">
+                          
+                          {/* Background Hover */}
+                          <div className="absolute -inset-3 bg-gradient-to-r from-white/5 to-transparent rounded-xl opacity-0 group-hover/item:opacity-100 transition-opacity duration-300"></div>
+                          
+                          <div className="relative p-3 rounded-xl">
+                            <div className="flex items-start gap-3 mb-2">
+                              
+                              {/* Mini Ingrediente Icon */}
+                              <div className={`w-3 h-3 rounded-full mt-2 flex-shrink-0 ${
+                                itemIndex % 3 === 0 ? 'bg-[#228B22]' :
+                                itemIndex % 3 === 1 ? 'bg-[#FF6347]' :
+                                'bg-[#D4AF37]'
+                              } group-hover/item:scale-150 transition-transform duration-300`}></div>
+                              
+                              <div className="flex-1">
+                                <div 
+                                  className="text-lg font-medium text-white group-hover/item:text-[#D4AF37] transition-colors duration-300 mb-1"
+                                  style={{ fontFamily: "'Playfair Display', serif" }}
+                                >
+                                  {dishName}
+                                </div>
+                                <p className="text-sm text-[#B0E0E6]/80 leading-relaxed group-hover/item:text-white/90 transition-colors duration-300">
+                                  {description}
+                                </p>
+                              </div>
+                            </div>
+                            
+                            {/* Linea Separatrice Animata */}
+                            <div className="h-px bg-gradient-to-r from-transparent via-[#D4AF37]/20 to-transparent group-hover/item:via-[#D4AF37]/60 transition-all duration-500"></div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="mt-16 text-center">
-            <div className="max-w-4xl mx-auto bg-amber-600/10 border border-amber-600/30 p-8 backdrop-blur-md">
-              <p className="text-sm text-blue-200 leading-relaxed">
-                {defaultData.menu.menu_note}
+          {/* NOTA FINALE POETICA */}
+          <div className="text-center">
+            <div className="max-w-5xl mx-auto glass-morphism p-12 rounded-3xl border border-[#D4AF37]/30">
+              
+              {/* Ornamento Superiore */}
+              <div className="flex items-center justify-center mb-8">
+                <svg width="200" height="30" viewBox="0 0 200 30" fill="none">
+                  <path d="M0,15 Q50,5 100,15 Q150,25 200,15" stroke="#D4AF37" strokeWidth="2" fill="none"/>
+                  <circle cx="50" cy="15" r="3" fill="#228B22"/>
+                  <circle cx="100" cy="15" r="4" fill="#D4AF37"/>
+                  <circle cx="150" cy="15" r="3" fill="#4A90E2"/>
+                </svg>
+              </div>
+              
+              <blockquote 
+                className="text-2xl font-light italic text-[#F4E19C] leading-relaxed mb-6"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                "Τα υλικά μας ταξιδεύουν από τις Κυκλάδες στο πιάτο σας,<br />
+                φέρνοντας μαζί τους την ψυχή του Αιγαίου"
+              </blockquote>
+              
+              <p className="text-lg text-[#B0E0E6] leading-relaxed mb-8">
+                I nostri ingredienti viaggiano dalle Cicladi al vostro piatto,<br />
+                portando con sé l'anima dell'Egeo
               </p>
+              
+              <div className="text-sm text-white/70 leading-relaxed">
+                {defaultData.menu.menu_note}
+              </div>
+              
+              {/* Ornamento Inferiore */}
+              <div className="flex items-center justify-center mt-8">
+                <div className="w-32 h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent"></div>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* STILI CSS PER EFFETTI VAPORE */}
+        <style jsx>{`
+          @keyframes steamRise {
+            0% { 
+              transform: translateY(20px) scaleX(1);
+              opacity: 0;
+            }
+            20% { 
+              opacity: 1;
+            }
+            80% { 
+              opacity: 1;
+            }
+            100% { 
+              transform: translateY(-80px) scaleX(0.3);
+              opacity: 0;
+            }
+          }
+          
+          @keyframes float {
+            0%, 100% { 
+              transform: translateY(0px) rotate(0deg);
+            }
+            50% { 
+              transform: translateY(-20px) rotate(180deg);
+            }
+          }
+        `}</style>
       </section>
 
       {/* GALLERY */}
@@ -2058,38 +2394,282 @@ const AegeanPearlTemplate: React.FC<{ data: any; theme: any; project: any }> = (
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="bg-slate-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="text-center">
-            <div 
-              className="text-5xl font-light tracking-[0.2em] text-amber-300 mb-6"
-              style={{ fontFamily: "'Cinzel', serif" }}
-            >
-              ΚΟΣΤΑΣ
-            </div>
-            <div className="text-blue-200 mb-6">
-              {defaultData.business.name} • Mykonos, Grecia
-            </div>
-            <div className="w-32 h-px bg-gradient-to-r from-transparent via-amber-300 to-transparent mx-auto mb-8"></div>
-            <p 
-              className="text-2xl font-light italic text-amber-200 mb-4"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              "Καλώς ήρθατε στην οικογένειά μας"
-            </p>
-            <p className="text-blue-100/80">
-              Benvenuti nella nostra famiglia
-            </p>
+      {/* FOOTER EPICO - BENEDIZIONE FINALE DELL'EGEO */}
+      <footer id="contact" className="relative bg-gradient-to-br from-[#0B1426] via-[#1A2332] to-[#0B2447] text-white overflow-hidden">
+        
+        {/* BACKGROUND STELLATO NOTTURNO */}
+        <div className="absolute inset-0 opacity-20">
+          {Array.from({length: 100}).map((_, i) => (
+            <div
+              key={i}
+              className="absolute rounded-full bg-white"
+              style={{
+                width: `${1 + Math.random() * 3}px`,
+                height: `${1 + Math.random() * 3}px`,
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animation: `twinkle ${3 + Math.random() * 4}s ease-in-out infinite`,
+                animationDelay: `${Math.random() * 3}s`
+              }}
+            />
+          ))}
+        </div>
+
+        {/* ONDE NOTTURNE */}
+        <div className="absolute bottom-0 left-0 right-0 h-20 opacity-40">
+          <svg className="w-full h-full" viewBox="0 0 1400 80" preserveAspectRatio="none">
+            <path d="M0,40 Q350,10 700,40 T1400,30 V80 H0 Z" fill="#D4AF37" opacity="0.3" className="animate-pulse" style={{animationDuration: '8s'}}/>
+            <path d="M0,50 Q450,20 900,50 T1400,40 V80 H0 Z" fill="#4A90E2" opacity="0.2" className="animate-pulse" style={{animationDuration: '12s', animationDelay: '3s'}}/>
+          </svg>
+        </div>
+
+        <div className="relative py-20">
+          
+          {/* HEADER BENEDIZIONE */}
+          <div className="text-center mb-16">
             
-            <div className="mt-12 pt-8 border-t border-slate-700">
-              <p className="text-slate-400 text-sm">
-                © 2024 Kostas Family Restaurant. Tutti i diritti riservati. 
-                <br/>Creato con amore per preservare la tradizione greca.
-              </p>
+            {/* Logo con Aura Divina */}
+            <div className="relative inline-block mb-8">
+              <div className="absolute -inset-8 bg-gradient-to-r from-[#D4AF37]/30 via-[#F4E19C]/20 to-[#D4AF37]/30 rounded-full blur-xl animate-pulse"></div>
+              <div 
+                className="relative text-6xl font-light tracking-[0.2em] text-[#D4AF37] shimmer-text text-glow"
+                style={{ fontFamily: "'Cinzel', serif" }}
+              >
+                ΚΟΣΤΑΣ
+              </div>
+            </div>
+            
+            <div className="text-xl text-[#B0E0E6] mb-6 font-light">
+              Family Restaurant • Dal 1924 • Mykonos, Cicladi, Grecia
+            </div>
+            
+            {/* Ornamento Divino */}
+            <div className="flex items-center justify-center mb-8">
+              <svg width="300" height="40" viewBox="0 0 300 40" fill="none">
+                <path d="M0,20 Q75,5 150,20 Q225,35 300,20" stroke="#D4AF37" strokeWidth="3" fill="none"/>
+                <circle cx="75" cy="20" r="6" fill="#4A90E2" opacity="0.8"/>
+                <circle cx="150" cy="20" r="8" fill="#D4AF37"/>
+                <circle cx="225" cy="20" r="6" fill="#4A90E2" opacity="0.8"/>
+                
+                {/* Stelle decorative */}
+                <path d="M50,15 L52,20 L57,20 L53,23 L55,28 L50,25 L45,28 L47,23 L43,20 L48,20 Z" fill="#D4AF37" opacity="0.6"/>
+                <path d="M250,15 L252,20 L257,20 L253,23 L255,28 L250,25 L245,28 L247,23 L243,20 L248,20 Z" fill="#D4AF37" opacity="0.6"/>
+              </svg>
+            </div>
+          </div>
+
+          {/* CONTENUTO PRINCIPALE DEL FOOTER */}
+          <div className="max-w-7xl mx-auto px-8">
+            <div className="grid lg:grid-cols-3 gap-16 mb-16">
+              
+              {/* COLONNA 1: DOVE SIAMO & MAPPA */}
+              <div className="space-y-8">
+                <div>
+                  <h3 
+                    className="text-2xl font-light text-[#D4AF37] mb-6 shimmer-text"
+                    style={{ fontFamily: "'Cinzel', serif" }}
+                  >
+                    ΠΟΥ ΒΡΙΣΚΟΜΑΣΤΕ
+                  </h3>
+                  
+                  {/* Mappa Artistica di Mykonos */}
+                  <div className="glass-morphism rounded-2xl p-6 border border-[#D4AF37]/30 mb-6">
+                    <div className="relative h-48 bg-gradient-to-br from-[#4A90E2]/20 to-[#87CEEB]/10 rounded-xl overflow-hidden">
+                      
+                      {/* Sagoma di Mykonos Stilizzata */}
+                      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 200 120">
+                        <defs>
+                          <linearGradient id="islandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.8"/>
+                            <stop offset="50%" stopColor="#F4E19C" stopOpacity="0.6"/>
+                            <stop offset="100%" stopColor="#4A90E2" stopOpacity="0.4"/>
+                          </linearGradient>
+                        </defs>
+                        
+                        {/* Isola di Mykonos */}
+                        <path d="M40,60 Q60,30 80,45 Q100,35 120,50 Q140,40 160,60 Q150,80 130,75 Q110,90 90,75 Q70,85 50,70 Q30,75 40,60" fill="url(#islandGrad)"/>
+                        
+                        {/* Porto */}
+                        <circle cx="100" cy="65" r="8" fill="#4A90E2" opacity="0.6"/>
+                        
+                        {/* Mulini a Vento */}
+                        <circle cx="85" cy="55" r="3" fill="#F8F8FF"/>
+                        <circle cx="95" cy="50" r="3" fill="#F8F8FF"/>
+                        <circle cx="105" cy="55" r="3" fill="#F8F8FF"/>
+                        
+                        {/* Nostra Taverna (Stella) */}
+                        <path d="M100,60 L102,65 L107,65 L103,68 L105,73 L100,70 L95,73 L97,68 L93,65 L98,65 Z" fill="#D4AF37"/>
+                        
+                        {/* Onde intorno */}
+                        <path d="M20,90 Q40,85 60,90 Q80,85 100,90 Q120,85 140,90 Q160,85 180,90" stroke="#87CEEB" strokeWidth="2" fill="none" opacity="0.6"/>
+                      </svg>
+                      
+                      {/* Info Box */}
+                      <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-sm rounded-lg p-3 border border-[#D4AF37]/30">
+                        <div className="text-xs text-[#D4AF37] font-medium">📍 Koastas Restaurant</div>
+                        <div className="text-xs text-white/80">Porto Vecchio di Mykonos</div>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-4 space-y-2 text-sm text-[#B0E0E6]">
+                      <div>📍 Porto Vecchio di Mykonos, Chora 84600</div>
+                      <div>📞 +30 22890 24578</div>
+                      <div>✉️ taverna@kostasrestaurant.gr</div>
+                    </div>
+                  </div>
+                  
+                  <p className="text-sm text-white/70 leading-relaxed italic">
+                    Nel cuore del porto vecchio, a 2 minuti dai famosi mulini a vento. 
+                    Cerca l'insegna blu con il pellicano disegnato a mano - quello è il nostro segno dal 1924!
+                  </p>
+                </div>
+              </div>
+
+              {/* COLONNA 2: ORARI POETICI & TRADIZIONI */}
+              <div className="space-y-8">
+                <div>
+                  <h3 
+                    className="text-2xl font-light text-[#D4AF37] mb-6 shimmer-text"
+                    style={{ fontFamily: "'Cinzel', serif" }}
+                  >
+                    ΩΡΕΣ ΠΑΡΑΔΟΣΗΣ
+                  </h3>
+                  
+                  <div className="space-y-4">
+                    {[
+                      { day: 'ΔΕΥΤΕΡΑ - ΠΕΜΠΤΗ', time: '12:30 - 15:30 • 18:30 - 24:00', desc: 'Giorni della tradizione' },
+                      { day: 'ΠΑΡΑΣΚΕΥΗ - ΣΑΒΒΑΤΟ', time: '12:30 - 15:30 • 18:30 - 01:00', desc: 'Notti di festa' },
+                      { day: 'ΚΥΡΙΑΚΗ', time: '12:30 - 15:30 • 18:30 - 24:00', desc: 'Giorno di famiglia' }
+                    ].map((schedule, index) => (
+                      <div key={index} className="glass-morphism rounded-xl p-4 border border-[#D4AF37]/20">
+                        <div className="text-[#F4E19C] font-medium text-sm mb-1">{schedule.day}</div>
+                        <div className="text-white font-light">{schedule.time}</div>
+                        <div className="text-white/60 text-xs italic">{schedule.desc}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Tradizioni Lunari */}
+                <div className="glass-morphism rounded-xl p-6 border border-[#4A90E2]/30">
+                  <h4 className="text-lg text-[#87CEEB] mb-4 font-light">🌙 Tradizioni Lunari</h4>
+                  <p className="text-sm text-white/80 leading-relaxed italic">
+                    Durante la luna piena, serviamo il "Menu della Notte Bianca" 
+                    con piatti ispirati alle antiche celebrazioni delle Cicladi.
+                  </p>
+                </div>
+              </div>
+
+              {/* COLONNA 3: PROVERBI & SAGGEZZA GRECA */}
+              <div className="space-y-8">
+                <div>
+                  <h3 
+                    className="text-2xl font-light text-[#D4AF37] mb-6 shimmer-text"
+                    style={{ fontFamily: "'Cinzel', serif" }}
+                  >
+                    ΣΟΦΙΑ ΤΩΝ ΠΡΟΓΟΝΩΝ
+                  </h3>
+                  
+                  <div className="space-y-6">
+                    {[
+                      {
+                        greek: "Το φαγητό ενώνει τις καρδιές",
+                        italian: "Il cibo unisce i cuori",
+                        author: "Nonna Eleni"
+                      },
+                      {
+                        greek: "Η θάλασσα δίνει, η γη προσφέρει",
+                        italian: "Il mare dona, la terra offre",
+                        author: "Yannis Kostas, 1924"
+                      },
+                      {
+                        greek: "Κάθε ηλιοβασίλεμα είναι υπόσχεση",
+                        italian: "Ogni tramonto è una promessa",
+                        author: "Dimitris Kostas"
+                      }
+                    ].map((proverb, index) => (
+                      <div key={index} className="glass-morphism rounded-xl p-6 border border-[#D4AF37]/20">
+                        <blockquote 
+                          className="text-lg font-light italic text-[#F4E19C] mb-3"
+                          style={{ fontFamily: "'Playfair Display', serif" }}
+                        >
+                          "{proverb.greek}"
+                        </blockquote>
+                        <p className="text-sm text-white/80 mb-2">
+                          {proverb.italian}
+                        </p>
+                        <cite className="text-xs text-[#87CEEB]">— {proverb.author}</cite>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* SOCIAL & BENEDIZIONE FINALE */}
+            <div className="text-center border-t border-[#D4AF37]/30 pt-16">
+              
+              {/* Social Links Artistici */}
+              <div className="flex justify-center gap-8 mb-12">
+                {[
+                  { name: 'Instagram', icon: '📸', url: 'https://instagram.com/kostas_mykonos_taverna' },
+                  { name: 'Facebook', icon: '👥', url: 'https://facebook.com/kostasrestaurant.mykonos' },
+                  { name: 'TripAdvisor', icon: '🌟', url: '#' }
+                ].map((social, index) => (
+                  <button
+                    key={index}
+                    className="group relative p-4 glass-morphism rounded-xl border border-[#D4AF37]/30 hover:border-[#D4AF37] transition-all duration-500 hover:scale-110"
+                  >
+                    <div className="absolute -inset-1 bg-gradient-to-r from-[#D4AF37]/20 to-[#4A90E2]/20 rounded-xl blur opacity-0 group-hover:opacity-60 transition-opacity duration-500"></div>
+                    <div className="relative text-2xl mb-2">{social.icon}</div>
+                    <div className="relative text-sm text-white/80 group-hover:text-white transition-colors">
+                      {social.name}
+                    </div>
+                  </button>
+                ))}
+              </div>
+
+              {/* BENEDIZIONE FINALE GRECA */}
+              <div className="max-w-4xl mx-auto mb-12">
+                <blockquote 
+                  className="text-4xl font-light italic text-[#D4AF37] leading-relaxed mb-6 text-glow"
+                  style={{ fontFamily: "'Playfair Display', serif" }}
+                >
+                  "Καλώς ήρθατε στην οικογένειά μας,<br />
+                  καλώς να φύγετε με γεμάτες καρδιές"
+                </blockquote>
+                <p className="text-xl text-[#B0E0E6] leading-relaxed mb-8">
+                  Benvenuti nella nostra famiglia,<br />
+                  possiate partire con i cuori pieni
+                </p>
+                
+                {/* Ornamento Finale */}
+                <div className="flex items-center justify-center">
+                  <svg width="200" height="60" viewBox="0 0 200 60" fill="none">
+                    <path d="M0,30 Q50,15 100,30 Q150,45 200,30" stroke="#D4AF37" strokeWidth="2" fill="none"/>
+                    <circle cx="100" cy="30" r="8" fill="#D4AF37"/>
+                    <path d="M90,25 L95,30 L100,25 L105,30 L110,25" stroke="#4A90E2" strokeWidth="2" fill="none"/>
+                    <path d="M85,35 Q100,25 115,35" stroke="#87CEEB" strokeWidth="1" fill="none"/>
+                  </svg>
+                </div>
+              </div>
+
+              {/* Copyright Poetico */}
+              <div className="text-sm text-white/60 leading-relaxed">
+                © 2024 Kostas Family Restaurant • Tutti i diritti riservati<br />
+                <span className="italic">Creato con αγάπη (amore) per preservare la tradizione dell'Egeo</span>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* STILI CSS PER STELLE SCINTILLANTI */}
+        <style jsx>{`
+          @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+          }
+        `}</style>
       </footer>
     </div>
   );
