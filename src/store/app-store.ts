@@ -3,6 +3,10 @@ import { persist } from 'zustand/middleware';
 import { SiteConfig, SectionConfig } from '../modules/core/builder/types';
 import { HeroSchema } from '../modules/core/components/Hero';
 import { GridSchema } from '../modules/core/components/Grid';
+import { HeaderSchema } from '../modules/core/components/Header';
+import { FooterSchema } from '../modules/core/components/Footer';
+import { MenuSchema } from '../modules/core/components/Menu';
+import { GallerySchema } from '../modules/core/components/Gallery';
 
 // --- Types ---
 
@@ -68,6 +72,12 @@ const createDefaultProject = (name: string): SiteConfig => ({
   },
   sections: [
     {
+      id: 'header_1',
+      type: 'header',
+      isEnabled: true,
+      data: HeaderSchema.defaultData
+    },
+    {
       id: 'hero_1',
       type: 'hero',
       isEnabled: true,
@@ -78,6 +88,24 @@ const createDefaultProject = (name: string): SiteConfig => ({
       type: 'grid',
       isEnabled: true,
       data: GridSchema.defaultData
+    },
+    {
+      id: 'menu_1',
+      type: 'menu',
+      isEnabled: true,
+      data: MenuSchema.defaultData
+    },
+    {
+      id: 'gallery_1',
+      type: 'gallery',
+      isEnabled: true,
+      data: GallerySchema.defaultData
+    },
+    {
+      id: 'footer_1',
+      type: 'footer',
+      isEnabled: true,
+      data: FooterSchema.defaultData
     }
   ],
   // Default data for Logo Builder
@@ -186,6 +214,10 @@ export const useAppStore = create<AppStore>()(
         let defaultData = {};
         if (type === 'hero') defaultData = HeroSchema.defaultData;
         if (type === 'grid') defaultData = GridSchema.defaultData;
+        if (type === 'header') defaultData = HeaderSchema.defaultData;
+        if (type === 'footer') defaultData = FooterSchema.defaultData;
+        if (type === 'menu') defaultData = MenuSchema.defaultData;
+        if (type === 'gallery') defaultData = GallerySchema.defaultData;
 
         const newSection: SectionConfig = {
           id: `${type}_${Date.now()}`,

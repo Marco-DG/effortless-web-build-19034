@@ -8,9 +8,17 @@ import { Layout, Grid, Type } from 'lucide-react';
 // Ensure components are registered
 import { registerHero } from '../components/Hero';
 import { registerGrid } from '../components/Grid';
+import { registerHeader } from '../components/Header';
+import { registerFooter } from '../components/Footer';
+import { registerMenu } from '../components/Menu';
+import { registerGallery } from '../components/Gallery';
 
 registerHero();
 registerGrid();
+registerHeader();
+registerFooter();
+registerMenu();
+registerGallery();
 
 export const UniversalSidebar: React.FC = () => {
     const {
