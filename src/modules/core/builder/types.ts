@@ -6,12 +6,33 @@ export interface SiteConfig {
     id: string;
     name: string;
     theme: SiteTheme;
-    sections: SectionConfig[];
+    pages: PageConfig[];
+    // sections: SectionConfig[]; // DEPRECATED: Moved to PageConfig
     metadata: SiteMetadata;
     // Legacy support for other builders
     logo?: any;
     menu?: any;
-    business?: any;
+    business?: BusinessProfile;
+}
+
+export interface BusinessProfile {
+    name: string;
+    tagline?: string;
+    description?: string;
+    contact: {
+        email: string;
+        phone: string;
+        address: string;
+    };
+    social: {
+        instagram?: string;
+        facebook?: string;
+        twitter?: string;
+    };
+    hours?: {
+        weekdays: string;
+        weekends: string;
+    };
 }
 
 export interface SiteTheme {
@@ -43,6 +64,17 @@ export interface SectionConfig {
     data: Record<string, any>; // The actual content (title, images, etc.)
 }
 
+export interface PageConfig {
+    id: string;
+    slug: string; // e.g., '/', '/menu', '/about'
+    title: string; // e.g., 'Home', 'Our Menu'
+    sections: SectionConfig[];
+    seo?: {
+        title: string;
+        description: string;
+    };
+}
+
 // --- Component Schema Types (for Auto-Editor) ---
 
 export type FieldType =
@@ -69,7 +101,7 @@ export interface ComponentSchema {
     id: string;
     name: string;
     description: string;
-    category: 'hero' | 'content' | 'features' | 'gallery' | 'contact' | 'other';
+    category: 'hero' | 'content' | 'features' | 'gallery' | 'contact' | 'social-proof' | 'cta' | 'other';
     fields: Record<string, FieldSchema>;
     defaultData: Record<string, any>;
 }

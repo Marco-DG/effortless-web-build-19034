@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import { useAppStore } from '../../../../store/app-store';
 
 interface HeaderProps {
     logoText: string;
@@ -18,6 +19,9 @@ export const UniversalHeader: React.FC<HeaderProps> = ({
     style,
     sticky
 }) => {
+    const { activeProject } = useAppStore();
+    const businessName = activeProject?.business?.name || logoText;
+
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -65,7 +69,7 @@ export const UniversalHeader: React.FC<HeaderProps> = ({
             <div className="container mx-auto px-6 h-20 flex items-center justify-between">
                 {/* Logo */}
                 <div className="text-2xl font-bold font-heading tracking-tight">
-                    {logoText}
+                    {businessName}
                 </div>
 
                 {/* Desktop Nav */}

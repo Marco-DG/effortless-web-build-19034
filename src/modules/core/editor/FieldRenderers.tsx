@@ -1,6 +1,9 @@
 import React from 'react';
 import { FieldSchema } from '../builder/types';
 import { CleanTextInput, CleanSelect, CleanToggle } from '../../site-builder/components/forms';
+import { ImagePicker } from './components/ImagePicker';
+import { ColorPicker } from './components/ColorPicker';
+import { RichTextEditor } from './components/RichTextEditor';
 
 interface FieldRendererProps {
     field: FieldSchema;
@@ -11,18 +14,34 @@ interface FieldRendererProps {
 export const TextFieldRenderer: React.FC<FieldRendererProps> = ({ field, value, onChange }) => (
     <CleanTextInput
         value={value || ''}
-        onChange={onChange}
+        onChange={(e) => onChange(e.target.value)}
         placeholder={field.description}
     />
 );
 
+export const ImageFieldRenderer: React.FC<FieldRendererProps> = ({ field, value, onChange }) => {
+    return (
+        <ImagePicker
+            value={value}
+            onChange={onChange}
+        />
+    );
+};
+
+export const ColorFieldRenderer: React.FC<FieldRendererProps> = ({ field, value, onChange }) => {
+    return (
+        <ColorPicker
+            value={value}
+            onChange={onChange}
+        />
+    );
+};
+
 export const TextAreaRenderer: React.FC<FieldRendererProps> = ({ field, value, onChange }) => (
-    <CleanTextInput
+    <RichTextEditor
         value={value || ''}
         onChange={onChange}
         placeholder={field.description}
-        multiline
-        rows={4}
     />
 );
 
@@ -41,24 +60,7 @@ export const ToggleFieldRenderer: React.FC<FieldRendererProps> = ({ field, value
     />
 );
 
-export const ImageFieldRenderer: React.FC<FieldRendererProps> = ({ field, value, onChange }) => (
-    <div className="space-y-2">
-        <div className="relative w-full h-32 bg-slate-100 rounded-lg overflow-hidden border border-slate-200">
-            {value ? (
-                <img src={value} alt="Preview" className="w-full h-full object-cover" />
-            ) : (
-                <div className="flex items-center justify-center h-full text-slate-400 text-sm">
-                    No Image
-                </div>
-            )}
-        </div>
-        <CleanTextInput
-            value={value || ''}
-            onChange={onChange}
-            placeholder="Image URL"
-        />
-    </div>
-);
+
 
 export const ListFieldRenderer: React.FC<FieldRendererProps> = ({ field, value, onChange }) => {
     // Simplified list renderer for now - assumes list of objects

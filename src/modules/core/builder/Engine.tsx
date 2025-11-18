@@ -4,11 +4,12 @@ import { getComponent } from './registry';
 
 interface EngineProps {
     config: SiteConfig;
+    sections: SectionConfig[];
     previewMode?: boolean;
 }
 
-export const Engine: React.FC<EngineProps> = ({ config, previewMode = false }) => {
-    const { theme, sections } = config;
+export const Engine: React.FC<EngineProps> = ({ config, sections, previewMode = false }) => {
+    const { theme } = config;
 
     // Apply theme variables to root
     React.useEffect(() => {

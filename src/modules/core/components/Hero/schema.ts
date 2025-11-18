@@ -21,7 +21,7 @@ export const HeroSchema: ComponentSchema = {
         backgroundImage: {
             type: 'image',
             label: 'Background Image',
-            defaultValue: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop'
+            defaultValue: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80'
         },
         layout: {
             type: 'select',

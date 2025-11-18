@@ -7,6 +7,7 @@ import {
     SelectFieldRenderer,
     ToggleFieldRenderer,
     ImageFieldRenderer,
+    ColorFieldRenderer,
     ListFieldRenderer
 } from './FieldRenderers';
 
@@ -35,6 +36,7 @@ export const AutoSidebar: React.FC<AutoSidebarProps> = ({ schema, data, onUpdate
             case 'select': Renderer = SelectFieldRenderer; break;
             case 'toggle': Renderer = ToggleFieldRenderer; break;
             case 'image': Renderer = ImageFieldRenderer; break;
+            case 'color': Renderer = ColorFieldRenderer; break;
             case 'list': Renderer = ListFieldRenderer; break;
             default: Renderer = TextFieldRenderer;
         }

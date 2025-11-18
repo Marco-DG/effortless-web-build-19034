@@ -1,5 +1,6 @@
 import React from 'react';
 import { Instagram, Facebook, Twitter, Mail } from 'lucide-react';
+import { useAppStore } from '../../../../store/app-store';
 
 interface FooterProps {
     columns: '1' | '3' | '4';
@@ -16,6 +17,8 @@ export const UniversalFooter: React.FC<FooterProps> = ({
     copyrightText,
     links = []
 }) => {
+    const { activeProject } = useAppStore();
+    const business = activeProject?.business;
 
     const gridClass = {
         '1': 'grid-cols-1 text-center',
@@ -35,11 +38,11 @@ export const UniversalFooter: React.FC<FooterProps> = ({
                         <p className="text-white/70 leading-relaxed">
                             Creating unforgettable dining experiences since 2010.
                         </p>
-                        {showSocial && (
+                        {showSocial && business?.social && (
                             <div className={`flex gap-4 ${columns === '1' ? 'justify-center' : ''}`}>
-                                <a href="#" className="hover:text-[var(--theme-primary)] transition-colors"><Instagram className="w-5 h-5" /></a>
-                                <a href="#" className="hover:text-[var(--theme-primary)] transition-colors"><Facebook className="w-5 h-5" /></a>
-                                <a href="#" className="hover:text-[var(--theme-primary)] transition-colors"><Twitter className="w-5 h-5" /></a>
+                                {business.social.instagram && <a href={business.social.instagram} className="hover:text-[var(--theme-primary)] transition-colors"><Instagram className="w-5 h-5" /></a>}
+                                {business.social.facebook && <a href={business.social.facebook} className="hover:text-[var(--theme-primary)] transition-colors"><Facebook className="w-5 h-5" /></a>}
+                                {business.social.twitter && <a href={business.social.twitter} className="hover:text-[var(--theme-primary)] transition-colors"><Twitter className="w-5 h-5" /></a>}
                             </div>
                         )}
                     </div>
@@ -65,10 +68,9 @@ export const UniversalFooter: React.FC<FooterProps> = ({
                         <div className="space-y-4">
                             <h4 className="font-bold text-lg">Contact</h4>
                             <ul className="space-y-2 text-white/70">
-                                <li>123 Culinary Avenue</li>
-                                <li>New York, NY 10012</li>
-                                <li>+1 (555) 123-4567</li>
-                                <li>hello@restaurant.com</li>
+                                {business?.contact?.address && <li>{business.contact.address}</li>}
+                                {business?.contact?.phone && <li>{business.contact.phone}</li>}
+                                {business?.contact?.email && <li>{business.contact.email}</li>}
                             </ul>
                         </div>
                     )}
