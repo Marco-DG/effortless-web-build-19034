@@ -40,87 +40,92 @@ export const MichelinStarTemplate: React.FC<MichelinStarTemplateProps> = ({ data
   const themeData = getSectionData('theme');
 
   const restaurantData = {
-    // Business Info
-    businessName: businessData.name || project.data.business?.name || 'Le Petit Étoile',
+    // ATELIER SARAH CHEN - Authentic Business Info
+    businessName: businessData.name || project.data.business?.name || 'Atelier Sarah Chen',
     businessType: 'michelin_star',
-    tagline: businessData.tagline || project.data.business?.tagline || 'Deux étoiles Michelin',
+    tagline: businessData.tagline || project.data.business?.tagline || 'Cuisine Franco-Asiatique • Deux étoiles Michelin',
     
-    // Logo
+    // SOPHISTICATED BRANDING - Not generic logo
     logoUrl: project.data.logo?.url || '',
     logoMode: project.data.logo?.mode || 'text',
-    logoText: project.data.logo?.text || businessData.name || project.data.business?.name || 'Le Petit Étoile',
+    logoText: project.data.logo?.text || businessData.name || project.data.business?.name || 'Atelier Sarah Chen',
     
-    // Hero - ultra cinematico
-    heroTitle: businessData.name || project.data.business?.name || 'Le Petit Étoile',
-    heroSubtitle: businessData.tagline || 'Deux étoiles Michelin • Paris',
-    heroDescription: businessData.description || 'Une expérience culinaire transcendante où chaque plat raconte une histoire',
+    // HERO CINEMATOGRAFICO - Professional food photography
+    heroTitle: businessData.name || project.data.business?.name || 'Atelier Sarah Chen',
+    heroSubtitle: businessData.tagline || 'Cuisine Franco-Asiatique • 7ème Arrondissement',
+    heroDescription: businessData.description || 'Là où les techniques françaises classiques rencontrent la subtilité asiatique dans une symphonie culinaire d\'exception',
     heroImages: heroData.images || [
-      'https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?q=80&w=2070&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=2074&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?q=80&w=2081&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3', // Professional plated dish
+      'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3', // Elegant restaurant interior
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2081&auto=format&fit=crop&ixlib=rb-4.0.3'  // Fine dining atmosphere
     ],
     
-    // About - storytelling premium
+    // CHEF STORY - Authentic culinary narrative
     about: {
-      heading: storyData.section_title || 'Notre Vision',
-      subtitle: storyData.chef_name || 'Chef étoilé Alexandre Dubois',
-      text: storyData.story_text || 'Depuis quinze ans, nous cultivons l\'art de la haute gastronomie française avec une approche contemporaine qui respecte les traditions tout en embrassant l\'innovation.',
-      imageUrl: storyData.chef_image || 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?q=80&w=1200&auto=format&fit=crop',
+      heading: storyData.section_title || 'L\'Art de la Fusion',
+      subtitle: storyData.chef_name || 'Chef Sarah Chen',
+      text: storyData.story_text || 'Formée chez Joël Robuchon puis perfectionnée dans les cuisines de Tokyo, Sarah Chen propose une cuisine où la précision française épouse la philosophie asiatique de l\'harmonie. Chaque assiette raconte l\'histoire d\'une rencontre entre deux mondes culinaires.',
+      imageUrl: storyData.chef_image || 'https://images.unsplash.com/photo-1583394293214-28ded15ee548?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3', // Professional chef portrait
     },
     
-    // Menu - ultra premium
+    // MENU FRANCO-ASIATIQUE - Authentic fusion cuisine
     menuSections: menuData.menu_sections || [
       {
-        name: 'Menu Dégustation',
-        price: '€285',
-        description: 'Sept services d\'exception avec accord mets et vins',
+        name: 'Menu Découverte',
+        price: '€280',
+        description: 'Huit services franco-asiatiques avec accord saké et vins',
         items: [
-          'Amuse-bouche • Huître Gillardeau, caviar Ossetra',
-          'Entrée • Foie gras poêlé, figues confites au porto',
-          'Poisson • Turbot sauvage, beurre blanc aux algues',
-          'Viande • Côte de bœuf Wagyu, jus au thym',
-          'Fromage • Sélection Laurent Dubois',
-          'Pré-dessert • Sorbet au champagne rosé',
-          'Dessert • Soufflé Grand Marnier, glace vanille'
+          'Amuse-bouche • Bouchée de foie gras, gelée de yuzu',
+          'Mer • Saint-Jacques, mousse de miso blanc, crisp d\'algues nori',
+          'Légume • Velouté de champignons shiitaké, huile de truffe',
+          'Poisson • Turbot sauvage, sauce ponzu, légumes glacés au mirin',
+          'Viande • Canard de Bresse, laque au soja, purée de taro',
+          'Fromage • Roquefort, compotée de poire au gingembre',
+          'Pré-dessert • Sorbet au thé matcha, tuile de sésame noir',
+          'Dessert • Soufflé au chocolat noir, glace vanille de Madagascar'
         ]
       },
       {
-        name: 'Menu Végétarien',
-        price: '€225',
-        description: 'Cinq services créatifs de légumes de saison',
+        name: 'Menu Végétal',
+        price: '€240',
+        description: 'Six créations végétales inspirées des jardins zen',
         items: [
-          'Betterave • Trois textures, chèvre de la Drôme',
-          'Champignon • Cèpes, truffe noire du Périgord',
-          'Légume racine • Topinambour, noisettes torréfiées',
-          'Fromage • Comté 36 mois d\'affinage',
-          'Dessert • Poire William, chocolat Valrhona'
+          'Accueil • Bouillon de kombu, ravioli de légumes d\'automne',
+          'Terre • Betterave rôtie, crème d\'avocat, graines de sésame',
+          'Racine • Topinambour confit, mousse de miso, pousses de bambou',
+          'Champignon • Risotto de shiitaké, émulsion de parmesan vieilli',
+          'Fromage • Crottin de chèvre, miel de châtaignier, noix caramélisées',
+          'Douceur • Tarte au chocolat blanc, sorbet coco-citronnelle'
         ]
       }
     ],
     
-    // Awards & Recognition
+    // AUTHENTIC RECOGNITION - Realistic awards for fusion cuisine
     awards: awardsData.awards_list || [
-      { name: 'Deux étoiles Michelin', year: '2019-2024' },
-      { name: 'Gault & Millau', score: '18/20', year: '2024' },
-      { name: 'La Liste', ranking: 'Top 100 Mondial', year: '2024' },
-      { name: 'James Beard Award', category: 'Outstanding Chef', year: '2023' }
+      { name: 'Guide Michelin', score: '★★', year: '2022-2024', description: 'Deux étoiles' },
+      { name: 'Gault & Millau', score: '17/20', year: '2024', description: 'Cuisine d\'exception' },
+      { name: 'James Beard Award', score: 'Winner', year: '2023', description: 'Outstanding Chef' },
+      { name: 'La Liste', score: '94.75', year: '2024', description: 'Top 200 Mondial' },
+      { name: 'Le Figaro', score: '★★★★', year: '2024', description: 'Cuisine remarquable' }
     ],
     
-    // Gallery premium
+    // GALLERY PROFESSIONALE - High-end food photography
     gallery: galleryData.gallery_images || [
-      'https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=2074&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?q=80&w=2081&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?q=80&w=2070&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1551218808-94e220e084d2?q=80&w=2074&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?q=80&w=2081&auto=format&fit=crop&ixlib=rb-4.0.3', // Michelin-level plating
+      'https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3', // Professional dish presentation
+      'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3', // Restaurant atmosphere
+      'https://images.unsplash.com/photo-1544148103-0773bf10d330?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3', // Fine dining detail
+      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3', // Professional kitchen
+      'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3'  // Wine service
     ],
     
-    // Contact premium
-    address: contactData.address || locationData.address || project.data.contact?.address || '15 Rue Saint-Honoré, 75001 Paris',
+    // CONTACT AUTHENTIQUE - Realistic Paris 7th arrondissement location
+    address: contactData.address || locationData.address || project.data.contact?.address || '38 Rue de l\'Université, 75007 Paris',
     city: locationData.city || 'Paris',
-    zipCode: locationData.zipCode || '75001',
-    directions: locationData.directions || '',
-    phone: contactData.phone || project.data.contact?.phone || '+33 1 42 96 59 04',
-    email: contactData.email || project.data.contact?.email || 'reservation@lepetitetoile.fr',
+    zipCode: locationData.zipCode || '75007',
+    directions: locationData.directions || 'Métro ligne 12 (Solférino) • Parking Invalides à 300m • Service voiturier disponible',
+    phone: contactData.phone || project.data.contact?.phone || '+33 1 47 05 86 89',
+    email: contactData.email || project.data.contact?.email || 'reservation@ateliersarahchen.fr',
     
     // Hours
     schedule: hoursData.schedule || {},
@@ -149,11 +154,11 @@ export const MichelinStarTemplate: React.FC<MichelinStarTemplateProps> = ({ data
     };
   }, []);
 
-  // Font loading ultra premium
+  // TYPOGRAPHY LUXURY - Professional font system
   React.useEffect(() => {
-    // Cormorant Garamond per il lusso
+    // Premium font combination for authentic luxury feel
     const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap';
+    link.href = 'https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap';
     link.rel = 'stylesheet';
     document.head.appendChild(link);
     
@@ -162,12 +167,13 @@ export const MichelinStarTemplate: React.FC<MichelinStarTemplateProps> = ({ data
 
   return (
     <div 
-      className={`w-full bg-[#0a0a0a] text-white overflow-hidden transition-opacity duration-1000 ${
+      className={`w-full bg-[#0B0B0F] text-[#F7F3E9] overflow-hidden transition-opacity duration-1000 ${
         isLoaded ? 'opacity-100' : 'opacity-0'
       }`}
       style={{ 
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-        letterSpacing: '0.01em'
+        letterSpacing: '0.005em',
+        lineHeight: '1.6'
       }}
     >
       {/* HERO SECTION - Ultra Cinematic */}
@@ -198,66 +204,75 @@ export const MichelinStarTemplate: React.FC<MichelinStarTemplateProps> = ({ data
           }}
         />
 
-        {/* Navigation Ultra Minimal */}
-        <nav className="absolute top-0 left-0 right-0 z-50 p-8">
+        {/* NAVIGATION SOPHISTICATED */}
+        <nav className="absolute top-0 left-0 right-0 z-50 px-8 py-6">
           <div className="flex items-center justify-between max-w-7xl mx-auto">
             <div 
-              className="text-2xl tracking-wider font-light"
+              className="text-2xl tracking-[0.08em] font-normal"
               style={{ 
-                fontFamily: "'Cormorant Garamond', serif",
-                letterSpacing: '0.15em'
+                fontFamily: "'Playfair Display', serif",
+                letterSpacing: '0.08em',
+                fontWeight: 400
               }}
             >
               {restaurantData.logoText}
             </div>
-            <div className="hidden md:flex items-center gap-8 text-sm font-light tracking-wide">
-              <a href="#story" className="hover:text-amber-300 transition-colors duration-300">Histoire</a>
-              <a href="#menu" className="hover:text-amber-300 transition-colors duration-300">Menu</a>
-              <a href="#gallery" className="hover:text-amber-300 transition-colors duration-300">Galerie</a>
-              <a href="#contact" className="hover:text-amber-300 transition-colors duration-300">Contact</a>
+            <div className="hidden md:flex items-center gap-10 text-sm font-light">
+              <a href="#story" className="hover:text-[#D4AF37] transition-colors duration-500 tracking-wide">Notre Histoire</a>
+              <a href="#menu" className="hover:text-[#D4AF37] transition-colors duration-500 tracking-wide">Carte</a>
+              <a href="#gallery" className="hover:text-[#D4AF37] transition-colors duration-500 tracking-wide">Galerie</a>
+              <a href="#contact" className="hover:text-[#D4AF37] transition-colors duration-500 tracking-wide">Réservation</a>
             </div>
           </div>
         </nav>
 
-        {/* Hero Content */}
+        {/* HERO CONTENT SOPHISTICATED */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center max-w-4xl px-8">
+          <div className="text-center max-w-5xl px-8">
             <div 
-              className="text-sm tracking-[0.3em] text-amber-300 mb-6 font-light opacity-90"
+              className="text-sm tracking-[0.25em] text-[#D4AF37] mb-8 font-light opacity-95 uppercase"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
               {restaurantData.heroSubtitle}
             </div>
             <h1 
-              className="text-7xl md:text-9xl font-light mb-8 tracking-wide"
+              className="text-6xl md:text-8xl font-normal mb-12 tracking-[0.02em]"
               style={{ 
-                fontFamily: "'Cormorant Garamond', serif",
-                lineHeight: '0.9',
+                fontFamily: "'Playfair Display', serif",
+                lineHeight: '0.95',
+                fontWeight: 400,
                 transform: `translateY(${scrollY * -0.1}px)`
               }}
             >
               {restaurantData.heroTitle}
             </h1>
             <p 
-              className="text-xl md:text-2xl font-light leading-relaxed opacity-90 max-w-3xl mx-auto"
+              className="text-lg md:text-xl font-light leading-relaxed opacity-90 max-w-4xl mx-auto tracking-[0.01em]"
               style={{ 
-                fontFamily: "'Inter', sans-serif",
-                lineHeight: '1.6',
+                fontFamily: "'Source Serif 4', serif",
+                lineHeight: '1.8',
+                fontWeight: 300,
                 transform: `translateY(${scrollY * -0.05}px)`
               }}
             >
               {restaurantData.heroDescription}
             </p>
             
-            {/* CTA Buttons */}
-            <div className="mt-12 flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <button className="group relative px-8 py-4 border border-amber-300 text-amber-300 hover:bg-amber-300 hover:text-black transition-all duration-500 tracking-wider text-sm font-medium">
-                <span className="relative z-10">RÉSERVER UNE TABLE</span>
-                <div className="absolute inset-0 bg-amber-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+            {/* CTA BUTTONS SOPHISTICATED */}
+            <div className="mt-16 flex flex-col sm:flex-row gap-8 justify-center items-center">
+              <button 
+                className="group relative px-10 py-4 border border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0B0B0F] transition-all duration-700 tracking-[0.12em] text-sm font-medium uppercase"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                <span className="relative z-10">Réserver</span>
+                <div className="absolute inset-0 bg-[#D4AF37] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left"></div>
               </button>
-              <button className="group px-8 py-4 text-white border-b border-transparent hover:border-white transition-all duration-300 text-sm font-light tracking-wider">
-                DÉCOUVRIR LE MENU
-                <span className="inline-block ml-2 transform group-hover:translate-x-2 transition-transform duration-300">→</span>
+              <button 
+                className="group px-10 py-4 text-[#F7F3E9] border-b border-transparent hover:border-[#D4AF37] transition-all duration-500 text-sm font-light tracking-[0.08em] uppercase"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                Découvrir la Carte
+                <span className="inline-block ml-3 transform group-hover:translate-x-2 transition-transform duration-500 text-[#D4AF37]">→</span>
               </button>
             </div>
           </div>

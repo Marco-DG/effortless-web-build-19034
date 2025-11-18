@@ -1,4 +1,4 @@
-// Premium Design System Components
+// Premium Design System Components (Legacy)
 export { PremiumFormField } from './PremiumFormField';
 export { PremiumToggle } from './PremiumToggle';
 export { PremiumNumberInput } from './PremiumNumberInput';
@@ -10,3 +10,12 @@ export { PremiumListItem } from './PremiumListItem';
 export { PremiumSelect } from './PremiumSelect';
 export { PremiumColorPicker } from './PremiumColorPicker';
 export { PremiumOptionGrid } from './PremiumOptionGrid';
+
+// Clean Design System Components (New)
+export { CleanFormField } from './CleanFormField';
+export { CleanTextInput } from './CleanTextInput';
+export { CleanSelect } from './CleanSelect';
+export { CleanToggle } from './CleanToggle';
+export { CleanButton } from './CleanButton';
+export { CleanSectionHeader } from './CleanSectionHeader';
+export { CleanInfoBox } from './CleanInfoBox';

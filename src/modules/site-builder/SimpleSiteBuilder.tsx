@@ -11,7 +11,7 @@ import {
   InfoIcon, GalleryIcon
 } from '../../components/icons/PremiumIcons';
 import { getAllFonts, ensureGoogleFontLoaded } from '@/lib/fonts';
-import { PremiumCard, PremiumTextInput, PremiumSelect, PremiumToggle, PremiumActionButton } from '../../components/forms';
+import { PremiumCard, PremiumTextInput, PremiumSelect, PremiumToggle, PremiumActionButton, CleanSectionHeader, CleanFormField, CleanTextInput, CleanSelect, CleanToggle, CleanButton, CleanInfoBox } from '../../components/forms';
 import { NewsletterEditor, DeliveryEditor, ContactEditor, HoursEditor, LocationEditor } from './site-editors';
 import { ReviewsEditor, EventsEditor } from './additional-editors';
 import { TemplateSelector } from '../templates/TemplateSelector';
@@ -74,6 +74,8 @@ const getTemplateSection = (templateStyle: string): readonly BuilderSection[] =>
   switch (templateStyle) {
     case 'michelin_star':
       return MICHELIN_STAR_SECTIONS;
+    case 'aegean_pearl':
+      return MICHELIN_STAR_SECTIONS; // Usa le stesse sezioni del Michelin Star
     case 'wine_bar':
     default:
       return WINE_BAR_SECTIONS;
@@ -111,39 +113,39 @@ export const SimpleSiteBuilder: React.FC<SimpleSiteBuilderProps> = ({ onSwitchBu
       
       // Sezioni comuni (adattate per template)
       case 'hero':
-        return currentTemplate === 'michelin_star' 
+        return (currentTemplate === 'michelin_star' || currentTemplate === 'aegean_pearl')
           ? <MichelinHeroEditor project={activeProject} onUpdate={updateProject} />
           : <HeroEditor project={activeProject} onUpdate={updateProject} />;
       case 'about':
-        return currentTemplate === 'michelin_star'
+        return (currentTemplate === 'michelin_star' || currentTemplate === 'aegean_pearl')
           ? <StoryEditor project={activeProject} onUpdate={updateProject} />
           : <AboutEditor project={activeProject} onUpdate={updateProject} />;
       case 'gallery':
-        return currentTemplate === 'michelin_star'
+        return (currentTemplate === 'michelin_star' || currentTemplate === 'aegean_pearl')
           ? <MichelinGalleryEditor project={activeProject} onUpdate={updateProject} />
           : <GalleryEditor project={activeProject} onUpdate={updateProject} />;
       case 'contact':
-        return currentTemplate === 'michelin_star'
+        return (currentTemplate === 'michelin_star' || currentTemplate === 'aegean_pearl')
           ? <MichelinContactEditor project={activeProject} onUpdate={updateProject} />
           : <ContactEditor project={activeProject} onUpdate={updateProject} />;
       case 'reviews':
-        return currentTemplate === 'michelin_star'
+        return (currentTemplate === 'michelin_star' || currentTemplate === 'aegean_pearl')
           ? <MichelinReviewsEditor project={activeProject} onUpdate={updateProject} />
           : <ReviewsEditor project={activeProject} onUpdate={updateProject} />;
       case 'events':
-        return currentTemplate === 'michelin_star'
+        return (currentTemplate === 'michelin_star' || currentTemplate === 'aegean_pearl')
           ? <MichelinEventsEditor project={activeProject} onUpdate={updateProject} />
           : <EventsEditor project={activeProject} onUpdate={updateProject} />;
       case 'newsletter':
-        return currentTemplate === 'michelin_star'
+        return (currentTemplate === 'michelin_star' || currentTemplate === 'aegean_pearl')
           ? <MichelinVIPClubEditor project={activeProject} onUpdate={updateProject} />
           : <NewsletterEditor project={activeProject} onUpdate={updateProject} />;
       case 'hours':
-        return currentTemplate === 'michelin_star'
+        return (currentTemplate === 'michelin_star' || currentTemplate === 'aegean_pearl')
           ? <MichelinHoursEditor project={activeProject} onUpdate={updateProject} />
           : <HoursEditor project={activeProject} onUpdate={updateProject} />;
       case 'location':
-        return currentTemplate === 'michelin_star'
+        return (currentTemplate === 'michelin_star' || currentTemplate === 'aegean_pearl')
           ? <MichelinLocationEditor project={activeProject} onUpdate={updateProject} />
           : <LocationEditor project={activeProject} onUpdate={updateProject} />;
       
@@ -188,10 +190,8 @@ const BusinessInfoEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   const defaults = getTemplateDefaults(currentTemplate);
   const updateBusiness = createNestedUpdater(project, onUpdate, 'business');
   
-  // Usa defaults solo se i valori non esistono già
   const businessData = project.data?.business || {};
   
-  // ✅ MEMOIZZA i valori invece di calcolarli ad ogni render
   const name = React.useMemo(() => 
     businessData.name !== undefined ? businessData.name : (defaults.business?.name || ''), 
     [businessData.name, defaults.business?.name]
@@ -208,48 +208,62 @@ const BusinessInfoEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   );
   
   return (
-    <PremiumCard
-      title="Informazioni Base del Ristorante"
-      description="Dettagli principali che definiscono la vostra identità culinaria"
-    >
-      <div className="space-y-6">
-        <PremiumTextInput
+    <div className="space-y-6">
+      <CleanSectionHeader
+        title="Informazioni Base del Ristorante"
+        description="Dettagli principali che definiscono la vostra identità culinaria"
+      />
+      
+      <div className="space-y-5">
+        <CleanFormField
           label="Nome Ristorante"
           description="Il nome del vostro ristorante (massima eleganza)"
-          value={name}
-          onChange={(value) => updateBusiness('name', value)}
-          placeholder="Es. Le Bernardin, Osteria Francescana..."
-        />
+          required
+        >
+          <CleanTextInput
+            value={name}
+            onChange={(value) => updateBusiness('name', value)}
+            placeholder="Es. Le Bernardin, Osteria Francescana..."
+          />
+        </CleanFormField>
         
-        <PremiumTextInput
+        <CleanFormField
           label="Sottotitolo/Riconoscimenti"
           description="Stelle Michelin, location, o breve tagline di prestigio"
-          value={tagline}
-          onChange={(value) => updateBusiness('tagline', value)}
-          placeholder="Es. ★★★ Michelin • Milano, Tres estrellas Michelin..."
-        />
-        
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
-            Descrizione Principale
-          </label>
-          <p className="text-xs text-gray-500 mb-2">
-            Una frase evocativa che descrive la vostra esperienza culinaria
-          </p>
-          <textarea
-            value={description}
-            onChange={(e) => updateBusiness('description', e.target.value)}
-            placeholder="Es. Une expérience culinaire transcendante où chaque plat raconte une histoire..."
-            rows={3}
-            maxLength={150}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+        >
+          <CleanTextInput
+            value={tagline}
+            onChange={(value) => updateBusiness('tagline', value)}
+            placeholder="Es. ★★★ Michelin • Milano, Tres estrellas Michelin..."
           />
-          <p className="text-xs text-gray-400">
+        </CleanFormField>
+        
+        <CleanFormField
+          label="Descrizione Principale"
+          description="Una frase evocativa che descrive la vostra esperienza culinaria"
+        >
+          <CleanTextInput
+            value={description}
+            onChange={(value) => updateBusiness('description', value)}
+            placeholder="Es. Une expérience culinaire transcendante où chaque plat raconte une histoire..."
+            multiline
+            rows={3}
+          />
+          <p className="text-xs text-slate-500 mt-2">
             Pensa a parole evocative: transcendante, sublimazione, poetry, artistry...
           </p>
-        </div>
+        </CleanFormField>
       </div>
-    </PremiumCard>
+      
+      <CleanInfoBox type="tip" title="✨ Suggerimenti Premium">
+        <ul className="space-y-1">
+          <li>• Utilizza un linguaggio evocativo ed emotivo</li>
+          <li>• Menziona riconoscimenti senza essere eccessivo</li>
+          <li>• Pensa all'esperienza che vuoi trasmettere</li>
+          <li>• Massimo 150 caratteri per la descrizione</li>
+        </ul>
+      </CleanInfoBox>
+    </div>
   );
 };
 
@@ -258,7 +272,6 @@ const StoryEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   const defaults = getTemplateDefaults(currentTemplate);
   const updateStory = createNestedUpdater(project, onUpdate, 'story');
   
-  // Usa defaults solo se i valori non esistono già
   const storyData = project.data?.story || {};
   
   const sectionTitle = React.useMemo(() => 
@@ -282,50 +295,70 @@ const StoryEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   );
   
   return (
-    <PremiumCard
-      title="La Nostra Storia"
-      description="Racconta la vostra filosofia culinaria e il percorso che vi ha portato all'eccellenza"
-    >
-      <div className="space-y-6">
-        <PremiumTextInput
+    <div className="space-y-6">
+      <CleanSectionHeader
+        title="La Nostra Storia"
+        description="Racconta la vostra filosofia culinaria e il percorso che vi ha portato all'eccellenza"
+      />
+      
+      <div className="space-y-5">
+        <CleanFormField
           label="Titolo Sezione"
-          value={sectionTitle}
-          onChange={(value) => updateStory('section_title', value)}
-          placeholder="Es. Notre Vision, La Nostra Storia, Our Philosophy..."
-        />
-        
-        <PremiumTextInput
-          label="Nome Chef/Proprietario"
-          value={chefName}
-          onChange={(value) => updateStory('chef_name', value)}
-          placeholder="Es. Chef Massimo Bottura, Chef étoilé Marie Dubois..."
-        />
-        
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
-            Testo Storia
-          </label>
-          <p className="text-xs text-gray-500 mb-2">
-            La vostra storia, filosofia culinaria, approccio
-          </p>
-          <textarea
-            value={storyText}
-            onChange={(e) => updateStory('story_text', e.target.value)}
-            placeholder="Racconta la passione, la dedizione, l'evoluzione, il rispetto per la tradizione..."
-            rows={5}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+          description="Come vuoi intitolare questa sezione nel sito"
+        >
+          <CleanTextInput
+            value={sectionTitle}
+            onChange={(value) => updateStory('section_title', value)}
+            placeholder="Es. Notre Vision, La Nostra Storia, Our Philosophy..."
           />
-        </div>
+        </CleanFormField>
         
-        <PremiumTextInput
+        <CleanFormField
+          label="Nome Chef/Proprietario"
+          description="Il protagonista della vostra storia culinaria"
+        >
+          <CleanTextInput
+            value={chefName}
+            onChange={(value) => updateStory('chef_name', value)}
+            placeholder="Es. Chef Massimo Bottura, Chef étoilé Marie Dubois..."
+          />
+        </CleanFormField>
+        
+        <CleanFormField
+          label="Testo Storia"
+          description="La vostra storia, filosofia culinaria, approccio"
+        >
+          <CleanTextInput
+            value={storyText}
+            onChange={(value) => updateStory('story_text', value)}
+            placeholder="Racconta la passione, la dedizione, l'evoluzione, il rispetto per la tradizione..."
+            multiline
+            rows={5}
+          />
+        </CleanFormField>
+        
+        <CleanFormField
           label="URL Immagine Chef/Cucina"
           description="Foto professionale del chef o della brigata"
-          value={chefImage}
-          onChange={(value) => updateStory('chef_image', value)}
-          placeholder="https://..."
-        />
+        >
+          <CleanTextInput
+            value={chefImage}
+            onChange={(value) => updateStory('chef_image', value)}
+            placeholder="https://images.unsplash.com/photo-..."
+            type="url"
+          />
+        </CleanFormField>
       </div>
-    </PremiumCard>
+      
+      <CleanInfoBox type="tip" title="📖 Storytelling Tips">
+        <ul className="space-y-1">
+          <li>• Racconta la tua passione e dedizione alla cucina</li>
+          <li>• Menziona il rispetto per la tradizione e l'innovazione</li>
+          <li>• Condividi l'evoluzione e i momenti chiave del percorso</li>
+          <li>• Usa un tono autentico e personale</li>
+        </ul>
+      </CleanInfoBox>
+    </div>
   );
 };
 
@@ -334,7 +367,6 @@ const MichelinHeroEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   const defaults = getTemplateDefaults(currentTemplate);
   const updateHero = createNestedUpdater(project, onUpdate, 'hero');
   
-  // Usa defaults solo se i valori non esistono già
   const heroData = project.data?.hero || {};
   
   const images = React.useMemo(() => 
@@ -351,87 +383,154 @@ const MichelinHeroEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
     heroData.parallax_intensity !== undefined ? heroData.parallax_intensity : (defaults.hero?.parallax_intensity || 20), 
     [heroData.parallax_intensity, defaults.hero?.parallax_intensity]
   );
+
+  const addImage = () => {
+    updateHero('images', [...images, '']);
+  };
+
+  const updateImage = (index: number, url: string) => {
+    const newImages = [...images];
+    newImages[index] = url;
+    updateHero('images', newImages);
+  };
+
+  const removeImage = (index: number) => {
+    const newImages = images.filter((_: any, i: number) => i !== index);
+    updateHero('images', newImages);
+  };
   
   return (
-    <PremiumCard
-      title="Hero Section Cinematografica"
-      description="La prima impressione ultra-premium del vostro ristorante"
-    >
-      <div className="space-y-6">
-        <div className="space-y-4">
-          <h4 className="text-sm font-medium text-gray-700">Carousel Immagini</h4>
-          <p className="text-xs text-gray-500">
-            Aggiungete 3-5 immagini premium per maximum impact
-          </p>
-          
-          {images.map((img: string, index: number) => (
-            <div key={index} className="flex items-center gap-3 p-3 border rounded">
-              <img src={img} alt={`Image ${index + 1}`} className="w-16 h-16 object-cover rounded" />
-              <input
-                value={img}
-                onChange={(e) => {
-                  const newImages = [...images];
-                  newImages[index] = e.target.value;
-                  updateHero('images', newImages);
-                }}
-                placeholder="URL immagine..."
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                onClick={() => {
-                  const newImages = images.filter((_: any, i: number) => i !== index);
-                  updateHero('images', newImages);
-                }}
-                className="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
-              >
-                ✕
-              </button>
-            </div>
-          ))}
-          
-          {images.length < 5 && (
-            <button
-              onClick={() => updateHero('images', [...images, ''])}
-              className="w-full px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 transition-colors"
-            >
-              + Aggiungi Immagine
-            </button>
-          )}
+    <div className="space-y-6">
+      <CleanSectionHeader
+        title="Hero Section Cinematografica"
+        description="La prima impressione ultra-premium del vostro ristorante"
+      />
+      
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h4 className="text-sm font-semibold text-slate-800">Carousel Immagini</h4>
+          <CleanButton
+            onClick={addImage}
+            variant="outline"
+            size="sm"
+            icon={CanvasIcon}
+            disabled={images.length >= 5}
+          >
+            Aggiungi Immagine
+          </CleanButton>
         </div>
         
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Velocità Carousel (secondi)
-            </label>
-            <input
-              type="number"
-              value={carouselSpeed}
-              onChange={(e) => updateHero('carousel_speed', parseInt(e.target.value))}
-              min="3"
-              max="10"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <p className="text-xs text-gray-400 mt-1">5 secondi è ottimale per permettere l'immersione visiva</p>
+        {images.length === 0 ? (
+          <div className="text-center py-12 text-muted-foreground">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center">
+              <CanvasIcon className="w-6 h-6 opacity-40" />
+            </div>
+            <h4 className="font-medium text-sm mb-1">Nessuna immagine hero</h4>
+            <p className="text-xs">Aggiungi le immagini per il carousel cinematografico</p>
           </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Intensità Parallax (0-100)
-            </label>
-            <input
-              type="number"
-              value={parallaxIntensity}
-              onChange={(e) => updateHero('parallax_intensity', parseInt(e.target.value))}
-              min="0"
-              max="100"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <p className="text-xs text-gray-400 mt-1">20-30 è ideale per eleganza senza motion sickness</p>
+        ) : (
+          <div className="space-y-3">
+            {images.map((img: string, index: number) => (
+              <div key={index} className="flex items-center gap-4 p-4 border border-slate-200 rounded-xl hover:border-slate-300 transition-colors">
+                {/* Hero Preview */}
+                <div className="w-20 h-12 rounded-lg overflow-hidden bg-slate-100 flex-shrink-0">
+                  {img ? (
+                    <img 
+                      src={img} 
+                      alt={`Hero ${index + 1}`} 
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = 'none';
+                        (e.target as HTMLImageElement).nextElementSibling!.classList.remove('hidden');
+                      }}
+                    />
+                  ) : null}
+                  <div className={`w-full h-full flex items-center justify-center text-slate-400 text-xs ${img ? 'hidden' : ''}`}>
+                    <CanvasIcon className="w-4 h-4" />
+                  </div>
+                </div>
+                
+                {/* Image Priority Badge */}
+                <div className="flex flex-col items-center gap-1">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                    index === 0 ? 'bg-amber-100 text-amber-600' : 'bg-slate-100'
+                  }`}>
+                    <span className="text-sm font-bold">#{index + 1}</span>
+                  </div>
+                  {index === 0 && (
+                    <span className="text-xs text-amber-600 font-medium">Main</span>
+                  )}
+                </div>
+                
+                {/* URL Input */}
+                <CleanTextInput
+                  value={img}
+                  onChange={(value) => updateImage(index, value)}
+                  placeholder="https://images.unsplash.com/photo-..."
+                  type="url"
+                  className="flex-1"
+                />
+                
+                {/* Remove Button */}
+                <CleanButton
+                  onClick={() => removeImage(index)}
+                  variant="ghost"
+                  size="sm"
+                >
+                  Rimuovi
+                </CleanButton>
+              </div>
+            ))}
           </div>
+        )}
+        
+        <div className="text-xs text-slate-500 bg-slate-50 p-3 rounded-lg">
+          💡 <strong>Suggerimento:</strong> Immagini hero per il carousel cinematografico. La prima immagine è quella principale. (3-5 immagini per impatto ottimale)
         </div>
       </div>
-    </PremiumCard>
+      
+      <div className="space-y-4">
+        <h4 className="text-sm font-semibold text-slate-800 pb-2 border-b border-slate-100">Impostazioni Avanzate</h4>
+        
+        <div className="grid grid-cols-2 gap-4">
+          <CleanFormField
+            label="Velocità Carousel"
+            description="Durata di ogni immagine (secondi)"
+          >
+            <CleanTextInput
+              value={carouselSpeed.toString()}
+              onChange={(value) => updateHero('carousel_speed', parseInt(value) || 5)}
+              type="number"
+              placeholder="5"
+            />
+            <p className="text-xs text-slate-500 mt-1">5 secondi è ottimale per l'immersione visiva</p>
+          </CleanFormField>
+          
+          <CleanFormField
+            label="Intensità Parallax"
+            description="Effetto di profondità (0-100)"
+          >
+            <CleanTextInput
+              value={parallaxIntensity.toString()}
+              onChange={(value) => updateHero('parallax_intensity', parseInt(value) || 25)}
+              type="number"
+              placeholder="25"
+            />
+            <p className="text-xs text-slate-500 mt-1">20-30 è ideale per eleganza senza motion sickness</p>
+          </CleanFormField>
+        </div>
+      </div>
+      
+      <CleanInfoBox type="tip" title="🎬 Tips Cinematografici">
+        <ul className="space-y-1">
+          <li>• <strong>Prima immagine:</strong> La più rappresentativa del ristorante</li>
+          <li>• <strong>Composizione:</strong> Mix di ambiente, piatti e dettagli</li>
+          <li>• <strong>Qualità:</strong> Risoluzione alta, formato landscape preferibile</li>
+          <li>• <strong>Velocità:</strong> 5 secondi permette apprezzamento completo</li>
+          <li>• <strong>Parallax:</strong> 25% aggiunge profondità senza disturbare</li>
+        </ul>
+      </CleanInfoBox>
+    </div>
   );
 };
 
@@ -440,7 +539,6 @@ const AwardsEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   const defaults = getTemplateDefaults(currentTemplate);
   const updateAwards = createNestedUpdater(project, onUpdate, 'awards');
   
-  // Usa defaults solo se i valori non esistono già  
   const awardsData = project.data?.awards || {};
   
   const showAwards = React.useMemo(() => 
@@ -452,89 +550,148 @@ const AwardsEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
     awardsData.awards_list !== undefined ? awardsData.awards_list : (defaults.awards?.awards_list || []), 
     [awardsData.awards_list, defaults.awards?.awards_list]
   );
+
+  const addAward = () => {
+    updateAwards('awards_list', [...awardsList, { name: '', year: '', score: '' }]);
+  };
+
+  const updateAward = (index: number, field: string, value: string) => {
+    const newAwards = [...awardsList];
+    newAwards[index] = { ...newAwards[index], [field]: value };
+    updateAwards('awards_list', newAwards);
+  };
+
+  const removeAward = (index: number) => {
+    const newAwards = awardsList.filter((_: any, i: number) => i !== index);
+    updateAwards('awards_list', newAwards);
+  };
   
   return (
-    <PremiumCard
-      title="Riconoscimenti e Premi"
-      description="Condividi i vostri prestigiosi riconoscimenti culinari"
-    >
-      <div className="space-y-6">
-        <PremiumToggle
+    <div className="space-y-6">
+      <CleanSectionHeader
+        title="Riconoscimenti e Premi"
+        description="Condividi i vostri prestigiosi riconoscimenti culinari"
+      />
+      
+      <div className="space-y-5">
+        <CleanFormField
           label="Mostra Sezione Riconoscimenti"
-          description="Abilita/disabilita l'intera sezione awards"
-          checked={showAwards}
-          onChange={(checked) => updateAwards('show_awards', checked)}
-        />
+          description="Abilita/disabilita l'intera sezione awards sul sito"
+        >
+          <div className="flex items-center gap-3">
+            <CleanToggle
+              checked={showAwards}
+              onChange={(checked) => updateAwards('show_awards', checked)}
+            />
+            <span className="text-sm font-medium text-slate-700">
+              {showAwards ? 'Sezione visibile' : 'Sezione nascosta'}
+            </span>
+          </div>
+        </CleanFormField>
         
         {showAwards && (
-          <div className="space-y-4">
-            <h4 className="text-sm font-medium text-gray-700">Lista Riconoscimenti</h4>
-            <p className="text-xs text-gray-500">
-              Aggiungi i tuoi riconoscimenti più prestigiosi. L'ordine determina la priorità.
-            </p>
-            
-            {awardsList.map((award: any, index: number) => (
-              <div key={index} className="p-4 border rounded-lg space-y-3">
-                <div className="grid grid-cols-2 gap-3">
-                  <input
-                    placeholder="Nome riconoscimento..."
-                    value={award.name || ''}
-                    onChange={(e) => {
-                      const newAwards = [...awardsList];
-                      newAwards[index] = { ...award, name: e.target.value };
-                      updateAwards('awards_list', newAwards);
-                    }}
-                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <input
-                    placeholder="Anno/Periodo..."
-                    value={award.year || ''}
-                    onChange={(e) => {
-                      const newAwards = [...awardsList];
-                      newAwards[index] = { ...award, year: e.target.value };
-                      updateAwards('awards_list', newAwards);
-                    }}
-                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <input
-                    placeholder="Punteggio (es. 18/20)..."
-                    value={award.score || ''}
-                    onChange={(e) => {
-                      const newAwards = [...awardsList];
-                      newAwards[index] = { ...award, score: e.target.value };
-                      updateAwards('awards_list', newAwards);
-                    }}
-                    className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <button
-                    onClick={() => {
-                      const newAwards = awardsList.filter((_: any, i: number) => i !== index);
-                      updateAwards('awards_list', newAwards);
-                    }}
-                    className="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
-                  >
-                    Rimuovi
-                  </button>
-                </div>
-              </div>
-            ))}
-            
-            {awardsList.length < 6 && (
-              <button
-                onClick={() => {
-                  updateAwards('awards_list', [...awardsList, { name: '', year: '', score: '' }]);
-                }}
-                className="w-full px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 transition-colors"
+          <div className="space-y-5">
+            <div className="flex items-center justify-between">
+              <h4 className="text-sm font-semibold text-slate-800">Lista Riconoscimenti</h4>
+              <CleanButton
+                onClick={addAward}
+                variant="outline"
+                size="sm"
+                icon={Award}
+                disabled={awardsList.length >= 6}
               >
-                + Aggiungi Riconoscimento
-              </button>
+                Aggiungi Premio
+              </CleanButton>
+            </div>
+            
+            {awardsList.length === 0 ? (
+              <div className="text-center py-12 text-muted-foreground">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center">
+                  <Award className="w-6 h-6 opacity-40" />
+                </div>
+                <h4 className="font-medium text-sm mb-1">Nessun riconoscimento</h4>
+                <p className="text-xs">Aggiungi i tuoi premi più prestigiosi</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {awardsList.map((award: any, index: number) => (
+                  <div key={index} className="border border-slate-200 rounded-xl p-5 bg-white hover:border-slate-300 transition-all">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center">
+                          <Award className="w-4 h-4" />
+                        </div>
+                        <h4 className="font-semibold text-slate-800">Premio #{index + 1}</h4>
+                      </div>
+                      <CleanButton
+                        onClick={() => removeAward(index)}
+                        variant="ghost"
+                        size="sm"
+                      >
+                        Rimuovi
+                      </CleanButton>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <CleanFormField 
+                          label="Nome Riconoscimento" 
+                          description="Es. Stella Michelin, Gault & Millau"
+                          required
+                        >
+                          <CleanTextInput
+                            value={award.name || ''}
+                            onChange={(value) => updateAward(index, 'name', value)}
+                            placeholder="Es. Stella Michelin, James Beard Award..."
+                          />
+                        </CleanFormField>
+                        
+                        <CleanFormField 
+                          label="Anno/Periodo" 
+                          description="Quando è stato ottenuto"
+                          required
+                        >
+                          <CleanTextInput
+                            value={award.year || ''}
+                            onChange={(value) => updateAward(index, 'year', value)}
+                            placeholder="Es. 2023, 2020-2024..."
+                          />
+                        </CleanFormField>
+                      </div>
+                      
+                      <CleanFormField 
+                        label="Punteggio/Dettagli" 
+                        description="Punteggio specifico o dettagli aggiuntivi (opzionale)"
+                      >
+                        <CleanTextInput
+                          value={award.score || ''}
+                          onChange={(value) => updateAward(index, 'score', value)}
+                          placeholder="Es. 18/20, Top 100 Mondial, Outstanding Chef..."
+                        />
+                      </CleanFormField>
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
+            
+            <div className="text-xs text-slate-500 bg-slate-50 p-3 rounded-lg">
+              💡 <strong>Suggerimento:</strong> L'ordine determina la priorità di visualizzazione. Inserisci prima i riconoscimenti più prestigiosi. (Massimo 6 premi)
+            </div>
           </div>
         )}
       </div>
-    </PremiumCard>
+      
+      <CleanInfoBox type="success" title="🏆 Premi di Prestigio">
+        <ul className="space-y-1">
+          <li>• <strong>Michelin:</strong> 1, 2 o 3 stelle + anno di assegnazione</li>
+          <li>• <strong>Gault & Millau:</strong> Punteggio su 20 + anno</li>
+          <li>• <strong>La Liste:</strong> Posizione in classifica mondiale</li>
+          <li>• <strong>James Beard:</strong> Categoria specifica vinta</li>
+          <li>• <strong>World's 50 Best:</strong> Posizione in classifica</li>
+        </ul>
+      </CleanInfoBox>
+    </div>
   );
 };
 
@@ -682,7 +839,6 @@ const MichelinGalleryEditor: React.FC<EditorProps> = ({ project, onUpdate }) => 
   const defaults = getTemplateDefaults(currentTemplate);
   const updateGallery = createNestedUpdater(project, onUpdate, 'gallery');
   
-  // Usa defaults solo se i valori non esistono già
   const galleryData = project.data?.gallery || {};
   
   const images = React.useMemo(() => 
@@ -694,67 +850,132 @@ const MichelinGalleryEditor: React.FC<EditorProps> = ({ project, onUpdate }) => 
     galleryData.gallery_layout !== undefined ? galleryData.gallery_layout : (defaults.gallery?.gallery_layout || 'masonry'), 
     [galleryData.gallery_layout, defaults.gallery?.gallery_layout]
   );
+
+  const addImage = () => {
+    updateGallery('gallery_images', [...images, '']);
+  };
+
+  const updateImage = (index: number, url: string) => {
+    const newImages = [...images];
+    newImages[index] = url;
+    updateGallery('gallery_images', newImages);
+  };
+
+  const removeImage = (index: number) => {
+    const newImages = images.filter((_: any, i: number) => i !== index);
+    updateGallery('gallery_images', newImages);
+  };
   
   return (
-    <PremiumCard
-      title="Galleria Premium"
-      description="Showcase di piatti, ambiente e dettagli del vostro ristorante"
-    >
-      <div className="space-y-6">
-        <div className="space-y-4">
-          <h4 className="text-sm font-medium text-gray-700">Immagini Galleria</h4>
-          <p className="text-xs text-gray-500">
-            Mix di piatti signature, ambiente, dettagli e processo creativo (6-12 immagini)
-          </p>
-          
-          {images.map((img: string, index: number) => (
-            <div key={index} className="flex items-center gap-3 p-3 border rounded">
-              <img src={img} alt={`Gallery ${index + 1}`} className="w-16 h-16 object-cover rounded" />
-              <input
-                value={img}
-                onChange={(e) => {
-                  const newImages = [...images];
-                  newImages[index] = e.target.value;
-                  updateGallery('gallery_images', newImages);
-                }}
-                placeholder="URL immagine..."
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                onClick={() => {
-                  const newImages = images.filter((_: any, i: number) => i !== index);
-                  updateGallery('gallery_images', newImages);
-                }}
-                className="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
-              >
-                ✕
-              </button>
-            </div>
-          ))}
-          
-          {images.length < 12 && (
-            <button
-              onClick={() => updateGallery('gallery_images', [...images, ''])}
-              className="w-full px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 transition-colors"
-            >
-              + Aggiungi Immagine
-            </button>
-          )}
-        </div>
-        
-        <PremiumSelect
+    <div className="space-y-6">
+      <CleanSectionHeader
+        title="Galleria Premium"
+        description="Showcase di piatti, ambiente e dettagli del vostro ristorante"
+      />
+      
+      <div className="space-y-5">
+        <CleanFormField
           label="Layout Galleria"
-          description="Disposizione delle immagini"
-          value={galleryLayout}
-          onChange={(value) => updateGallery('gallery_layout', value)}
-          options={[
-            { label: 'Grid Regolare', value: 'grid' },
-            { label: 'Masonry (Consigliato)', value: 'masonry' },
-            { label: 'Carousel', value: 'carousel' }
-          ]}
-        />
+          description="Scegli come organizzare le immagini nel sito"
+        >
+          <CleanSelect
+            value={galleryLayout}
+            onChange={(value) => updateGallery('gallery_layout', value)}
+            options={[
+              { value: 'masonry', label: 'Masonry (Consigliato) - Layout dinamico' },
+              { value: 'grid', label: 'Grid Regolare - Griglia uniforme' },
+              { value: 'carousel', label: 'Carousel - Slideshow navigabile' }
+            ]}
+          />
+        </CleanFormField>
+        
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h4 className="text-sm font-semibold text-slate-800">Immagini Galleria</h4>
+            <CleanButton
+              onClick={addImage}
+              variant="outline"
+              size="sm"
+              icon={GalleryIcon}
+              disabled={images.length >= 12}
+            >
+              Aggiungi Immagine
+            </CleanButton>
+          </div>
+          
+          {images.length === 0 ? (
+            <div className="text-center py-12 text-muted-foreground">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center">
+                <GalleryIcon className="w-6 h-6 opacity-40" />
+              </div>
+              <h4 className="font-medium text-sm mb-1">Nessuna immagine</h4>
+              <p className="text-xs">Aggiungi le prime immagini per la galleria</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {images.map((img: string, index: number) => (
+                <div key={index} className="flex items-center gap-4 p-4 border border-slate-200 rounded-xl hover:border-slate-300 transition-colors">
+                  {/* Image Preview */}
+                  <div className="w-16 h-16 rounded-lg overflow-hidden bg-slate-100 flex-shrink-0">
+                    {img ? (
+                      <img 
+                        src={img} 
+                        alt={`Gallery ${index + 1}`} 
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = 'none';
+                          (e.target as HTMLImageElement).nextElementSibling!.classList.remove('hidden');
+                        }}
+                      />
+                    ) : null}
+                    <div className={`w-full h-full flex items-center justify-center text-slate-400 text-xs ${img ? 'hidden' : ''}`}>
+                      <GalleryIcon className="w-6 h-6" />
+                    </div>
+                  </div>
+                  
+                  {/* Image Number Badge */}
+                  <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-sm font-bold text-slate-600">#{index + 1}</span>
+                  </div>
+                  
+                  {/* URL Input */}
+                  <CleanTextInput
+                    value={img}
+                    onChange={(value) => updateImage(index, value)}
+                    placeholder="https://images.unsplash.com/photo-..."
+                    type="url"
+                    className="flex-1"
+                  />
+                  
+                  {/* Remove Button */}
+                  <CleanButton
+                    onClick={() => removeImage(index)}
+                    variant="ghost"
+                    size="sm"
+                  >
+                    Rimuovi
+                  </CleanButton>
+                </div>
+              ))}
+            </div>
+          )}
+          
+          <div className="text-xs text-slate-500 bg-slate-50 p-3 rounded-lg">
+            💡 <strong>Suggerimento:</strong> Mix ideale: piatti signature, ambiente del ristorante, dettagli della cucina e momenti del servizio. (6-12 immagini per impatto ottimale)
+          </div>
+        </div>
       </div>
-    </PremiumCard>
+      
+      <CleanInfoBox type="tip" title="📸 Tips per Immagini Premium">
+        <ul className="space-y-1">
+          <li>• <strong>Piatti signature:</strong> Close-up artistici dei vostri capolavori</li>
+          <li>• <strong>Ambiente:</strong> Sala, tavoli, atmosfera del locale</li>
+          <li>• <strong>Cucina:</strong> Brigata al lavoro, processo creativo</li>
+          <li>• <strong>Dettagli:</strong> Ingredienti pregiati, impiattamenti</li>
+          <li>• <strong>Qualità:</strong> Risoluzione alta, luce naturale preferibile</li>
+        </ul>
+      </CleanInfoBox>
+    </div>
   );
 };
 
@@ -763,7 +984,6 @@ const MichelinContactEditor: React.FC<EditorProps> = ({ project, onUpdate }) => 
   const defaults = getTemplateDefaults(currentTemplate);
   const updateContact = createNestedUpdater(project, onUpdate, 'contact');
   
-  // Usa defaults solo se i valori non esistono già
   const contactData = project.data?.contact || {};
   
   const address = React.useMemo(() => 
@@ -792,63 +1012,105 @@ const MichelinContactEditor: React.FC<EditorProps> = ({ project, onUpdate }) => 
   );
   
   return (
-    <PremiumCard
-      title="Contatti Premium"
-      description="Informazioni di contatto e prenotazioni per il vostro ristorante"
-    >
-      <div className="space-y-6">
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Indirizzo</label>
-          <textarea
+    <div className="space-y-6">
+      <CleanSectionHeader
+        title="Contatti Premium"
+        description="Informazioni di contatto e prenotazioni per il vostro ristorante"
+      />
+      
+      <div className="space-y-5">
+        <CleanFormField
+          label="Indirizzo Completo"
+          description="Indirizzo completo con CAP e città"
+          required
+        >
+          <CleanTextInput
             value={address}
-            onChange={(e) => updateContact('address', e.target.value)}
-            placeholder="Indirizzo completo con CAP"
+            onChange={(value) => updateContact('address', value)}
+            placeholder="Via Roma 123, 20121 Milano (MI)"
+            multiline
             rows={2}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
           />
-        </div>
+        </CleanFormField>
         
-        <PremiumTextInput
-          label="Telefono"
-          value={phone}
-          onChange={(value) => updateContact('phone', value)}
-          placeholder="+39 02 1234567"
-        />
+        <CleanFormField
+          label="Numero di Telefono"
+          description="Numero principale per prenotazioni"
+          required
+        >
+          <CleanTextInput
+            value={phone}
+            onChange={(value) => updateContact('phone', value)}
+            placeholder="+39 02 1234567"
+            type="tel"
+          />
+        </CleanFormField>
         
-        <PremiumTextInput
-          label="Email"
-          value={email}
-          onChange={(value) => updateContact('email', value)}
-          placeholder="prenotazioni@nomeristorante.it"
-        />
+        <CleanFormField
+          label="Indirizzo Email"
+          description="Email per prenotazioni e informazioni"
+          required
+        >
+          <CleanTextInput
+            value={email}
+            onChange={(value) => updateContact('email', value)}
+            placeholder="prenotazioni@nomeristorante.it"
+            type="email"
+          />
+        </CleanFormField>
         
-        <PremiumTextInput
+        <CleanFormField
           label="URL Prenotazioni"
           description="Link a sistema di prenotazione esterno (opzionale)"
-          value={reservationUrl}
-          onChange={(value) => updateContact('reservation_url', value)}
-          placeholder="https://www.opentable.com/..."
-        />
+        >
+          <CleanTextInput
+            value={reservationUrl}
+            onChange={(value) => updateContact('reservation_url', value)}
+            placeholder="https://www.opentable.com/restaurant/..."
+            type="url"
+          />
+        </CleanFormField>
+      </div>
+      
+      <div className="space-y-4">
+        <h4 className="text-sm font-semibold text-slate-800 pb-2 border-b border-slate-100">Link Social Media</h4>
         
-        <div className="space-y-4">
-          <h4 className="text-sm font-medium text-gray-700">Link Social</h4>
-          <div className="grid grid-cols-2 gap-4">
-            <PremiumTextInput
-              label="Instagram"
+        <div className="grid grid-cols-2 gap-4">
+          <CleanFormField
+            label="Instagram"
+            description="Account Instagram ufficiale"
+          >
+            <CleanTextInput
               value={socialLinks.instagram || ''}
               onChange={(value) => updateContact('social_links', { ...socialLinks, instagram: value })}
-              placeholder="https://instagram.com/..."
+              placeholder="https://instagram.com/restaurant"
+              type="url"
             />
-            <PremiumTextInput
-              label="Facebook"
+          </CleanFormField>
+          
+          <CleanFormField
+            label="Facebook"
+            description="Pagina Facebook ufficiale"
+          >
+            <CleanTextInput
               value={socialLinks.facebook || ''}
               onChange={(value) => updateContact('social_links', { ...socialLinks, facebook: value })}
-              placeholder="https://facebook.com/..."
+              placeholder="https://facebook.com/restaurant"
+              type="url"
             />
-          </div>
+          </CleanFormField>
         </div>
       </div>
-    </PremiumCard>
+      
+      <CleanInfoBox type="tip" title="📞 Suggerimenti Contatti">
+        <ul className="space-y-1">
+          <li>• Utilizzate un numero dedicato alle prenotazioni</li>
+          <li>• Email professionale con dominio del ristorante</li>
+          <li>• Indirizzo completo per facilitare la navigazione GPS</li>
+          <li>• Link social aggiornati e verificati</li>
+        </ul>
+      </CleanInfoBox>
+    </div>
   );
 };
 
@@ -1092,95 +1354,124 @@ const MichelinReviewsEditor: React.FC<EditorProps> = ({ project, onUpdate }) => 
   };
 
   return (
-    <PremiumCard
-      title="Testimonianze Clienti"
-      description="Recensioni e testimonianze di ospiti soddisfatti"
-    >
-      <div className="space-y-6">
-        {testimonials.map((testimonial: any, index: number) => (
-          <div key={testimonial.id || index} className="border border-gray-200 rounded-lg p-4 space-y-4">
-            <div className="flex justify-between items-start">
-              <h4 className="font-medium text-gray-900">Testimonianza #{index + 1}</h4>
-              <button
-                onClick={() => removeTestimonial(index)}
-                className="text-red-500 hover:text-red-700 text-sm"
-              >
-                Rimuovi
-              </button>
+    <div className="space-y-6">
+      <CleanSectionHeader
+        title="Testimonianze Clienti"
+        description="Recensioni e testimonianze di ospiti soddisfatti"
+      />
+      
+      <div className="space-y-5">
+        {testimonials.length === 0 ? (
+          <div className="text-center py-12 text-muted-foreground">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center">
+              <Star className="w-6 h-6 opacity-40" />
             </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <PremiumTextInput
-                label="Nome Cliente"
-                value={testimonial.name}
-                onChange={(value) => updateTestimonial(index, 'name', value)}
-                placeholder="Es. Marco Rossi"
-              />
-              <PremiumTextInput
-                label="Ruolo/Descrizione"
-                value={testimonial.role}
-                onChange={(value) => updateTestimonial(index, 'role', value)}
-                placeholder="Es. Food Critic, Cliente abituale"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">Testimonianza</label>
-              <textarea
-                value={testimonial.content}
-                onChange={(e) => updateTestimonial(index, 'content', e.target.value)}
-                placeholder="Una esperienza culinaria indimenticabile..."
-                rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <PremiumSelect
-                label="Valutazione"
-                value={testimonial.rating.toString()}
-                onChange={(value) => updateTestimonial(index, 'rating', parseInt(value))}
-                options={[
-                  { value: '5', label: '⭐⭐⭐⭐⭐ (5 stelle)' },
-                  { value: '4', label: '⭐⭐⭐⭐ (4 stelle)' },
-                  { value: '3', label: '⭐⭐⭐ (3 stelle)' },
-                ]}
-              />
-              <PremiumSelect
-                label="Fonte"
-                value={testimonial.source}
-                onChange={(value) => updateTestimonial(index, 'source', value)}
-                options={[
-                  { value: 'Google', label: 'Google Reviews' },
-                  { value: 'TripAdvisor', label: 'TripAdvisor' },
-                  { value: 'Michelin', label: 'Guida Michelin' },
-                  { value: 'OpenTable', label: 'OpenTable' },
-                  { value: 'Direct', label: 'Testimonianza diretta' }
-                ]}
-              />
-            </div>
+            <h4 className="font-medium text-sm mb-1">Nessuna testimonianza</h4>
+            <p className="text-xs">Aggiungi le prime recensioni dei tuoi clienti</p>
           </div>
-        ))}
+        ) : (
+          testimonials.map((testimonial: any, index: number) => (
+            <div key={testimonial.id || index} className="border border-slate-200 rounded-xl p-5 bg-white hover:border-slate-300 transition-all">
+              <div className="flex justify-between items-start mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center">
+                    <span className="text-sm font-bold text-slate-600">#{index + 1}</span>
+                  </div>
+                  <h4 className="font-semibold text-slate-800">Testimonianza</h4>
+                </div>
+                <CleanButton
+                  onClick={() => removeTestimonial(index)}
+                  variant="ghost"
+                  size="sm"
+                >
+                  Rimuovi
+                </CleanButton>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <CleanFormField label="Nome Cliente" required>
+                    <CleanTextInput
+                      value={testimonial.name}
+                      onChange={(value) => updateTestimonial(index, 'name', value)}
+                      placeholder="Es. Marco Rossi"
+                    />
+                  </CleanFormField>
+                  
+                  <CleanFormField label="Ruolo/Descrizione">
+                    <CleanTextInput
+                      value={testimonial.role}
+                      onChange={(value) => updateTestimonial(index, 'role', value)}
+                      placeholder="Es. Food Critic, Cliente abituale"
+                    />
+                  </CleanFormField>
+                </div>
+                
+                <CleanFormField 
+                  label="Testimonianza" 
+                  description="La recensione completa del cliente"
+                  required
+                >
+                  <CleanTextInput
+                    value={testimonial.content}
+                    onChange={(value) => updateTestimonial(index, 'content', value)}
+                    placeholder="Una esperienza culinaria indimenticabile che ha superato ogni aspettativa..."
+                    multiline
+                    rows={3}
+                  />
+                </CleanFormField>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <CleanFormField label="Valutazione" required>
+                    <CleanSelect
+                      value={testimonial.rating.toString()}
+                      onChange={(value) => updateTestimonial(index, 'rating', parseInt(value))}
+                      options={[
+                        { value: '5', label: '⭐⭐⭐⭐⭐ (5 stelle)' },
+                        { value: '4', label: '⭐⭐⭐⭐ (4 stelle)' },
+                        { value: '3', label: '⭐⭐⭐ (3 stelle)' },
+                      ]}
+                    />
+                  </CleanFormField>
+                  
+                  <CleanFormField label="Fonte">
+                    <CleanSelect
+                      value={testimonial.source}
+                      onChange={(value) => updateTestimonial(index, 'source', value)}
+                      options={[
+                        { value: 'Google', label: 'Google Reviews' },
+                        { value: 'TripAdvisor', label: 'TripAdvisor' },
+                        { value: 'Michelin', label: 'Guida Michelin' },
+                        { value: 'OpenTable', label: 'OpenTable' },
+                        { value: 'Direct', label: 'Testimonianza diretta' }
+                      ]}
+                    />
+                  </CleanFormField>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
         
-        <PremiumActionButton
+        <CleanButton
           onClick={addTestimonial}
           variant="outline"
           className="w-full"
+          icon={Star}
         >
-          + Aggiungi Testimonianza
-        </PremiumActionButton>
-        
-        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <h4 className="font-medium text-blue-800 mb-2">✨ Best Practices</h4>
-          <ul className="text-sm text-blue-700 space-y-1">
-            <li>• Privilegia recensioni recenti e autentiche</li>
-            <li>• Includi dettagli specifici sui piatti o servizio</li>
-            <li>• Varia le fonti per maggiore credibilità</li>
-            <li>• Max 3-4 testimonianze per non appesantire</li>
-          </ul>
-        </div>
+          Aggiungi Testimonianza
+        </CleanButton>
       </div>
-    </PremiumCard>
+      
+      <CleanInfoBox type="tip" title="✨ Best Practices">
+        <ul className="space-y-1">
+          <li>• Privilegia recensioni recenti e autentiche</li>
+          <li>• Includi dettagli specifici sui piatti o servizio</li>
+          <li>• Varia le fonti per maggiore credibilità</li>
+          <li>• Max 3-4 testimonianze per non appesantire</li>
+        </ul>
+      </CleanInfoBox>
+    </div>
   );
 };
 
@@ -1218,107 +1509,146 @@ const MichelinEventsEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   };
 
   return (
-    <PremiumCard
-      title="Eventi Esclusivi"
-      description="Degustazioni, cene a tema e eventi speciali per i vostri clienti VIP"
-    >
-      <div className="space-y-6">
-        {events.map((event: any, index: number) => (
-          <div key={event.id || index} className="border border-gray-200 rounded-lg p-4 space-y-4">
-            <div className="flex justify-between items-start">
-              <h4 className="font-medium text-gray-900">Evento #{index + 1}</h4>
-              <button
-                onClick={() => removeEvent(index)}
-                className="text-red-500 hover:text-red-700 text-sm"
-              >
-                Rimuovi
-              </button>
+    <div className="space-y-6">
+      <CleanSectionHeader
+        title="Eventi Esclusivi"
+        description="Degustazioni, cene a tema e eventi speciali per i vostri clienti VIP"
+      />
+      
+      <div className="space-y-5">
+        {events.length === 0 ? (
+          <div className="text-center py-12 text-muted-foreground">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center">
+              <Calendar className="w-6 h-6 opacity-40" />
             </div>
-            
-            <div className="grid grid-cols-1 gap-4">
-              <PremiumTextInput
-                label="Titolo Evento"
-                value={event.title}
-                onChange={(value) => updateEvent(index, 'title', value)}
-                placeholder="Es. Degustazione Tartufo Bianco d'Alba"
-              />
+            <h4 className="font-medium text-sm mb-1">Nessun evento programmato</h4>
+            <p className="text-xs">Crea il primo evento esclusivo per i tuoi clienti</p>
+          </div>
+        ) : (
+          events.map((event: any, index: number) => (
+            <div key={event.id || index} className="border border-slate-200 rounded-xl p-5 bg-white hover:border-slate-300 transition-all">
+              <div className="flex justify-between items-start mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center">
+                    <Calendar className="w-4 h-4" />
+                  </div>
+                  <h4 className="font-semibold text-slate-800">Evento #{index + 1}</h4>
+                </div>
+                <CleanButton
+                  onClick={() => removeEvent(index)}
+                  variant="ghost"
+                  size="sm"
+                >
+                  Rimuovi
+                </CleanButton>
+              </div>
               
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">Descrizione</label>
-                <textarea
-                  value={event.description}
-                  onChange={(e) => updateEvent(index, 'description', e.target.value)}
-                  placeholder="Serata speciale dedicata al tartufo bianco d'Alba con menu appositamente studiato..."
-                  rows={2}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+              <div className="space-y-4">
+                <CleanFormField 
+                  label="Titolo Evento" 
+                  description="Nome dell'evento (sii descrittivo e accattivante)"
+                  required
+                >
+                  <CleanTextInput
+                    value={event.title}
+                    onChange={(value) => updateEvent(index, 'title', value)}
+                    placeholder="Es. Degustazione Tartufo Bianco d'Alba"
+                  />
+                </CleanFormField>
+                
+                <CleanFormField 
+                  label="Descrizione" 
+                  description="Dettagli dell'evento, cosa include, cosa aspettarsi"
+                >
+                  <CleanTextInput
+                    value={event.description}
+                    onChange={(value) => updateEvent(index, 'description', value)}
+                    placeholder="Serata speciale dedicata al tartufo bianco d'Alba con menu appositamente studiato dal nostro chef..."
+                    multiline
+                    rows={2}
+                  />
+                </CleanFormField>
+                
+                <div className="grid grid-cols-3 gap-4">
+                  <CleanFormField label="Data" required>
+                    <CleanTextInput
+                      value={event.date}
+                      onChange={(value) => updateEvent(index, 'date', value)}
+                      placeholder="15 Novembre 2024"
+                    />
+                  </CleanFormField>
+                  
+                  <CleanFormField label="Orario" required>
+                    <CleanTextInput
+                      value={event.time}
+                      onChange={(value) => updateEvent(index, 'time', value)}
+                      placeholder="19:30"
+                    />
+                  </CleanFormField>
+                  
+                  <CleanFormField label="Tipo Evento" required>
+                    <CleanSelect
+                      value={event.type}
+                      onChange={(value) => updateEvent(index, 'type', value)}
+                      options={[
+                        { value: 'Degustazione', label: 'Degustazione' },
+                        { value: 'Cena a tema', label: 'Cena a tema' },
+                        { value: 'Masterclass', label: 'Masterclass' },
+                        { value: 'Wine pairing', label: 'Wine pairing' },
+                        { value: 'Evento privato', label: 'Evento privato' }
+                      ]}
+                    />
+                  </CleanFormField>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <CleanFormField 
+                    label="Prezzo per persona" 
+                    description="Includi valuta (€, $, etc.)"
+                  >
+                    <CleanTextInput
+                      value={event.price}
+                      onChange={(value) => updateEvent(index, 'price', value)}
+                      placeholder="€195"
+                    />
+                  </CleanFormField>
+                  
+                  <CleanFormField 
+                    label="Posti disponibili"
+                    description="Numero massimo di partecipanti"
+                  >
+                    <CleanTextInput
+                      value={event.capacity}
+                      onChange={(value) => updateEvent(index, 'capacity', value)}
+                      placeholder="12"
+                    />
+                  </CleanFormField>
+                </div>
               </div>
             </div>
-            
-            <div className="grid grid-cols-3 gap-4">
-              <PremiumTextInput
-                label="Data"
-                value={event.date}
-                onChange={(value) => updateEvent(index, 'date', value)}
-                placeholder="15 Novembre 2024"
-              />
-              <PremiumTextInput
-                label="Orario"
-                value={event.time}
-                onChange={(value) => updateEvent(index, 'time', value)}
-                placeholder="19:30"
-              />
-              <PremiumSelect
-                label="Tipo Evento"
-                value={event.type}
-                onChange={(value) => updateEvent(index, 'type', value)}
-                options={[
-                  { value: 'Degustazione', label: 'Degustazione' },
-                  { value: 'Cena a tema', label: 'Cena a tema' },
-                  { value: 'Masterclass', label: 'Masterclass' },
-                  { value: 'Wine pairing', label: 'Wine pairing' },
-                  { value: 'Evento privato', label: 'Evento privato' }
-                ]}
-              />
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <PremiumTextInput
-                label="Prezzo per persona"
-                value={event.price}
-                onChange={(value) => updateEvent(index, 'price', value)}
-                placeholder="€195"
-              />
-              <PremiumTextInput
-                label="Posti disponibili"
-                value={event.capacity}
-                onChange={(value) => updateEvent(index, 'capacity', value)}
-                placeholder="12"
-              />
-            </div>
-          </div>
-        ))}
+          ))
+        )}
         
-        <PremiumActionButton
+        <CleanButton
           onClick={addEvent}
           variant="outline"
           className="w-full"
+          icon={Calendar}
         >
-          + Aggiungi Evento
-        </PremiumActionButton>
-        
-        <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-          <h4 className="font-medium text-amber-800 mb-2">🎭 Idee per Eventi Luxury</h4>
-          <ul className="text-sm text-amber-700 space-y-1">
-            <li>• Cene a 4 mani con chef stellati ospiti</li>
-            <li>• Degustazioni stagionali (tartufo, caviale, ecc.)</li>
-            <li>• Masterclass di cucina con lo chef</li>
-            <li>• Wine pairing con sommelier</li>
-            <li>• Eventi privati aziendali o celebrazioni</li>
-          </ul>
-        </div>
+          Aggiungi Evento
+        </CleanButton>
       </div>
-    </PremiumCard>
+      
+      <CleanInfoBox type="tip" title="🎭 Idee per Eventi Luxury">
+        <ul className="space-y-1">
+          <li>• Cene a 4 mani con chef stellati ospiti</li>
+          <li>• Degustazioni stagionali (tartufo, caviale, ecc.)</li>
+          <li>• Masterclass di cucina con lo chef</li>
+          <li>• Wine pairing con sommelier</li>
+          <li>• Eventi privati aziendali o celebrazioni</li>
+        </ul>
+      </CleanInfoBox>
+    </div>
   );
 };
 
@@ -1357,78 +1687,97 @@ const MichelinVIPClubEditor: React.FC<EditorProps> = ({ project, onUpdate }) => 
   };
 
   return (
-    <PremiumCard
-      title="VIP Club & Newsletter"
-      description="Comunicazioni esclusive per i vostri clienti più affezionati"
-    >
-      <div className="space-y-6">
-        <PremiumTextInput
+    <div className="space-y-6">
+      <CleanSectionHeader
+        title="VIP Club & Newsletter"
+        description="Comunicazioni esclusive per i vostri clienti più affezionati"
+      />
+      
+      <div className="space-y-5">
+        <CleanFormField
           label="Titolo Sezione"
           description="Nome del vostro VIP club o newsletter"
-          value={title}
-          onChange={(value) => updateNewsletter('title', value)}
-          placeholder="Es. Club des Gourmets, VIP Experience"
-        />
-        
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
-            Descrizione
-          </label>
-          <p className="text-xs text-gray-500 mb-2">
-            Breve descrizione del vostro servizio VIP
-          </p>
-          <textarea
-            value={description}
-            onChange={(e) => updateNewsletter('description', e.target.value)}
-            placeholder="Ricevi in anteprima notizie sui nostri eventi esclusivi, nuovi menu e degustazioni speciali..."
-            rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+          required
+        >
+          <CleanTextInput
+            value={title}
+            onChange={(value) => updateNewsletter('title', value)}
+            placeholder="Es. Club des Gourmets, VIP Experience"
           />
-        </div>
+        </CleanFormField>
         
-        <div className="space-y-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Vantaggi dell'iscrizione
-          </label>
-          {benefits.map((benefit: string, index: number) => (
-            <div key={index} className="flex gap-2">
-              <input
-                type="text"
-                value={benefit}
-                onChange={(e) => updateBenefit(index, e.target.value)}
-                placeholder="Es. Prenotazioni prioritarie, Sconti eventi speciali"
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                onClick={() => removeBenefit(index)}
-                className="text-red-500 hover:text-red-700"
-              >
-                Rimuovi
-              </button>
-            </div>
-          ))}
-          
-          <PremiumActionButton
+        <CleanFormField
+          label="Descrizione"
+          description="Breve descrizione del vostro servizio VIP e cosa include"
+          required
+        >
+          <CleanTextInput
+            value={description}
+            onChange={(value) => updateNewsletter('description', value)}
+            placeholder="Ricevi in anteprima notizie sui nostri eventi esclusivi, nuovi menu e degustazioni speciali..."
+            multiline
+            rows={3}
+          />
+        </CleanFormField>
+      </div>
+      
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h4 className="text-sm font-semibold text-slate-800">Vantaggi dell'iscrizione</h4>
+          <CleanButton
             onClick={addBenefit}
             variant="outline"
             size="sm"
+            icon={Mail}
           >
-            + Aggiungi Vantaggio
-          </PremiumActionButton>
+            Aggiungi Vantaggio
+          </CleanButton>
         </div>
         
-        <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-          <h4 className="font-medium text-amber-800 mb-2">💎 Suggerimenti VIP</h4>
-          <ul className="text-sm text-amber-700 space-y-1">
-            <li>• Prenotazioni prioritarie per eventi speciali</li>
-            <li>• Accesso anticipato ai nuovi menu</li>
-            <li>• Degustazioni esclusive con lo chef</li>
-            <li>• Sconti su wine pairing e servizi extra</li>
-            <li>• Newsletter mensile con ricette e consigli</li>
-          </ul>
-        </div>
+        {benefits.length === 0 ? (
+          <div className="text-center py-8 text-muted-foreground">
+            <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center">
+              <Mail className="w-5 h-5 opacity-40" />
+            </div>
+            <p className="text-sm mb-1">Nessun vantaggio configurato</p>
+            <p className="text-xs">Aggiungi i benefici per gli iscritti VIP</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {benefits.map((benefit: string, index: number) => (
+              <div key={index} className="flex items-center gap-3 p-3 border border-slate-200 rounded-lg hover:border-slate-300 transition-colors">
+                <div className="w-6 h-6 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-xs font-bold">#{index + 1}</span>
+                </div>
+                <CleanTextInput
+                  value={benefit}
+                  onChange={(value) => updateBenefit(index, value)}
+                  placeholder="Es. Prenotazioni prioritarie per eventi speciali"
+                  className="flex-1"
+                />
+                <CleanButton
+                  onClick={() => removeBenefit(index)}
+                  variant="ghost"
+                  size="sm"
+                >
+                  Rimuovi
+                </CleanButton>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-    </PremiumCard>
+      
+      <CleanInfoBox type="tip" title="💎 Suggerimenti VIP">
+        <ul className="space-y-1">
+          <li>• Prenotazioni prioritarie per eventi speciali</li>
+          <li>• Accesso anticipato ai nuovi menu</li>
+          <li>• Degustazioni esclusive con lo chef</li>
+          <li>• Sconti su wine pairing e servizi extra</li>
+          <li>• Newsletter mensile con ricette e consigli</li>
+        </ul>
+      </CleanInfoBox>
+    </div>
   );
 };
 
@@ -1450,7 +1799,7 @@ const MichelinHoursEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
     { key: 'sunday', label: 'Domenica' }
   ];
 
-  const updateDaySchedule = (day: string, field: string, value: string) => {
+  const updateDaySchedule = (day: string, field: string, value: string | boolean) => {
     const updatedSchedule = {
       ...schedule,
       [day]: {
@@ -1462,65 +1811,67 @@ const MichelinHoursEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   };
 
   return (
-    <PremiumCard
-      title="Orari di Apertura"
-      description="Comunicate chiaramente i vostri orari ai clienti"
-    >
-      <div className="space-y-6">
+    <div className="space-y-6">
+      <CleanSectionHeader
+        title="Orari di Apertura"
+        description="Comunicate chiaramente i vostri orari ai clienti"
+      />
+      
+      <div className="space-y-4">
         {daysOfWeek.map(({ key, label }) => {
           const daySchedule = schedule[key] || { lunch_start: '', lunch_end: '', dinner_start: '', dinner_end: '', closed: false };
           
           return (
-            <div key={key} className="border border-gray-200 rounded-lg p-4">
+            <div key={key} className="border border-slate-200 rounded-xl p-5 bg-white hover:border-slate-300 transition-colors">
               <div className="flex items-center justify-between mb-4">
-                <h4 className="font-medium text-gray-900">{label}</h4>
-                <label className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={daySchedule.closed || false}
-                    onChange={(e) => updateDaySchedule(key, 'closed', e.target.checked)}
-                    className="rounded"
+                <h4 className="font-semibold text-slate-800 text-base">{label}</h4>
+                <div className="flex items-center gap-2">
+                  <CleanToggle
+                    checked={!daySchedule.closed}
+                    onChange={(isOpen) => updateDaySchedule(key, 'closed', !isOpen)}
                   />
-                  <span className="text-sm text-gray-600">Chiuso</span>
-                </label>
+                  <span className="text-sm text-slate-600 font-medium">
+                    {daySchedule.closed ? 'Chiuso' : 'Aperto'}
+                  </span>
+                </div>
               </div>
               
               {!daySchedule.closed && (
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Pranzo</label>
-                    <div className="flex gap-2">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-slate-700">Pranzo</label>
+                    <div className="flex items-center gap-2 max-w-xs">
                       <input
                         type="time"
                         value={daySchedule.lunch_start || ''}
                         onChange={(e) => updateDaySchedule(key, 'lunch_start', e.target.value)}
-                        className="px-2 py-1 border border-gray-300 rounded text-sm"
+                        className="w-20 px-2 py-1.5 border border-slate-200 rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                       />
-                      <span className="self-center text-gray-500">-</span>
+                      <span className="text-slate-400 text-sm">—</span>
                       <input
                         type="time"
                         value={daySchedule.lunch_end || ''}
                         onChange={(e) => updateDaySchedule(key, 'lunch_end', e.target.value)}
-                        className="px-2 py-1 border border-gray-300 rounded text-sm"
+                        className="w-20 px-2 py-1.5 border border-slate-200 rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                       />
                     </div>
                   </div>
                   
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Cena</label>
-                    <div className="flex gap-2">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-semibold text-slate-700">Cena</label>
+                    <div className="flex items-center gap-2 max-w-xs">
                       <input
                         type="time"
                         value={daySchedule.dinner_start || ''}
                         onChange={(e) => updateDaySchedule(key, 'dinner_start', e.target.value)}
-                        className="px-2 py-1 border border-gray-300 rounded text-sm"
+                        className="w-20 px-2 py-1.5 border border-slate-200 rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                       />
-                      <span className="self-center text-gray-500">-</span>
+                      <span className="text-slate-400 text-sm">—</span>
                       <input
                         type="time"
                         value={daySchedule.dinner_end || ''}
                         onChange={(e) => updateDaySchedule(key, 'dinner_end', e.target.value)}
-                        className="px-2 py-1 border border-gray-300 rounded text-sm"
+                        className="w-20 px-2 py-1.5 border border-slate-200 rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                       />
                     </div>
                   </div>
@@ -1529,17 +1880,17 @@ const MichelinHoursEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
             </div>
           );
         })}
-        
-        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <h4 className="font-medium text-blue-800 mb-2">⏰ Note Importanti</h4>
-          <ul className="text-sm text-blue-700 space-y-1">
-            <li>• Indicate orari di ultima prenotazione, non chiusura cucina</li>
-            <li>• Considerate pause tra pranzo e cena se necessario</li>
-            <li>• Specificate orari festivi in sezione eventi</li>
-          </ul>
-        </div>
       </div>
-    </PremiumCard>
+      
+      <CleanInfoBox type="info" title="⏰ Note Importanti">
+        <ul className="space-y-1">
+          <li>• Indicate orari di ultima prenotazione, non chiusura cucina</li>
+          <li>• Considerate pause tra pranzo e cena se necessario</li>
+          <li>• Specificate orari festivi nella sezione eventi</li>
+          <li>• Gli orari verranno mostrati sul sito con formato elegante</li>
+        </ul>
+      </CleanInfoBox>
+    </div>
   );
 };
 
@@ -1571,61 +1922,72 @@ const MichelinLocationEditor: React.FC<EditorProps> = ({ project, onUpdate }) =>
   );
 
   return (
-    <PremiumCard
-      title="Posizione e Indicazioni"
-      description="Aiutate i clienti a raggiungervi facilmente"
-    >
-      <div className="space-y-6">
-        <PremiumTextInput
+    <div className="space-y-6">
+      <CleanSectionHeader
+        title="Posizione e Indicazioni"
+        description="Aiutate i clienti a raggiungervi facilmente"
+      />
+      
+      <div className="space-y-5">
+        <CleanFormField
           label="Indirizzo Completo"
           description="Via e numero civico"
-          value={address}
-          onChange={(value) => updateLocation('address', value)}
-          placeholder="Es. Via della Spiga, 15"
-        />
+          required
+        >
+          <CleanTextInput
+            value={address}
+            onChange={(value) => updateLocation('address', value)}
+            placeholder="Es. Via della Spiga, 15"
+          />
+        </CleanFormField>
         
         <div className="grid grid-cols-2 gap-4">
-          <PremiumTextInput
+          <CleanFormField
             label="Città"
-            value={city}
-            onChange={(value) => updateLocation('city', value)}
-            placeholder="Es. Milano"
-          />
-          <PremiumTextInput
+            required
+          >
+            <CleanTextInput
+              value={city}
+              onChange={(value) => updateLocation('city', value)}
+              placeholder="Es. Milano"
+            />
+          </CleanFormField>
+          
+          <CleanFormField
             label="CAP"
-            value={zipCode}
-            onChange={(value) => updateLocation('zipCode', value)}
-            placeholder="Es. 20121"
-          />
+            required
+          >
+            <CleanTextInput
+              value={zipCode}
+              onChange={(value) => updateLocation('zipCode', value)}
+              placeholder="Es. 20121"
+            />
+          </CleanFormField>
         </div>
         
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
-            Indicazioni Speciali
-          </label>
-          <p className="text-xs text-gray-500 mb-2">
-            Consigli per raggiungere il ristorante (parcheggio, mezzi pubblici, etc.)
-          </p>
-          <textarea
+        <CleanFormField
+          label="Indicazioni Speciali"
+          description="Consigli per raggiungere il ristorante (parcheggio, mezzi pubblici, etc.)"
+        >
+          <CleanTextInput
             value={directions}
-            onChange={(e) => updateLocation('directions', e.target.value)}
+            onChange={(value) => updateLocation('directions', value)}
             placeholder="Facilmente raggiungibile con la metro M1 (fermata San Babila). Parcheggio convenzionato presso Garage San Babila..."
+            multiline
             rows={4}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
           />
-        </div>
-        
-        <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-          <h4 className="font-medium text-green-800 mb-2">🚗 Suggerimenti Utili</h4>
-          <ul className="text-sm text-green-700 space-y-1">
-            <li>• Menzionate parcheggi convenzionati o disponibili</li>
-            <li>• Indicate fermate metro/autobus più vicine</li>
-            <li>• Specificate se è necessaria prenotazione per accesso ZTL</li>
-            <li>• Consigli su taxi/rideshare nelle vicinanze</li>
-          </ul>
-        </div>
+        </CleanFormField>
       </div>
-    </PremiumCard>
+      
+      <CleanInfoBox type="success" title="🚗 Suggerimenti Utili">
+        <ul className="space-y-1">
+          <li>• Menzionate parcheggi convenzionati o disponibili</li>
+          <li>• Indicate fermate metro/autobus più vicine</li>
+          <li>• Specificate se è necessaria prenotazione per accesso ZTL</li>
+          <li>• Consigli su taxi/rideshare nelle vicinanze</li>
+        </ul>
+      </CleanInfoBox>
+    </div>
   );
 };
 

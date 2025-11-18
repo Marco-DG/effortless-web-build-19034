@@ -11,10 +11,10 @@ interface TemplateSelectorProps {
 export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ project, onUpdate }) => {
   const currentTemplate = project.data.site?.template?.style || 'wine_bar';
   
-  // Inizializza automaticamente i defaults se Michelin Star è selezionato ma mancano dati
+  // Inizializza automaticamente i defaults se template premium sono selezionati ma mancano dati
   React.useEffect(() => {
-    if (currentTemplate === 'michelin_star') {
-      const defaults = getTemplateDefaults('michelin_star');
+    if (currentTemplate === 'michelin_star' || currentTemplate === 'atelier_sarah_chen' || currentTemplate === 'aegean_pearl') {
+      const defaults = getTemplateDefaults(currentTemplate);
       const needsInitialization = 
         !project.data.reviews?.testimonials ||
         !project.data.events?.events ||
@@ -39,8 +39,8 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ project, onU
     // Ottieni i defaults per il template selezionato
     const defaults = getTemplateDefaults(templateStyle);
     
-    // Se si sta selezionando Michelin Star, inizializza tutti i dati con i defaults
-    if (templateStyle === 'michelin_star') {
+    // Se si sta selezionando template premium, inizializza tutti i dati con i defaults
+    if (templateStyle === 'michelin_star' || templateStyle === 'atelier_sarah_chen' || templateStyle === 'aegean_pearl') {
       onUpdate({
         site: {
           ...project.data.site,
@@ -90,10 +90,18 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ project, onU
     {
       id: 'michelin_star',
       name: 'Michelin Star',
-      description: 'Template ultra-luxury per ristoranti stellati con design cinematografico e minimalista',
+      description: 'Template premium per ristoranti stellati con design elegante e raffinato',
       icon: Star,
       colors: ['#0a0a0a', '#1a1a1a', '#fbbf24'],
       colorNames: ['Nero profondo', 'Grigio antracite', 'Oro luxury']
+    },
+    {
+      id: 'aegean_pearl',
+      name: 'Aegean Pearl',
+      description: 'Ristorante greco luxury con design mediterraneo autentico. Atmosfera delle isole greche con colori del mare e tradizione culinaria.',
+      icon: Star,
+      colors: ['#1e40af', '#f59e0b', '#f8fafc'],
+      colorNames: ['Blu Egeo', 'Oro Olimpico', 'Marmo Bianco']
     }
   ];
   
