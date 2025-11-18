@@ -9,6 +9,7 @@ interface HeaderProps {
     ctaText: string;
     style: 'solid' | 'transparent' | 'glass';
     sticky: boolean;
+    navigationMode?: 'auto' | 'manual';
 }
 
 export const UniversalHeader: React.FC<HeaderProps> = ({
@@ -17,10 +18,30 @@ export const UniversalHeader: React.FC<HeaderProps> = ({
     showCta,
     ctaText,
     style,
-    sticky
+    sticky,
+    navigationMode = 'auto'
 }) => {
-    const { activeProject } = useAppStore();
+    const { activeProject, setActivePage } = useAppStore();
     const businessName = activeProject?.business?.name || logoText;
+
+    const navLinks = React.useMemo(() => {
+        if (navigationMode === 'auto' && activeProject?.pages) {
+            return activeProject.pages.map(page => ({
+                label: page.title,
+                href: page.slug, // In a real app this would be the route
+                id: page.id // Store ID for internal navigation
+            }));
+        }
+        return links;
+    }, [navigationMode, activeProject?.pages, links]);
+
+    const handleNavClick = (e: React.MouseEvent, link: any) => {
+        if (link.id) {
+            e.preventDefault();
+            setActivePage(link.id);
+            setMobileMenuOpen(false);
+        }
+    };
 
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -74,11 +95,12 @@ export const UniversalHeader: React.FC<HeaderProps> = ({
 
                 {/* Desktop Nav */}
                 <nav className="hidden md:flex items-center gap-8">
-                    {links.map((link, i) => (
+                    {navLinks.map((link, i) => (
                         <a
                             key={i}
                             href={link.href}
-                            className="text-sm font-medium hover:opacity-70 transition-opacity"
+                            onClick={(e) => handleNavClick(e, link)}
+                            className="text-sm font-medium hover:opacity-70 transition-opacity cursor-pointer"
                         >
                             {link.label}
                         </a>
@@ -104,12 +126,12 @@ export const UniversalHeader: React.FC<HeaderProps> = ({
             {mobileMenuOpen && (
                 <div className="md:hidden absolute top-20 left-0 w-full bg-[var(--theme-background)] border-b border-white/10 p-6 shadow-xl animate-in slide-in-from-top-5">
                     <nav className="flex flex-col gap-4">
-                        {links.map((link, i) => (
+                        {navLinks.map((link, i) => (
                             <a
                                 key={i}
                                 href={link.href}
-                                className="text-lg font-medium text-[var(--theme-text)]"
-                                onClick={() => setMobileMenuOpen(false)}
+                                className="text-lg font-medium text-[var(--theme-text)] cursor-pointer"
+                                onClick={(e) => handleNavClick(e, link)}
                             >
                                 {link.label}
                             </a>

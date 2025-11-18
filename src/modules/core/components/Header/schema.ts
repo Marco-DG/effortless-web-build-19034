@@ -13,6 +13,15 @@ export const HeaderSchema: ComponentSchema = {
             defaultValue: 'Brand',
             validation: z.string().min(1)
         },
+        navigationMode: {
+            type: 'select',
+            label: 'Navigation Mode',
+            defaultValue: 'auto',
+            options: [
+                { label: 'Automatic (All Pages)', value: 'auto' },
+                { label: 'Manual (Custom Links)', value: 'manual' }
+            ]
+        },
         links: {
             type: 'list',
             label: 'Navigation Links',
@@ -50,6 +59,7 @@ export const HeaderSchema: ComponentSchema = {
     },
     defaultData: {
         logoText: 'Restaurante',
+        navigationMode: 'auto',
         links: [
             { label: 'Home', href: '#' },
             { label: 'Menu', href: '#menu' },
