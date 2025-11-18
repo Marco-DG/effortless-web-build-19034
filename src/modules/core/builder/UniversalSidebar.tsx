@@ -100,31 +100,24 @@ export const UniversalSidebar: React.FC = () => {
     // If editing a section, we want to show the Editor, but we need a way to "go back"
     // We'll handle this by rendering the Editor as a special case override
 
-    if (isEditingSection && activeComponentDef) {
-        return (
-            <div className="flex flex-col h-full bg-white border-r border-slate-200 w-80 shadow-xl z-20">
-                <div className="p-4 border-b border-slate-100 flex items-center gap-2">
-                    <button
-                        onClick={() => setActiveSection('structure_manager')}
-                        className="p-2 hover:bg-slate-100 rounded-full text-slate-500 transition-colors"
-                    >
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
-                    </button>
-                    <div>
-                        <h3 className="font-bold text-slate-800">{activeComponentDef.schema.name}</h3>
-                        <p className="text-xs text-slate-400">Edit Section</p>
-                    </div>
+    const editorHeader = isEditingSection && activeComponentDef ? (
+        <div className="flex items-center gap-4">
+            <button
+                onClick={() => setActiveSection('structure_manager')}
+                className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-500 hover:text-blue-600 hover:border-blue-500 transition-all shadow-sm"
+            >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+            </button>
+            <div>
+                <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold uppercase tracking-wider">
+                        Editing
+                    </span>
                 </div>
-                <div className="flex-1 overflow-y-auto">
-                    <AutoSidebar
-                        schema={activeComponentDef.schema}
-                        data={activeSectionConfig.data}
-                        onUpdate={(newData) => updateSection(activeSectionConfig.id, newData)}
-                    />
-                </div>
+                <h3 className="text-xl font-bold text-slate-900">{activeComponentDef.schema.name}</h3>
             </div>
-        );
-    }
+        </div>
+    ) : null;
 
     return (
         <UnifiedBuilderLayout
@@ -133,8 +126,15 @@ export const UniversalSidebar: React.FC = () => {
             activeSection={activeSectionId || 'structure_manager'}
             onSectionChange={setActiveSection}
             onSwitchBuilder={(mode) => setActiveMode(mode)}
+            headerContent={editorHeader}
         >
-            {activeSectionId === 'page_manager' ? (
+            {isEditingSection && activeComponentDef ? (
+                <AutoSidebar
+                    schema={activeComponentDef.schema}
+                    data={activeSectionConfig.data}
+                    onUpdate={(newData) => updateSection(activeSectionConfig.id, newData)}
+                />
+            ) : activeSectionId === 'page_manager' ? (
                 <PageManager />
             ) : activeSectionId === 'structure_manager' ? (
                 <div className="flex flex-col h-full">

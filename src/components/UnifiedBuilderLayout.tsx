@@ -16,12 +16,13 @@ export interface UnifiedBuilderLayoutProps {
   sections: readonly BuilderSection[];
   activeSection: string;
   onSectionChange: (sectionId: string) => void;
-  
+
   // Header configuration
   onSwitchBuilder?: (builder: 'logo' | 'menu' | 'site') => void;
   onExport?: () => void;
   extraHeaderActions?: React.ReactNode;
-  
+  headerContent?: React.ReactNode;
+
   // Content
   children: React.ReactNode;
 }
@@ -34,10 +35,11 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
   onSwitchBuilder,
   onExport,
   extraHeaderActions,
+  headerContent,
   children
 }) => {
   const currentSection = sections.find(s => s.id === activeSection);
-  
+
   // Group sections by category
   const categories = React.useMemo(() => {
     const categoryMap = sections.reduce((acc, section) => {
@@ -65,7 +67,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
 
   return (
     <div className="h-full w-full lg:w-auto flex flex-col sidebar-premium lg:rounded-tl-[2rem] overflow-hidden font-geist">
-      
+
       {/* Header con tab condivisa */}
       {onSwitchBuilder && (
         <div className="flex items-center justify-between px-8 py-4 border-b border-slate-200/30 bg-white/60 backdrop-blur-xl">
@@ -75,11 +77,10 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
                 key={type}
                 type="button"
                 onClick={() => onSwitchBuilder(type)}
-                className={`topbar-tab relative px-5 py-2.5 font-medium text-sm transition-all duration-300 ease-out ${
-                  builderType === type
+                className={`topbar-tab relative px-5 py-2.5 font-medium text-sm transition-all duration-300 ease-out ${builderType === type
                     ? 'text-slate-900 topbar-tab-active'
                     : 'text-slate-600 hover:text-slate-900'
-                }`}
+                  }`}
               >
                 <span className="relative z-10 font-geist font-medium tracking-[-0.01em]">
                   {getBuilderLabel(type)}
@@ -90,13 +91,13 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
               </button>
             ))}
           </div>
-          
+
           <div className="flex items-center gap-3">
-            <button 
-              type="button" 
+            <button
+              type="button"
               className="lg:hidden inline-flex items-center gap-2 rounded-[12px] bg-slate-900 text-white px-4 py-2.5 text-sm font-medium shadow-lg shadow-slate-900/20 hover:bg-slate-800 transition-all duration-200"
             >
-              <Eye className="w-4 h-4" /> 
+              <Eye className="w-4 h-4" />
               <span className="font-geist font-medium tracking-[-0.01em]">Anteprima</span>
             </button>
           </div>
@@ -105,7 +106,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
 
       {/* Main Content */}
       <div className="flex flex-1 overflow-hidden min-h-0">
-        
+
         {/* Sidebar Navigation */}
         <div className="w-16 2xl:w-52 flex flex-col flex-shrink-0 relative">
           <div className="absolute right-0 top-0 bottom-0 sidebar-divider"></div>
@@ -122,7 +123,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
                       <div className="h-[1px] bg-gradient-to-r from-slate-200 via-slate-100 to-transparent opacity-60" />
                     </div>
                   </div>
-                  
+
                   {/* Sezioni della categoria */}
                   {category.sections.map((section, sectionIndex) => {
                     const isActive = activeSection === section.id;
@@ -135,14 +136,12 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
                           px-3 py-3.5 2xl:px-4 2xl:py-3 text-sm 
                           rounded-[16px] group font-medium`}
                       >
-                        <section.icon 
-                          className={`w-5 h-5 flex-shrink-0 transition-all duration-300 ${
-                            isActive ? 'text-slate-800' : 'text-slate-500 group-hover:text-slate-700'
-                          }`} 
+                        <section.icon
+                          className={`w-5 h-5 flex-shrink-0 transition-all duration-300 ${isActive ? 'text-slate-800' : 'text-slate-500 group-hover:text-slate-700'
+                            }`}
                         />
-                        <span className={`hidden 2xl:block ml-3.5 text-left font-geist font-medium tracking-[-0.01em] transition-all duration-300 ${
-                          isActive ? 'text-slate-800 font-semibold' : 'text-slate-700 group-hover:text-slate-900'
-                        }`}>
+                        <span className={`hidden 2xl:block ml-3.5 text-left font-geist font-medium tracking-[-0.01em] transition-all duration-300 ${isActive ? 'text-slate-800 font-semibold' : 'text-slate-700 group-hover:text-slate-900'
+                          }`}>
                           {section.label}
                         </span>
                       </button>
@@ -158,23 +157,27 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
         <div className="flex-1 min-w-0 flex flex-col">
           {/* Section Header */}
           <div className="px-10 py-8 border-b border-slate-200/30 bg-white/40 backdrop-blur-xl">
-            <div className="flex items-start gap-5">
-              {currentSection && (
-                <>
-                  <div className="w-14 h-14 rounded-[18px] bg-gradient-to-br from-white via-slate-50 to-slate-100/80 border border-slate-200/50 flex items-center justify-center shadow-lg shadow-slate-900/8 backdrop-blur-sm">
-                    <currentSection.icon className="w-6 h-6 text-slate-700" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-2xl font-bold text-slate-900 tracking-[-0.02em] font-geist leading-tight mb-2">
-                      {currentSection.label}
-                    </h3>
-                    <p className="text-sm text-slate-500 font-medium font-geist tracking-[-0.01em] leading-relaxed">
-                      {currentSection.description}
-                    </p>
-                  </div>
-                </>
-              )}
-            </div>
+            {headerContent ? (
+              headerContent
+            ) : (
+              <div className="flex items-start gap-5">
+                {currentSection && (
+                  <>
+                    <div className="w-14 h-14 rounded-[18px] bg-gradient-to-br from-white via-slate-50 to-slate-100/80 border border-slate-200/50 flex items-center justify-center shadow-lg shadow-slate-900/8 backdrop-blur-sm">
+                      <currentSection.icon className="w-6 h-6 text-slate-700" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-2xl font-bold text-slate-900 tracking-[-0.02em] font-geist leading-tight mb-2">
+                        {currentSection.label}
+                      </h3>
+                      <p className="text-sm text-slate-500 font-medium font-geist tracking-[-0.01em] leading-relaxed">
+                        {currentSection.description}
+                      </p>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Section Content */}

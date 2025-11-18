@@ -6,9 +6,17 @@ interface EngineProps {
     config: SiteConfig;
     sections: SectionConfig[];
     previewMode?: boolean;
+    activeSectionId?: string | null;
+    onSectionSelect?: (sectionId: string) => void;
 }
 
-export const Engine: React.FC<EngineProps> = ({ config, sections, previewMode = false }) => {
+export const Engine: React.FC<EngineProps> = ({
+    config,
+    sections,
+    previewMode = false,
+    activeSectionId,
+    onSectionSelect
+}) => {
     const { theme } = config;
 
     // Apply theme variables to root
@@ -30,13 +38,24 @@ export const Engine: React.FC<EngineProps> = ({ config, sections, previewMode = 
             {sections
                 .filter(section => section.isEnabled)
                 .map((section) => (
-                    <SectionRenderer key={section.id} section={section} />
+                    <SelectableSection
+                        key={section.id}
+                        section={section}
+                        isActive={activeSectionId === section.id}
+                        onSelect={onSectionSelect}
+                        previewMode={previewMode}
+                    />
                 ))}
         </div>
     );
 };
 
-const SectionRenderer: React.FC<{ section: SectionConfig }> = ({ section }) => {
+const SelectableSection: React.FC<{
+    section: SectionConfig;
+    isActive: boolean;
+    onSelect?: (id: string) => void;
+    previewMode: boolean;
+}> = ({ section, isActive, onSelect, previewMode }) => {
     const Component = getComponent(section.type);
 
     if (!Component) {
@@ -48,8 +67,36 @@ const SectionRenderer: React.FC<{ section: SectionConfig }> = ({ section }) => {
         );
     }
 
+    const handleClick = (e: React.MouseEvent) => {
+        if (!previewMode && onSelect) {
+            e.stopPropagation();
+            onSelect(section.id);
+        }
+    };
+
     return (
-        <section id={section.id} className="relative">
+        <section
+            id={section.id}
+            className={`relative group transition-all duration-200 ${!previewMode ? 'cursor-pointer' : ''}`}
+            onClick={handleClick}
+        >
+            {/* Selection Overlay (Editor Mode Only) */}
+            {!previewMode && (
+                <div className={`
+                    absolute inset-0 z-10 border-2 pointer-events-none transition-all duration-200
+                    ${isActive ? 'border-blue-500 bg-blue-500/5' : 'border-transparent group-hover:border-blue-300 group-hover:bg-blue-500/5'}
+                `}>
+                    {/* Label Tag */}
+                    <div className={`
+                        absolute top-4 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-medium text-white bg-blue-500 shadow-lg
+                        transition-all duration-200 transform
+                        ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0'}
+                    `}>
+                        {isActive ? 'Editing: ' : 'Edit: '} {section.type}
+                    </div>
+                </div>
+            )}
+
             <Component {...section.data} variant={section.variant} />
         </section>
     );
