@@ -17,7 +17,7 @@ const MENU_SECTIONS: readonly BuilderSection[] = [
   // GESTIONE
   { id: 'config', label: 'Configurazione', icon: ConfigIcon, category: 'management', description: 'Impostazioni generali del menu' },
   { id: 'items', label: 'Elementi', icon: MenuItemsIcon, category: 'management', description: 'Gestisci piatti e bevande' },
-  
+
   // ASPETTO
   { id: 'style', label: 'Stile', icon: StyleIcon, category: 'appearance', description: 'Colori e tipografia' },
   { id: 'layout', label: 'Layout', icon: LayoutIcon, category: 'appearance', description: 'Struttura e visualizzazione' }
@@ -25,15 +25,16 @@ const MENU_SECTIONS: readonly BuilderSection[] = [
 
 type MenuSectionId = typeof MENU_SECTIONS[number]['id'];
 
-export const MenuBuilderRedesigned: React.FC<MenuBuilderRedesignedProps> = ({ 
-  onSwitchBuilder 
+export const MenuBuilderRedesigned: React.FC<MenuBuilderRedesignedProps> = ({
+  onSwitchBuilder
 }) => {
   const { activeProject, updateProject } = useAppStore();
   const [activeSection, setActiveSection] = useState<MenuSectionId>('config');
 
   if (!activeProject) return null;
 
-  const menuConfig = activeProject.data.menu;
+  // Compatibility with new SiteConfig structure
+  const menuConfig = (activeProject as any).menu || (activeProject as any).data?.menu;
 
   const handleUpdateMenu = (updates: any) => {
     updateProject({

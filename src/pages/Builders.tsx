@@ -5,8 +5,10 @@ import { AppLayout, BuilderLayout, PreviewLayout } from '../ui/Layout';
 import { LogoBuilderRedesigned, InteractiveLogoCanvas } from '../modules/logo-builder';
 import { MenuBuilderRedesigned } from '../modules/menu-builder/MenuBuilderRedesigned';
 import { MenuPreview } from '../modules/menu-builder/MenuPreview';
-import { SiteBuilder } from '../modules/site-builder/SiteBuilder';
-import { SitePreview } from '../modules/site-builder/SitePreview';
+
+// NEW: Import Universal Builder Components
+import { UniversalSidebar } from '../modules/core/builder/UniversalSidebar';
+import { UniversalPreview } from '../modules/core/builder/UniversalPreview';
 
 const Builders: React.FC = () => {
   const navigate = useNavigate();
@@ -22,17 +24,16 @@ const Builders: React.FC = () => {
     startBuilding
   } = useAppStore();
 
-  // Se non c'è un progetto attivo al refresh, crea un progetto di default
+  // Initialize project if none exists
   useEffect(() => {
     if (!activeProject) {
-      createProject('Nuovo Progetto', 'wine-bar');
-      startBuilding('site'); // Imposta modalità di default
-      // Assicurati che la sidebar sia aperta
+      createProject('Nuovo Progetto');
+      // Ensure sidebar is open
       if (!ui.sidebarOpen) {
         openSidebar();
       }
     }
-  }, [activeProject, createProject, startBuilding, ui.sidebarOpen, openSidebar]);
+  }, [activeProject, createProject, ui.sidebarOpen, openSidebar]);
 
   const renderSidebar = () => {
     if (!activeProject) return null;
@@ -43,7 +44,8 @@ const Builders: React.FC = () => {
       case 'menu':
         return <MenuBuilderRedesigned onSwitchBuilder={(mode) => useAppStore.getState().setActiveMode(mode)} />;
       case 'site':
-        return <SiteBuilder />;
+        // NEW: Use Universal Sidebar
+        return <UniversalSidebar />;
       default:
         return null;
     }
@@ -61,49 +63,44 @@ const Builders: React.FC = () => {
               <h3 className="text-lg font-semibold text-slate-800 font-geist tracking-[-0.01em]">
                 Caricamento progetto...
               </h3>
-              <p className="text-slate-600 font-medium font-geist tracking-[-0.01em]">
-                Inizializzazione dell'area di lavoro
-              </p>
             </div>
           </div>
         </PreviewLayout>
       );
     }
 
-    const project = activeProject;
+    // NOTE: activeProject is now the config object itself, not { data: ... }
+    const projectData = activeProject;
 
     switch (activeMode) {
       case 'logo':
         return (
           <InteractiveLogoCanvas
-            config={project.data.logo}
-            businessName={project.data.business.name}
+            config={projectData.logo || {}}
+            businessName={projectData.business?.name || 'Business Name'}
             onElementUpdate={(elementId, updates) => {
-              const currentElements = project.data.logo.elements || [];
-              const updatedElements = currentElements.map(element =>
+              const currentElements = projectData.logo?.elements || [];
+              const updatedElements = currentElements.map((element: any) =>
                 element.id === elementId ? { ...element, ...updates } : element
               );
-              updateProject({
-                logo: { ...project.data.logo, elements: updatedElements }
-              });
+              // Update logic adapted for new store structure
+              // We might need a specific action for logo updates in the future
+              console.warn('Logo updates temporarily disabled during migration');
             }}
-            onElementSelect={() => {}}
+            onElementSelect={() => { }}
             selectedElementId={null}
           />
         );
       case 'menu':
         return (
-          <MenuPreview 
-            config={project.data.menu}
-            themeColors={project.data.site.theme.colors}
+          <MenuPreview
+            config={projectData.menu || {}}
+            themeColors={projectData.theme.colors}
           />
         );
       case 'site':
-        return (
-          <SitePreview 
-            project={project}
-          />
-        );
+        // NEW: Use Universal Preview
+        return <UniversalPreview />;
       default:
         return null;
     }
@@ -112,6 +109,7 @@ const Builders: React.FC = () => {
   return (
     <AppLayout>
       <BuilderLayout
+        hero={null}
         sidebar={renderSidebar()}
         preview={renderPreview()}
         sidebarOpen={ui.sidebarOpen}

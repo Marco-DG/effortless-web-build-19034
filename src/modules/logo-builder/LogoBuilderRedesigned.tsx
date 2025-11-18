@@ -14,7 +14,7 @@ interface LogoBuilderRedesignedProps {
 const LOGO_SECTIONS: readonly BuilderSection[] = [
   // DESIGN
   { id: 'templates', label: 'Template', icon: TemplateIcon, category: 'design', description: 'Scegli un design base' },
-  
+
   // CONTROLLI
   { id: 'layers', label: 'Livelli', icon: LayersIcon, category: 'controls', description: 'Gestisci elementi e livelli' },
   { id: 'canvas', label: 'Canvas', icon: CanvasIcon, category: 'controls', description: 'Impostazioni canvas' }
@@ -22,16 +22,17 @@ const LOGO_SECTIONS: readonly BuilderSection[] = [
 
 type LogoSectionId = typeof LOGO_SECTIONS[number]['id'];
 
-export const LogoBuilderRedesigned: React.FC<LogoBuilderRedesignedProps> = ({ 
-  onSwitchBuilder 
+export const LogoBuilderRedesigned: React.FC<LogoBuilderRedesignedProps> = ({
+  onSwitchBuilder
 }) => {
   const { activeProject, updateProject, closeSidebar } = useAppStore();
   const [activeSection, setActiveSection] = useState<LogoSectionId>('templates');
 
-  
+
   if (!activeProject) return null;
 
-  const logoConfig = activeProject.data.logo;
+  // Compatibility with new SiteConfig structure
+  const logoConfig = (activeProject as any).logo || (activeProject as any).data?.logo;
 
   const handleUpdateLogo = (updates: any) => {
     updateProject({
