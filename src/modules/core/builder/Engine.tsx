@@ -1,6 +1,7 @@
 import React from 'react';
 import { SiteConfig, SectionConfig } from './types';
 import { getComponent } from './registry';
+import { motion } from 'framer-motion';
 
 interface EngineProps {
     config: SiteConfig;
@@ -75,8 +76,12 @@ const SelectableSection: React.FC<{
     };
 
     return (
-        <section
+        <motion.section
             id={section.id}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
             className={`relative group transition-all duration-200 ${!previewMode ? 'cursor-pointer' : ''}`}
             onClick={handleClick}
         >
@@ -98,6 +103,6 @@ const SelectableSection: React.FC<{
             )}
 
             <Component {...section.data} variant={section.variant} />
-        </section>
+        </motion.section>
     );
 };
