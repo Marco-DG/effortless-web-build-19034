@@ -1,6 +1,6 @@
 import React from 'react';
 import { ComponentSchema, FieldSchema } from '../builder/types';
-import { CleanSectionHeader, CleanFormField } from '../../site-builder/components/forms';
+import { CleanFormField } from '../../site-builder/components/forms';
 import {
     TextFieldRenderer,
     TextAreaRenderer,
@@ -56,10 +56,7 @@ export const AutoSidebar: React.FC<AutoSidebarProps> = ({ schema, data, onUpdate
 
     return (
         <div className="space-y-8 animate-fade-in">
-            <CleanSectionHeader
-                title={schema.name}
-                description={schema.description}
-            />
+
 
             <div className="space-y-6">
                 {Object.entries(schema.fields).map(([key, field]) => renderField(key, field))}
