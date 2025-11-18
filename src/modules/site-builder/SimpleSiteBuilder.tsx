@@ -17,6 +17,7 @@ import { ReviewsEditor, EventsEditor } from './additional-editors';
 import { TemplateSelector } from '../templates/TemplateSelector';
 import { ComponentsManager } from './ComponentsManager';
 import { getTemplateDefaults } from './template-defaults';
+import { createNestedUpdater } from './utils';
 
 // Sezioni base comuni a tutti i template
 const BASE_SECTIONS: readonly BuilderSection[] = [
@@ -164,22 +165,6 @@ interface EditorProps {
   project: any;
   onUpdate: (updates: any) => void;
 }
-
-// Helper per aggiornamenti annidati
-const createNestedUpdater = (project: any, onUpdate: any, section: string) => {
-  return (field: string, value: any) => {
-    onUpdate({
-      data: {
-        ...project.data,
-        [section]: {
-          ...project.data?.[section],
-          [field]: value
-        }
-      }
-    });
-  };
-};
-
 
 // ===== EDITOR SPECIFICI MICHELIN STAR =====
 
