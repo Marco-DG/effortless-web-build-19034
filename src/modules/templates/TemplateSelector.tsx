@@ -11,6 +11,30 @@ interface TemplateSelectorProps {
 export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ project, onUpdate }) => {
   const currentTemplate = project.data.site?.template?.style || 'wine_bar';
   
+  // Inizializza automaticamente i defaults se Michelin Star è selezionato ma mancano dati
+  React.useEffect(() => {
+    if (currentTemplate === 'michelin_star') {
+      const defaults = getTemplateDefaults('michelin_star');
+      const needsInitialization = 
+        !project.data.reviews?.testimonials ||
+        !project.data.events?.events ||
+        !project.data.newsletter?.title ||
+        !project.data.hours?.schedule ||
+        !project.data.location?.address;
+        
+      if (needsInitialization) {
+        onUpdate({
+          // Non sovrascrivere i dati esistenti, aggiungi solo quelli mancanti
+          reviews: project.data.reviews?.testimonials ? project.data.reviews : defaults.reviews,
+          events: project.data.events?.events ? project.data.events : defaults.events,
+          newsletter: project.data.newsletter?.title ? project.data.newsletter : defaults.newsletter,
+          hours: project.data.hours?.schedule ? project.data.hours : defaults.hours,
+          location: project.data.location?.address ? project.data.location : defaults.location,
+        });
+      }
+    }
+  }, [currentTemplate, project.data, onUpdate]);
+  
   const selectTemplate = (templateStyle: string) => {
     // Ottieni i defaults per il template selezionato
     const defaults = getTemplateDefaults(templateStyle);
@@ -33,6 +57,12 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ project, onU
         menu: project.data.menu?.menu_sections ? project.data.menu : defaults.menu,
         gallery: project.data.gallery?.gallery_images ? project.data.gallery : defaults.gallery,
         contact: project.data.contact?.address ? project.data.contact : defaults.contact,
+        // Nuove sezioni con defaults
+        reviews: project.data.reviews?.testimonials ? project.data.reviews : defaults.reviews,
+        events: project.data.events?.events ? project.data.events : defaults.events,
+        newsletter: project.data.newsletter?.title ? project.data.newsletter : defaults.newsletter,
+        hours: project.data.hours?.schedule ? project.data.hours : defaults.hours,
+        location: project.data.location?.address ? project.data.location : defaults.location,
       });
     } else {
       // Per altri template, aggiorna solo il template style

@@ -59,9 +59,14 @@ const MICHELIN_STAR_SECTIONS: readonly BuilderSection[] = [
   { id: 'awards', label: 'Riconoscimenti', icon: Award, category: 'appearance', description: 'Premi e stelle Michelin' },
   { id: 'menu', label: 'Menu Premium', icon: ChefHat, category: 'appearance', description: 'Menu degustazione e à la carte' },
   { id: 'gallery', label: 'Galleria', icon: GalleryIcon, category: 'appearance', description: 'Immagini piatti e ambiente' },
+  { id: 'reviews', label: 'Testimonianze', icon: Star, category: 'appearance', description: 'Recensioni clienti luxury' },
+  { id: 'events', label: 'Eventi Esclusivi', icon: Calendar, category: 'appearance', description: 'Degustazioni e eventi speciali' },
+  { id: 'newsletter', label: 'VIP Club', icon: Mail, category: 'appearance', description: 'Iscrizione comunicazioni esclusive' },
   
-  // CONTATTI
+  // DATI
   { id: 'contact', label: 'Contatti', icon: Phone, category: 'data', description: 'Informazioni di contatto e prenotazioni' },
+  { id: 'hours', label: 'Orari', icon: Clock, category: 'data', description: 'Orari di apertura del ristorante' },
+  { id: 'location', label: 'Posizione', icon: MapPin, category: 'data', description: 'Indirizzo e mappa' },
 ];
 
 // Funzione per ottenere le sezioni in base al template
@@ -101,18 +106,8 @@ export const SimpleSiteBuilder: React.FC<SimpleSiteBuilderProps> = ({ onSwitchBu
       // Sezioni Wine Bar (esistenti)
       case 'components':
         return <ComponentsManager project={activeProject} onUpdate={updateProject} />;
-      case 'reviews':
-        return <ReviewsEditor project={activeProject} onUpdate={updateProject} />;
-      case 'events':
-        return <EventsEditor project={activeProject} onUpdate={updateProject} />;
-      case 'newsletter':
-        return <NewsletterEditor project={activeProject} onUpdate={updateProject} />;
       case 'delivery':
         return <DeliveryEditor project={activeProject} onUpdate={updateProject} />;
-      case 'hours':
-        return <HoursEditor project={activeProject} onUpdate={updateProject} />;
-      case 'location':
-        return <LocationEditor project={activeProject} onUpdate={updateProject} />;
       
       // Sezioni comuni (adattate per template)
       case 'hero':
@@ -131,6 +126,26 @@ export const SimpleSiteBuilder: React.FC<SimpleSiteBuilderProps> = ({ onSwitchBu
         return currentTemplate === 'michelin_star'
           ? <MichelinContactEditor project={activeProject} onUpdate={updateProject} />
           : <ContactEditor project={activeProject} onUpdate={updateProject} />;
+      case 'reviews':
+        return currentTemplate === 'michelin_star'
+          ? <MichelinReviewsEditor project={activeProject} onUpdate={updateProject} />
+          : <ReviewsEditor project={activeProject} onUpdate={updateProject} />;
+      case 'events':
+        return currentTemplate === 'michelin_star'
+          ? <MichelinEventsEditor project={activeProject} onUpdate={updateProject} />
+          : <EventsEditor project={activeProject} onUpdate={updateProject} />;
+      case 'newsletter':
+        return currentTemplate === 'michelin_star'
+          ? <MichelinVIPClubEditor project={activeProject} onUpdate={updateProject} />
+          : <NewsletterEditor project={activeProject} onUpdate={updateProject} />;
+      case 'hours':
+        return currentTemplate === 'michelin_star'
+          ? <MichelinHoursEditor project={activeProject} onUpdate={updateProject} />
+          : <HoursEditor project={activeProject} onUpdate={updateProject} />;
+      case 'location':
+        return currentTemplate === 'michelin_star'
+          ? <MichelinLocationEditor project={activeProject} onUpdate={updateProject} />
+          : <LocationEditor project={activeProject} onUpdate={updateProject} />;
       
       // Sezioni specifiche Michelin Star
       case 'business':
@@ -1042,6 +1057,579 @@ const TypographyEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
     </PremiumCard>
   );
 };
+
+// ===== EDITOR AGGIUNTIVI MICHELIN STAR =====
+
+const MichelinReviewsEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
+  const currentTemplate = project.data?.site?.template?.style || 'michelin_star';
+  const defaults = getTemplateDefaults(currentTemplate);
+  const updateReviews = createNestedUpdater(project, onUpdate, 'reviews');
+  
+  const reviewsData = project.data?.reviews || {};
+  const testimonials = reviewsData.testimonials || defaults.reviews?.testimonials || [];
+
+  const addTestimonial = () => {
+    const newTestimonial = {
+      id: Date.now().toString(),
+      name: '',
+      role: '',
+      content: '',
+      rating: 5,
+      source: 'Google'
+    };
+    updateReviews('testimonials', [...testimonials, newTestimonial]);
+  };
+
+  const updateTestimonial = (index: number, field: string, value: any) => {
+    const updatedTestimonials = [...testimonials];
+    updatedTestimonials[index] = { ...updatedTestimonials[index], [field]: value };
+    updateReviews('testimonials', updatedTestimonials);
+  };
+
+  const removeTestimonial = (index: number) => {
+    const updatedTestimonials = testimonials.filter((_: any, i: number) => i !== index);
+    updateReviews('testimonials', updatedTestimonials);
+  };
+
+  return (
+    <PremiumCard
+      title="Testimonianze Clienti"
+      description="Recensioni e testimonianze di ospiti soddisfatti"
+    >
+      <div className="space-y-6">
+        {testimonials.map((testimonial: any, index: number) => (
+          <div key={testimonial.id || index} className="border border-gray-200 rounded-lg p-4 space-y-4">
+            <div className="flex justify-between items-start">
+              <h4 className="font-medium text-gray-900">Testimonianza #{index + 1}</h4>
+              <button
+                onClick={() => removeTestimonial(index)}
+                className="text-red-500 hover:text-red-700 text-sm"
+              >
+                Rimuovi
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <PremiumTextInput
+                label="Nome Cliente"
+                value={testimonial.name}
+                onChange={(value) => updateTestimonial(index, 'name', value)}
+                placeholder="Es. Marco Rossi"
+              />
+              <PremiumTextInput
+                label="Ruolo/Descrizione"
+                value={testimonial.role}
+                onChange={(value) => updateTestimonial(index, 'role', value)}
+                placeholder="Es. Food Critic, Cliente abituale"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Testimonianza</label>
+              <textarea
+                value={testimonial.content}
+                onChange={(e) => updateTestimonial(index, 'content', e.target.value)}
+                placeholder="Una esperienza culinaria indimenticabile..."
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <PremiumSelect
+                label="Valutazione"
+                value={testimonial.rating.toString()}
+                onChange={(value) => updateTestimonial(index, 'rating', parseInt(value))}
+                options={[
+                  { value: '5', label: '⭐⭐⭐⭐⭐ (5 stelle)' },
+                  { value: '4', label: '⭐⭐⭐⭐ (4 stelle)' },
+                  { value: '3', label: '⭐⭐⭐ (3 stelle)' },
+                ]}
+              />
+              <PremiumSelect
+                label="Fonte"
+                value={testimonial.source}
+                onChange={(value) => updateTestimonial(index, 'source', value)}
+                options={[
+                  { value: 'Google', label: 'Google Reviews' },
+                  { value: 'TripAdvisor', label: 'TripAdvisor' },
+                  { value: 'Michelin', label: 'Guida Michelin' },
+                  { value: 'OpenTable', label: 'OpenTable' },
+                  { value: 'Direct', label: 'Testimonianza diretta' }
+                ]}
+              />
+            </div>
+          </div>
+        ))}
+        
+        <PremiumActionButton
+          onClick={addTestimonial}
+          variant="outline"
+          className="w-full"
+        >
+          + Aggiungi Testimonianza
+        </PremiumActionButton>
+        
+        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <h4 className="font-medium text-blue-800 mb-2">✨ Best Practices</h4>
+          <ul className="text-sm text-blue-700 space-y-1">
+            <li>• Privilegia recensioni recenti e autentiche</li>
+            <li>• Includi dettagli specifici sui piatti o servizio</li>
+            <li>• Varia le fonti per maggiore credibilità</li>
+            <li>• Max 3-4 testimonianze per non appesantire</li>
+          </ul>
+        </div>
+      </div>
+    </PremiumCard>
+  );
+};
+
+const MichelinEventsEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
+  const currentTemplate = project.data?.site?.template?.style || 'michelin_star';
+  const defaults = getTemplateDefaults(currentTemplate);
+  const updateEvents = createNestedUpdater(project, onUpdate, 'events');
+  
+  const eventsData = project.data?.events || {};
+  const events = eventsData.events || defaults.events?.events || [];
+
+  const addEvent = () => {
+    const newEvent = {
+      id: Date.now().toString(),
+      title: '',
+      description: '',
+      date: '',
+      time: '',
+      price: '',
+      capacity: '',
+      type: 'Degustazione'
+    };
+    updateEvents('events', [...events, newEvent]);
+  };
+
+  const updateEvent = (index: number, field: string, value: any) => {
+    const updatedEvents = [...events];
+    updatedEvents[index] = { ...updatedEvents[index], [field]: value };
+    updateEvents('events', updatedEvents);
+  };
+
+  const removeEvent = (index: number) => {
+    const updatedEvents = events.filter((_: any, i: number) => i !== index);
+    updateEvents('events', updatedEvents);
+  };
+
+  return (
+    <PremiumCard
+      title="Eventi Esclusivi"
+      description="Degustazioni, cene a tema e eventi speciali per i vostri clienti VIP"
+    >
+      <div className="space-y-6">
+        {events.map((event: any, index: number) => (
+          <div key={event.id || index} className="border border-gray-200 rounded-lg p-4 space-y-4">
+            <div className="flex justify-between items-start">
+              <h4 className="font-medium text-gray-900">Evento #{index + 1}</h4>
+              <button
+                onClick={() => removeEvent(index)}
+                className="text-red-500 hover:text-red-700 text-sm"
+              >
+                Rimuovi
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-1 gap-4">
+              <PremiumTextInput
+                label="Titolo Evento"
+                value={event.title}
+                onChange={(value) => updateEvent(index, 'title', value)}
+                placeholder="Es. Degustazione Tartufo Bianco d'Alba"
+              />
+              
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700">Descrizione</label>
+                <textarea
+                  value={event.description}
+                  onChange={(e) => updateEvent(index, 'description', e.target.value)}
+                  placeholder="Serata speciale dedicata al tartufo bianco d'Alba con menu appositamente studiato..."
+                  rows={2}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-3 gap-4">
+              <PremiumTextInput
+                label="Data"
+                value={event.date}
+                onChange={(value) => updateEvent(index, 'date', value)}
+                placeholder="15 Novembre 2024"
+              />
+              <PremiumTextInput
+                label="Orario"
+                value={event.time}
+                onChange={(value) => updateEvent(index, 'time', value)}
+                placeholder="19:30"
+              />
+              <PremiumSelect
+                label="Tipo Evento"
+                value={event.type}
+                onChange={(value) => updateEvent(index, 'type', value)}
+                options={[
+                  { value: 'Degustazione', label: 'Degustazione' },
+                  { value: 'Cena a tema', label: 'Cena a tema' },
+                  { value: 'Masterclass', label: 'Masterclass' },
+                  { value: 'Wine pairing', label: 'Wine pairing' },
+                  { value: 'Evento privato', label: 'Evento privato' }
+                ]}
+              />
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <PremiumTextInput
+                label="Prezzo per persona"
+                value={event.price}
+                onChange={(value) => updateEvent(index, 'price', value)}
+                placeholder="€195"
+              />
+              <PremiumTextInput
+                label="Posti disponibili"
+                value={event.capacity}
+                onChange={(value) => updateEvent(index, 'capacity', value)}
+                placeholder="12"
+              />
+            </div>
+          </div>
+        ))}
+        
+        <PremiumActionButton
+          onClick={addEvent}
+          variant="outline"
+          className="w-full"
+        >
+          + Aggiungi Evento
+        </PremiumActionButton>
+        
+        <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+          <h4 className="font-medium text-amber-800 mb-2">🎭 Idee per Eventi Luxury</h4>
+          <ul className="text-sm text-amber-700 space-y-1">
+            <li>• Cene a 4 mani con chef stellati ospiti</li>
+            <li>• Degustazioni stagionali (tartufo, caviale, ecc.)</li>
+            <li>• Masterclass di cucina con lo chef</li>
+            <li>• Wine pairing con sommelier</li>
+            <li>• Eventi privati aziendali o celebrazioni</li>
+          </ul>
+        </div>
+      </div>
+    </PremiumCard>
+  );
+};
+
+const MichelinVIPClubEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
+  const currentTemplate = project.data?.site?.template?.style || 'michelin_star';
+  const defaults = getTemplateDefaults(currentTemplate);
+  const updateNewsletter = createNestedUpdater(project, onUpdate, 'newsletter');
+  
+  const newsletterData = project.data?.newsletter || {};
+  
+  const title = React.useMemo(() => 
+    newsletterData.title !== undefined ? newsletterData.title : (defaults.newsletter?.title || ''), 
+    [newsletterData.title, defaults.newsletter?.title]
+  );
+  
+  const description = React.useMemo(() => 
+    newsletterData.description !== undefined ? newsletterData.description : (defaults.newsletter?.description || ''), 
+    [newsletterData.description, defaults.newsletter?.description]
+  );
+  
+  const benefits = newsletterData.benefits || defaults.newsletter?.benefits || [];
+
+  const updateBenefit = (index: number, value: string) => {
+    const updatedBenefits = [...benefits];
+    updatedBenefits[index] = value;
+    updateNewsletter('benefits', updatedBenefits);
+  };
+
+  const addBenefit = () => {
+    updateNewsletter('benefits', [...benefits, '']);
+  };
+
+  const removeBenefit = (index: number) => {
+    const updatedBenefits = benefits.filter((_: any, i: number) => i !== index);
+    updateNewsletter('benefits', updatedBenefits);
+  };
+
+  return (
+    <PremiumCard
+      title="VIP Club & Newsletter"
+      description="Comunicazioni esclusive per i vostri clienti più affezionati"
+    >
+      <div className="space-y-6">
+        <PremiumTextInput
+          label="Titolo Sezione"
+          description="Nome del vostro VIP club o newsletter"
+          value={title}
+          onChange={(value) => updateNewsletter('title', value)}
+          placeholder="Es. Club des Gourmets, VIP Experience"
+        />
+        
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">
+            Descrizione
+          </label>
+          <p className="text-xs text-gray-500 mb-2">
+            Breve descrizione del vostro servizio VIP
+          </p>
+          <textarea
+            value={description}
+            onChange={(e) => updateNewsletter('description', e.target.value)}
+            placeholder="Ricevi in anteprima notizie sui nostri eventi esclusivi, nuovi menu e degustazioni speciali..."
+            rows={3}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+          />
+        </div>
+        
+        <div className="space-y-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Vantaggi dell'iscrizione
+          </label>
+          {benefits.map((benefit: string, index: number) => (
+            <div key={index} className="flex gap-2">
+              <input
+                type="text"
+                value={benefit}
+                onChange={(e) => updateBenefit(index, e.target.value)}
+                placeholder="Es. Prenotazioni prioritarie, Sconti eventi speciali"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                onClick={() => removeBenefit(index)}
+                className="text-red-500 hover:text-red-700"
+              >
+                Rimuovi
+              </button>
+            </div>
+          ))}
+          
+          <PremiumActionButton
+            onClick={addBenefit}
+            variant="outline"
+            size="sm"
+          >
+            + Aggiungi Vantaggio
+          </PremiumActionButton>
+        </div>
+        
+        <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+          <h4 className="font-medium text-amber-800 mb-2">💎 Suggerimenti VIP</h4>
+          <ul className="text-sm text-amber-700 space-y-1">
+            <li>• Prenotazioni prioritarie per eventi speciali</li>
+            <li>• Accesso anticipato ai nuovi menu</li>
+            <li>• Degustazioni esclusive con lo chef</li>
+            <li>• Sconti su wine pairing e servizi extra</li>
+            <li>• Newsletter mensile con ricette e consigli</li>
+          </ul>
+        </div>
+      </div>
+    </PremiumCard>
+  );
+};
+
+const MichelinHoursEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
+  const currentTemplate = project.data?.site?.template?.style || 'michelin_star';
+  const defaults = getTemplateDefaults(currentTemplate);
+  const updateHours = createNestedUpdater(project, onUpdate, 'hours');
+  
+  const hoursData = project.data?.hours || {};
+  const schedule = hoursData.schedule || defaults.hours?.schedule || {};
+
+  const daysOfWeek = [
+    { key: 'monday', label: 'Lunedì' },
+    { key: 'tuesday', label: 'Martedì' },
+    { key: 'wednesday', label: 'Mercoledì' },
+    { key: 'thursday', label: 'Giovedì' },
+    { key: 'friday', label: 'Venerdì' },
+    { key: 'saturday', label: 'Sabato' },
+    { key: 'sunday', label: 'Domenica' }
+  ];
+
+  const updateDaySchedule = (day: string, field: string, value: string) => {
+    const updatedSchedule = {
+      ...schedule,
+      [day]: {
+        ...schedule[day],
+        [field]: value
+      }
+    };
+    updateHours('schedule', updatedSchedule);
+  };
+
+  return (
+    <PremiumCard
+      title="Orari di Apertura"
+      description="Comunicate chiaramente i vostri orari ai clienti"
+    >
+      <div className="space-y-6">
+        {daysOfWeek.map(({ key, label }) => {
+          const daySchedule = schedule[key] || { lunch_start: '', lunch_end: '', dinner_start: '', dinner_end: '', closed: false };
+          
+          return (
+            <div key={key} className="border border-gray-200 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="font-medium text-gray-900">{label}</h4>
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={daySchedule.closed || false}
+                    onChange={(e) => updateDaySchedule(key, 'closed', e.target.checked)}
+                    className="rounded"
+                  />
+                  <span className="text-sm text-gray-600">Chiuso</span>
+                </label>
+              </div>
+              
+              {!daySchedule.closed && (
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Pranzo</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="time"
+                        value={daySchedule.lunch_start || ''}
+                        onChange={(e) => updateDaySchedule(key, 'lunch_start', e.target.value)}
+                        className="px-2 py-1 border border-gray-300 rounded text-sm"
+                      />
+                      <span className="self-center text-gray-500">-</span>
+                      <input
+                        type="time"
+                        value={daySchedule.lunch_end || ''}
+                        onChange={(e) => updateDaySchedule(key, 'lunch_end', e.target.value)}
+                        className="px-2 py-1 border border-gray-300 rounded text-sm"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Cena</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="time"
+                        value={daySchedule.dinner_start || ''}
+                        onChange={(e) => updateDaySchedule(key, 'dinner_start', e.target.value)}
+                        className="px-2 py-1 border border-gray-300 rounded text-sm"
+                      />
+                      <span className="self-center text-gray-500">-</span>
+                      <input
+                        type="time"
+                        value={daySchedule.dinner_end || ''}
+                        onChange={(e) => updateDaySchedule(key, 'dinner_end', e.target.value)}
+                        className="px-2 py-1 border border-gray-300 rounded text-sm"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+        
+        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <h4 className="font-medium text-blue-800 mb-2">⏰ Note Importanti</h4>
+          <ul className="text-sm text-blue-700 space-y-1">
+            <li>• Indicate orari di ultima prenotazione, non chiusura cucina</li>
+            <li>• Considerate pause tra pranzo e cena se necessario</li>
+            <li>• Specificate orari festivi in sezione eventi</li>
+          </ul>
+        </div>
+      </div>
+    </PremiumCard>
+  );
+};
+
+const MichelinLocationEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
+  const currentTemplate = project.data?.site?.template?.style || 'michelin_star';
+  const defaults = getTemplateDefaults(currentTemplate);
+  const updateLocation = createNestedUpdater(project, onUpdate, 'location');
+  
+  const locationData = project.data?.location || {};
+  
+  const address = React.useMemo(() => 
+    locationData.address !== undefined ? locationData.address : (defaults.location?.address || ''), 
+    [locationData.address, defaults.location?.address]
+  );
+  
+  const city = React.useMemo(() => 
+    locationData.city !== undefined ? locationData.city : (defaults.location?.city || ''), 
+    [locationData.city, defaults.location?.city]
+  );
+  
+  const zipCode = React.useMemo(() => 
+    locationData.zipCode !== undefined ? locationData.zipCode : (defaults.location?.zipCode || ''), 
+    [locationData.zipCode, defaults.location?.zipCode]
+  );
+  
+  const directions = React.useMemo(() => 
+    locationData.directions !== undefined ? locationData.directions : (defaults.location?.directions || ''), 
+    [locationData.directions, defaults.location?.directions]
+  );
+
+  return (
+    <PremiumCard
+      title="Posizione e Indicazioni"
+      description="Aiutate i clienti a raggiungervi facilmente"
+    >
+      <div className="space-y-6">
+        <PremiumTextInput
+          label="Indirizzo Completo"
+          description="Via e numero civico"
+          value={address}
+          onChange={(value) => updateLocation('address', value)}
+          placeholder="Es. Via della Spiga, 15"
+        />
+        
+        <div className="grid grid-cols-2 gap-4">
+          <PremiumTextInput
+            label="Città"
+            value={city}
+            onChange={(value) => updateLocation('city', value)}
+            placeholder="Es. Milano"
+          />
+          <PremiumTextInput
+            label="CAP"
+            value={zipCode}
+            onChange={(value) => updateLocation('zipCode', value)}
+            placeholder="Es. 20121"
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">
+            Indicazioni Speciali
+          </label>
+          <p className="text-xs text-gray-500 mb-2">
+            Consigli per raggiungere il ristorante (parcheggio, mezzi pubblici, etc.)
+          </p>
+          <textarea
+            value={directions}
+            onChange={(e) => updateLocation('directions', e.target.value)}
+            placeholder="Facilmente raggiungibile con la metro M1 (fermata San Babila). Parcheggio convenzionato presso Garage San Babila..."
+            rows={4}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+          />
+        </div>
+        
+        <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+          <h4 className="font-medium text-green-800 mb-2">🚗 Suggerimenti Utili</h4>
+          <ul className="text-sm text-green-700 space-y-1">
+            <li>• Menzionate parcheggi convenzionati o disponibili</li>
+            <li>• Indicate fermate metro/autobus più vicine</li>
+            <li>• Specificate se è necessaria prenotazione per accesso ZTL</li>
+            <li>• Consigli su taxi/rideshare nelle vicinanze</li>
+          </ul>
+        </div>
+      </div>
+    </PremiumCard>
+  );
+};
+
+// ===== EDITOR WINE BAR (LEGACY) =====
 
 const HeroEditor: React.FC<EditorProps> = ({ project, onUpdate }) => {
   const hero = project.data.site?.sections?.find((s: any) => s.type === 'hero')?.data || {};

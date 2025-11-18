@@ -32,6 +32,11 @@ export const MichelinStarTemplate: React.FC<MichelinStarTemplateProps> = ({ data
   const menuData = getSectionData('menu');
   const galleryData = getSectionData('gallery');
   const awardsData = getSectionData('awards');
+  const reviewsData = getSectionData('reviews');
+  const eventsData = getSectionData('events');
+  const newsletterData = getSectionData('newsletter');
+  const hoursData = getSectionData('hours');
+  const locationData = getSectionData('location');
   const themeData = getSectionData('theme');
 
   const restaurantData = {
@@ -110,9 +115,15 @@ export const MichelinStarTemplate: React.FC<MichelinStarTemplateProps> = ({ data
     ],
     
     // Contact premium
-    address: contactData.address || project.data.contact?.address || '15 Rue Saint-Honoré, 75001 Paris',
+    address: contactData.address || locationData.address || project.data.contact?.address || '15 Rue Saint-Honoré, 75001 Paris',
+    city: locationData.city || 'Paris',
+    zipCode: locationData.zipCode || '75001',
+    directions: locationData.directions || '',
     phone: contactData.phone || project.data.contact?.phone || '+33 1 42 96 59 04',
     email: contactData.email || project.data.contact?.email || 'reservation@lepetitetoile.fr',
+    
+    // Hours
+    schedule: hoursData.schedule || {},
     
     // Sezioni abilitate (default order)
     sectionsOrder: ['hero', 'awards', 'story', 'menu', 'gallery', 'contact'],
@@ -465,6 +476,254 @@ export const MichelinStarTemplate: React.FC<MichelinStarTemplateProps> = ({ data
           </div>
         </div>
       </section>
+
+      {/* REVIEWS SECTION */}
+      {reviewsData.testimonials && reviewsData.testimonials.length > 0 && (
+        <section className="relative py-32 bg-gradient-to-b from-gray-900 to-black">
+          <div className="max-w-6xl mx-auto px-8">
+            <div className="text-center mb-20">
+              <div 
+                className="text-sm tracking-[0.2em] text-amber-300 mb-6 font-light"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                TESTIMONIANZE
+              </div>
+              <h2 
+                className="text-5xl md:text-6xl font-light"
+                style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              >
+                I Nostri Ospiti
+              </h2>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {reviewsData.testimonials.slice(0, 4).map((testimonial: any, index: number) => (
+                <div key={index} className="border border-amber-300 border-opacity-20 p-8 backdrop-blur-sm">
+                  <div className="flex items-center gap-1 mb-4">
+                    {Array.from({ length: testimonial.rating }).map((_, i) => (
+                      <span key={i} className="text-amber-300 text-lg">★</span>
+                    ))}
+                  </div>
+                  <blockquote 
+                    className="text-lg font-light leading-relaxed mb-6 italic opacity-90"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    "{testimonial.content}"
+                  </blockquote>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div 
+                        className="font-medium text-amber-300"
+                        style={{ fontFamily: "'Cormorant Garamond', serif" }}
+                      >
+                        {testimonial.name}
+                      </div>
+                      <div className="text-sm opacity-70">{testimonial.role}</div>
+                    </div>
+                    <div className="text-xs opacity-60 font-mono">
+                      {testimonial.source}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* EVENTS SECTION */}
+      {eventsData.events && eventsData.events.length > 0 && (
+        <section className="relative py-32 bg-black">
+          <div className="max-w-6xl mx-auto px-8">
+            <div className="text-center mb-20">
+              <div 
+                className="text-sm tracking-[0.2em] text-amber-300 mb-6 font-light"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                EVENTI ESCLUSIVI
+              </div>
+              <h2 
+                className="text-5xl md:text-6xl font-light"
+                style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              >
+                Esperienze Uniche
+              </h2>
+            </div>
+
+            <div className="space-y-8">
+              {eventsData.events.slice(0, 3).map((event: any, index: number) => (
+                <div key={index} className="border border-amber-300 border-opacity-20 p-8 backdrop-blur-sm">
+                  <div className="grid lg:grid-cols-3 gap-6 items-center">
+                    <div className="lg:col-span-2">
+                      <div className="flex items-center gap-4 mb-4">
+                        <div 
+                          className="text-2xl font-light text-amber-300"
+                          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+                        >
+                          {event.title}
+                        </div>
+                        <div className="px-3 py-1 bg-amber-300 bg-opacity-10 text-amber-300 text-xs font-medium rounded-full">
+                          {event.type}
+                        </div>
+                      </div>
+                      <p 
+                        className="text-lg leading-relaxed opacity-90 font-light mb-4"
+                        style={{ fontFamily: "'Inter', sans-serif" }}
+                      >
+                        {event.description}
+                      </p>
+                      <div className="flex items-center gap-6 text-sm opacity-70">
+                        <div>📅 {event.date}</div>
+                        <div>🕐 {event.time}</div>
+                        {event.capacity && <div>👥 {event.capacity} posti</div>}
+                      </div>
+                    </div>
+                    
+                    <div className="text-center lg:text-right">
+                      <div 
+                        className="text-3xl font-light text-amber-300 mb-2"
+                        style={{ fontFamily: "'Cormorant Garamond', serif" }}
+                      >
+                        {event.price}
+                      </div>
+                      <div className="text-sm opacity-60 mb-4">per persona</div>
+                      <button className="px-6 py-3 border border-amber-300 text-amber-300 hover:bg-amber-300 hover:text-black transition-all duration-300 text-sm font-medium tracking-wider">
+                        PRENOTA POSTO
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* VIP CLUB SECTION */}
+      {newsletterData.title && (
+        <section className="relative py-32 bg-gradient-to-b from-black to-gray-900">
+          <div className="max-w-4xl mx-auto px-8 text-center">
+            <div 
+              className="text-sm tracking-[0.2em] text-amber-300 mb-6 font-light"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              ESCLUSIVITÀ
+            </div>
+            <h2 
+              className="text-5xl md:text-6xl font-light mb-8"
+              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            >
+              {newsletterData.title}
+            </h2>
+            <p 
+              className="text-xl leading-relaxed opacity-90 font-light mb-12 max-w-3xl mx-auto"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              {newsletterData.description}
+            </p>
+            
+            {newsletterData.benefits && newsletterData.benefits.length > 0 && (
+              <div className="grid md:grid-cols-2 gap-6 mb-12 max-w-2xl mx-auto">
+                {newsletterData.benefits.map((benefit: string, index: number) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-amber-300 rounded-full flex-shrink-0"></div>
+                    <span className="text-left font-light">{benefit}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
+              <input
+                type="email"
+                placeholder="Inserisci la tua email"
+                className="flex-1 px-4 py-3 bg-transparent border border-amber-300 border-opacity-40 text-white placeholder-gray-400 focus:outline-none focus:border-amber-300 rounded"
+              />
+              <button className="px-8 py-3 bg-amber-300 text-black hover:bg-amber-400 transition-colors duration-300 font-medium tracking-wider rounded">
+                ISCRIVITI
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* HOURS SECTION */}
+      {restaurantData.schedule && Object.keys(restaurantData.schedule).length > 0 && (
+        <section className="relative py-24 bg-gradient-to-b from-gray-900 to-black">
+          <div className="max-w-4xl mx-auto px-8">
+            <div className="text-center mb-16">
+              <div 
+                className="text-sm tracking-[0.2em] text-amber-300 mb-6 font-light"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                ORARI DI APERTURA
+              </div>
+              <h2 
+                className="text-4xl md:text-5xl font-light"
+                style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              >
+                Quando Trovarci
+              </h2>
+            </div>
+
+            <div className="max-w-2xl mx-auto">
+              <div className="border border-amber-300 border-opacity-20 p-8 backdrop-blur-sm">
+                <div className="space-y-4">
+                  {Object.entries(restaurantData.schedule).map(([day, hours]: [string, any]) => {
+                    const dayNames: { [key: string]: string } = {
+                      monday: 'Lunedì',
+                      tuesday: 'Martedì', 
+                      wednesday: 'Mercoledì',
+                      thursday: 'Giovedì',
+                      friday: 'Venerdì',
+                      saturday: 'Sabato',
+                      sunday: 'Domenica'
+                    };
+                    
+                    return (
+                      <div key={day} className="flex items-center justify-between py-2 border-b border-amber-300 border-opacity-10 last:border-b-0">
+                        <div 
+                          className="font-medium text-amber-300"
+                          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+                        >
+                          {dayNames[day] || day}
+                        </div>
+                        <div 
+                          className="font-light text-right"
+                          style={{ fontFamily: "'Inter', sans-serif" }}
+                        >
+                          {hours.closed ? (
+                            <span className="text-gray-500">Chiuso</span>
+                          ) : (
+                            <div className="space-y-1">
+                              {hours.lunch_start && hours.lunch_end && (
+                                <div className="text-sm">
+                                  Pranzo: {hours.lunch_start} - {hours.lunch_end}
+                                </div>
+                              )}
+                              {hours.dinner_start && hours.dinner_end && (
+                                <div className="text-sm">
+                                  Cena: {hours.dinner_start} - {hours.dinner_end}
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                
+                <div className="mt-6 pt-6 border-t border-amber-300 border-opacity-10 text-center">
+                  <p className="text-sm opacity-70 font-light">
+                    Si consiglia la prenotazione • Ultimo ordine 30 min prima della chiusura
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CONTACT SECTION */}
       <section id="contact" className="relative py-32 bg-black scroll-mt-24">

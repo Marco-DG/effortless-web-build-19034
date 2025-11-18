@@ -49,6 +49,50 @@ export interface TemplateDefaults {
       twitter?: string;
     };
   };
+  reviews?: {
+    testimonials?: Array<{
+      id: string;
+      name: string;
+      role: string;
+      content: string;
+      rating: number;
+      source: string;
+    }>;
+  };
+  events?: {
+    events?: Array<{
+      id: string;
+      title: string;
+      description: string;
+      date: string;
+      time: string;
+      price: string;
+      capacity: string;
+      type: string;
+    }>;
+  };
+  newsletter?: {
+    title?: string;
+    description?: string;
+    benefits?: string[];
+  };
+  hours?: {
+    schedule?: {
+      [key: string]: {
+        lunch_start?: string;
+        lunch_end?: string;
+        dinner_start?: string;
+        dinner_end?: string;
+        closed?: boolean;
+      };
+    };
+  };
+  location?: {
+    address?: string;
+    city?: string;
+    zipCode?: string;
+    directions?: string;
+  };
 }
 
 export const WINE_BAR_DEFAULTS: TemplateDefaults = {
@@ -165,6 +209,118 @@ export const MICHELIN_STAR_DEFAULTS: TemplateDefaults = {
       facebook: 'https://facebook.com/lepetitetoile.officiel',
       twitter: 'https://twitter.com/lepetitetoile'
     }
+  },
+  reviews: {
+    testimonials: [
+      {
+        id: '1',
+        name: 'Sophie Laurent',
+        role: 'Food Critic - Le Figaro',
+        content: 'Une expérience gastronomique absolument transcendante. Chaque bouchée révèle la maîtrise technique et la créativité sans bornes du chef.',
+        rating: 5,
+        source: 'Le Figaro'
+      },
+      {
+        id: '2',
+        name: 'Marco Benedetti',
+        role: 'Michelin Inspector',
+        content: 'La précision de l\'exécution et l\'équilibre parfait des saveurs justifient pleinement les deux étoiles. Un incontournable de la gastronomie parisienne.',
+        rating: 5,
+        source: 'Guide Michelin'
+      },
+      {
+        id: '3',
+        name: 'Catherine Dubois',
+        role: 'Cliente habituelle',
+        content: 'Depuis des années, ce restaurant continue de nous surprendre. Le service impeccable et l\'ambiance raffinée complètent une cuisine d\'exception.',
+        rating: 5,
+        source: 'Google Reviews'
+      }
+    ]
+  },
+  events: {
+    events: [
+      {
+        id: '1',
+        title: 'Dîner aux Truffes d\'Alba',
+        description: 'Soirée exceptionnelle dédiée au joyau de l\'automne piémontais. Menu spécialement conçu autour de la truffe blanche d\'Alba avec accord mets et vins prestigieux.',
+        date: '15 Novembre 2024',
+        time: '19:30',
+        price: '€395',
+        capacity: '16',
+        type: 'Degustazione'
+      },
+      {
+        id: '2',
+        title: 'Masterclass avec le Chef',
+        description: 'Découvrez les secrets de notre cuisine étoilée lors d\'une démonstration exclusive suivie d\'une dégustation commentée.',
+        date: '22 Novembre 2024',
+        time: '15:00',
+        price: '€195',
+        capacity: '12',
+        type: 'Masterclass'
+      }
+    ]
+  },
+  newsletter: {
+    title: 'Club des Gourmets',
+    description: 'Rejoignez notre cercle exclusif d\'amateurs de haute gastronomie. Recevez en avant-première nos invitations aux événements spéciaux, nos nouveaux menus et nos collaborations exceptionnelles.',
+    benefits: [
+      'Réservations prioritaires pour tous nos événements',
+      'Accès exclusif aux nouveaux menus avant leur lancement public',
+      'Invitations aux dégustations privées avec le chef',
+      'Remises sur les accords mets et vins premium',
+      'Newsletter mensile avec recettes et conseils du chef'
+    ]
+  },
+  hours: {
+    schedule: {
+      tuesday: {
+        lunch_start: '12:00',
+        lunch_end: '14:00',
+        dinner_start: '19:30',
+        dinner_end: '22:00',
+        closed: false
+      },
+      wednesday: {
+        lunch_start: '12:00',
+        lunch_end: '14:00',
+        dinner_start: '19:30',
+        dinner_end: '22:00',
+        closed: false
+      },
+      thursday: {
+        lunch_start: '12:00',
+        lunch_end: '14:00',
+        dinner_start: '19:30',
+        dinner_end: '22:00',
+        closed: false
+      },
+      friday: {
+        lunch_start: '12:00',
+        lunch_end: '14:00',
+        dinner_start: '19:30',
+        dinner_end: '22:30',
+        closed: false
+      },
+      saturday: {
+        dinner_start: '19:30',
+        dinner_end: '22:30',
+        closed: false
+      },
+      sunday: {
+        closed: true
+      },
+      monday: {
+        closed: true
+      }
+    }
+  },
+  location: {
+    address: '15 Rue Saint-Honoré',
+    city: 'Paris',
+    zipCode: '75001',
+    directions: 'Facilement accessible en métro (lignes 1, 7, 14 - station Châtelet). Parking public Place Vendôme à 300m. Service voiturier disponible sur réservation.'
   }
 };
 
