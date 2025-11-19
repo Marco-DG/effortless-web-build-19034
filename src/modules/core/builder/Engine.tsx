@@ -137,25 +137,25 @@ const FloatingToolbar: React.FC<{
             {!isLocked && (
                 <>
                     <button
-                        onClick={(e) => { e.stopPropagation(); e.preventDefault(); onMove?.(index, 'up'); }}
+                        onClick={(e) => { e.stopPropagation(); onMove?.(index, 'up'); }}
                         disabled={index <= 1} // Assuming header is 0
-                        className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded disabled:opacity-30"
+                        className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded disabled:opacity-30 cursor-pointer"
                         title="Move Up"
                     >
                         <ArrowUp size={16} />
                     </button>
                     <button
-                        onClick={(e) => { e.stopPropagation(); e.preventDefault(); onMove?.(index, 'down'); }}
+                        onClick={(e) => { e.stopPropagation(); onMove?.(index, 'down'); }}
                         disabled={index >= total - 2} // Assuming footer is last
-                        className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded disabled:opacity-30"
+                        className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded disabled:opacity-30 cursor-pointer"
                         title="Move Down"
                     >
                         <ArrowDown size={16} />
                     </button>
                     <div className="w-[1px] h-4 bg-slate-200 mx-1" />
                     <button
-                        onClick={(e) => { e.stopPropagation(); e.preventDefault(); onDelete?.(sectionId); }}
-                        className="p-1.5 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded"
+                        onClick={(e) => { e.stopPropagation(); onDelete?.(sectionId); }}
+                        className="p-1.5 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded cursor-pointer"
                         title="Delete"
                     >
                         <Trash2 size={16} />
@@ -218,7 +218,7 @@ const SelectableSection: React.FC<{
                     `} />
 
                     {/* Show Toolbar on Hover or Active */}
-                    <div className={`absolute ${section.type === 'hero' ? 'top-20' : 'top-0'} right-0 z-[100] transition-opacity duration-200 ${isActive || 'group-hover:opacity-100 opacity-0'}`}>
+                    <div className={`absolute ${section.type === 'hero' ? 'top-20' : 'top-0'} right-0 z-[100] transition-opacity duration-200 pointer-events-none ${isActive || 'group-hover:opacity-100 opacity-0'}`}>
                         <FloatingToolbar
                             sectionId={section.id}
                             index={index}
