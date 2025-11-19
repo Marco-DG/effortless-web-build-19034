@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const TestimonialsSchema: ComponentSchema = {
     id: 'testimonials-schema',
-    name: 'Testimonials / Reviews',
+    name: 'Testimonials',
     description: 'Carousel or grid of customer reviews.',
     category: 'social-proof',
     fields: {

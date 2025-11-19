@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const MenuSchema: ComponentSchema = {
     id: 'menu',
-    name: 'Universal Menu',
+    name: 'Restaurant Menu',
     description: 'Restaurant menu with categories, filtering, and dietary badges.',
     category: 'features',
     fields: {

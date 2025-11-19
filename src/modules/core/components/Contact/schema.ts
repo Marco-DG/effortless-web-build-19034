@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const ContactSchema: ComponentSchema = {
     id: 'contact-schema',
-    name: 'Contact & Location',
+    name: 'Contact Form',
     description: 'Map, address, and contact form.',
     category: 'contact',
     fields: {

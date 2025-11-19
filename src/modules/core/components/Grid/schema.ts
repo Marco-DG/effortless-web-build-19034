@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const GridSchema: ComponentSchema = {
     id: 'grid',
-    name: 'Universal Grid',
+    name: 'Features Grid',
     description: 'A flexible grid for features, services, or menu items.',
     category: 'features',
     fields: {

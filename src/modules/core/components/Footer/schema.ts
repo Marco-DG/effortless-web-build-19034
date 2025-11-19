@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const FooterSchema: ComponentSchema = {
     id: 'footer',
-    name: 'Universal Footer',
+    name: 'Footer',
     description: 'Multi-column footer with social links and newsletter.',
     category: 'other',
     fields: {

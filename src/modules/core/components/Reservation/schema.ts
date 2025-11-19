@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const ReservationSchema: ComponentSchema = {
     id: 'reservation-schema',
-    name: 'Reservation CTA',
+    name: 'Booking / Reservation',
     description: 'Call to action for table bookings.',
     category: 'cta',
     fields: {

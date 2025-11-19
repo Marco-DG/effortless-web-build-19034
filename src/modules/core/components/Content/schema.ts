@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const ContentSchema: ComponentSchema = {
     id: 'content-schema',
-    name: 'Content Section',
+    name: 'Text & Image',
     description: 'Flexible text and image section for stories, bios, or details.',
     category: 'content',
     fields: {

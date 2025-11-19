@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const HeroSchema: ComponentSchema = {
     id: 'hero',
-    name: 'Universal Hero',
+    name: 'Cover / Hero',
     description: 'A versatile hero section with multiple layouts and styles.',
     category: 'hero',
     fields: {

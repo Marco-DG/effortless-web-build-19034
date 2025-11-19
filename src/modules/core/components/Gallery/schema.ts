@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const GallerySchema: ComponentSchema = {
     id: 'gallery',
-    name: 'Universal Gallery',
+    name: 'Photo Gallery',
     description: 'Showcase images in a grid, masonry, or carousel layout.',
     category: 'gallery',
     fields: {

@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const HeaderSchema: ComponentSchema = {
     id: 'header',
-    name: 'Universal Header',
+    name: 'Navigation Bar',
     description: 'Global navigation bar with logo and links.',
     category: 'other',
     fields: {

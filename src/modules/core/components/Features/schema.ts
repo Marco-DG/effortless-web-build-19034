@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const FeaturesSchema: ComponentSchema = {
     id: 'features-schema',
-    name: 'Features / Services',
+    name: 'Features List',
     description: 'Grid of features, services, or amenities.',
     category: 'features',
     fields: {

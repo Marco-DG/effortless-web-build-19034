@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const AwardsSchema: ComponentSchema = {
     id: 'awards-schema',
-    name: 'Awards & Recognition',
+    name: 'Awards',
     description: 'Showcase your achievements and press features.',
     category: 'social-proof',
     fields: {
