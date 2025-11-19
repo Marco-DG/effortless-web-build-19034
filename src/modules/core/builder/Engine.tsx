@@ -106,7 +106,7 @@ export const Engine: React.FC<EngineProps> = ({
 // --- Subcomponents ---
 
 const GhostDivider: React.FC<{ onClick: () => void; label?: string }> = ({ onClick, label }) => (
-    <div className="group relative h-4 -my-2 z-40 flex items-center justify-center cursor-pointer" onClick={onClick}>
+    <div className="group relative h-4 -my-2 z-[80] flex items-center justify-center cursor-pointer" onClick={onClick}>
         {/* The invisible hit area */}
         <div className="absolute inset-0 w-full h-full" />
 

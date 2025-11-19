@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { getAllSchemas } from './registry';
 import { X, Layout, Type, Image, Grid, List, Phone, Star, Award, Calendar } from 'lucide-react';
 
@@ -30,8 +31,8 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({ isOpen, onClos
         return Type;
     };
 
-    return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
+    return ReactDOM.createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
             <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[80vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
 
                 {/* Header */}
@@ -74,6 +75,7 @@ export const AddSectionModal: React.FC<AddSectionModalProps> = ({ isOpen, onClos
                     </div>
                 </div>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };
