@@ -1,12 +1,7 @@
 import React from 'react';
-import { UnifiedBuilderLayout, BuilderSection } from '../../../components/UnifiedBuilderLayout';
-import { AutoSidebar } from '../editor/AutoSidebar';
+import { UniversalSidebar } from './UniversalSidebar';
 import { Engine } from './Engine';
 import { useAppStore } from '../../../store/app-store';
-import { getComponentDefinition } from './registry';
-import {
-    Layout, Type, Grid
-} from 'lucide-react';
 
 // Register components (ensure they are registered)
 import { registerHero } from '../components/Hero';
@@ -42,7 +37,10 @@ export const UniversalBuilder: React.FC = () => {
         ui,
         setActiveSection,
         updateSection,
-        setActiveMode
+        addSection,
+        reorderSections,
+        deleteSection,
+        duplicateSection
     } = useAppStore();
 
     const activeSectionId = ui.activeSectionId;
@@ -55,53 +53,39 @@ export const UniversalBuilder: React.FC = () => {
         return page ? page.sections : [];
     }, [activeProject, activePageId]);
 
-    // Generate sidebar sections based on project sections
-    const builderSections: BuilderSection[] = React.useMemo(() => {
-        return activePageSections.map(section => {
-            const def = getComponentDefinition(section.type);
-            return {
-                id: section.id,
-                label: def?.schema.name || section.type,
-                icon: section.type === 'hero' ? Layout : Grid, // Simple icon mapping
-                category: 'sections',
-                description: def?.schema.description || ''
-            };
-        });
-    }, [activePageSections]);
+    // --- Interaction Handlers ---
+
+    const handleAddSection = (type: string, index: number) => {
+        addSection(type, index);
+    };
+
+    const handleMoveSection = (index: number, direction: 'up' | 'down') => {
+        const newIndex = direction === 'up' ? index - 1 : index + 1;
+        if (newIndex < 0 || newIndex >= activePageSections.length) return;
+        reorderSections(index, newIndex);
+    };
+
+    const handleDeleteSection = (sectionId: string) => {
+        if (confirm('Are you sure you want to delete this section?')) {
+            deleteSection(sectionId);
+            if (activeSectionId === sectionId) {
+                setActiveSection(null);
+            }
+        }
+    };
+
+    const handleDuplicateSection = (sectionId: string) => {
+        duplicateSection(sectionId);
+    };
 
     if (!activeProject) {
         return <div className="flex items-center justify-center h-screen">Loading Project...</div>;
     }
 
-    // Find active section config and schema
-    const activeSectionConfig = activePageSections.find(s => s.id === activeSectionId);
-    const activeComponentDef = activeSectionConfig ? getComponentDefinition(activeSectionConfig.type) : null;
-
     return (
         <div className="flex h-screen w-full bg-slate-50 overflow-hidden">
-            {/* Sidebar & Editor */}
-            <div className="w-[450px] flex-shrink-0 h-full border-r border-slate-200 bg-white z-10 shadow-xl">
-                <UnifiedBuilderLayout
-                    builderType="site"
-                    sections={builderSections}
-                    activeSection={activeSectionId || ''}
-                    onSectionChange={setActiveSection}
-                    onSwitchBuilder={(mode) => setActiveMode(mode)}
-                >
-                    {activeSectionConfig && activeComponentDef ? (
-                        <AutoSidebar
-                            schema={activeComponentDef.schema}
-                            data={activeSectionConfig.data}
-                            onUpdate={(newData) => updateSection(activeSectionConfig.id, newData)}
-                        />
-                    ) : (
-                        <div className="flex flex-col items-center justify-center h-64 text-slate-400">
-                            <Type className="w-12 h-12 mb-4 opacity-20" />
-                            <p>Select a section to edit</p>
-                        </div>
-                    )}
-                </UnifiedBuilderLayout>
-            </div>
+            {/* Sidebar (Contextual) */}
+            <UniversalSidebar />
 
             {/* Preview Engine */}
             <div className="flex-1 h-full overflow-y-auto bg-slate-100 p-8">
@@ -110,6 +94,11 @@ export const UniversalBuilder: React.FC = () => {
                         config={activeProject}
                         sections={activePageSections}
                         activeSectionId={activeSectionId}
+                        onSectionSelect={setActiveSection}
+                        onAddSection={handleAddSection}
+                        onMoveSection={handleMoveSection}
+                        onDeleteSection={handleDeleteSection}
+                        onDuplicateSection={handleDuplicateSection}
                     />
                 </div>
             </div>

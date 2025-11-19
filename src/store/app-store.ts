@@ -56,8 +56,9 @@ interface AppActions {
 
   // Section Management (Updated to target active page)
   updateSection: (sectionId: string, data: any) => void;
-  addSection: (type: string) => void;
-  removeSection: (sectionId: string) => void;
+  addSection: (type: string, index?: number) => void;
+  deleteSection: (sectionId: string) => void;
+  duplicateSection: (sectionId: string) => void;
   reorderSections: (startIndex: number, endIndex: number) => void;
   toggleSection: (sectionId: string) => void;
 }
@@ -320,6 +321,8 @@ export const useAppStore = create<AppStore>()(
 
       // --- Section Management (Scoped to Active Page) ---
 
+      // --- Section Management (Scoped to Active Page) ---
+
       updateSection: (sectionId, data) => set((state) => {
         if (!state.activeProject || !state.ui.activePageId) return state;
 
@@ -344,7 +347,7 @@ export const useAppStore = create<AppStore>()(
         };
       }),
 
-      addSection: (type) => set((state) => {
+      addSection: (type, index) => set((state) => {
         if (!state.activeProject || !state.ui.activePageId) return state;
 
         const activePage = state.activeProject.pages.find(p => p.id === state.ui.activePageId);
@@ -362,13 +365,19 @@ export const useAppStore = create<AppStore>()(
           data: defaultData
         };
 
-        // Insert before footer if exists
         const sections = [...activePage.sections];
-        const footerIndex = sections.findIndex(s => s.type === 'footer');
-        if (footerIndex !== -1) {
-          sections.splice(footerIndex, 0, newSection);
+
+        if (typeof index === 'number' && index >= 0) {
+          // Insert at specific index
+          sections.splice(index, 0, newSection);
         } else {
-          sections.push(newSection);
+          // Default behavior: Insert before footer if exists, else append
+          const footerIndex = sections.findIndex(s => s.type === 'footer');
+          if (footerIndex !== -1) {
+            sections.splice(footerIndex, 0, newSection);
+          } else {
+            sections.push(newSection);
+          }
         }
 
         const newPages = state.activeProject.pages.map(p =>
@@ -384,7 +393,7 @@ export const useAppStore = create<AppStore>()(
         };
       }),
 
-      removeSection: (sectionId) => set((state) => {
+      deleteSection: (sectionId) => set((state) => {
         if (!state.activeProject || !state.ui.activePageId) return state;
 
         const newPages = state.activeProject.pages.map(p =>
@@ -398,6 +407,38 @@ export const useAppStore = create<AppStore>()(
             ...state.activeProject,
             pages: newPages
           }
+        };
+      }),
+
+      duplicateSection: (sectionId) => set((state) => {
+        if (!state.activeProject || !state.ui.activePageId) return state;
+
+        const activePage = state.activeProject.pages.find(p => p.id === state.ui.activePageId);
+        if (!activePage) return state;
+
+        const sectionIndex = activePage.sections.findIndex(s => s.id === sectionId);
+        if (sectionIndex === -1) return state;
+
+        const originalSection = activePage.sections[sectionIndex];
+        const newSection: SectionConfig = {
+          ...originalSection,
+          id: `${originalSection.type}_${Date.now()}`, // New ID
+          data: JSON.parse(JSON.stringify(originalSection.data)) // Deep copy data
+        };
+
+        const newSections = [...activePage.sections];
+        newSections.splice(sectionIndex + 1, 0, newSection); // Insert after original
+
+        const newPages = state.activeProject.pages.map(p =>
+          p.id === state.ui.activePageId ? { ...p, sections: newSections } : p
+        );
+
+        return {
+          activeProject: {
+            ...state.activeProject,
+            pages: newPages
+          },
+          ui: { ...state.ui, activeSectionId: newSection.id }
         };
       }),
 

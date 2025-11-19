@@ -69,10 +69,8 @@ export interface PageConfig {
     slug: string; // e.g., '/', '/menu', '/about'
     title: string; // e.g., 'Home', 'Our Menu'
     sections: SectionConfig[];
-    seo?: {
-        title: string;
-        description: string;
-    };
+    seoTitle?: string;
+    seoDesc?: string;
 }
 
 // --- Component Schema Types (for Auto-Editor) ---
