@@ -214,11 +214,10 @@ const SelectableSection: React.FC<{
                         absolute inset-0 border-2 pointer-events-none transition-all duration-200
                         ${section.type === 'header' ? 'z-[61] h-20' : 'z-[60]'}
                         ${isActive ? 'border-blue-500 bg-blue-500/5' : 'border-transparent group-hover:border-blue-300 group-hover:bg-blue-500/5'}
-                        ${section.type === 'hero' ? 'top-20' : ''}
                     `} />
 
                     {/* Show Toolbar on Hover or Active */}
-                    <div className={`absolute ${section.type === 'hero' ? 'top-20' : 'top-0'} right-0 z-[100] transition-opacity duration-200 pointer-events-none ${isActive || 'group-hover:opacity-100 opacity-0'}`}>
+                    <div className={`absolute top-0 right-0 z-[100] transition-opacity duration-200 pointer-events-none ${isActive || 'group-hover:opacity-100 opacity-0'}`}>
                         <FloatingToolbar
                             sectionId={section.id}
                             index={index}
