@@ -75,8 +75,8 @@ export const Engine: React.FC<EngineProps> = ({
 
                 return (
                     <React.Fragment key={section.id}>
-                        {/* Ghost Divider BEFORE section (only if not header and not preview) */}
-                        {!previewMode && !isHeader && (
+                        {/* Ghost Divider BEFORE section (only if not header and not preview, and not immediately after header) */}
+                        {!previewMode && !isHeader && (index === 0 || sections[index - 1].type !== 'header') && (
                             <GhostDivider onClick={() => handleAddClick(index)} />
                         )}
 
@@ -133,11 +133,11 @@ const FloatingToolbar: React.FC<{
     const isLocked = isHeader || isFooter;
 
     return (
-        <div className="absolute top-4 right-4 z-50 flex items-center gap-1 bg-white border border-slate-200 shadow-lg rounded-lg p-1 animate-in fade-in zoom-in-95 duration-200">
+        <div className="absolute top-4 right-4 z-[100] flex items-center gap-1 bg-white border border-slate-200 shadow-lg rounded-lg p-1 animate-in fade-in zoom-in-95 duration-200 pointer-events-auto">
             {!isLocked && (
                 <>
                     <button
-                        onClick={(e) => { e.stopPropagation(); onMove?.(index, 'up'); }}
+                        onClick={(e) => { e.stopPropagation(); e.preventDefault(); onMove?.(index, 'up'); }}
                         disabled={index <= 1} // Assuming header is 0
                         className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded disabled:opacity-30"
                         title="Move Up"
@@ -145,7 +145,7 @@ const FloatingToolbar: React.FC<{
                         <ArrowUp size={16} />
                     </button>
                     <button
-                        onClick={(e) => { e.stopPropagation(); onMove?.(index, 'down'); }}
+                        onClick={(e) => { e.stopPropagation(); e.preventDefault(); onMove?.(index, 'down'); }}
                         disabled={index >= total - 2} // Assuming footer is last
                         className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded disabled:opacity-30"
                         title="Move Down"
@@ -154,14 +154,7 @@ const FloatingToolbar: React.FC<{
                     </button>
                     <div className="w-[1px] h-4 bg-slate-200 mx-1" />
                     <button
-                        onClick={(e) => { e.stopPropagation(); onDuplicate?.(sectionId); }}
-                        className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded"
-                        title="Duplicate"
-                    >
-                        <Copy size={16} />
-                    </button>
-                    <button
-                        onClick={(e) => { e.stopPropagation(); onDelete?.(sectionId); }}
+                        onClick={(e) => { e.stopPropagation(); e.preventDefault(); onDelete?.(sectionId); }}
                         className="p-1.5 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded"
                         title="Delete"
                     >
@@ -218,12 +211,14 @@ const SelectableSection: React.FC<{
             {!previewMode && (
                 <>
                     <div className={`
-                        absolute inset-0 z-10 border-2 pointer-events-none transition-all duration-200
+                        absolute inset-0 border-2 pointer-events-none transition-all duration-200
+                        ${section.type === 'header' ? 'z-[61] h-20' : 'z-[60]'}
                         ${isActive ? 'border-blue-500 bg-blue-500/5' : 'border-transparent group-hover:border-blue-300 group-hover:bg-blue-500/5'}
+                        ${section.type === 'hero' ? 'top-20' : ''}
                     `} />
 
                     {/* Show Toolbar on Hover or Active */}
-                    <div className={`absolute top-0 right-0 z-50 transition-opacity duration-200 ${isActive || 'group-hover:opacity-100 opacity-0'}`}>
+                    <div className={`absolute ${section.type === 'hero' ? 'top-20' : 'top-0'} right-0 z-[100] transition-opacity duration-200 ${isActive || 'group-hover:opacity-100 opacity-0'}`}>
                         <FloatingToolbar
                             sectionId={section.id}
                             index={index}
