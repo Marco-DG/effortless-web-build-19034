@@ -75,14 +75,16 @@ const SelectableSection: React.FC<{
         }
     };
 
+    const isHeader = section.type === 'header';
+
     return (
         <motion.section
             id={section.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className={`relative group transition-all duration-200 ${!previewMode ? 'cursor-pointer' : ''}`}
+            initial={isHeader ? undefined : { opacity: 0, y: 20 }}
+            whileInView={isHeader ? undefined : { opacity: 1, y: 0 }}
+            viewport={isHeader ? undefined : { once: true, margin: "-50px" }}
+            transition={isHeader ? undefined : { duration: 0.5, ease: "easeOut" }}
+            className={`relative group transition-all duration-200 ${!previewMode ? 'cursor-pointer' : ''} ${isHeader ? 'z-50' : ''}`}
             onClick={handleClick}
         >
             {/* Selection Overlay (Editor Mode Only) */}
