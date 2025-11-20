@@ -190,18 +190,18 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
         {/* Section Editor */}
         <div className="flex-1 min-w-0 flex flex-col">
           {/* Section Header */}
-          <div className="px-6 py-6 border-b border-slate-200/30 bg-white/40 backdrop-blur-xl">
+          <div className="px-10 py-8 border-b border-slate-200/30 bg-white/40 backdrop-blur-xl">
             {headerContent ? (
               headerContent
             ) : (
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-5">
                 {currentSection && (
                   <>
-                    <div className="w-12 h-12 rounded-[16px] bg-gradient-to-br from-white via-slate-50 to-slate-100/80 border border-slate-200/50 flex items-center justify-center shadow-lg shadow-slate-900/8 backdrop-blur-sm">
-                      <currentSection.icon className="w-5 h-5 text-slate-700" />
+                    <div className="w-14 h-14 rounded-[18px] bg-gradient-to-br from-white via-slate-50 to-slate-100/80 border border-slate-200/50 flex items-center justify-center shadow-lg shadow-slate-900/8 backdrop-blur-sm">
+                      <currentSection.icon className="w-6 h-6 text-slate-700" strokeWidth={1.5} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-xl font-bold text-slate-900 tracking-[-0.02em] font-geist leading-tight mb-1">
+                      <h3 className="text-2xl font-bold text-slate-900 tracking-[-0.02em] font-geist leading-tight mb-2">
                         {currentSection.label}
                       </h3>
                       <p className="text-sm text-slate-500 font-medium font-geist tracking-[-0.01em] leading-relaxed">
