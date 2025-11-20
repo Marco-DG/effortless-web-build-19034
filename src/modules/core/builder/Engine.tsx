@@ -59,10 +59,12 @@ export const Engine: React.FC<EngineProps> = ({
     };
 
     const visibleSections = sections.filter(section => section.isEnabled);
+    const lastSection = visibleSections[visibleSections.length - 1];
+    const hasFooter = lastSection?.type === 'footer';
 
     return (
         <div
-            className="w-full min-h-screen bg-[var(--theme-background)] text-[var(--theme-text)] pb-32" // Added padding bottom for last divider
+            className={`w-full min-h-screen bg-[var(--theme-background)] text-[var(--theme-text)] ${!previewMode && !hasFooter ? 'pb-32' : ''}`}
             style={{ fontFamily: 'var(--theme-font-body)' }}
         >
             <AddSectionModal
