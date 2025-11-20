@@ -22,6 +22,7 @@ export interface UnifiedBuilderLayoutProps {
   onExport?: () => void;
   extraHeaderActions?: React.ReactNode;
   headerContent?: React.ReactNode;
+  contentClassName?: string;
 
   // Content
   children: React.ReactNode;
@@ -36,6 +37,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
   onExport,
   extraHeaderActions,
   headerContent,
+  contentClassName,
   children
 }) => {
   const currentSection = sections.find(s => s.id === activeSection);
@@ -78,8 +80,8 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
                 type="button"
                 onClick={() => onSwitchBuilder(type)}
                 className={`topbar-tab relative px-5 py-2.5 font-medium text-sm transition-all duration-300 ease-out ${builderType === type
-                    ? 'text-slate-900 topbar-tab-active'
-                    : 'text-slate-600 hover:text-slate-900'
+                  ? 'text-slate-900 topbar-tab-active'
+                  : 'text-slate-600 hover:text-slate-900'
                   }`}
               >
                 <span className="relative z-10 font-geist font-medium tracking-[-0.01em]">
@@ -154,20 +156,20 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
         </div>
 
         {/* Section Editor */}
-        <div className="flex-1 min-w-0 flex flex-col">
+        <div className="flex-1 min-w-0 max-w-md flex flex-col">
           {/* Section Header */}
-          <div className="px-10 py-8 border-b border-slate-200/30 bg-white/40 backdrop-blur-xl">
+          <div className="px-6 py-6 border-b border-slate-200/30 bg-white/40 backdrop-blur-xl">
             {headerContent ? (
               headerContent
             ) : (
-              <div className="flex items-start gap-5">
+              <div className="flex items-start gap-4">
                 {currentSection && (
                   <>
-                    <div className="w-14 h-14 rounded-[18px] bg-gradient-to-br from-white via-slate-50 to-slate-100/80 border border-slate-200/50 flex items-center justify-center shadow-lg shadow-slate-900/8 backdrop-blur-sm">
-                      <currentSection.icon className="w-6 h-6 text-slate-700" />
+                    <div className="w-12 h-12 rounded-[16px] bg-gradient-to-br from-white via-slate-50 to-slate-100/80 border border-slate-200/50 flex items-center justify-center shadow-lg shadow-slate-900/8 backdrop-blur-sm">
+                      <currentSection.icon className="w-5 h-5 text-slate-700" />
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-slate-900 tracking-[-0.02em] font-geist leading-tight mb-2">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xl font-bold text-slate-900 tracking-[-0.02em] font-geist leading-tight mb-1">
                         {currentSection.label}
                       </h3>
                       <p className="text-sm text-slate-500 font-medium font-geist tracking-[-0.01em] leading-relaxed">
@@ -181,8 +183,8 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
           </div>
 
           {/* Section Content */}
-          <ScrollArea className="flex-1">
-            <div className="p-10 bg-gradient-to-b from-white/30 via-slate-50/20 to-slate-50/40">
+          <ScrollArea className="flex-1" viewportClassName="!block" viewportStyle={{ display: 'block' }}>
+            <div className={contentClassName || "p-6 bg-gradient-to-b from-white/30 via-slate-50/20 to-slate-50/40"}>
               {children}
             </div>
           </ScrollArea>

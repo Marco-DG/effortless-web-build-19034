@@ -8,6 +8,7 @@ import { Layout, Layers, Palette, Settings, FileText } from 'lucide-react';
 import { BusinessSettingsEditor } from '../settings/BusinessSettingsEditor';
 import { ThemeEditor } from '../theme/ThemeEditor';
 import { SectionManager } from './SectionManager';
+import { SectionManagerV2 } from './SectionManagerV2';
 import { PageSettings } from './PageSettings';
 
 // Ensure components are registered
@@ -100,7 +101,7 @@ export const UniversalSidebar: React.FC = () => {
             case 'page_manager':
                 return <PageSettings />;
             case 'structure_manager':
-                return <SectionManager />;
+                return <SectionManagerV2 />;
             case 'theme_editor':
                 return <ThemeEditor />;
             case 'business_info':

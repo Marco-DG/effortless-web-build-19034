@@ -26,7 +26,7 @@
         "confirmDeleteSection": "Are you sure you want to delete this section?",
         "loadingProject": "Loading Project...",
         "noPageSelected": "No page selected",
-        "layers": "Layers",
+        "layers": "Sections",
         "manageSections": "Manage page sections",
         "settings": "Settings",
         "businessProfile": "Business profile",
@@ -43,27 +43,26 @@
         "addSection": "Add Section",
         "addFooterOrSection": "Add Footer / Section",
         "chooseComponent": "Choose a component to add to your page",
-        "pageStructure": "Page Structure",
-        "pageStructureDesc": "Manage layout and add content.",
-        "components": "Components",
-        "section": "Section"
+        "pageStructure": "Sections",
+        "pageStructureDesc": "",
+        "components": "Components"
     },
     "components": {
         "hero": {
-            "name": "Cover / Hero",
-            "description": "A versatile hero section with multiple layouts and styles."
+            "name": "Hero",
+            "description": "Main welcome section"
         },
         "features": {
             "name": "Features List",
             "description": "Grid of features, services, or amenities."
         },
         "testimonials": {
-            "name": "Testimonials",
-            "description": "Carousel or grid of customer reviews."
+            "name": "Reviews",
+            "description": "Customer reviews"
         },
         "contact": {
-            "name": "Contact Form",
-            "description": "Map, address, and contact form."
+            "name": "Contact",
+            "description": "Contact information"
         },
         "header": {
             "name": "Navigation Bar",
@@ -74,28 +73,28 @@
             "description": "Multi-column footer with social links and newsletter."
         },
         "menu": {
-            "name": "Restaurant Menu",
-            "description": "Restaurant menu with categories, filtering, and dietary badges."
+            "name": "Menu",
+            "description": "Menu preview"
         },
         "gallery": {
-            "name": "Photo Gallery",
-            "description": "Showcase images in a grid, masonry, or carousel layout."
+            "name": "Gallery",
+            "description": "Restaurant photo gallery"
         },
         "reservation": {
-            "name": "Booking / Reservation",
-            "description": "Call to action for table bookings."
+            "name": "Events",
+            "description": "Events and exhibitions"
         },
         "content": {
-            "name": "Text & Image",
-            "description": "Flexible text and image section for stories, bios, or details."
+            "name": "About Us",
+            "description": "Restaurant information"
         },
         "awards": {
             "name": "Awards",
             "description": "Showcase your achievements and press features."
         },
         "grid": {
-            "name": "Features Grid",
-            "description": "A flexible grid for features, services, or menu items."
+            "name": "Location",
+            "description": "Map and directions"
         }
     },
     "Headline": "Headline",

@@ -26,7 +26,7 @@
         "confirmDeleteSection": "Sei sicuro di voler eliminare questa sezione?",
         "loadingProject": "Caricamento Progetto...",
         "noPageSelected": "Nessuna pagina selezionata",
-        "layers": "Livelli",
+        "layers": "Sezioni",
         "manageSections": "Gestisci le sezioni della pagina",
         "settings": "Impostazioni",
         "businessProfile": "Profilo aziendale",
@@ -43,27 +43,26 @@
         "addSection": "Aggiungi Sezione",
         "addFooterOrSection": "Aggiungi Footer / Sezione",
         "chooseComponent": "Scegli un componente da aggiungere alla pagina",
-        "pageStructure": "Struttura Pagina",
-        "pageStructureDesc": "Gestisci il layout e aggiungi contenuti.",
-        "components": "Componenti",
-        "section": "Sezione"
+        "pageStructure": "Sezioni",
+        "pageStructureDesc": "",
+        "components": "Componenti"
     },
     "components": {
         "hero": {
-            "name": "Copertina / Hero",
-            "description": "Una sezione hero versatile con layout e stili multipli."
+            "name": "Hero",
+            "description": "Sezione principale di benvenuto"
         },
         "features": {
             "name": "Lista Funzionalità",
             "description": "Griglia di funzionalità, servizi o comfort."
         },
         "testimonials": {
-            "name": "Testimonianze",
-            "description": "Carosello o griglia di recensioni dei clienti."
+            "name": "Recensioni",
+            "description": "Recensioni dei clienti"
         },
         "contact": {
-            "name": "Modulo Contatti",
-            "description": "Mappa, indirizzo e modulo di contatto."
+            "name": "Contatti",
+            "description": "Informazioni di contatto"
         },
         "header": {
             "name": "Barra di Navigazione",
@@ -74,28 +73,28 @@
             "description": "Footer multi-colonna con link social e newsletter."
         },
         "menu": {
-            "name": "Menu Ristorante",
-            "description": "Menu del ristorante con categorie, filtri e badge dietetici."
+            "name": "Menù",
+            "description": "Anteprima del menù"
         },
         "gallery": {
-            "name": "Galleria Fotografica",
-            "description": "Mostra immagini in una griglia, masonry o layout a carosello."
+            "name": "Galleria",
+            "description": "Galleria foto del ristorante"
         },
         "reservation": {
-            "name": "Prenotazione",
-            "description": "Call to action per la prenotazione di tavoli."
+            "name": "Eventi",
+            "description": "Eventi e manifestazioni"
         },
         "content": {
-            "name": "Testo & Immagine",
-            "description": "Sezione flessibile di testo e immagini per storie, biografie o dettagli."
+            "name": "Chi Siamo",
+            "description": "Informazioni sul ristorante"
         },
         "awards": {
             "name": "Riconoscimenti",
             "description": "Mostra i tuoi risultati e le menzioni stampa."
         },
         "grid": {
-            "name": "Griglia Funzionalità",
-            "description": "Una griglia flessibile per funzionalità, servizi o voci di menu."
+            "name": "Posizione",
+            "description": "Mappa e indicazioni"
         }
     },
     "Headline": "Titolo",
