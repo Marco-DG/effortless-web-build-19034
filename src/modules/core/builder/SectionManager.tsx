@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../../../store/app-store';
 import { getAllSchemas } from './registry';
-import { GripVertical, Eye, EyeOff, Trash2, Plus, Layout, Layers, Grid } from 'lucide-react';
+import { GripVertical, Eye, EyeOff, Trash2, Plus, Layout, Layers, Grid, Type, Image, List, Phone, Star, Award, Calendar } from 'lucide-react';
 import { CleanSectionHeader } from '../../site-builder/components/forms';
 
 export const SectionManager: React.FC = () => {
+    const { t } = useTranslation();
     const {
         activeProject,
         reorderSections,
@@ -31,12 +33,28 @@ export const SectionManager: React.FC = () => {
 
     const availableComponents = getAllSchemas();
 
+    // Helper to get icon based on category or name
+    const getIcon = (type: string) => {
+        const name = type.toLowerCase();
+        if (name.includes('hero')) return Layout;
+        if (name.includes('header')) return Layout;
+        if (name.includes('footer')) return Layout;
+        if (name.includes('grid')) return Grid;
+        if (name.includes('gallery')) return Image;
+        if (name.includes('menu')) return List;
+        if (name.includes('contact')) return Phone;
+        if (name.includes('testimonial')) return Star;
+        if (name.includes('award')) return Award;
+        if (name.includes('reservation')) return Calendar;
+        return Type;
+    };
+
     return (
         <div className="h-full flex flex-col bg-white">
             <div className="p-6 pb-4">
                 <CleanSectionHeader
-                    title="Page Structure"
-                    description="Manage layout and add content."
+                    title={t('builder.pageStructure')}
+                    description={t('builder.pageStructureDesc')}
                 />
 
                 {/* Tab Switcher */}
@@ -46,14 +64,14 @@ export const SectionManager: React.FC = () => {
                         className={`flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium rounded-md transition-all ${activeTab === 'structure' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                     >
                         <Layers size={16} />
-                        Layers
+                        {t('common.layers')}
                     </button>
                     <button
                         onClick={() => setActiveTab('add')}
                         className={`flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium rounded-md transition-all ${activeTab === 'add' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                     >
                         <Grid size={16} />
-                        Components
+                        {t('builder.components')}
                     </button>
                 </div>
             </div>
@@ -71,6 +89,7 @@ export const SectionManager: React.FC = () => {
                                 >
                                     {activePage.sections.map((section, index) => {
                                         const isLocked = section.type === 'header' || section.type === 'footer';
+                                        const Icon = getIcon(section.type);
 
                                         return (
                                             <Draggable key={section.id} draggableId={section.id} index={index} isDragDisabled={isLocked}>
@@ -93,12 +112,13 @@ export const SectionManager: React.FC = () => {
                                                             <GripVertical className="w-4 h-4" />
                                                         </div>
 
+                                                        <div className="w-8 h-8 bg-slate-50 rounded flex items-center justify-center text-slate-400">
+                                                            <Icon size={16} />
+                                                        </div>
+
                                                         <div className="flex-1 min-w-0">
                                                             <div className="font-medium text-sm text-slate-700 truncate">
-                                                                {section.type.charAt(0).toUpperCase() + section.type.slice(1)}
-                                                            </div>
-                                                            <div className="text-xs text-slate-400 truncate">
-                                                                {section.id}
+                                                                {t(`components.${section.type}.name`, { defaultValue: section.type.charAt(0).toUpperCase() + section.type.slice(1) })}
                                                             </div>
                                                         </div>
 
@@ -116,7 +136,7 @@ export const SectionManager: React.FC = () => {
                                                             <button
                                                                 onClick={(e) => {
                                                                     e.stopPropagation();
-                                                                    if (confirm('Are you sure you want to delete this section?')) {
+                                                                    if (confirm(t('common.confirmDeleteSection'))) {
                                                                         deleteSection(section.id);
                                                                     }
                                                                 }}
@@ -143,35 +163,38 @@ export const SectionManager: React.FC = () => {
                             className="w-full mt-4 py-3 border-2 border-dashed border-slate-200 rounded-xl flex items-center justify-center gap-2 text-slate-500 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50 transition-all font-medium"
                         >
                             <Plus className="w-4 h-4" />
-                            Add Section
+                            {t('builder.addSection')}
                         </button>
                     </DragDropContext>
                 ) : (
                     /* Add Components View */
                     <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
                         <div className="grid grid-cols-1 gap-3">
-                            {availableComponents.map((schema) => (
-                                <button
-                                    key={schema.id}
-                                    onClick={() => {
-                                        addSection(schema.id.replace('-schema', ''));
-                                        setActiveTab('structure'); // Switch back to structure after adding
-                                    }}
-                                    className="flex items-start gap-3 p-4 bg-white border border-slate-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all text-left group"
-                                >
-                                    <div className="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center group-hover:bg-blue-50 transition-colors flex-shrink-0">
-                                        <Layout className="w-6 h-6 text-slate-400 group-hover:text-blue-500" />
-                                    </div>
-                                    <div>
-                                        <div className="font-medium text-slate-800 group-hover:text-blue-700 mb-1">
-                                            {schema.name}
+                            {availableComponents.map((schema) => {
+                                const componentId = schema.id.replace('-schema', '');
+                                return (
+                                    <button
+                                        key={schema.id}
+                                        onClick={() => {
+                                            addSection(componentId);
+                                            setActiveTab('structure'); // Switch back to structure after adding
+                                        }}
+                                        className="flex items-start gap-3 p-4 bg-white border border-slate-200 rounded-xl hover:border-blue-500 hover:shadow-md transition-all text-left group"
+                                    >
+                                        <div className="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center group-hover:bg-blue-50 transition-colors flex-shrink-0">
+                                            <Layout className="w-6 h-6 text-slate-400 group-hover:text-blue-500" />
                                         </div>
-                                        <div className="text-xs text-slate-500 leading-relaxed">
-                                            {schema.description}
+                                        <div>
+                                            <div className="font-medium text-slate-800 group-hover:text-blue-700 mb-1">
+                                                {t(`components.${componentId}.name`, { defaultValue: schema.name })}
+                                            </div>
+                                            <div className="text-xs text-slate-500 leading-relaxed">
+                                                {t(`components.${componentId}.description`, { defaultValue: schema.description })}
+                                            </div>
                                         </div>
-                                    </div>
-                                </button>
-                            ))}
+                                    </button>
+                                )
+                            })}
                         </div>
                     </div>
                 )}

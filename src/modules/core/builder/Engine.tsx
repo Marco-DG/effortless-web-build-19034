@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SiteConfig, SectionConfig } from './types';
 import { getComponent } from './registry';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -29,6 +30,8 @@ export const Engine: React.FC<EngineProps> = ({
     onDuplicateSection
 }) => {
     const { theme } = config;
+    const { t, i18n } = useTranslation();
+    console.log('Engine Render. Lang:', i18n.language);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [insertIndex, setInsertIndex] = useState<number>(0);
 
@@ -94,7 +97,7 @@ export const Engine: React.FC<EngineProps> = ({
 
                         {/* Ghost Divider AFTER last section (if it's not footer) */}
                         {!previewMode && index === visibleSections.length - 1 && !isFooter && (
-                            <GhostDivider onClick={() => handleAddClick(index + 1)} label="Add Footer or Section" />
+                            <GhostDivider onClick={() => handleAddClick(index + 1)} label={t('builder.addFooterOrSection')} />
                         )}
                     </React.Fragment>
                 );
@@ -105,20 +108,23 @@ export const Engine: React.FC<EngineProps> = ({
 
 // --- Subcomponents ---
 
-const GhostDivider: React.FC<{ onClick: () => void; label?: string }> = ({ onClick, label }) => (
-    <div className="group relative h-4 -my-2 z-[80] flex items-center justify-center cursor-pointer" onClick={onClick}>
-        {/* The invisible hit area */}
-        <div className="absolute inset-0 w-full h-full" />
+const GhostDivider: React.FC<{ onClick: () => void; label?: string }> = ({ onClick, label }) => {
+    const { t } = useTranslation();
+    return (
+        <div className="group relative h-4 -my-2 z-[80] flex items-center justify-center cursor-pointer" onClick={onClick}>
+            {/* The invisible hit area */}
+            <div className="absolute inset-0 w-full h-full" />
 
-        {/* The visible line on hover */}
-        <div className="w-[90%] h-[2px] bg-blue-500/0 group-hover:bg-blue-500 transition-all duration-200 rounded-full flex items-center justify-center">
-            <div className="bg-blue-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-all duration-200 transform scale-0 group-hover:scale-100 shadow-sm flex items-center gap-2 px-3">
-                <Plus size={14} />
-                <span className="text-xs font-medium">{label || "Add Section"}</span>
+            {/* The visible line on hover */}
+            <div className="w-[90%] h-[2px] bg-blue-500/0 group-hover:bg-blue-500 transition-all duration-200 rounded-full flex items-center justify-center">
+                <div className="bg-blue-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-all duration-200 transform scale-0 group-hover:scale-100 shadow-sm flex items-center gap-2 px-3">
+                    <Plus size={14} />
+                    <span className="text-xs font-medium">{label || t('builder.addSection')}</span>
+                </div>
             </div>
         </div>
-    </div>
-);
+    );
+};
 
 const FloatingToolbar: React.FC<{
     sectionId: string;
@@ -128,6 +134,7 @@ const FloatingToolbar: React.FC<{
     onDelete?: (id: string) => void;
     onDuplicate?: (id: string) => void;
 }> = ({ sectionId, index, total, onMove, onDelete, onDuplicate }) => {
+    const { t } = useTranslation();
     const isHeader = sectionId.includes('header');
     const isFooter = sectionId.includes('footer');
     const isLocked = isHeader || isFooter;
@@ -140,7 +147,7 @@ const FloatingToolbar: React.FC<{
                         onClick={(e) => { e.stopPropagation(); onMove?.(index, 'up'); }}
                         disabled={index <= 1} // Assuming header is 0
                         className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded disabled:opacity-30 cursor-pointer"
-                        title="Move Up"
+                        title={t('builder.moveUp')}
                     >
                         <ArrowUp size={16} />
                     </button>
@@ -148,7 +155,7 @@ const FloatingToolbar: React.FC<{
                         onClick={(e) => { e.stopPropagation(); onMove?.(index, 'down'); }}
                         disabled={index >= total - 2} // Assuming footer is last
                         className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded disabled:opacity-30 cursor-pointer"
-                        title="Move Down"
+                        title={t('builder.moveDown')}
                     >
                         <ArrowDown size={16} />
                     </button>
@@ -156,7 +163,7 @@ const FloatingToolbar: React.FC<{
                     <button
                         onClick={(e) => { e.stopPropagation(); onDelete?.(sectionId); }}
                         className="p-1.5 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded cursor-pointer"
-                        title="Delete"
+                        title={t('common.delete')}
                     >
                         <Trash2 size={16} />
                     </button>
@@ -164,7 +171,7 @@ const FloatingToolbar: React.FC<{
             )}
             {isLocked && (
                 <span className="px-2 text-xs font-medium text-slate-400 uppercase tracking-wider">
-                    {isHeader ? 'Header' : 'Footer'}
+                    {isHeader ? t('components.header.name') : t('components.footer.name')}
                 </span>
             )}
         </div>

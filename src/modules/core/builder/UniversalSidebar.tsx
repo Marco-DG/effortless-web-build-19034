@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { UnifiedBuilderLayout } from '../../../components/UnifiedBuilderLayout';
 import { AutoSidebar } from '../editor/AutoSidebar';
 import { useAppStore } from '../../../store/app-store';
@@ -37,6 +38,7 @@ registerContact();
 registerReservation();
 
 export const UniversalSidebar: React.FC = () => {
+    const { t } = useTranslation();
     const {
         activeProject,
         ui,
@@ -56,24 +58,24 @@ export const UniversalSidebar: React.FC = () => {
     const sidebarTools = [
         {
             id: 'page_manager',
-            label: 'Pages',
+            label: t('common.pages'),
             icon: FileText,
             category: 'structure',
-            description: 'Manage pages and SEO'
+            description: t('common.managePages')
         },
         {
             id: 'structure_manager',
-            label: 'Layers',
+            label: t('common.layers'),
             icon: Layers,
             category: 'structure',
-            description: 'Manage page sections'
+            description: t('common.manageSections')
         },
         {
             id: 'business_info',
-            label: 'Settings',
+            label: t('common.settings'),
             icon: Settings,
             category: 'settings',
-            description: 'Business profile'
+            description: t('common.businessProfile')
         }
     ];
 
@@ -119,7 +121,7 @@ export const UniversalSidebar: React.FC = () => {
             </div>
             <div>
                 <h3 className="font-bold text-slate-900">{activeComponentDef.schema.name}</h3>
-                <p className="text-xs text-slate-500">Editing Component</p>
+                <p className="text-xs text-slate-500">{t('common.editingComponent')}</p>
             </div>
         </div>
     ) : undefined;

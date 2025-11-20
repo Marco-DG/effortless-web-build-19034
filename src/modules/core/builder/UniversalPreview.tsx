@@ -1,8 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Engine } from './Engine';
 import { useAppStore } from '../../../store/app-store';
 
 export const UniversalPreview: React.FC = () => {
+    const { t, i18n } = useTranslation();
     const {
         activeProject,
         ui,
@@ -10,19 +12,20 @@ export const UniversalPreview: React.FC = () => {
         addSection,
         reorderSections,
         deleteSection,
-        duplicateSection
+        duplicateSection,
+        translateDefaults
     } = useAppStore();
     const { activePageId, activeSectionId } = ui;
 
     if (!activeProject) {
-        return <div className="flex items-center justify-center h-full">Loading...</div>;
+        return <div className="flex items-center justify-center h-full">{t('common.loadingProject')}</div>;
     }
 
     // Find active page
     const activePage = activeProject.pages?.find(p => p.id === activePageId) || activeProject.pages?.[0];
 
     if (!activePage) {
-        return <div className="flex items-center justify-center h-full">No page selected</div>;
+        return <div className="flex items-center justify-center h-full">{t('common.noPageSelected')}</div>;
     }
 
     // --- Handlers ---
@@ -39,7 +42,7 @@ export const UniversalPreview: React.FC = () => {
     };
 
     const handleDeleteSection = (sectionId: string) => {
-        if (confirm('Are you sure you want to delete this section?')) {
+        if (confirm(t('common.confirmDeleteSection'))) {
             deleteSection(sectionId);
             if (activeSectionId === sectionId) {
                 setActiveSection(null);
@@ -65,6 +68,12 @@ export const UniversalPreview: React.FC = () => {
                     onDuplicateSection={handleDuplicateSection}
                 />
             </div>
-        </div>
+
+            <div className="fixed bottom-4 left-4 z-[9999] flex gap-2 bg-white p-2 rounded shadow border">
+                <button onClick={() => { console.log('Switching to EN'); i18n.changeLanguage('en'); translateDefaults('en'); }} className="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-xs font-bold">EN</button>
+                <button onClick={() => { console.log('Switching to IT'); i18n.changeLanguage('it'); translateDefaults('it'); }} className="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-xs font-bold">IT</button>
+                <div className="text-xs text-slate-400">Current: {i18n.language}</div>
+            </div>
+        </div >
     );
 };

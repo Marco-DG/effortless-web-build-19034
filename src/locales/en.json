@@ -1,0 +1,181 @@
+{
+    "common": {
+        "save": "Save",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "edit": "Edit",
+        "add": "Add",
+        "remove": "Remove",
+        "loading": "Loading...",
+        "error": "Error",
+        "success": "Success",
+        "pages": "Pages",
+        "managePages": "Manage your site structure and SEO.",
+        "pageTitle": "Page Title",
+        "urlSlug": "URL Slug",
+        "seoTitle": "SEO Title",
+        "seoDesc": "SEO Description",
+        "browserTabTitle": "Browser Tab Title",
+        "searchEngineDesc": "Search engine description...",
+        "pageSettings": "Page Settings",
+        "deletePage": "Delete Page",
+        "pageNamePlaceholder": "Page Name (e.g. Menu)",
+        "createPage": "Create Page",
+        "addNewPage": "Add New Page",
+        "confirmDeletePage": "Delete this page?",
+        "confirmDeleteSection": "Are you sure you want to delete this section?",
+        "loadingProject": "Loading Project...",
+        "noPageSelected": "No page selected",
+        "layers": "Layers",
+        "manageSections": "Manage page sections",
+        "settings": "Settings",
+        "businessProfile": "Business profile",
+        "editingComponent": "Editing Component"
+    },
+    "builder": {
+        "moveUp": "Move Up",
+        "moveDown": "Move Down",
+        "settings": "Settings",
+        "layers": "Layers",
+        "pages": "Pages",
+        "preview": "Preview",
+        "publish": "Publish",
+        "addSection": "Add Section",
+        "addFooterOrSection": "Add Footer / Section",
+        "chooseComponent": "Choose a component to add to your page",
+        "pageStructure": "Page Structure",
+        "pageStructureDesc": "Manage layout and add content.",
+        "components": "Components",
+        "section": "Section"
+    },
+    "components": {
+        "hero": {
+            "name": "Cover / Hero",
+            "description": "A versatile hero section with multiple layouts and styles."
+        },
+        "features": {
+            "name": "Features List",
+            "description": "Grid of features, services, or amenities."
+        },
+        "testimonials": {
+            "name": "Testimonials",
+            "description": "Carousel or grid of customer reviews."
+        },
+        "contact": {
+            "name": "Contact Form",
+            "description": "Map, address, and contact form."
+        },
+        "header": {
+            "name": "Navigation Bar",
+            "description": "Global navigation bar with logo and links."
+        },
+        "footer": {
+            "name": "Footer",
+            "description": "Multi-column footer with social links and newsletter."
+        },
+        "menu": {
+            "name": "Restaurant Menu",
+            "description": "Restaurant menu with categories, filtering, and dietary badges."
+        },
+        "gallery": {
+            "name": "Photo Gallery",
+            "description": "Showcase images in a grid, masonry, or carousel layout."
+        },
+        "reservation": {
+            "name": "Booking / Reservation",
+            "description": "Call to action for table bookings."
+        },
+        "content": {
+            "name": "Text & Image",
+            "description": "Flexible text and image section for stories, bios, or details."
+        },
+        "awards": {
+            "name": "Awards",
+            "description": "Showcase your achievements and press features."
+        },
+        "grid": {
+            "name": "Features Grid",
+            "description": "A flexible grid for features, services, or menu items."
+        }
+    },
+    "Headline": "Headline",
+    "Subheadline": "Subheadline",
+    "Background Image": "Background Image",
+    "Layout": "Layout",
+    "Visual Style": "Visual Style",
+    "Button Text": "Button Text",
+    "Button Link": "Button Link",
+    "Cover / Hero": "Cover / Hero",
+    "Centered": "Centered",
+    "Split Left": "Split Left",
+    "Split Right": "Split Right",
+    "Cinematic": "Cinematic",
+    "Minimal": "Minimal",
+    "Gradient": "Gradient",
+    "Dark Overlay": "Dark Overlay",
+    "defaults": {
+        "hero": {
+            "title": "Welcome to Our Site",
+            "subtitle": "Create something amazing today.",
+            "ctaText": "Get Started"
+        },
+        "business": {
+            "tagline": "Fine Dining Experience",
+            "description": "A culinary journey through tradition and innovation."
+        },
+        "project": {
+            "description": "Created with Universal Builder"
+        },
+        "features": {
+            "title": "Our Services",
+            "subtitle": "Experience the Best"
+        },
+        "testimonials": {
+            "title": "What Our Guests Say",
+            "subtitle": "Testimonials"
+        },
+        "contact": {
+            "title": "Visit Us"
+        },
+        "header": {
+            "logoText": "Restaurante",
+            "ctaText": "Book Table",
+            "links": {
+                "home": "Home",
+                "menu": "Menu",
+                "events": "Events",
+                "contact": "Contact"
+            }
+        },
+        "footer": {
+            "copyrightText": "© 2024 Restaurant Name. All rights reserved.",
+            "links": {
+                "privacy": "Privacy Policy",
+                "terms": "Terms of Service",
+                "cookie": "Cookie Policy"
+            }
+        },
+        "menu": {
+            "title": "Seasonal Menu",
+            "subtitle": "Locally sourced ingredients, prepared with passion."
+        },
+        "gallery": {
+            "title": "Our Atmosphere",
+            "subtitle": "Experience the vibe of our location."
+        },
+        "reservation": {
+            "title": "Reserve Your Table",
+            "description": "Experience culinary excellence. Book your table now for an unforgettable evening.",
+            "buttonText": "Book Now"
+        },
+        "content": {
+            "title": "Our Story",
+            "subtitle": "Tradition & Innovation",
+            "text": "Founded in 2010, we started with a simple mission: to bring authentic flavors to the modern table. Our chef, Marco Rossi, combines traditional techniques with contemporary presentation to create dishes that are both familiar and surprising.",
+            "ctaText": "Read More"
+        },
+        "awards": {
+            "title": "Our Recognition"
+        }
+    }
+}

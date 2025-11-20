@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ComponentSchema, FieldSchema } from '../builder/types';
 import { CleanFormField } from '../../site-builder/components/forms';
 import {
@@ -18,6 +19,7 @@ interface AutoSidebarProps {
 }
 
 export const AutoSidebar: React.FC<AutoSidebarProps> = ({ schema, data, onUpdate }) => {
+    const { t } = useTranslation();
 
     const handleFieldChange = (key: string, value: any) => {
         onUpdate({
@@ -44,7 +46,7 @@ export const AutoSidebar: React.FC<AutoSidebarProps> = ({ schema, data, onUpdate
         return (
             <CleanFormField
                 key={key}
-                label={field.label}
+                label={t(field.label)}
                 description={field.description}
             >
                 <Renderer

@@ -1,4 +1,6 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import i18n from '../../../i18n';
 import { UniversalSidebar } from './UniversalSidebar';
 import { Engine } from './Engine';
 import { useAppStore } from '../../../store/app-store';
@@ -32,6 +34,7 @@ registerContact();
 registerReservation();
 
 export const UniversalBuilder: React.FC = () => {
+    const { t } = useTranslation();
     const {
         activeProject,
         ui,
@@ -66,7 +69,7 @@ export const UniversalBuilder: React.FC = () => {
     };
 
     const handleDeleteSection = (sectionId: string) => {
-        if (confirm('Are you sure you want to delete this section?')) {
+        if (confirm(t('common.confirmDeleteSection'))) {
             deleteSection(sectionId);
             if (activeSectionId === sectionId) {
                 setActiveSection(null);
@@ -79,7 +82,7 @@ export const UniversalBuilder: React.FC = () => {
     };
 
     if (!activeProject) {
-        return <div className="flex items-center justify-center h-screen">Loading Project...</div>;
+        return <div className="flex items-center justify-center h-screen">{t('common.loadingProject')}</div>;
     }
 
     return (
@@ -101,6 +104,10 @@ export const UniversalBuilder: React.FC = () => {
                         onDuplicateSection={handleDuplicateSection}
                     />
                 </div>
+            </div>
+            <div className="fixed bottom-4 left-4 z-[9999] flex gap-2 bg-white p-2 rounded shadow border">
+                <button onClick={() => i18n.changeLanguage('en')} className="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-xs font-bold">EN</button>
+                <button onClick={() => i18n.changeLanguage('it')} className="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-xs font-bold">IT</button>
             </div>
         </div>
     );

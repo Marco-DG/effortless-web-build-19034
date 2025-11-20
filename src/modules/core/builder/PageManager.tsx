@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../../../store/app-store';
 import { Plus, FileText, MoreVertical, Trash2, Edit2, Check, X, Settings, Globe } from 'lucide-react';
 import { CleanSectionHeader } from '../../site-builder/components/forms';
 
 export const PageManager: React.FC = () => {
+    const { t } = useTranslation();
     const { activeProject, ui, setActivePage, addPage, deletePage, updatePage } = useAppStore();
     const { activePageId } = ui;
 
@@ -49,8 +51,8 @@ export const PageManager: React.FC = () => {
         <div className="h-full flex flex-col bg-white">
             <div className="p-6 pb-2">
                 <CleanSectionHeader
-                    title="Pages"
-                    description="Manage your site structure and SEO."
+                    title={t('common.pages')}
+                    description={t('common.managePages')}
                 />
             </div>
 
@@ -64,7 +66,7 @@ export const PageManager: React.FC = () => {
                         return (
                             <div key={page.id} className="p-4 border border-blue-500 rounded-lg bg-blue-50/50 space-y-3 animate-in fade-in zoom-in-95 duration-200">
                                 <div>
-                                    <label className="text-xs font-bold text-slate-500 uppercase">Page Title</label>
+                                    <label className="text-xs font-bold text-slate-500 uppercase">{t('common.pageTitle')}</label>
                                     <input
                                         value={editForm.title}
                                         onChange={e => setEditForm({ ...editForm, title: e.target.value })}
@@ -72,7 +74,7 @@ export const PageManager: React.FC = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="text-xs font-bold text-slate-500 uppercase">URL Slug</label>
+                                    <label className="text-xs font-bold text-slate-500 uppercase">{t('common.urlSlug')}</label>
                                     <input
                                         value={editForm.slug}
                                         onChange={e => setEditForm({ ...editForm, slug: e.target.value })}
@@ -82,26 +84,26 @@ export const PageManager: React.FC = () => {
                                 </div>
                                 <div className="pt-2 border-t border-blue-200">
                                     <label className="text-xs font-bold text-slate-500 uppercase flex items-center gap-1">
-                                        <Globe className="w-3 h-3" /> SEO Title
+                                        <Globe className="w-3 h-3" /> {t('common.seoTitle')}
                                     </label>
                                     <input
                                         value={editForm.seoTitle}
                                         onChange={e => setEditForm({ ...editForm, seoTitle: e.target.value })}
                                         className="w-full p-2 border rounded bg-white text-sm mb-2"
-                                        placeholder="Browser Tab Title"
+                                        placeholder={t('common.browserTabTitle')}
                                     />
-                                    <label className="text-xs font-bold text-slate-500 uppercase">SEO Description</label>
+                                    <label className="text-xs font-bold text-slate-500 uppercase">{t('common.seoDesc')}</label>
                                     <textarea
                                         value={editForm.seoDesc}
                                         onChange={e => setEditForm({ ...editForm, seoDesc: e.target.value })}
                                         className="w-full p-2 border rounded bg-white text-sm"
                                         rows={2}
-                                        placeholder="Search engine description..."
+                                        placeholder={t('common.searchEngineDesc')}
                                     />
                                 </div>
                                 <div className="flex justify-end gap-2 pt-2">
                                     <button onClick={() => setEditingPageId(null)} className="p-2 text-slate-500 hover:bg-slate-200 rounded"><X className="w-4 h-4" /></button>
-                                    <button onClick={saveEdit} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium">Save</button>
+                                    <button onClick={saveEdit} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium">{t('common.save')}</button>
                                 </div>
                             </div>
                         );
@@ -134,7 +136,7 @@ export const PageManager: React.FC = () => {
                                 <button
                                     onClick={(e) => { e.stopPropagation(); startEditing(page); }}
                                     className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded"
-                                    title="Page Settings"
+                                    title={t('common.pageSettings')}
                                 >
                                     <Settings className="w-4 h-4" />
                                 </button>
@@ -142,10 +144,10 @@ export const PageManager: React.FC = () => {
                                     <button
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            if (confirm('Delete this page?')) deletePage(page.id);
+                                            if (confirm(t('common.confirmDeletePage'))) deletePage(page.id);
                                         }}
                                         className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded"
-                                        title="Delete Page"
+                                        title={t('common.deletePage')}
                                     >
                                         <Trash2 className="w-4 h-4" />
                                     </button>
@@ -159,7 +161,7 @@ export const PageManager: React.FC = () => {
                     <div className="p-3 border border-dashed border-blue-300 rounded-lg bg-blue-50/30 animate-in fade-in slide-in-from-top-2">
                         <input
                             autoFocus
-                            placeholder="Page Name (e.g. Menu)"
+                            placeholder={t('common.pageNamePlaceholder')}
                             className="w-full p-2 text-sm border rounded mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             value={newPageTitle}
                             onChange={(e) => setNewPageTitle(e.target.value)}
@@ -170,13 +172,13 @@ export const PageManager: React.FC = () => {
                                 onClick={() => setIsAdding(false)}
                                 className="px-3 py-1.5 text-xs text-slate-500 hover:bg-slate-200 rounded"
                             >
-                                Cancel
+                                {t('common.cancel')}
                             </button>
                             <button
                                 onClick={handleAddPage}
                                 className="px-3 py-1.5 text-xs bg-blue-600 text-white rounded hover:bg-blue-700"
                             >
-                                Create Page
+                                {t('common.createPage')}
                             </button>
                         </div>
                     </div>
@@ -186,7 +188,7 @@ export const PageManager: React.FC = () => {
                         className="w-full py-3 border-2 border-dashed border-slate-200 rounded-xl flex items-center justify-center gap-2 text-slate-500 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50 transition-all font-medium"
                     >
                         <Plus className="w-4 h-4" />
-                        Add New Page
+                        {t('common.addNewPage')}
                     </button>
                 )}
             </div>
