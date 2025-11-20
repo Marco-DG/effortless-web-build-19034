@@ -167,6 +167,57 @@ const createDefaultProject = (name: string): SiteConfig => {
             }
           },
           {
+            id: 'content_1',
+            type: 'content',
+            isEnabled: true,
+            data: {
+              ...ContentSchema.defaultData,
+              title: i18n.t('defaults.content.title', { defaultValue: ContentSchema.defaultData.title }),
+              subtitle: i18n.t('defaults.content.subtitle', { defaultValue: ContentSchema.defaultData.subtitle }),
+              text: i18n.t('defaults.content.text', { defaultValue: ContentSchema.defaultData.text }),
+              ctaText: i18n.t('defaults.content.ctaText', { defaultValue: ContentSchema.defaultData.ctaText })
+            }
+          },
+          {
+            id: 'grid_1',
+            type: 'grid',
+            isEnabled: true,
+            data: {
+              ...GridSchema.defaultData,
+              title: i18n.t('defaults.grid.title', { defaultValue: GridSchema.defaultData.title }),
+              subtitle: i18n.t('defaults.grid.subtitle', { defaultValue: GridSchema.defaultData.subtitle })
+            }
+          },
+          {
+            id: 'awards_1',
+            type: 'awards',
+            isEnabled: true,
+            data: {
+              ...AwardsSchema.defaultData,
+              title: i18n.t('defaults.awards.title', { defaultValue: AwardsSchema.defaultData.title })
+            }
+          },
+          {
+            id: 'contact_1',
+            type: 'contact',
+            isEnabled: true,
+            data: {
+              ...ContactSchema.defaultData,
+              title: i18n.t('defaults.contact.title', { defaultValue: ContactSchema.defaultData.title })
+            }
+          },
+          {
+            id: 'reservation_1',
+            type: 'reservation',
+            isEnabled: true,
+            data: {
+              ...ReservationSchema.defaultData,
+              title: i18n.t('defaults.reservation.title', { defaultValue: ReservationSchema.defaultData.title }),
+              description: i18n.t('defaults.reservation.description', { defaultValue: ReservationSchema.defaultData.description }),
+              buttonText: i18n.t('defaults.reservation.buttonText', { defaultValue: ReservationSchema.defaultData.buttonText })
+            }
+          },
+          {
             id: 'footer_1',
             type: 'footer',
             isEnabled: true,
@@ -762,6 +813,15 @@ export const useAppStore = create<AppStore>()(
             } else if (section.type === 'awards') {
               if (matchesAnyDefault(section.data.title, 'defaults.awards.title')) {
                 newData.title = i18n.t('defaults.awards.title', { lng: lang });
+                hasChanges = true;
+              }
+            } else if (section.type === 'grid') {
+              if (matchesAnyDefault(section.data.title, 'defaults.grid.title')) {
+                newData.title = i18n.t('defaults.grid.title', { lng: lang });
+                hasChanges = true;
+              }
+              if (matchesAnyDefault(section.data.subtitle, 'defaults.grid.subtitle')) {
+                newData.subtitle = i18n.t('defaults.grid.subtitle', { lng: lang });
                 hasChanges = true;
               }
             }

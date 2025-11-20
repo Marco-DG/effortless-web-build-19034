@@ -1,6 +1,28 @@
 import React from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Eye, Download, LucideIcon } from 'lucide-react';
+import { Eye, Download, LucideIcon, ExternalLink } from 'lucide-react';
+
+// ... (existing code)
+
+<div className="flex items-center gap-2">
+  <a
+    href="/preview"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center justify-center gap-2 px-3 h-10 rounded-[12px] bg-white text-slate-600 border border-slate-200/60 hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300 transition-all duration-200 shadow-sm"
+    title="Apri in nuova scheda"
+  >
+    <ExternalLink className="w-4 h-4" />
+    <span className="hidden xl:inline font-medium text-sm">Anteprima</span>
+  </a>
+  <button
+    type="button"
+    className="lg:hidden inline-flex items-center gap-2 rounded-[12px] bg-slate-900 text-white px-4 py-2.5 text-sm font-medium shadow-lg shadow-slate-900/20 hover:bg-slate-800 transition-all duration-200"
+  >
+    <Eye className="w-4 h-4" />
+    <span className="font-geist font-medium tracking-[-0.01em]">Anteprima</span>
+  </button>
+</div >
 
 export interface BuilderSection {
   id: string;
@@ -68,18 +90,18 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
   };
 
   return (
-    <div className="h-full w-full lg:w-auto flex flex-col sidebar-premium lg:rounded-tl-[2rem] overflow-hidden font-geist">
+    <div className="h-full w-full lg:w-full flex flex-col sidebar-premium lg:rounded-tl-[2rem] overflow-hidden font-geist">
 
       {/* Header con tab condivisa */}
       {onSwitchBuilder && (
-        <div className="flex items-center justify-between px-8 py-4 border-b border-slate-200/30 bg-white/60 backdrop-blur-xl">
-          <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between px-4 py-4 border-b border-slate-200/30 bg-white/60 backdrop-blur-xl relative z-50">
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
             {(['logo', 'menu', 'site'] as const).map((type) => (
               <button
                 key={type}
                 type="button"
                 onClick={() => onSwitchBuilder(type)}
-                className={`topbar-tab relative px-5 py-2.5 font-medium text-sm transition-all duration-300 ease-out ${builderType === type
+                className={`topbar-tab relative px-4 py-2.5 font-medium text-sm transition-all duration-300 ease-out whitespace-nowrap ${builderType === type
                   ? 'text-slate-900 topbar-tab-active'
                   : 'text-slate-600 hover:text-slate-900'
                   }`}
@@ -94,7 +116,17 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
             ))}
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <a
+              href="/preview"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-3 h-10 rounded-[12px] bg-white text-slate-600 border border-slate-200/60 hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300 transition-all duration-200 shadow-sm"
+              title="Apri in nuova scheda"
+            >
+              <ExternalLink className="w-4 h-4" />
+              <span className="hidden xl:inline font-medium text-sm">Anteprima</span>
+            </a>
             <button
               type="button"
               className="lg:hidden inline-flex items-center gap-2 rounded-[12px] bg-slate-900 text-white px-4 py-2.5 text-sm font-medium shadow-lg shadow-slate-900/20 hover:bg-slate-800 transition-all duration-200"

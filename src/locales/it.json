@@ -175,6 +175,10 @@
         },
         "awards": {
             "title": "I Nostri Riconoscimenti"
+        },
+        "grid": {
+            "title": "I Nostri Servizi",
+            "subtitle": "Scopri cosa ci rende unici."
         }
     }
 }

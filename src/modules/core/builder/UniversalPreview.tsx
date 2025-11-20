@@ -56,7 +56,7 @@ export const UniversalPreview: React.FC = () => {
 
     return (
         <div className="w-full h-full overflow-y-auto bg-slate-100">
-            <div className="w-full min-h-full bg-white overflow-hidden">
+            <div className="w-full min-h-full bg-white overflow-hidden transform-gpu">
                 <Engine
                     config={activeProject}
                     sections={activePage.sections}

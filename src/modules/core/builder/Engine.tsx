@@ -211,7 +211,7 @@ const SelectableSection: React.FC<{
             id={section.id}
             initial={isHeader ? undefined : { opacity: 0, y: 20 }}
             whileInView={isHeader ? undefined : { opacity: 1, y: 0 }}
-            viewport={isHeader ? undefined : { once: true, margin: "-50px" }}
+            viewport={isHeader ? undefined : { once: true, amount: 0.1 }}
             transition={isHeader ? undefined : { duration: 0.5, ease: "easeOut" }}
             className={`relative group transition-all duration-200 ${!previewMode ? 'cursor-pointer' : ''} ${isHeader ? 'z-50' : ''}`}
             onClick={handleClick}
