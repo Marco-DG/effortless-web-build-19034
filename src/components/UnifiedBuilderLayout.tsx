@@ -156,7 +156,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
         </div>
 
         {/* Section Editor */}
-        <div className="flex-1 min-w-0 max-w-md flex flex-col">
+        <div className="flex-1 min-w-0 flex flex-col">
           {/* Section Header */}
           <div className="px-6 py-6 border-b border-slate-200/30 bg-white/40 backdrop-blur-xl">
             {headerContent ? (
