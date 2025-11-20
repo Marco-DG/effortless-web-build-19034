@@ -113,15 +113,25 @@ export const Engine: React.FC<EngineProps> = ({
 const GhostDivider: React.FC<{ onClick: () => void; label?: string }> = ({ onClick, label }) => {
     const { t } = useTranslation();
     return (
-        <div className="group relative h-4 -my-2 z-[80] flex items-center justify-center cursor-pointer" onClick={onClick}>
-            {/* The invisible hit area */}
+        <div className="group relative h-24 -my-12 z-[80] flex items-center justify-center cursor-pointer" onClick={onClick}>
+            {/* Extended invisible hit area - larger hover zone */}
             <div className="absolute inset-0 w-full h-full" />
+            {/* Additional hover padding for easier discovery */}
+            <div className="absolute -inset-4 w-[calc(100%+32px)] h-[calc(100%+32px)]" />
 
-            {/* The visible line on hover */}
-            <div className="w-[90%] h-[2px] bg-blue-500/0 group-hover:bg-blue-500 transition-all duration-200 rounded-full flex items-center justify-center">
-                <div className="bg-blue-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-all duration-200 transform scale-0 group-hover:scale-100 shadow-sm flex items-center gap-2 px-3">
-                    <Plus size={14} />
-                    <span className="text-xs font-medium">{label || t('builder.addSection')}</span>
+            {/* Minimalist button - appears only on hover */}
+            <div className="opacity-0 group-hover:opacity-100 transition-all duration-400 ease-out transform scale-95 group-hover:scale-100">
+                <div className="bg-white border border-slate-200/60 hover:border-slate-300 rounded-[12px] px-3 py-2 shadow-sm hover:shadow-lg transition-all duration-300 relative">
+                    {/* Static subtle line segments - longer lines */}
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-24 h-[1px] bg-slate-200/40 -translate-x-full opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-24 h-[1px] bg-slate-200/40 translate-x-full opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+                    
+                    <div className="flex items-center gap-2 relative z-10">
+                        <Plus className="w-3.5 h-3.5 text-slate-500" />
+                        <span className="text-xs font-medium text-slate-600 font-geist tracking-[-0.01em] whitespace-nowrap">
+                            {label || t('builder.addSection')}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -207,17 +217,13 @@ const SelectableSection: React.FC<{
     const isHeader = section.type === 'header';
 
     return (
-        <motion.section
+        <section
             id={section.id}
-            initial={isHeader ? undefined : { opacity: 0, y: 20 }}
-            whileInView={isHeader ? undefined : { opacity: 1, y: 0 }}
-            viewport={isHeader ? undefined : { once: true, amount: 0.1 }}
-            transition={isHeader ? undefined : { duration: 0.5, ease: "easeOut" }}
             className={`relative group transition-all duration-200 ${!previewMode ? 'cursor-pointer' : ''} ${isHeader ? 'z-50' : ''}`}
             onClick={handleClick}
         >
-            {/* Selection Overlay & Toolbar (Editor Mode Only) */}
-            {!previewMode && (
+            {/* Selection Overlay & Toolbar (Editor Mode Only) - REMOVED per user request */}
+            {/* {!previewMode && (
                 <>
                     <div className={`
                         absolute inset-0 border-2 pointer-events-none transition-all duration-200
@@ -225,7 +231,6 @@ const SelectableSection: React.FC<{
                         ${isActive ? 'border-blue-500 bg-blue-500/5' : 'border-transparent group-hover:border-blue-300 group-hover:bg-blue-500/5'}
                     `} />
 
-                    {/* Show Toolbar on Hover or Active */}
                     <div className={`absolute top-0 right-0 z-[100] transition-opacity duration-200 pointer-events-none ${isActive || 'group-hover:opacity-100 opacity-0'}`}>
                         <FloatingToolbar
                             sectionId={section.id}
@@ -237,9 +242,9 @@ const SelectableSection: React.FC<{
                         />
                     </div>
                 </>
-            )}
+            )} */}
 
             <Component {...section.data} variant={section.variant} />
-        </motion.section>
+        </section>
     );
 };

@@ -9,8 +9,7 @@ interface ImagePickerProps {
 const CURATED_IMAGES = [
     { url: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80', label: 'Restaurant Interior' },
     { url: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&q=80', label: 'Bar Atmosphere' },
-    { url: 'https://images.unsplash.com/photo-1514362545857-3bc16549766b?auto=format&fit=crop&q=80', label: 'Signature Cocktail' },
-    { url: 'https://images.unsplash.com/photo-1550966871-3ed3c47e2ce2?auto=format&fit=crop&q=80', label: 'Plating Detail' },
+
     { url: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80', label: 'Fresh Ingredients' },
     { url: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&q=80', label: 'Salad' },
     { url: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80', label: 'Pizza' },
