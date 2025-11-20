@@ -80,24 +80,29 @@ export const UniversalGallery: React.FC<GalleryProps> = ({
 
                 {/* Gallery Grid */}
                 <div className={getGridClass()}>
-                    {images.map((img, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                            className={`relative group cursor-pointer overflow-hidden rounded-2xl ${layout === 'masonry' ? 'mb-4 break-inside-avoid' : 'aspect-square'}`}
-                            onClick={() => openLightbox(index)}
-                        >
-                            <img
-                                src={img.url}
-                                alt={img.alt}
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
-                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-                        </motion.div>
-                    ))}
+                    {images.map((img, index) => {
+                        // Optimize Unsplash URLs for grid view
+                        const optimizedUrl = img.url.includes('unsplash.com') && !img.url.includes('&w=')
+                            ? `${img.url}&w=800`
+                            : img.url;
+
+                        return (
+                            <div
+                                key={index}
+                                className={`relative group cursor-pointer overflow-hidden rounded-2xl ${layout === 'masonry' ? 'mb-4 break-inside-avoid' : 'aspect-square'}`}
+                                onClick={() => openLightbox(index)}
+                            >
+                                <img
+                                    src={optimizedUrl}
+                                    alt={img.alt}
+                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    loading="lazy"
+                                    decoding="async"
+                                />
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+                            </div>
+                        );
+                    })}
                 </div>
 
             </div>

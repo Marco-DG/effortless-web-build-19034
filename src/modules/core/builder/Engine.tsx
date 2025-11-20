@@ -112,19 +112,83 @@ export const Engine: React.FC<EngineProps> = ({
 
 const GhostDivider: React.FC<{ onClick: () => void; label?: string }> = ({ onClick, label }) => {
     const { t } = useTranslation();
+    const [opacity, setOpacity] = React.useState(0);
+    const containerRef = React.useRef<HTMLDivElement>(null);
+
+    React.useEffect(() => {
+        let rafId: number;
+        
+        const handleMouseMove = (e: MouseEvent) => {
+            if (!containerRef.current) return;
+
+            // Usa requestAnimationFrame per performance migliori
+            cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(() => {
+                if (!containerRef.current) return;
+
+                const rect = containerRef.current.getBoundingClientRect();
+                const centerY = rect.top + rect.height / 2;
+                
+                // Area di influenza rettangolare: solo distanza verticale conta
+                const verticalDistance = Math.abs(e.clientY - centerY);
+                
+                // Zona di influenza verticale: da 0px (opacità 1) a 120px (opacità 0)
+                const maxVerticalDistance = 120;
+                // Curva più dolce per transizione naturale
+                const proximityOpacity = Math.max(0, Math.min(1, 1 - Math.pow(verticalDistance / maxVerticalDistance, 1.5)));
+                
+                setOpacity(proximityOpacity);
+            });
+        };
+
+        const handleMouseLeave = () => {
+            setOpacity(0);
+        };
+
+        document.addEventListener('mousemove', handleMouseMove, { passive: true });
+        document.addEventListener('mouseleave', handleMouseLeave);
+        
+        return () => {
+            cancelAnimationFrame(rafId);
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseleave', handleMouseLeave);
+        };
+    }, []);
+
     return (
-        <div className="group relative h-24 -my-12 z-[80] flex items-center justify-center cursor-pointer" onClick={onClick}>
-            {/* Extended invisible hit area - larger hover zone */}
+        <div 
+            ref={containerRef}
+            className="relative h-24 -my-12 z-[80] flex items-center justify-center cursor-pointer" 
+            onClick={onClick}
+        >
+            {/* Extended invisible hit area */}
             <div className="absolute inset-0 w-full h-full" />
-            {/* Additional hover padding for easier discovery */}
             <div className="absolute -inset-4 w-[calc(100%+32px)] h-[calc(100%+32px)]" />
 
-            {/* Minimalist button - appears only on hover */}
-            <div className="opacity-0 group-hover:opacity-100 transition-all duration-400 ease-out transform scale-95 group-hover:scale-100">
-                <div className="bg-white border border-slate-200/60 hover:border-slate-300 rounded-[12px] px-3 py-2 shadow-sm hover:shadow-lg transition-all duration-300 relative">
-                    {/* Static subtle line segments - longer lines */}
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-24 h-[1px] bg-slate-200/40 -translate-x-full opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
-                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-24 h-[1px] bg-slate-200/40 translate-x-full opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+            {/* Proximity-based button with responsive transitions */}
+            <div 
+                className="transition-all duration-300 ease-out transform"
+                style={{ 
+                    opacity,
+                    transform: `scale(${0.94 + opacity * 0.06})` // da 0.94 a 1.00 (meno drammatico)
+                }}
+            >
+                <div 
+                    className="bg-white border border-slate-200/60 rounded-[12px] px-3 py-2 shadow-sm transition-all duration-200 relative"
+                    style={{ 
+                        borderColor: `rgb(148 163 184 / ${0.6 + opacity * 0.15})`, // border meno aggressivo
+                        boxShadow: `0 1px 2px 0 rgb(0 0 0 / 0.05), 0 ${1 + opacity * 4}px ${2 + opacity * 6}px -1px rgb(0 0 0 / ${0.1 + opacity * 0.1})` // ombra più subtile
+                    }}
+                >
+                    {/* Linee a tutta larghezza */}
+                    <div 
+                        className="absolute left-0 top-1/2 -translate-y-1/2 w-screen h-[1px] bg-slate-200 -translate-x-full transition-opacity duration-300" 
+                        style={{ opacity: opacity * 0.5 }}
+                    />
+                    <div 
+                        className="absolute right-0 top-1/2 -translate-y-1/2 w-screen h-[1px] bg-slate-200 translate-x-full transition-opacity duration-300"
+                        style={{ opacity: opacity * 0.5 }}
+                    />
                     
                     <div className="flex items-center gap-2 relative z-10">
                         <Plus className="w-3.5 h-3.5 text-slate-500" />

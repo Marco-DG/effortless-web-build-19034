@@ -7,15 +7,15 @@ interface ImagePickerProps {
 }
 
 const CURATED_IMAGES = [
-    { url: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80', label: 'Restaurant Interior' },
-    { url: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&q=80', label: 'Bar Atmosphere' },
+    { url: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=200', label: 'Restaurant Interior' },
+    { url: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&q=80&w=200', label: 'Bar Atmosphere' },
 
-    { url: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80', label: 'Fresh Ingredients' },
-    { url: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&q=80', label: 'Salad' },
-    { url: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80', label: 'Pizza' },
-    { url: 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&q=80', label: 'Sandwich' },
-    { url: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&q=80', label: 'Fine Dining' },
-    { url: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&q=80', label: 'Chef' },
+    { url: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=200', label: 'Fresh Ingredients' },
+    { url: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&q=80&w=200', label: 'Salad' },
+    { url: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=200', label: 'Pizza' },
+    { url: 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&q=80&w=200', label: 'Sandwich' },
+    { url: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&q=80&w=200', label: 'Fine Dining' },
+    { url: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&q=80&w=200', label: 'Chef' },
 ];
 
 export const ImagePicker: React.FC<ImagePickerProps> = ({ value, onChange }) => {
@@ -69,7 +69,12 @@ export const ImagePicker: React.FC<ImagePickerProps> = ({ value, onChange }) => 
                                 }`}
                             title={img.label}
                         >
-                            <img src={img.url} alt={img.label} className="w-full h-full object-cover" />
+                            <img
+                                src={img.url}
+                                alt={img.label}
+                                className="w-full h-full object-cover"
+                                loading="lazy"
+                            />
                             {value === img.url && (
                                 <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
                                     <Check className="w-4 h-4 text-white" />
