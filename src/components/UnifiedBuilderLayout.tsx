@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Eye, Download, LucideIcon, ExternalLink } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 // ... (existing code)
 
@@ -62,6 +63,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
   contentClassName,
   children
 }) => {
+  const { t } = useTranslation();
   const currentSection = sections.find(s => s.id === activeSection);
 
   // Group sections by category
@@ -76,10 +78,10 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
 
     return Object.entries(categoryMap).map(([category, secs]) => ({
       id: category,
-      label: getCategoryLabel(category),
+      label: t(`common.${category}`, { defaultValue: category.charAt(0).toUpperCase() + category.slice(1) }),
       sections: secs
     }));
-  }, [sections]);
+  }, [sections, t]);
 
   const getBuilderLabel = (type: 'logo' | 'menu' | 'site') => {
     switch (type) {

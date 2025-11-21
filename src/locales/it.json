@@ -30,7 +30,14 @@
         "manageSections": "Gestisci sezioni e layout",
         "settings": "Impostazioni",
         "businessProfile": "Profilo aziendale",
-        "editingComponent": "Modifica Componente"
+        "editingComponent": "Modifica Componente",
+        "structure": "Struttura",
+        "design": "Design",
+        "controls": "Controlli",
+        "config": "Configurazione",
+        "management": "Gestione",
+        "appearance": "Aspetto",
+        "data": "Dati"
     },
     "builder": {
         "moveUp": "Sposta Su",

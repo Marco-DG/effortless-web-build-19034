@@ -30,7 +30,14 @@
         "manageSections": "Manage page sections",
         "settings": "Settings",
         "businessProfile": "Business profile",
-        "editingComponent": "Editing Component"
+        "editingComponent": "Editing Component",
+        "structure": "Structure",
+        "design": "Design",
+        "controls": "Controls",
+        "config": "Configuration",
+        "management": "Management",
+        "appearance": "Appearance",
+        "data": "Data"
     },
     "builder": {
         "moveUp": "Move Up",
