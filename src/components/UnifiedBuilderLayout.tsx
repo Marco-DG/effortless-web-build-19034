@@ -39,6 +39,7 @@ export interface UnifiedBuilderLayoutProps {
   sections: readonly BuilderSection[];
   activeSection: string;
   onSectionChange: (sectionId: string) => void;
+  renderCategory?: (categoryId: string, isExpanded: boolean) => React.ReactNode;
 
   // Header configuration
   onSwitchBuilder?: (builder: 'logo' | 'menu' | 'site') => void;
@@ -61,9 +62,11 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
   extraHeaderActions,
   headerContent,
   contentClassName,
+  renderCategory,
   children
 }) => {
   const { t } = useTranslation();
+  const [isHovered, setIsHovered] = React.useState(false);
   const currentSection = sections.find(s => s.id === activeSection);
 
   // Group sections by category
@@ -144,14 +147,18 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
       <div className="flex flex-1 overflow-hidden min-h-0">
 
         {/* Sidebar Navigation */}
-        <div className="w-16 2xl:w-52 flex flex-col flex-shrink-0 relative">
+        <div
+          className={`flex flex-col flex-shrink-0 relative transition-all duration-300 ease-in-out z-20 ${isHovered ? 'w-80 shadow-2xl' : 'w-16 lg:w-64'}`}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           <div className="absolute right-0 top-0 bottom-0 sidebar-divider"></div>
           <ScrollArea className="flex-1">
             <div className="space-y-2 px-3 py-3">
               {categories.map((category, categoryIndex) => (
                 <div key={category.id} className="space-y-1.5">
                   {/* Divisore categoria - visibile solo su schermi larghi */}
-                  <div className="hidden 2xl:block px-1 pt-6 pb-2 mt-6 first:mt-2">
+                  <div className="hidden lg:block px-1 pt-6 pb-2 mt-6 first:mt-2">
                     <div className="relative">
                       <h3 className="text-[11px] font-semibold text-slate-400 font-geist tracking-[0.08em] leading-none mb-2 pl-1">
                         {category.label}
@@ -161,28 +168,32 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
                   </div>
 
                   {/* Sezioni della categoria */}
-                  {category.sections.map((section, sectionIndex) => {
-                    const isActive = activeSection === section.id;
-                    return (
-                      <button
-                        key={section.id}
-                        onClick={() => onSectionChange(section.id)}
-                        className={`sidebar-nav-item ${isActive ? 'active' : ''} 
-                          w-full flex items-center justify-center 2xl:justify-start 
-                          px-3 py-3.5 2xl:px-4 2xl:py-3 text-sm 
-                          rounded-[16px] group font-medium`}
-                      >
-                        <section.icon
-                          className={`w-5 h-5 flex-shrink-0 transition-all duration-300 ${isActive ? 'text-slate-800' : 'text-slate-500 group-hover:text-slate-700'
-                            }`}
-                        />
-                        <span className={`hidden 2xl:block ml-3.5 text-left font-geist font-medium tracking-[-0.01em] transition-all duration-300 ${isActive ? 'text-slate-800 font-semibold' : 'text-slate-700 group-hover:text-slate-900'
-                          }`}>
-                          {section.label}
-                        </span>
-                      </button>
-                    );
-                  })}
+                  {renderCategory && renderCategory(category.id, isHovered) ? (
+                    renderCategory(category.id, isHovered)
+                  ) : (
+                    category.sections.map((section, sectionIndex) => {
+                      const isActive = activeSection === section.id;
+                      return (
+                        <button
+                          key={section.id}
+                          onClick={() => onSectionChange(section.id)}
+                          className={`sidebar-nav-item ${isActive ? 'active' : ''} 
+                            w-full flex items-center justify-center lg:justify-start 
+                            px-3 py-3.5 lg:px-4 lg:py-3 text-sm 
+                            rounded-[16px] group font-medium`}
+                        >
+                          <section.icon
+                            className={`w-5 h-5 flex-shrink-0 transition-all duration-300 ${isActive ? 'text-slate-800' : 'text-slate-500 group-hover:text-slate-700'
+                              }`}
+                          />
+                          <span className={`hidden lg:block ml-3.5 text-left font-geist font-medium tracking-[-0.01em] transition-all duration-300 ${isActive ? 'text-slate-800 font-semibold' : 'text-slate-700 group-hover:text-slate-900'
+                            }`}>
+                            {section.label}
+                          </span>
+                        </button>
+                      );
+                    })
+                  )}
                 </div>
               ))}
             </div>

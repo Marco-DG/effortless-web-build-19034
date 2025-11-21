@@ -8,6 +8,7 @@ import { Layout, Layers, Palette, Settings, FileText } from 'lucide-react';
 import { BusinessSettingsEditor } from '../settings/BusinessSettingsEditor';
 import { ThemeEditor } from '../theme/ThemeEditor';
 import { SectionManager } from './SectionManager';
+import { SectionTree } from './SectionTree';
 import { PageSettings } from './PageSettings';
 
 // Ensure components are registered
@@ -135,6 +136,12 @@ export const UniversalSidebar: React.FC = () => {
             onSectionChange={setActiveSection}
             onSwitchBuilder={(mode) => setActiveMode(mode)}
             headerContent={customHeader}
+            renderCategory={(category, isExpanded) => {
+                if (category === 'structure') {
+                    return <SectionTree isExpanded={isExpanded} />;
+                }
+                return null;
+            }}
         >
             {renderContent()}
         </UnifiedBuilderLayout>
