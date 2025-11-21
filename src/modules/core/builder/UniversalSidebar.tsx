@@ -56,13 +56,13 @@ export const UniversalSidebar: React.FC = () => {
 
     // Define Sidebar Tools
     const sidebarTools = [
-        {
-            id: 'page_manager',
-            label: t('common.pages'),
-            icon: FileText,
-            category: 'structure',
-            description: t('common.managePages')
-        },
+        // {
+        //     id: 'page_manager',
+        //     label: t('common.pages'),
+        //     icon: FileText,
+        //     category: 'structure',
+        //     description: t('common.managePages')
+        // },
         {
             id: 'structure_manager',
             label: t('common.layers'),
@@ -97,8 +97,8 @@ export const UniversalSidebar: React.FC = () => {
         }
 
         switch (activeSectionId) {
-            case 'page_manager':
-                return <PageSettings />;
+            // case 'page_manager':
+            //     return <PageSettings />;
             case 'structure_manager':
                 return <SectionManager />;
             case 'theme_editor':
@@ -107,7 +107,8 @@ export const UniversalSidebar: React.FC = () => {
                 return <BusinessSettingsEditor />;
             default:
                 // Default to Page Settings if nothing selected (or if ID doesn't match)
-                return <PageSettings />;
+                // Default to Structure Manager (Layers) since Page Settings is disabled
+                return <SectionManager />;
         }
     };
 
@@ -130,7 +131,7 @@ export const UniversalSidebar: React.FC = () => {
         <UnifiedBuilderLayout
             builderType="site"
             sections={sidebarTools}
-            activeSection={activeSectionId || 'page_manager'}
+            activeSection={activeSectionId || 'structure_manager'}
             onSectionChange={setActiveSection}
             onSwitchBuilder={(mode) => setActiveMode(mode)}
             headerContent={customHeader}
