@@ -117,13 +117,17 @@ export const UniversalSidebar: React.FC = () => {
     // But UnifiedBuilderLayout has a header prop.
 
     const customHeader = isEditingSection && activeComponentDef ? (
-        <div className="flex items-center gap-3">
-            <div className="p-1.5 bg-blue-50 rounded-lg text-blue-600">
-                <Layout size={16} />
+        <div className="flex items-start gap-5">
+            <div className="w-14 h-14 rounded-[18px] bg-gradient-to-br from-white via-slate-50 to-slate-100/80 border border-slate-200/50 flex items-center justify-center shadow-lg shadow-slate-900/8 backdrop-blur-sm">
+                <Layout className="w-6 h-6 text-slate-700" strokeWidth={1.5} />
             </div>
-            <div>
-                <h3 className="font-bold text-slate-900">{activeComponentDef.schema.name}</h3>
-                <p className="text-xs text-slate-500">{t('common.editingComponent')}</p>
+            <div className="flex-1 min-w-0">
+                <h3 className="text-2xl font-bold text-slate-900 tracking-[-0.02em] font-geist leading-tight mb-2">
+                    {t(`components.${activeSectionConfig.type}.name`, { defaultValue: activeComponentDef.schema.name })}
+                </h3>
+                <p className="text-sm text-slate-500 font-medium font-geist tracking-[-0.01em] leading-relaxed">
+                    {t('common.editingComponent')}
+                </p>
             </div>
         </div>
     ) : undefined;
