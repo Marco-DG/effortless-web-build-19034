@@ -243,8 +243,8 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                                         <div
                                                             className={`
                                                                 group relative flex items-center gap-2 p-1.5 rounded-md transition-all duration-200 min-w-0 w-full max-w-full
-                                                                ${snapshot.isDragging ? 'shadow-xl ring-2 ring-blue-500/20 rotate-2 z-50 bg-white' : 'hover:ring-1 hover:ring-slate-300/50 hover:bg-slate-50/50 hover:shadow-sm'}
-                                                                ${isActive ? 'bg-white ring-1 ring-blue-500/30 shadow-sm shadow-blue-500/10' : ''}
+                                                                ${snapshot.isDragging ? 'shadow-xl ring-2 ring-blue-500/20 rotate-2 z-50 bg-white' : 'hover:bg-slate-50/70'}
+                                                                ${isActive ? 'bg-white ring-1 ring-inset ring-slate-200/80' : ''}
                                                                 ${!section.isEnabled ? 'opacity-60 grayscale-[0.5]' : ''}
                                                             `}
                                                             onClick={() => setActiveSection(section.id)}
