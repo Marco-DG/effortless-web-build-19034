@@ -70,17 +70,22 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                     </span>
                 </div>
 
-                {/* Tree Trunk */}
-                <div className="absolute left-5 top-10 bottom-0 w-px bg-slate-200" />
-
                 {/* Sections List */}
                 <div className="pl-8 relative space-y-1">
                     {/* Add Section Button */}
                     <div className="relative mb-2">
+                        {/* Vertical Line for Add Section */}
+                        <div
+                            className="absolute -left-3 w-px bg-slate-200"
+                            style={{
+                                top: '-24px', // Connect to Root Node
+                                bottom: activePage.sections.length > 0 ? '0' : '50%'
+                            }}
+                        />
                         <div className="absolute -left-3 top-1/2 w-3 h-px bg-slate-200" />
                         <button
                             onClick={() => setIsModalOpen(true)}
-                            className="w-full flex items-center gap-2 p-1.5 rounded-md border border-dashed border-slate-200 text-slate-400 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50 transition-all text-xs font-medium"
+                            className="w-full flex items-center gap-2 p-1.5 rounded-md border border-transparent text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-all text-xs font-medium"
                         >
                             <div className="w-6 h-6 flex items-center justify-center">
                                 <Plus size={12} />
@@ -102,6 +107,7 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                         const isLocked = section.type === 'header' || section.type === 'footer';
                                         const Icon = getIcon(section.type);
                                         const isActive = ui.activeSectionId === section.id;
+                                        const isLast = index === activePage.sections.length - 1;
 
                                         return (
                                             <Draggable
@@ -116,6 +122,15 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                                         {...provided.draggableProps}
                                                         className="relative"
                                                     >
+                                                        {/* Vertical Line */}
+                                                        <div
+                                                            className="absolute -left-3 w-px bg-slate-200"
+                                                            style={{
+                                                                top: '-10px', // Connect to previous item
+                                                                bottom: isLast ? '50%' : '0'
+                                                            }}
+                                                        />
+
                                                         {/* Horizontal Branch */}
                                                         <div className="absolute -left-3 top-1/2 w-3 h-px bg-slate-200" />
 
