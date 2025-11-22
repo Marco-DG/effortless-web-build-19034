@@ -187,10 +187,16 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                             {/* Spacer to align with DragHandle */}
                             <div className="w-4 h-4 shrink-0" />
 
-                            <div className="w-7 h-7 flex items-center justify-center rounded-md border border-dashed border-slate-300 group-hover:border-blue-300 transition-colors">
-                                <Plus size={14} />
-                            </div>
-                            {t('builder.addSection')}
+                            <button
+                                className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors shrink-0"
+                                title={t('builder.addSection')}
+                            >
+                                <Plus size={16} />
+                            </button>
+
+                            <span className="text-sm font-medium text-blue-600">
+                                {t('builder.addSection')}
+                            </span>
                         </button>
                     </div>
 
