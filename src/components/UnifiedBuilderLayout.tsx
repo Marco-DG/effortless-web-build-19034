@@ -177,16 +177,19 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
                         <button
                           key={section.id}
                           onClick={() => onSectionChange(section.id)}
-                          className={`sidebar-nav-item ${isActive ? 'active' : ''} 
-                            w-full flex items-center justify-center lg:justify-start 
-                            px-3 py-3.5 lg:px-4 lg:py-3 text-sm 
-                            rounded-[16px] group font-medium`}
+                          className={`sidebar-nav-item w-full flex items-center justify-center lg:justify-start 
+                            px-3 py-2.5 text-sm transition-all duration-200
+                            rounded-[12px] group font-medium
+                            ${isActive
+                              ? 'bg-slate-100 text-slate-900'
+                              : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+                            }`}
                         >
                           <section.icon
-                            className={`w-5 h-5 flex-shrink-0 transition-all duration-300 ${isActive ? 'text-slate-800' : 'text-slate-500 group-hover:text-slate-700'
+                            className={`w-5 h-5 flex-shrink-0 transition-all duration-200 ${isActive ? 'text-slate-900' : 'text-slate-400 group-hover:text-slate-700'
                               }`}
                           />
-                          <span className={`hidden lg:block ml-3.5 text-left font-geist font-medium tracking-[-0.01em] transition-all duration-300 ${isActive ? 'text-slate-800 font-semibold' : 'text-slate-700 group-hover:text-slate-900'
+                          <span className={`hidden lg:block ml-3 text-left font-geist tracking-[-0.01em] transition-all duration-200 ${isActive ? 'font-semibold' : 'font-medium'
                             }`}>
                             {section.label}
                           </span>
