@@ -71,13 +71,7 @@ export const UniversalSidebar: React.FC = () => {
             category: 'structure',
             description: t('common.manageSections')
         },
-        {
-            id: 'business_info',
-            label: t('common.settings'),
-            icon: Settings,
-            category: 'settings',
-            description: t('common.businessProfile')
-        }
+
     ];
 
     // Check if we are editing a specific section
@@ -104,8 +98,6 @@ export const UniversalSidebar: React.FC = () => {
                 return <SectionManager />;
             case 'theme_editor':
                 return <ThemeEditor />;
-            case 'business_info':
-                return <BusinessSettingsEditor />;
             default:
                 // Default to Page Settings if nothing selected (or if ID doesn't match)
                 // Default to Structure Manager (Layers) since Page Settings is disabled

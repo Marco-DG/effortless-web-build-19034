@@ -157,15 +157,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
             <div className="space-y-2 px-3 py-3">
               {categories.map((category, categoryIndex) => (
                 <div key={category.id} className="space-y-1.5">
-                  {/* Divisore categoria - visibile solo su schermi larghi */}
-                  <div className="hidden lg:block px-1 pt-6 pb-2 mt-6 first:mt-2">
-                    <div className="relative">
-                      <h3 className="text-[11px] font-semibold text-slate-400 font-geist tracking-[0.08em] leading-none mb-2 pl-1">
-                        {category.label}
-                      </h3>
-                      <div className="h-[1px] bg-gradient-to-r from-slate-200 via-slate-100 to-transparent opacity-60" />
-                    </div>
-                  </div>
+
 
                   {/* Sezioni della categoria */}
                   {renderCategory && renderCategory(category.id, isHovered) ? (

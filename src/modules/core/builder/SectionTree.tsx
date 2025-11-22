@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useAppStore } from '../../../store/app-store';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { useTranslation } from 'react-i18next';
-import { GripVertical, Eye, EyeOff, Trash2, Plus, Layout, Grid, Type, Image, List, Phone, Star, Award, Calendar } from 'lucide-react';
+import { GripVertical, Eye, EyeOff, Trash2, Plus, Layout, Grid, Type, Image, List, Phone, Star, Award, Calendar, ChevronDown, Check, FilePlus } from 'lucide-react';
 import { AddSectionModal } from './AddSectionModal';
+import { AddPageModal } from './AddPageModal';
 
 interface SectionTreeProps {
     isExpanded: boolean;
@@ -18,10 +19,15 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
         toggleSection,
         deleteSection,
         addSection,
-        setActiveSection
+        setActiveSection,
+        setActivePage,
+        addPage,
+        deletePage
     } = useAppStore();
     const { activePageId } = ui;
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isPageDropdownOpen, setIsPageDropdownOpen] = useState(false);
+    const [isAddPageModalOpen, setIsAddPageModalOpen] = useState(false);
 
     if (!activeProject || !activePageId) return null;
 
@@ -36,6 +42,23 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
     const handleAddSection = (type: string) => {
         addSection(type);
         setIsModalOpen(false);
+    };
+
+    const handlePageSelect = (pageId: string) => {
+        setActivePage(pageId);
+        setIsPageDropdownOpen(false);
+    };
+
+    const handleAddPage = (title: string, slug: string) => {
+        addPage(title, slug);
+        setIsAddPageModalOpen(false);
+    };
+
+    const handleDeletePage = (e: React.MouseEvent, pageId: string) => {
+        e.stopPropagation();
+        if (confirm(t('common.confirmDeletePage', { defaultValue: 'Are you sure you want to delete this page?' }))) {
+            deletePage(pageId);
+        }
     };
 
     // Helper to get icon based on category or name
@@ -54,20 +77,94 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
         return Type;
     };
 
-
-
     return (
         <div className="w-full space-y-2 px-2">
             {/* Page Tree Structure */}
             <div className="relative">
-                {/* Root Node */}
-                <div className="flex items-center gap-2 p-2 rounded-lg bg-slate-50 border border-slate-200 mb-2">
-                    <div className="w-6 h-6 rounded bg-white border border-slate-200 flex items-center justify-center text-slate-400 shrink-0">
-                        <Layout size={12} />
-                    </div>
-                    <span className="text-sm font-semibold text-slate-700 truncate">
-                        {activePage.title || t('common.pageTitle')}
-                    </span>
+                {/* Root Node / Page Selector */}
+                <div className="relative z-20 mb-2">
+                    <button
+                        onClick={() => setIsPageDropdownOpen(!isPageDropdownOpen)}
+                        className={`
+                            w-full flex items-center gap-2 p-2 rounded-lg border transition-all duration-200
+                            ${isPageDropdownOpen ? 'bg-blue-50 border-blue-200 ring-2 ring-blue-500/10' : 'bg-slate-50 border-slate-200 hover:border-blue-300 hover:bg-white'}
+                        `}
+                    >
+                        <div className={`
+                            w-6 h-6 rounded bg-white border flex items-center justify-center shrink-0 transition-colors
+                            ${isPageDropdownOpen ? 'border-blue-200 text-blue-500' : 'border-slate-200 text-slate-400'}
+                        `}>
+                            <Layout size={12} />
+                        </div>
+                        <span className={`text-sm font-semibold truncate flex-1 text-left ${isPageDropdownOpen ? 'text-blue-700' : 'text-slate-700'}`}>
+                            {activePage.title || t('common.pageTitle')}
+                        </span>
+                        <ChevronDown size={14} className={`transition-transform duration-200 ${isPageDropdownOpen ? 'rotate-180 text-blue-500' : 'text-slate-400'}`} />
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {isPageDropdownOpen && (
+                        <>
+                            <div
+                                className="fixed inset-0 z-10"
+                                onClick={() => setIsPageDropdownOpen(false)}
+                            />
+                            <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg border border-slate-200 shadow-xl z-20 py-1 max-h-60 overflow-y-auto animate-in fade-in zoom-in-95 duration-100 flex flex-col">
+                                <div className="px-2 py-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider flex justify-between items-center">
+                                    <span>{t('common.pages', { defaultValue: 'Pages' })}</span>
+                                    <button
+                                        onClick={() => {
+                                            setIsPageDropdownOpen(false);
+                                            setIsAddPageModalOpen(true);
+                                        }}
+                                        className="p-1 hover:bg-blue-50 text-blue-600 rounded transition-colors"
+                                        title={t('builder.addPage', { defaultValue: 'Add Page' })}
+                                    >
+                                        <Plus size={14} />
+                                    </button>
+                                </div>
+                                <div className="flex-1 overflow-y-auto">
+                                    {activeProject.pages.map(page => (
+                                        <button
+                                            key={page.id}
+                                            onClick={() => handlePageSelect(page.id)}
+                                            className={`
+                                                w-full flex items-center gap-2 px-3 py-2 text-sm transition-colors group
+                                                ${page.id === activePageId ? 'bg-blue-50 text-blue-700 font-medium' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}
+                                            `}
+                                        >
+                                            <div className={`w-1.5 h-1.5 rounded-full ${page.id === activePageId ? 'bg-blue-500' : 'bg-transparent'}`} />
+                                            <span className="truncate flex-1 text-left">{page.title}</span>
+
+                                            {activeProject.pages.length > 1 && (
+                                                <div
+                                                    onClick={(e) => handleDeletePage(e, page.id)}
+                                                    className="opacity-0 group-hover:opacity-100 p-1 hover:bg-red-100 text-slate-400 hover:text-red-600 rounded transition-all"
+                                                    title="Delete Page"
+                                                >
+                                                    <Trash2 size={12} />
+                                                </div>
+                                            )}
+
+                                            {page.id === activePageId && <Check size={14} className="text-blue-500" />}
+                                        </button>
+                                    ))}
+                                </div>
+                                <div className="p-1 border-t border-slate-100 mt-1">
+                                    <button
+                                        onClick={() => {
+                                            setIsPageDropdownOpen(false);
+                                            setIsAddPageModalOpen(true);
+                                        }}
+                                        className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
+                                    >
+                                        <FilePlus size={14} />
+                                        {t('builder.addPage', { defaultValue: 'Create New Page' })}
+                                    </button>
+                                </div>
+                            </div>
+                        </>
+                    )}
                 </div>
 
                 {/* Sections List */}
@@ -222,6 +319,11 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                 onClose={() => setIsModalOpen(false)}
                 onSelect={handleAddSection}
                 insertIndex={activePage.sections.length}
+            />
+            <AddPageModal
+                isOpen={isAddPageModalOpen}
+                onClose={() => setIsAddPageModalOpen(false)}
+                onAdd={handleAddPage}
             />
         </div>
     );
