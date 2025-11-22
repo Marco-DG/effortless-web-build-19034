@@ -173,13 +173,13 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                     <div className="relative mb-2">
                         {/* Vertical Line for Add Section */}
                         <div
-                            className="absolute -left-3 w-px bg-slate-200"
+                            className="absolute -left-3 w-px bg-slate-300/70"
                             style={{
                                 top: '-24px', // Connect to Root Node
                                 bottom: activePage.sections.length > 0 ? '0' : '50%'
                             }}
                         />
-                        <div className="absolute -left-3 top-1/2 w-3 h-px bg-slate-200" />
+                        <div className="absolute -left-3 top-1/2 w-3 h-px bg-slate-300/70" />
                         <button
                             onClick={() => setIsModalOpen(true)}
                             className="w-full flex items-center gap-2 p-1.5 rounded-md border border-transparent text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-all text-xs font-medium"
@@ -221,7 +221,7 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                                     >
                                                         {/* Vertical Line */}
                                                         <div
-                                                            className="absolute -left-3 w-px bg-slate-200"
+                                                            className="absolute -left-3 w-px bg-slate-300/70"
                                                             style={{
                                                                 top: '-10px', // Connect to previous item
                                                                 bottom: isLast ? '50%' : '0'
@@ -229,7 +229,7 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                                         />
 
                                                         {/* Horizontal Branch */}
-                                                        <div className="absolute -left-3 top-1/2 w-3 h-px bg-slate-200" />
+                                                        <div className="absolute -left-3 top-1/2 w-3 h-px bg-slate-300/70" />
 
                                                         <div
                                                             className={`
@@ -254,19 +254,19 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                                             </div>
 
                                                             <div className={`
-                                                                w-6 h-6 rounded flex items-center justify-center transition-all duration-300 shrink-0
+                                                                w-7 h-7 rounded-md flex items-center justify-center transition-all duration-300 shrink-0 border
                                                                 ${isActive
-                                                                    ? 'bg-blue-100 text-blue-600'
-                                                                    : 'bg-slate-100 text-slate-400 group-hover:bg-white group-hover:shadow-sm'
+                                                                    ? 'bg-gradient-to-br from-blue-50 to-blue-100/50 border-blue-200 text-blue-700 shadow-sm'
+                                                                    : 'bg-gradient-to-br from-white to-slate-50 border-slate-200/60 text-slate-700 group-hover:border-slate-300 group-hover:text-slate-800 group-hover:shadow-sm'
                                                                 }
                                                             `}>
-                                                                <Icon size={12} strokeWidth={2} />
+                                                                <Icon size={14} strokeWidth={1.5} />
                                                             </div>
 
                                                             <div className="flex-1 min-w-0 transition-transform duration-200">
                                                                 <div className={`
-                                                                    text-xs font-medium truncate transition-colors
-                                                                    ${isActive ? 'text-blue-700' : 'text-slate-600 group-hover:text-slate-900'}
+                                                                    text-sm font-medium truncate transition-colors font-geist tracking-[-0.01em]
+                                                                    ${isActive ? 'text-slate-950 font-semibold' : 'text-slate-700 group-hover:text-slate-900'}
                                                                 `}>
                                                                     {t(`components.${section.type}.name`, { defaultValue: section.type.charAt(0).toUpperCase() + section.type.slice(1) })}
                                                                 </div>
