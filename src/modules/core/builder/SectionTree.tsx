@@ -182,10 +182,13 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                         <div className="absolute -left-3 top-1/2 w-3 h-px bg-slate-300/70" />
                         <button
                             onClick={() => setIsModalOpen(true)}
-                            className="w-full flex items-center gap-2 p-1.5 rounded-md border border-transparent text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-all text-xs font-medium"
+                            className="w-full flex items-center gap-2 p-1.5 rounded-md border border-transparent text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-all text-sm font-medium group"
                         >
-                            <div className="w-6 h-6 flex items-center justify-center">
-                                <Plus size={12} />
+                            {/* Spacer to align with DragHandle */}
+                            <div className="w-4 h-4 shrink-0" />
+
+                            <div className="w-7 h-7 flex items-center justify-center rounded-md border border-dashed border-slate-300 group-hover:border-blue-300 transition-colors">
+                                <Plus size={14} />
                             </div>
                             {t('builder.addSection')}
                         </button>
