@@ -244,7 +244,7 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                                             className={`
                                                                 group relative flex items-center gap-2 p-1.5 rounded-md transition-all duration-200 min-w-0 w-full max-w-full
                                                                 ${snapshot.isDragging ? 'shadow-xl ring-2 ring-blue-500/20 rotate-2 z-50 bg-white' : 'hover:bg-slate-50/70'}
-                                                                ${isActive ? 'bg-white ring-1 ring-inset ring-slate-200/80' : ''}
+                                                                ${isActive ? 'bg-slate-50/70' : ''}
                                                                 ${!section.isEnabled ? 'opacity-60 grayscale-[0.5]' : ''}
                                                             `}
                                                             onClick={() => setActiveSection(section.id)}
@@ -265,8 +265,8 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                                             <div className={`
                                                                 w-7 h-7 rounded-md flex items-center justify-center transition-all duration-300 shrink-0 border
                                                                 ${isActive
-                                                                    ? 'bg-blue-50 border-blue-200 text-blue-600 shadow-sm'
-                                                                    : 'bg-gradient-to-br from-white to-slate-50 border-slate-200/60 text-slate-700 group-hover:border-slate-300 group-hover:text-slate-800 group-hover:shadow-sm'
+                                                                    ? 'bg-white border-slate-300 text-slate-950'
+                                                                    : 'bg-gradient-to-br from-white to-slate-50 border-slate-200/60 text-slate-700 group-hover:text-slate-800'
                                                                 }
                                                             `}>
                                                                 <Icon size={14} strokeWidth={1.5} />
