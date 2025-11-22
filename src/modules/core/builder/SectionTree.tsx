@@ -82,11 +82,11 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
             {/* Page Tree Structure */}
             <div className="relative">
                 {/* Root Node / Page Selector */}
-                <div className="relative z-20 mb-2">
+                <div className="relative z-20 mb-2 -ml-3 w-[calc(100%+1.5rem)]">
                     <button
                         onClick={() => setIsPageDropdownOpen(!isPageDropdownOpen)}
                         className={`
-                            w-full flex items-center gap-2 p-2 rounded-lg border transition-all duration-200
+                            w-full flex items-center gap-2 p-2 pl-3 rounded-lg border transition-all duration-200
                             ${isPageDropdownOpen ? 'bg-blue-50 border-blue-200 ring-2 ring-blue-500/10' : 'bg-slate-50 border-slate-200 hover:border-blue-300 hover:bg-white'}
                         `}
                     >
@@ -168,7 +168,7 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                 </div>
 
                 {/* Sections List */}
-                <div className="pl-8 relative space-y-1">
+                <div className="pl-0 relative space-y-1">
                     {/* Add Section Button */}
                     <div className="relative mb-2">
                         {/* Vertical Line for Add Section */}
