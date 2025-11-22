@@ -194,7 +194,7 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                 <Plus size={16} />
                             </button>
 
-                            <span className="text-sm font-medium text-blue-600">
+                            <span className="text-sm font-medium text-slate-700">
                                 {t('builder.addSection')}
                             </span>
                         </button>
