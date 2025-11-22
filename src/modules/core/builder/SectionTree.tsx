@@ -28,17 +28,9 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
     const activePage = activeProject.pages.find(p => p.id === activePageId);
     if (!activePage) return null;
 
-    // Filter sections
-    const headers = activePage.sections.filter(s => s.type === 'header');
-    const footers = activePage.sections.filter(s => s.type === 'footer');
-    const bodySections = activePage.sections.filter(s => s.type !== 'header' && s.type !== 'footer');
-
     const handleDragEnd = (result: DropResult) => {
         if (!result.destination) return;
-        // Adjust index to account for headers
-        const sourceIndex = result.source.index + headers.length;
-        const destinationIndex = result.destination.index + headers.length;
-        reorderSections(sourceIndex, destinationIndex);
+        reorderSections(result.source.index, result.destination.index);
     };
 
     const handleAddSection = (type: string) => {
@@ -70,9 +62,9 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
         const content = (
             <div
                 className={`
-                    group relative flex items-center gap-2 p-2 rounded-md border transition-all duration-200 min-w-0 w-full max-w-full
-                    ${snapshot?.isDragging ? 'shadow-xl ring-2 ring-blue-500/20 rotate-2 z-50 bg-white' : 'hover:border-blue-300 border-transparent hover:bg-slate-50'}
-                    ${isActive ? 'bg-blue-50 border-blue-200' : ''}
+                    group relative flex items-center gap-2 p-2 rounded-md transition-colors duration-200 min-w-0 w-full max-w-full
+                    ${snapshot?.isDragging ? 'shadow-xl ring-2 ring-blue-500/20 rotate-2 z-50 bg-white' : 'hover:bg-slate-50'}
+                    ${isActive ? 'bg-slate-100 text-slate-900' : ''}
                     ${!section.isEnabled ? 'opacity-60 grayscale-[0.5]' : ''}
                 `}
                 onClick={() => setActiveSection(section.id)}
@@ -80,17 +72,17 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                 <div className={`
                     w-6 h-6 rounded flex items-center justify-center transition-all duration-300 shrink-0
                     ${isActive
-                        ? 'bg-blue-100 text-blue-600'
-                        : 'bg-slate-100 text-slate-400 group-hover:bg-white group-hover:shadow-sm'
+                        ? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200'
+                        : 'bg-transparent text-slate-400'
                     }
                 `}>
                     <Icon size={14} strokeWidth={2} />
                 </div>
 
-                <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0 transition-transform duration-200">
                     <div className={`
                         text-sm font-medium truncate transition-colors
-                        ${isActive ? 'text-blue-700' : 'text-slate-600 group-hover:text-slate-900'}
+                        ${isActive ? 'text-slate-900' : 'text-slate-600 group-hover:text-slate-900'}
                     `}>
                         {t(`components.${section.type}.name`, { defaultValue: section.type.charAt(0).toUpperCase() + section.type.slice(1) })}
                     </div>
@@ -129,8 +121,8 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                     <div
                         {...provided.dragHandleProps}
                         className={`
-                            p-0.5 rounded transition-colors shrink-0 ml-auto
-                            text-slate-300 hover:text-slate-600 cursor-grab active:cursor-grabbing
+                            p-0.5 rounded transition-colors shrink-0 ml-0.5
+                            text-slate-400 hover:text-slate-700 cursor-grab active:cursor-grabbing
                             ${!isExpanded ? 'hidden' : ''}
                         `}
                     >
@@ -165,17 +157,6 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
 
     return (
         <div className="w-full space-y-2 px-2">
-            {/* Headers (Static, Outside Tree) */}
-            {headers.length > 0 && (
-                <div className="space-y-1">
-                    {headers.map((section, index) => (
-                        <React.Fragment key={section.id}>
-                            {renderSectionItem(section, index, false, false)}
-                        </React.Fragment>
-                    ))}
-                </div>
-            )}
-
             {/* Page Tree Structure */}
             <div className="relative">
                 {/* Root Node */}
@@ -192,59 +173,56 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                 <div className="absolute left-1.5 top-9 bottom-0 w-px bg-slate-200" />
 
                 {/* Sections List */}
-                <div className="pl-3 relative space-y-1">
-                    {/* Body Sections (Draggable) */}
+                <div className="pl-3 relative">
+                    {/* Add Section Button */}
+                    <div className="relative mb-2">
+                        <div className="absolute -left-1.5 top-1/2 w-3 h-px bg-slate-200" />
+                        <button
+                            onClick={() => setIsModalOpen(true)}
+                            className="w-full flex items-center justify-start gap-2 p-2 rounded-lg text-blue-600 hover:bg-blue-50 transition-all text-sm font-medium"
+                        >
+                            <div className="w-6 h-6 flex items-center justify-center shrink-0">
+                                <Plus size={16} />
+                            </div>
+                            {t('builder.addSection')}
+                        </button>
+                    </div>
+
+                    {/* All Sections (Draggable) */}
                     <DragDropContext onDragEnd={handleDragEnd}>
                         <Droppable droppableId="sidebar-sections">
                             {(provided) => (
                                 <div
                                     {...provided.droppableProps}
                                     ref={provided.innerRef}
-                                    className="space-y-1 min-w-0"
+                                    className="min-w-0"
                                 >
-                                    {bodySections.map((section, index) => (
-                                        <Draggable key={section.id} draggableId={section.id} index={index}>
-                                            {(provided, snapshot) => renderSectionItem(section, index, true, true, provided, snapshot)}
-                                        </Draggable>
-                                    ))}
+                                    {activePage.sections.map((section, index) => {
+                                        const isLocked = section.type === 'header' || section.type === 'footer';
+                                        return (
+                                            <Draggable
+                                                key={section.id}
+                                                draggableId={section.id}
+                                                index={index}
+                                                isDragDisabled={isLocked}
+                                            >
+                                                {(provided, snapshot) => renderSectionItem(section, index, !isLocked, true, provided, snapshot)}
+                                            </Draggable>
+                                        );
+                                    })}
                                     {provided.placeholder}
                                 </div>
                             )}
                         </Droppable>
                     </DragDropContext>
-
-                    {/* Add Section Button */}
-                    <div className="relative pt-2">
-                        <div className="absolute -left-1.5 top-1/2 w-3 h-px bg-slate-200" />
-                        <button
-                            onClick={() => setIsModalOpen(true)}
-                            className="w-full flex items-center gap-2 p-2 rounded-md border border-dashed border-slate-200 text-slate-400 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50 transition-all text-sm font-medium"
-                        >
-                            <div className="w-6 h-6 flex items-center justify-center">
-                                <Plus size={14} />
-                            </div>
-                            {t('builder.addSection')}
-                        </button>
-                    </div>
                 </div>
             </div>
-
-            {/* Footers (Static, Outside Tree) */}
-            {footers.length > 0 && (
-                <div className="space-y-1 pt-2 border-t border-slate-100">
-                    {footers.map((section, index) => (
-                        <React.Fragment key={section.id}>
-                            {renderSectionItem(section, index, false, false)}
-                        </React.Fragment>
-                    ))}
-                </div>
-            )}
 
             <AddSectionModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onSelect={handleAddSection}
-                insertIndex={headers.length + bodySections.length}
+                insertIndex={activePage.sections.length}
             />
         </div>
     );
