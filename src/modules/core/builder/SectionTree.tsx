@@ -194,7 +194,7 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                 <Plus size={16} />
                             </button>
 
-                            <span className="text-sm font-medium text-slate-700">
+                            <span className="text-sm font-medium text-blue-600">
                                 {t('builder.addSection')}
                             </span>
                         </button>
@@ -242,9 +242,9 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
 
                                                         <div
                                                             className={`
-                                                                group relative flex items-center gap-2 p-1.5 rounded-md border transition-all duration-200 min-w-0 w-full max-w-full
-                                                                ${snapshot.isDragging ? 'shadow-xl ring-2 ring-blue-500/20 rotate-2 z-50 bg-white' : 'hover:border-blue-300 border-transparent hover:bg-slate-50'}
-                                                                ${isActive ? 'bg-blue-50 border-blue-200' : ''}
+                                                                group relative flex items-center gap-2 p-1.5 rounded-md transition-all duration-200 min-w-0 w-full max-w-full
+                                                                ${snapshot.isDragging ? 'shadow-xl ring-2 ring-blue-500/20 rotate-2 z-50 bg-white' : 'hover:ring-1 hover:ring-slate-300/50 hover:bg-slate-50/50 hover:shadow-sm'}
+                                                                ${isActive ? 'bg-white ring-1 ring-blue-500/30 shadow-sm shadow-blue-500/10' : ''}
                                                                 ${!section.isEnabled ? 'opacity-60 grayscale-[0.5]' : ''}
                                                             `}
                                                             onClick={() => setActiveSection(section.id)}
@@ -265,7 +265,7 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                                             <div className={`
                                                                 w-7 h-7 rounded-md flex items-center justify-center transition-all duration-300 shrink-0 border
                                                                 ${isActive
-                                                                    ? 'bg-gradient-to-br from-blue-50 to-blue-100/50 border-blue-200 text-blue-700 shadow-sm'
+                                                                    ? 'bg-blue-50 border-blue-200 text-blue-600 shadow-sm'
                                                                     : 'bg-gradient-to-br from-white to-slate-50 border-slate-200/60 text-slate-700 group-hover:border-slate-300 group-hover:text-slate-800 group-hover:shadow-sm'
                                                                 }
                                                             `}>
