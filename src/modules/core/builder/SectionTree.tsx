@@ -185,17 +185,19 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                     ))}
                                 </div>
 
-                                {/* Footer: Add Page Button */}
+                                {/* Footer: Add Page Button - matching Add Section style */}
                                 <div className="p-2 border-t border-slate-100">
                                     <button
                                         onClick={() => {
                                             setIsPageDropdownOpen(false);
                                             setIsAddPageModalOpen(true);
                                         }}
-                                        className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+                                        className="w-full flex items-center gap-2.5 py-2.5 px-3 rounded-[12px] border border-transparent hover:bg-slate-50 transition-all font-medium group"
                                     >
-                                        <Plus size={16} />
-                                        {t('builder.addPage', { defaultValue: 'Create New Page' })}
+                                        <Plus size={20} strokeWidth={1.5} className="shrink-0 text-blue-600" />
+                                        <span className="text-sm font-medium text-slate-700 group-hover:text-slate-900 font-geist tracking-[-0.01em]">
+                                            {t('builder.addPage', { defaultValue: 'Create New Page' })}
+                                        </span>
                                     </button>
                                 </div>
                             </div>
