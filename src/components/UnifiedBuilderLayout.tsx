@@ -148,7 +148,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
 
         {/* Sidebar Navigation */}
         <div
-          className={`flex flex-col flex-shrink-0 relative transition-all duration-300 ease-in-out z-20 ${isHovered ? 'w-80' : 'w-16 lg:w-64'}`}
+          className={`flex flex-col flex-shrink-0 relative transition-all duration-300 ease-in-out z-20 ${isHovered ? 'w-72' : 'w-60'}`}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
