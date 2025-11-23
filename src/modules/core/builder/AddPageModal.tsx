@@ -7,12 +7,28 @@ interface AddPageModalProps {
     isOpen: boolean;
     onClose: () => void;
     onAdd: (title: string, slug: string) => void;
+    editMode?: boolean;
+    initialTitle?: string;
+    initialSlug?: string;
 }
 
-export const AddPageModal: React.FC<AddPageModalProps> = ({ isOpen, onClose, onAdd }) => {
+export const AddPageModal: React.FC<AddPageModalProps> = ({
+    isOpen,
+    onClose,
+    onAdd,
+    editMode = false,
+    initialTitle = '',
+    initialSlug = ''
+}) => {
     const { t } = useTranslation();
-    const [title, setTitle] = useState('');
-    const [slug, setSlug] = useState('');
+    const [title, setTitle] = useState(initialTitle);
+    const [slug, setSlug] = useState(initialSlug);
+
+    // Reset values when props change (e.g., opening for edit vs create)
+    React.useEffect(() => {
+        setTitle(initialTitle);
+        setSlug(initialSlug);
+    }, [initialTitle, initialSlug, isOpen]);
 
     if (!isOpen) return null;
 
@@ -43,7 +59,10 @@ export const AddPageModal: React.FC<AddPageModalProps> = ({ isOpen, onClose, onA
                     <div>
                         <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
                             <FilePlus className="w-5 h-5 text-blue-600" />
-                            {t('builder.addPage', { defaultValue: 'Add New Page' })}
+                            {editMode
+                                ? t('builder.editPage', { defaultValue: 'Edit Page' })
+                                : t('builder.addPage', { defaultValue: 'Add New Page' })
+                            }
                         </h2>
                     </div>
                     <button
@@ -97,7 +116,10 @@ export const AddPageModal: React.FC<AddPageModalProps> = ({ isOpen, onClose, onA
                             type="submit"
                             className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors"
                         >
-                            {t('common.create', { defaultValue: 'Create Page' })}
+                            {editMode
+                                ? t('common.save', { defaultValue: 'Save Changes' })
+                                : t('common.create', { defaultValue: 'Create Page' })
+                            }
                         </button>
                     </div>
                 </form>

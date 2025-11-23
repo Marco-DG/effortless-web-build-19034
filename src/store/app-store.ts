@@ -52,6 +52,7 @@ interface AppActions {
 
   // Page Management (NEW)
   addPage: (title: string, slug: string) => void;
+  duplicatePage: (pageId: string) => void;
   deletePage: (pageId: string) => void;
   updatePage: (pageId: string, updates: Partial<PageConfig>) => void;
 
@@ -381,6 +382,32 @@ export const useAppStore = create<AppStore>()(
             pages: [...state.activeProject.pages, newPage]
           },
           ui: { ...state.ui, activePageId: newPage.id, activeSectionId: newPage.sections[1].id }
+        };
+      }),
+
+      duplicatePage: (pageId) => set((state) => {
+        if (!state.activeProject) return state;
+        const sourcePage = state.activeProject.pages.find(p => p.id === pageId);
+        if (!sourcePage) return state;
+
+        const timestamp = Date.now();
+        const newPage: PageConfig = {
+          ...sourcePage,
+          id: `page_${timestamp}`,
+          title: `${sourcePage.title} (Copy)`,
+          slug: `${sourcePage.slug}-copy`,
+          sections: sourcePage.sections.map((section, index) => ({
+            ...section,
+            id: `${section.type}_${timestamp}_${index}`
+          }))
+        };
+
+        return {
+          activeProject: {
+            ...state.activeProject,
+            pages: [...state.activeProject.pages, newPage]
+          },
+          ui: { ...state.ui, activePageId: newPage.id, activeSectionId: newPage.sections[0]?.id }
         };
       }),
 

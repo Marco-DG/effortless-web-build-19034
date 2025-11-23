@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAppStore } from '../../../store/app-store';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { useTranslation } from 'react-i18next';
-import { GripVertical, Eye, EyeOff, Trash2, Plus, Layout, Grid, Type, Image, List, Phone, Star, Award, Calendar, ChevronDown, Check, FilePlus } from 'lucide-react';
+import { GripVertical, Eye, EyeOff, Trash2, Plus, Layout, Grid, Type, Image, List, Phone, Star, Award, Calendar, ChevronDown, Check, FilePlus, FileText, Copy, Edit2 } from 'lucide-react';
 import { AddSectionModal } from './AddSectionModal';
 import { AddPageModal } from './AddPageModal';
 
@@ -22,12 +22,15 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
         setActiveSection,
         setActivePage,
         addPage,
-        deletePage
+        duplicatePage,
+        deletePage,
+        updatePage
     } = useAppStore();
     const { activePageId } = ui;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPageDropdownOpen, setIsPageDropdownOpen] = useState(false);
     const [isAddPageModalOpen, setIsAddPageModalOpen] = useState(false);
+    const [editingPage, setEditingPage] = useState<{ id: string; title: string; slug: string } | null>(null);
 
     if (!activeProject || !activePageId) return null;
 
@@ -49,8 +52,19 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
         setIsPageDropdownOpen(false);
     };
 
-    const handleAddPage = (title: string, slug: string) => {
-        addPage(title, slug);
+    const handleEditPage = (e: React.MouseEvent, page: any) => {
+        e.stopPropagation();
+        setEditingPage({ id: page.id, title: page.title, slug: page.slug });
+        setIsPageDropdownOpen(false);
+    };
+
+    const handleSavePage = (title: string, slug: string) => {
+        if (editingPage) {
+            updatePage(editingPage.id, { title, slug });
+            setEditingPage(null);
+        } else {
+            addPage(title, slug);
+        }
         setIsAddPageModalOpen(false);
     };
 
@@ -86,11 +100,14 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                     <button
                         onClick={() => setIsPageDropdownOpen(!isPageDropdownOpen)}
                         className={`
-                            w-full flex items-center justify-between gap-2.5 py-2.5 px-3 rounded-[12px] border transition-all duration-200 font-geist
-                            ${isPageDropdownOpen ? 'bg-slate-50 border-slate-300' : 'bg-white border-slate-200 hover:border-slate-300'}
+                            w-full flex items-center justify-between gap-2.5 py-2.5 px-3 rounded-[12px] border transition-all duration-200 font-geist shadow-sm
+                            ${isPageDropdownOpen ? 'bg-slate-50 border-slate-300 shadow' : 'bg-white border-slate-200/60 hover:border-slate-300 hover:shadow'}
                         `}
                     >
-                        <span className="text-sm font-semibold text-slate-900 truncate tracking-[-0.01em]">{activePage.title || t('common.pageTitle')}</span>
+                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                            <span className="text-sm font-semibold text-slate-900 truncate tracking-[-0.01em]">{activePage.title || t('common.pageTitle')}</span>
+                            <span className="text-[10px] font-medium text-slate-400 shrink-0">{activeProject.pages.indexOf(activePage) + 1}/{activeProject.pages.length}</span>
+                        </div>
                         <ChevronDown size={16} className={`transition-transform duration-200 shrink-0 ${isPageDropdownOpen ? 'rotate-180 text-slate-700' : 'text-slate-400'}`} />
                     </button>
 
@@ -101,56 +118,83 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                 className="fixed inset-0 z-10"
                                 onClick={() => setIsPageDropdownOpen(false)}
                             />
-                            <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg border border-slate-200 shadow-xl z-20 py-1 max-h-60 overflow-y-auto animate-in fade-in zoom-in-95 duration-100 flex flex-col">
-                                <div className="px-2 py-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider flex justify-between items-center">
-                                    <span>{t('common.pages', { defaultValue: 'Pages' })}</span>
-                                    <button
-                                        onClick={() => {
-                                            setIsPageDropdownOpen(false);
-                                            setIsAddPageModalOpen(true);
-                                        }}
-                                        className="p-1 hover:bg-blue-50 text-blue-600 rounded transition-colors"
-                                        title={t('builder.addPage', { defaultValue: 'Add Page' })}
-                                    >
-                                        <Plus size={14} />
-                                    </button>
+                            <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl border border-slate-200/60 shadow-2xl z-20 max-h-80 overflow-hidden animate-in fade-in zoom-in-95 duration-150 backdrop-blur-sm">
+                                {/* Header */}
+                                <div className="px-3 py-2 border-b border-slate-100">
+                                    <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('common.pages', { defaultValue: 'Pages' })}</span>
                                 </div>
-                                <div className="flex-1 overflow-y-auto">
+
+                                {/* Page List */}
+                                <div className="py-1 max-h-64 overflow-y-auto">
                                     {activeProject.pages.map(page => (
-                                        <button
+                                        <div
                                             key={page.id}
-                                            onClick={() => handlePageSelect(page.id)}
                                             className={`
-                                                w-full flex items-center gap-2 px-3 py-2 text-sm transition-colors group
-                                                ${page.id === activePageId ? 'bg-blue-50 text-blue-700 font-medium' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}
+                                                group flex items-center gap-2.5 px-3 py-2.5 transition-colors relative
+                                                ${page.id === activePageId ? 'bg-blue-50' : 'hover:bg-slate-50'}
                                             `}
                                         >
-                                            <div className={`w-1.5 h-1.5 rounded-full ${page.id === activePageId ? 'bg-blue-500' : 'bg-transparent'}`} />
-                                            <span className="truncate flex-1 text-left">{page.title}</span>
+                                            <FileText size={16} className={`shrink-0 ${page.id === activePageId ? 'text-blue-600' : 'text-slate-400'}`} />
 
-                                            {activeProject.pages.length > 1 && (
-                                                <div
-                                                    onClick={(e) => handleDeletePage(e, page.id)}
-                                                    className="opacity-0 group-hover:opacity-100 p-1 hover:bg-red-100 text-slate-400 hover:text-red-600 rounded transition-all"
-                                                    title="Delete Page"
+                                            <button
+                                                onClick={() => handlePageSelect(page.id)}
+                                                className="flex-1 text-left min-w-0"
+                                            >
+                                                <span className={`text-sm truncate block font-geist tracking-[-0.01em] ${page.id === activePageId ? 'text-blue-700 font-semibold' : 'text-slate-700'
+                                                    }`}>
+                                                    {page.title}
+                                                </span>
+                                            </button>
+
+                                            {/* Inline Actions */}
+                                            <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                {/* Edit */}
+                                                <button
+                                                    onClick={(e) => handleEditPage(e, page)}
+                                                    className="p-1.5 rounded hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors"
+                                                    title="Edit Page Title"
                                                 >
-                                                    <Trash2 size={12} />
-                                                </div>
-                                            )}
+                                                    <Edit2 size={14} />
+                                                </button>
 
-                                            {page.id === activePageId && <Check size={14} className="text-blue-500" />}
-                                        </button>
+                                                {/* Duplicate */}
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        duplicatePage(page.id);
+                                                        setIsPageDropdownOpen(false);
+                                                    }}
+                                                    className="p-1.5 rounded hover:bg-blue-50 text-slate-400 hover:text-blue-600 transition-colors"
+                                                    title="Duplicate Page"
+                                                >
+                                                    <Copy size={14} />
+                                                </button>
+
+                                                {/* Delete */}
+                                                {activeProject.pages.length > 1 && (
+                                                    <button
+                                                        onClick={(e) => handleDeletePage(e, page.id)}
+                                                        className="p-1.5 rounded hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors"
+                                                        title="Delete Page"
+                                                    >
+                                                        <Trash2 size={14} />
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
                                     ))}
                                 </div>
-                                <div className="p-1 border-t border-slate-100 mt-1">
+
+                                {/* Footer: Add Page Button */}
+                                <div className="p-2 border-t border-slate-100">
                                     <button
                                         onClick={() => {
                                             setIsPageDropdownOpen(false);
                                             setIsAddPageModalOpen(true);
                                         }}
-                                        className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md transition-colors"
+                                        className="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
                                     >
-                                        <FilePlus size={14} />
+                                        <Plus size={16} />
                                         {t('builder.addPage', { defaultValue: 'Create New Page' })}
                                     </button>
                                 </div>
@@ -290,9 +334,15 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                 insertIndex={activePage.sections.length}
             />
             <AddPageModal
-                isOpen={isAddPageModalOpen}
-                onClose={() => setIsAddPageModalOpen(false)}
-                onAdd={handleAddPage}
+                isOpen={isAddPageModalOpen || editingPage !== null}
+                onClose={() => {
+                    setIsAddPageModalOpen(false);
+                    setEditingPage(null);
+                }}
+                onAdd={handleSavePage}
+                editMode={editingPage !== null}
+                initialTitle={editingPage?.title}
+                initialSlug={editingPage?.slug}
             />
         </div>
     );
