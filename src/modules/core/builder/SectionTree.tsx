@@ -78,28 +78,20 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
     };
 
     return (
-        <div className="w-full space-y-2 px-2">
+        <div className="w-full space-y-2">
             {/* Page Tree Structure */}
             <div className="relative">
                 {/* Root Node / Page Selector */}
-                <div className="relative z-20 mb-2 -ml-3 w-[calc(100%+1.5rem)]">
+                <div className="relative z-20 mb-3">
                     <button
                         onClick={() => setIsPageDropdownOpen(!isPageDropdownOpen)}
                         className={`
-                            w-full flex items-center gap-2 p-2 pl-3 rounded-lg border transition-all duration-200
-                            ${isPageDropdownOpen ? 'bg-blue-50 border-blue-200 ring-2 ring-blue-500/10' : 'bg-slate-50 border-slate-200 hover:border-blue-300 hover:bg-white'}
+                            w-full flex items-center justify-between gap-2.5 py-2.5 px-3 rounded-[12px] border transition-all duration-200 font-geist
+                            ${isPageDropdownOpen ? 'bg-slate-50 border-slate-300' : 'bg-white border-slate-200 hover:border-slate-300'}
                         `}
                     >
-                        <div className={`
-                            w-6 h-6 rounded bg-white border flex items-center justify-center shrink-0 transition-colors
-                            ${isPageDropdownOpen ? 'border-blue-200 text-blue-500' : 'border-slate-200 text-slate-400'}
-                        `}>
-                            <Layout size={12} />
-                        </div>
-                        <span className={`text-sm font-semibold truncate flex-1 text-left ${isPageDropdownOpen ? 'text-blue-700' : 'text-slate-700'}`}>
-                            {activePage.title || t('common.pageTitle')}
-                        </span>
-                        <ChevronDown size={14} className={`transition-transform duration-200 ${isPageDropdownOpen ? 'rotate-180 text-blue-500' : 'text-slate-400'}`} />
+                        <span className="text-sm font-semibold text-slate-900 truncate tracking-[-0.01em]">{activePage.title || t('common.pageTitle')}</span>
+                        <ChevronDown size={16} className={`transition-transform duration-200 shrink-0 ${isPageDropdownOpen ? 'rotate-180 text-slate-700' : 'text-slate-400'}`} />
                     </button>
 
                     {/* Dropdown Menu */}
@@ -168,33 +160,16 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                 </div>
 
                 {/* Sections List */}
-                <div className="pl-0 relative space-y-1">
+                <div className="relative space-y-1">
                     {/* Add Section Button */}
-                    <div className="relative mb-2">
-                        {/* Vertical Line for Add Section */}
-                        <div
-                            className="absolute -left-3 w-px bg-slate-300/70"
-                            style={{
-                                top: '-24px', // Connect to Root Node
-                                bottom: activePage.sections.length > 0 ? '0' : '50%'
-                            }}
-                        />
-                        <div className="absolute -left-3 top-1/2 w-3 h-px bg-slate-300/70" />
+                    <div className="relative">
                         <button
                             onClick={() => setIsModalOpen(true)}
-                            className="w-full flex items-center gap-2 p-1.5 rounded-md border border-transparent text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-all text-sm font-medium group"
+                            className="w-full flex items-center gap-2.5 py-2.5 px-3 rounded-[12px] border border-transparent hover:bg-slate-50 transition-all font-medium group"
                         >
-                            {/* Spacer to align with DragHandle */}
-                            <div className="w-4 h-4 shrink-0" />
+                            <Plus size={20} strokeWidth={1.5} className="shrink-0 text-blue-600" />
 
-                            <button
-                                className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors shrink-0"
-                                title={t('builder.addSection')}
-                            >
-                                <Plus size={16} />
-                            </button>
-
-                            <span className="text-sm font-medium text-blue-600">
+                            <span className="text-sm font-medium text-slate-700 group-hover:text-slate-900 font-geist tracking-[-0.01em]">
                                 {t('builder.addSection')}
                             </span>
                         </button>
@@ -228,54 +203,25 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                                         {...provided.draggableProps}
                                                         className="relative"
                                                     >
-                                                        {/* Vertical Line */}
-                                                        <div
-                                                            className="absolute -left-3 w-px bg-slate-300/70"
-                                                            style={{
-                                                                top: '-10px', // Connect to previous item
-                                                                bottom: isLast ? '50%' : '0'
-                                                            }}
-                                                        />
-
-                                                        {/* Horizontal Branch */}
-                                                        <div className="absolute -left-3 top-1/2 w-3 h-px bg-slate-300/70" />
-
                                                         <div
                                                             className={`
-                                                                group relative flex items-center gap-2 p-1.5 rounded-md transition-all duration-200 min-w-0 w-full max-w-full
-                                                                ${snapshot.isDragging ? 'shadow-xl ring-2 ring-blue-500/20 rotate-2 z-50 bg-white' : 'hover:bg-slate-50/70'}
-                                                                ${isActive ? 'bg-slate-50/70' : ''}
+                                                                group relative flex items-center gap-2.5 py-2.5 px-3 rounded-[12px] transition-all duration-200 min-w-0 w-full max-w-full
+                                                                ${snapshot.isDragging ? 'shadow-lg ring-2 ring-blue-500/10 rotate-1 z-50 bg-white' : 'hover:bg-slate-50'}
+                                                                ${isActive ? 'bg-slate-50' : ''}
                                                                 ${!section.isEnabled ? 'opacity-60 grayscale-[0.5]' : ''}
                                                             `}
                                                             onClick={() => setActiveSection(section.id)}
                                                         >
-                                                            <div
-                                                                {...provided.dragHandleProps}
-                                                                className={`
-                                                                    p-0.5 rounded transition-colors shrink-0
-                                                                    ${isLocked
-                                                                        ? 'opacity-0 cursor-not-allowed'
-                                                                        : 'text-slate-300 hover:text-slate-600 cursor-grab active:cursor-grabbing'
-                                                                    }
-                                                                `}
-                                                            >
-                                                                <GripVertical className="w-3 h-3" />
-                                                            </div>
+                                                            <Icon
+                                                                size={20}
+                                                                strokeWidth={1.5}
+                                                                className={`shrink-0 transition-colors ${isActive ? 'text-slate-900' : 'text-slate-700 group-hover:text-slate-900'}`}
+                                                            />
 
-                                                            <div className={`
-                                                                w-7 h-7 rounded-md flex items-center justify-center transition-all duration-300 shrink-0 border
-                                                                ${isActive
-                                                                    ? 'bg-white border-slate-300 text-slate-950'
-                                                                    : 'bg-gradient-to-br from-white to-slate-50 border-slate-200/60 text-slate-700 group-hover:text-slate-800'
-                                                                }
-                                                            `}>
-                                                                <Icon size={14} strokeWidth={1.5} />
-                                                            </div>
-
-                                                            <div className="flex-1 min-w-0 transition-transform duration-200">
+                                                            <div className="flex-1 min-w-0">
                                                                 <div className={`
                                                                     text-sm font-medium truncate transition-colors font-geist tracking-[-0.01em]
-                                                                    ${isActive ? 'text-slate-950 font-semibold' : 'text-slate-700 group-hover:text-slate-900'}
+                                                                    ${isActive ? 'text-slate-900 font-semibold' : 'text-slate-700 group-hover:text-slate-900'}
                                                                 `}>
                                                                     {t(`components.${section.type}.name`, { defaultValue: section.type.charAt(0).toUpperCase() + section.type.slice(1) })}
                                                                 </div>
@@ -308,6 +254,20 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                                                         <Trash2 className="w-3 h-3" />
                                                                     </button>
                                                                 )}
+
+                                                                {/* Drag Handle - moved to right */}
+                                                                <div
+                                                                    {...provided.dragHandleProps}
+                                                                    className={`
+                                                                        p-0.5 rounded transition-colors shrink-0
+                                                                        ${isLocked
+                                                                            ? 'opacity-0 cursor-not-allowed'
+                                                                            : 'text-slate-400 cursor-grab active:cursor-grabbing'
+                                                                        }
+                                                                    `}
+                                                                >
+                                                                    <GripVertical className="w-3 h-3" />
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
