@@ -37,7 +37,10 @@
         "config": "Configuration",
         "management": "Management",
         "appearance": "Appearance",
-        "data": "Data"
+        "data": "Data",
+        "create": "Create",
+        "slug": "URL Slug",
+        "enterNewPageTitle": "Enter new page title"
     },
     "builder": {
         "moveUp": "Move Up",
@@ -48,6 +51,8 @@
         "preview": "Preview",
         "publish": "Publish",
         "addSection": "Add Section",
+        "addPage": "Create New Page",
+        "editPage": "Edit Page",
         "addFooterOrSection": "Add Footer / Section",
         "chooseComponent": "Choose a component to add to your page",
         "pageStructure": "Sections",

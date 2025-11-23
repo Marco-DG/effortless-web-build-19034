@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useTranslation } from 'react-i18next';
-import { X, FilePlus } from 'lucide-react';
+import { X, FilePlus, FileText } from 'lucide-react';
 
 interface AddPageModalProps {
     isOpen: boolean;
@@ -52,31 +52,46 @@ export const AddPageModal: React.FC<AddPageModalProps> = ({
 
     return ReactDOM.createPortal(
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
-            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="bg-white rounded-xl shadow-2xl w-full max-w-md flex flex-col overflow-hidden animate-in zoom-in-95 duration-150">
 
-                {/* Header */}
-                <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-                    <div>
-                        <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                            <FilePlus className="w-5 h-5 text-blue-600" />
-                            {editMode
-                                ? t('builder.editPage', { defaultValue: 'Edit Page' })
-                                : t('builder.addPage', { defaultValue: 'Add New Page' })
-                            }
-                        </h2>
+                {/* Header - exact copy of section header style */}
+                <div className="px-10 py-8 border-b border-slate-200/30 bg-white/40 backdrop-blur-xl">
+                    <div className="flex items-start gap-5">
+                        {/* Icon with neutral gradient - matching section headers exactly */}
+                        <div className="w-14 h-14 rounded-[18px] bg-gradient-to-br from-white via-slate-50 to-slate-100/80 border border-slate-200/50 flex items-center justify-center shadow-lg shadow-slate-900/8 backdrop-blur-sm">
+                            <FileText className="w-6 h-6 text-slate-700" strokeWidth={1.5} />
+                        </div>
+
+                        {/* Title and subtitle */}
+                        <div className="flex-1 min-w-0">
+                            <h2 className="text-2xl font-bold text-slate-900 tracking-[-0.02em] font-geist leading-tight mb-2">
+                                {editMode
+                                    ? t('builder.editPage', { defaultValue: 'Edit Page' })
+                                    : t('builder.addPage', { defaultValue: 'Add New Page' })
+                                }
+                            </h2>
+                            <p className="text-sm text-slate-500 font-medium font-geist tracking-[-0.01em] leading-relaxed">
+                                {editMode
+                                    ? 'Modifica titolo e URL della pagina'
+                                    : 'Definisci titolo e URL della tua nuova pagina'
+                                }
+                            </p>
+                        </div>
+
+                        {/* Close button */}
+                        <button
+                            onClick={onClose}
+                            className="p-2 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors"
+                        >
+                            <X size={20} />
+                        </button>
                     </div>
-                    <button
-                        onClick={onClose}
-                        className="p-2 rounded-full hover:bg-slate-200 text-slate-500 transition-colors"
-                    >
-                        <X size={20} />
-                    </button>
                 </div>
 
                 {/* Form */}
-                <form onSubmit={handleSubmit} className="p-6 space-y-4">
+                <form id="page-form" onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-4 space-y-3">
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">
+                        <label className="block text-xs font-medium text-slate-700 mb-1.5 font-geist tracking-[-0.01em]">
                             {t('common.pageTitle', { defaultValue: 'Page Title' })}
                         </label>
                         <input
@@ -84,14 +99,14 @@ export const AddPageModal: React.FC<AddPageModalProps> = ({
                             value={title}
                             onChange={handleTitleChange}
                             placeholder="e.g. About Us"
-                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-3 py-2.5 border border-slate-200/60 rounded-[12px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm font-geist"
                             autoFocus
                             required
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">
+                        <label className="block text-xs font-medium text-slate-700 mb-1.5 font-geist tracking-[-0.01em]">
                             {t('common.slug', { defaultValue: 'URL Slug' })}
                         </label>
                         <input
@@ -99,30 +114,31 @@ export const AddPageModal: React.FC<AddPageModalProps> = ({
                             value={slug}
                             onChange={(e) => setSlug(e.target.value)}
                             placeholder="e.g. /about-us"
-                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm text-slate-600 bg-slate-50"
+                            className="w-full px-3 py-2.5 border border-slate-200/60 rounded-[12px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm text-slate-600 bg-slate-50 font-geist"
                             required
                         />
                     </div>
-
-                    <div className="pt-4 flex justify-end gap-3">
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
-                        >
-                            {t('common.cancel', { defaultValue: 'Cancel' })}
-                        </button>
-                        <button
-                            type="submit"
-                            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors"
-                        >
-                            {editMode
-                                ? t('common.save', { defaultValue: 'Save Changes' })
-                                : t('common.create', { defaultValue: 'Create Page' })
-                            }
-                        </button>
-                    </div>
                 </form>
+
+                {/* Footer */}
+                <div className="px-4 py-3 border-t border-slate-200/60 flex justify-end gap-2">
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        className="px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 rounded-lg transition-colors font-geist"
+                    >
+                        {t('common.cancel', { defaultValue: 'Cancel' })}
+                    </button>
+                    <button
+                        type="submit"
+                        form="page-form"
+                        className="px-3 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors font-geist"
+                    >
+                        {editMode
+                            ? t('common.save', { defaultValue: 'Save Changes' })
+                            : t('common.create', { defaultValue: 'Create Page' })}
+                    </button>
+                </div>
             </div>
         </div>,
         document.body
