@@ -118,43 +118,45 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                 className="fixed inset-0 z-10"
                                 onClick={() => setIsPageDropdownOpen(false)}
                             />
-                            <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl border border-slate-200/60 shadow-2xl z-20 max-h-80 overflow-hidden animate-in fade-in zoom-in-95 duration-150 backdrop-blur-sm">
-                                {/* Header */}
-                                <div className="px-3 py-2 border-b border-slate-100">
-                                    <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('common.pages', { defaultValue: 'Pages' })}</span>
-                                </div>
-
-                                {/* Page List */}
-                                <div className="py-1 max-h-64 overflow-y-auto">
+                            <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl border border-slate-200/60 shadow-2xl z-20 max-h-80 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+                                {/* Page List - no header, cleaner */}
+                                <div className="py-2 max-h-64 overflow-y-auto space-y-1">
                                     {activeProject.pages.map(page => (
                                         <div
                                             key={page.id}
                                             className={`
-                                                group flex items-center gap-2.5 px-3 py-2.5 transition-colors relative
-                                                ${page.id === activePageId ? 'bg-blue-50' : 'hover:bg-slate-50'}
+                                                group relative flex items-center gap-2.5 py-2.5 px-3 rounded-[12px] transition-all duration-200 cursor-pointer
+                                                ${page.id === activePageId ? 'bg-slate-50' : 'hover:bg-slate-50'}
                                             `}
+                                            onClick={() => handlePageSelect(page.id)}
                                         >
-                                            <FileText size={16} className={`shrink-0 ${page.id === activePageId ? 'text-blue-600' : 'text-slate-400'}`} />
+                                            <FileText
+                                                size={20}
+                                                strokeWidth={1.5}
+                                                className={`shrink-0 transition-colors ${page.id === activePageId ? 'text-slate-900' : 'text-slate-700 group-hover:text-slate-900'}`}
+                                            />
 
-                                            <button
-                                                onClick={() => handlePageSelect(page.id)}
-                                                className="flex-1 text-left min-w-0"
-                                            >
-                                                <span className={`text-sm truncate block font-geist tracking-[-0.01em] ${page.id === activePageId ? 'text-blue-700 font-semibold' : 'text-slate-700'
-                                                    }`}>
+                                            <div className="flex-1 min-w-0">
+                                                <div className={`
+                                                    text-sm truncate transition-colors font-geist tracking-[-0.01em]
+                                                    ${page.id === activePageId ? 'text-slate-900 font-semibold' : 'text-slate-700 font-medium group-hover:text-slate-900'}
+                                                `}>
                                                     {page.title}
-                                                </span>
-                                            </button>
+                                                </div>
+                                            </div>
 
                                             {/* Inline Actions */}
-                                            <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-all duration-200 shrink-0">
                                                 {/* Edit */}
                                                 <button
-                                                    onClick={(e) => handleEditPage(e, page)}
-                                                    className="p-1.5 rounded hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleEditPage(e, page);
+                                                    }}
+                                                    className="p-1 rounded hover:bg-slate-200 text-slate-400 hover:text-slate-700"
                                                     title="Edit Page Title"
                                                 >
-                                                    <Edit2 size={14} />
+                                                    <Edit2 className="w-3 h-3" />
                                                 </button>
 
                                                 {/* Duplicate */}
@@ -164,20 +166,23 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                                         duplicatePage(page.id);
                                                         setIsPageDropdownOpen(false);
                                                     }}
-                                                    className="p-1.5 rounded hover:bg-blue-50 text-slate-400 hover:text-blue-600 transition-colors"
+                                                    className="p-1 rounded hover:bg-slate-200 text-slate-400 hover:text-slate-700"
                                                     title="Duplicate Page"
                                                 >
-                                                    <Copy size={14} />
+                                                    <Copy className="w-3 h-3" />
                                                 </button>
 
                                                 {/* Delete */}
                                                 {activeProject.pages.length > 1 && (
                                                     <button
-                                                        onClick={(e) => handleDeletePage(e, page.id)}
-                                                        className="p-1.5 rounded hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleDeletePage(e, page.id);
+                                                        }}
+                                                        className="p-1 rounded hover:bg-red-50 text-slate-400 hover:text-red-600"
                                                         title="Delete Page"
                                                     >
-                                                        <Trash2 size={14} />
+                                                        <Trash2 className="w-3 h-3" />
                                                     </button>
                                                 )}
                                             </div>
@@ -186,7 +191,7 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                 </div>
 
                                 {/* Footer: Add Page Button - matching Add Section style */}
-                                <div className="p-2 border-t border-slate-100">
+                                <div className="px-2 py-2 border-t border-slate-100">
                                     <button
                                         onClick={() => {
                                             setIsPageDropdownOpen(false);
