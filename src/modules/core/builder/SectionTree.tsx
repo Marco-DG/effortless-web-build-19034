@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAppStore } from '../../../store/app-store';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { useTranslation } from 'react-i18next';
-import { GripVertical, Eye, EyeOff, Trash2, Plus, Layout, Grid, Type, Image, List, Phone, Star, Award, Calendar, ChevronDown, Check, FilePlus, FileText, Copy, Edit2 } from 'lucide-react';
+import { GripVertical, Eye, EyeOff, Trash2, Plus, Layout, Grid, Type, Image, List, Phone, Star, Award, Calendar, ChevronDown, FileText, Copy, Edit2 } from 'lucide-react';
 import { AddSectionModal } from './AddSectionModal';
 import { AddPageModal } from './AddPageModal';
 

@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SiteConfig, SectionConfig } from './types';
 import { getComponent } from './registry';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, ArrowUp, ArrowDown, Trash2, Copy, MoreVertical } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { AddSectionModal } from './AddSectionModal';
 
 interface EngineProps {
@@ -30,8 +29,7 @@ export const Engine: React.FC<EngineProps> = ({
     onDuplicateSection
 }) => {
     const { theme } = config;
-    const { t, i18n } = useTranslation();
-    console.log('Engine Render. Lang:', i18n.language);
+    const { t } = useTranslation();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [insertIndex, setInsertIndex] = useState<number>(0);
 
@@ -180,58 +178,6 @@ const GhostDivider: React.FC<{
     );
 };
 
-const FloatingToolbar: React.FC<{
-    sectionId: string;
-    index: number;
-    total: number;
-    onMove?: (index: number, direction: 'up' | 'down') => void;
-    onDelete?: (id: string) => void;
-    onDuplicate?: (id: string) => void;
-}> = ({ sectionId, index, total, onMove, onDelete, onDuplicate }) => {
-    const { t } = useTranslation();
-    const isHeader = sectionId.includes('header');
-    const isFooter = sectionId.includes('footer');
-    const isLocked = isHeader || isFooter;
-
-    return (
-        <div className="absolute top-4 right-4 z-[100] flex items-center gap-1 bg-white border border-slate-200 shadow-lg rounded-lg p-1 animate-in fade-in zoom-in-95 duration-200 pointer-events-auto">
-            {!isLocked && (
-                <>
-                    <button
-                        onClick={(e) => { e.stopPropagation(); onMove?.(index, 'up'); }}
-                        disabled={index <= 1} // Assuming header is 0
-                        className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded disabled:opacity-30 cursor-pointer"
-                        title={t('builder.moveUp')}
-                    >
-                        <ArrowUp size={16} />
-                    </button>
-                    <button
-                        onClick={(e) => { e.stopPropagation(); onMove?.(index, 'down'); }}
-                        disabled={index >= total - 2} // Assuming footer is last
-                        className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded disabled:opacity-30 cursor-pointer"
-                        title={t('builder.moveDown')}
-                    >
-                        <ArrowDown size={16} />
-                    </button>
-                    <div className="w-[1px] h-4 bg-slate-200 mx-1" />
-                    <button
-                        onClick={(e) => { e.stopPropagation(); onDelete?.(sectionId); }}
-                        className="p-1.5 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded cursor-pointer"
-                        title={t('common.delete')}
-                    >
-                        <Trash2 size={16} />
-                    </button>
-                </>
-            )}
-            {isLocked && (
-                <span className="px-2 text-xs font-medium text-slate-400 uppercase tracking-wider">
-                    {isHeader ? t('components.header.name') : t('components.footer.name')}
-                </span>
-            )}
-        </div>
-    );
-};
-
 const SelectableSection: React.FC<{
     section: SectionConfig;
     isActive: boolean;
@@ -242,7 +188,7 @@ const SelectableSection: React.FC<{
     onMove?: (index: number, direction: 'up' | 'down') => void;
     onDelete?: (id: string) => void;
     onDuplicate?: (id: string) => void;
-}> = ({ section, isActive, onSelect, previewMode, index, totalSections, onMove, onDelete, onDuplicate }) => {
+}> = ({ section, isActive, onSelect, previewMode }) => {
     const Component = getComponent(section.type);
 
     if (!Component) {
@@ -264,28 +210,6 @@ const SelectableSection: React.FC<{
             className={`relative group transition-all duration-200 ${!previewMode ? 'cursor-pointer' : ''} ${isHeader ? 'z-50' : ''}`}
             onClick={handleClick}
         >
-            {/* Selection Overlay & Toolbar (Editor Mode Only) - REMOVED per user request */}
-            {/* {!previewMode && (
-                <>
-                    <div className={`
-                        absolute inset-0 border-2 pointer-events-none transition-all duration-200
-                        ${section.type === 'header' ? 'z-[61] h-20' : 'z-[60]'}
-                        ${isActive ? 'border-blue-500 bg-blue-500/5' : 'border-transparent group-hover:border-blue-300 group-hover:bg-blue-500/5'}
-                    `} />
-
-                    <div className={`absolute top-0 right-0 z-[100] transition-opacity duration-200 pointer-events-none ${isActive || 'group-hover:opacity-100 opacity-0'}`}>
-                        <FloatingToolbar
-                            sectionId={section.id}
-                            index={index}
-                            total={totalSections}
-                            onMove={onMove}
-                            onDelete={onDelete}
-                            onDuplicate={onDuplicate}
-                        />
-                    </div>
-                </>
-            )} */}
-
             <Component {...section.data} variant={section.variant} />
         </section>
     );
