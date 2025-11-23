@@ -78,7 +78,12 @@
         },
         "header": {
             "name": "Barra di Navigazione",
-            "description": "Barra di navigazione globale con logo e link."
+            "description": "Intestazione personalizzabile con logo e link",
+            "layoutStyle": "Stile Layout",
+            "headerStyle": "Stile Intestazione",
+            "styleSolid": "Solido - Sfondo Opaco",
+            "styleTransparent": "Trasparente - Sovrapposto",
+            "styleGlass": "Vetro - Effetto Glassmorphism"
         },
         "footer": {
             "name": "Footer",

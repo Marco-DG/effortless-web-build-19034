@@ -7,6 +7,27 @@ export const HeaderSchema: ComponentSchema = {
     description: 'Global navigation bar with logo and links.',
     category: 'other',
     fields: {
+        layout: {
+            type: 'visual-select',
+            label: 'components.header.layoutStyle',
+            defaultValue: 'classic',
+            options: [
+                { label: 'Classic', value: 'classic', icon: 'header-classic' },
+                { label: 'Centered', value: 'centered', icon: 'header-centered' },
+                { label: 'Double Line', value: 'double', icon: 'header-double' },
+                { label: 'Minimal', value: 'minimal', icon: 'header-minimal' }
+            ]
+        },
+        style: {
+            type: 'compact-visual-select',
+            label: 'components.header.headerStyle',
+            defaultValue: 'solid',
+            options: [
+                { label: 'components.header.styleSolid', value: 'solid' },
+                { label: 'components.header.styleTransparent', value: 'transparent' },
+                { label: 'components.header.styleGlass', value: 'glass' }
+            ]
+        },
         logoText: {
             type: 'text',
             label: 'Logo Text',
@@ -41,16 +62,6 @@ export const HeaderSchema: ComponentSchema = {
             label: 'CTA Text',
             defaultValue: 'Book Table'
         },
-        style: {
-            type: 'select',
-            label: 'Header Style',
-            defaultValue: 'solid',
-            options: [
-                { label: 'Solid Background', value: 'solid' },
-                { label: 'Transparent Overlay', value: 'transparent' },
-                { label: 'Floating (Glass)', value: 'glass' }
-            ]
-        },
         sticky: {
             type: 'toggle',
             label: 'Sticky Header',
@@ -58,6 +69,7 @@ export const HeaderSchema: ComponentSchema = {
         }
     },
     defaultData: {
+        layout: 'classic',
         logoText: 'Restaurante',
         navigationMode: 'auto',
         links: [
@@ -66,7 +78,7 @@ export const HeaderSchema: ComponentSchema = {
             { label: 'Events', href: '#events' },
             { label: 'Contact', href: '#contact' }
         ],
-        showCta: true,
+        showCta: false,
         ctaText: 'Book Table',
         style: 'transparent',
         sticky: true

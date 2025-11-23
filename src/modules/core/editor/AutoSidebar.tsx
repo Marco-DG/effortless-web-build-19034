@@ -6,6 +6,8 @@ import {
     TextFieldRenderer,
     TextAreaRenderer,
     SelectFieldRenderer,
+    VisualSelectFieldRenderer,
+    CompactVisualSelectFieldRenderer,
     ToggleFieldRenderer,
     ImageFieldRenderer,
     ColorFieldRenderer,
@@ -36,6 +38,8 @@ export const AutoSidebar: React.FC<AutoSidebarProps> = ({ schema, data, onUpdate
             case 'text': Renderer = TextFieldRenderer; break;
             case 'textarea': Renderer = TextAreaRenderer; break;
             case 'select': Renderer = SelectFieldRenderer; break;
+            case 'visual-select': Renderer = VisualSelectFieldRenderer; break;
+            case 'compact-visual-select': Renderer = CompactVisualSelectFieldRenderer; break;
             case 'toggle': Renderer = ToggleFieldRenderer; break;
             case 'image': Renderer = ImageFieldRenderer; break;
             case 'color': Renderer = ColorFieldRenderer; break;

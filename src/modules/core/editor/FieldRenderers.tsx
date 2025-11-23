@@ -1,9 +1,12 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { FieldSchema } from '../builder/types';
 import { CleanTextInput, CleanSelect, CleanToggle } from '../../site-builder/components/forms';
 import { ImagePicker } from './components/ImagePicker';
 import { ColorPicker } from './components/ColorPicker';
 import { RichTextEditor } from './components/RichTextEditor';
+import { LayoutTemplate } from 'lucide-react';
+import { HeaderClassicIcon, HeaderCenteredIcon, HeaderMinimalIcon, HeaderDoubleIcon, HeaderStyleSolidIcon, HeaderStyleTransparentIcon, HeaderStyleGlassIcon } from './LayoutIcons';
 
 interface FieldRendererProps {
     field: FieldSchema;
@@ -111,6 +114,105 @@ export const ListFieldRenderer: React.FC<FieldRendererProps> = ({ field, value, 
             >
                 + Add Item
             </button>
+        </div>
+    );
+};
+
+// --- Visual Select Renderer (grid layout) ---
+
+const IconMap: Record<string, React.ElementType> = {
+    'layout-template': LayoutTemplate,
+    'header-classic': HeaderClassicIcon,
+    'header-centered': HeaderCenteredIcon,
+    'header-minimal': HeaderMinimalIcon,
+    'header-double': HeaderDoubleIcon,
+    'header-style-solid': HeaderStyleSolidIcon,
+    'header-style-transparent': HeaderStyleTransparentIcon,
+    'header-style-glass': HeaderStyleGlassIcon
+};
+
+export const VisualSelectFieldRenderer: React.FC<FieldRendererProps> = ({ field, value, onChange }) => (
+    <div className="grid grid-cols-2 gap-3">
+        {field.options?.map((opt) => {
+            const isSelected = value === opt.value;
+            const Icon = opt.icon ? IconMap[opt.icon] : LayoutTemplate;
+
+            return (
+                <button
+                    key={opt.value}
+                    onClick={() => onChange(opt.value)}
+                    className={`
+                        group relative aspect-[3/2] bg-white border border-slate-200/60 rounded-[12px] transition-all overflow-hidden
+                        ${isSelected
+                            ? 'ring-2 ring-blue-500/20 border-blue-500'
+                            : 'hover:border-slate-300 hover:shadow-sm hover:bg-slate-50'
+                        }
+                    `}
+                >
+                    <div className="w-full h-full flex items-center justify-center p-2">
+                        <Icon />
+                    </div>
+                    {isSelected && (
+                        <div className="absolute top-2 right-2 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center shadow-sm">
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <path d="M2 6L5 9L10 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </div>
+                    )}
+                </button>
+            );
+        })}
+    </div>
+);
+
+// --- Compact Visual Select Renderer (icon + label) ---
+
+const CompactIconMap: Record<string, React.ElementType> = {
+    'layout-template': LayoutTemplate,
+    'header-style-solid': HeaderStyleSolidIcon,
+    'header-style-transparent': HeaderStyleTransparentIcon,
+    'header-style-glass': HeaderStyleGlassIcon
+};
+
+export const CompactVisualSelectFieldRenderer: React.FC<FieldRendererProps> = ({ field, value, onChange }) => {
+    const { t } = useTranslation();
+
+    return (
+        <div className="space-y-2">
+            {field.options?.map((opt) => {
+                const isSelected = value === opt.value;
+                const Icon = opt.icon ? CompactIconMap[opt.icon] : null;
+
+                return (
+                    <button
+                        key={opt.value}
+                        onClick={() => onChange(opt.value)}
+                        className={`
+                        w-full flex items-center gap-3 p-3 bg-white border border-slate-200/60 rounded-[12px] transition-all text-left
+                        ${isSelected
+                                ? 'ring-2 ring-blue-500/20 border-blue-500'
+                                : 'hover:border-slate-300 hover:shadow-sm hover:bg-slate-50'
+                            }
+                    `}
+                    >
+                        {Icon && (
+                            <div className="w-16 h-10 rounded overflow-hidden border border-slate-200 flex-shrink-0">
+                                <Icon />
+                            </div>
+                        )}
+                        <span className={`text-sm font-medium flex-1 ${isSelected ? 'text-blue-700' : 'text-slate-700'}`}>
+                            {t(opt.label)}
+                        </span>
+                        {isSelected && (
+                            <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                    <path d="M2 6L5 9L10 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </div>
+                        )}
+                    </button>
+                );
+            })}
         </div>
     );
 };

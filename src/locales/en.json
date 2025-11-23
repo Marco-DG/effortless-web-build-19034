@@ -78,7 +78,12 @@
         },
         "header": {
             "name": "Navigation Bar",
-            "description": "Global navigation bar with logo and links."
+            "description": "Customizable header with logo and links",
+            "layoutStyle": "Layout Style",
+            "headerStyle": "Header Style",
+            "styleSolid": "Solid - Opaque Background",
+            "styleTransparent": "Transparent - Overlay",
+            "styleGlass": "Glass - Glassmorphism Effect"
         },
         "footer": {
             "name": "Footer",

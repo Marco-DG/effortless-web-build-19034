@@ -82,6 +82,8 @@ export type FieldType =
     | 'image'
     | 'color'
     | 'select'
+    | 'visual-select'
+    | 'compact-visual-select'
     | 'toggle'
     | 'number'
     | 'list';
@@ -91,7 +93,7 @@ export interface FieldSchema {
     label: string;
     description?: string;
     defaultValue?: any;
-    options?: { label: string; value: string }[]; // For select
+    options?: { label: string; value: string; icon?: string }[]; // For select & visual-select
     validation?: z.ZodType<any>; // Optional Zod validation
 }
 
