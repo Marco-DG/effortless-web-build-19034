@@ -77,12 +77,18 @@ export const Engine: React.FC<EngineProps> = ({
             {visibleSections.map((section, index) => {
                 const isHeader = section.type === 'header';
                 const isFooter = section.type === 'footer';
+                const prevSection = index > 0 ? visibleSections[index - 1] : null;
 
                 return (
                     <React.Fragment key={section.id}>
                         {/* Ghost Divider BEFORE section (only if not header and not preview, and not immediately after header) */}
-                        {!previewMode && !isHeader && (index === 0 || sections[index - 1].type !== 'header') && (
-                            <GhostDivider onClick={() => handleAddClick(index)} />
+                        {!previewMode && !isHeader && (index === 0 || (prevSection && prevSection.type !== 'header')) && (
+                            <GhostDivider
+                                onClick={() => handleAddClick(index)}
+                                sectionId={section.id}
+                                prevSectionId={prevSection?.id}
+                                onSectionSelect={onSectionSelect}
+                            />
                         )}
 
                         <SelectableSection
@@ -99,7 +105,13 @@ export const Engine: React.FC<EngineProps> = ({
 
                         {/* Ghost Divider AFTER last section (if it's not footer) */}
                         {!previewMode && index === visibleSections.length - 1 && !isFooter && (
-                            <GhostDivider onClick={() => handleAddClick(index + 1)} label={t('builder.addFooterOrSection')} />
+                            <GhostDivider
+                                onClick={() => handleAddClick(index + 1)}
+                                label={t('builder.addFooterOrSection')}
+                                sectionId={null}
+                                prevSectionId={section.id}
+                                onSectionSelect={onSectionSelect}
+                            />
                         )}
                     </React.Fragment>
                 );
@@ -110,28 +122,59 @@ export const Engine: React.FC<EngineProps> = ({
 
 // --- Subcomponents ---
 
-const GhostDivider: React.FC<{ onClick: () => void; label?: string }> = ({ onClick, label }) => {
+const GhostDivider: React.FC<{
+    onClick: () => void;
+    label?: string;
+    sectionId: string | null;
+    prevSectionId?: string | null;
+    onSectionSelect?: (id: string) => void;
+}> = ({ onClick, label, sectionId, prevSectionId, onSectionSelect }) => {
     const { t } = useTranslation();
-    return (
-        <div className="group relative h-24 -my-12 z-[80] flex items-center justify-center cursor-pointer" onClick={onClick}>
-            {/* Extended invisible hit area */}
-            <div className="absolute inset-0 w-full h-full" />
-            <div className="absolute -inset-8 w-[calc(100%+64px)] h-[calc(100%+64px)]" />
 
-            {/* Simple hover-based button */}
+    const handleContainerClick = (e: React.MouseEvent) => {
+        // Smart selection based on click position
+        const rect = e.currentTarget.getBoundingClientRect();
+        const y = e.clientY - rect.top;
+        const isTopHalf = y < rect.height / 2;
+
+        if (isTopHalf) {
+            if (prevSectionId && onSectionSelect) onSectionSelect(prevSectionId);
+            else if (sectionId && onSectionSelect) onSectionSelect(sectionId);
+        } else {
+            if (sectionId && onSectionSelect) onSectionSelect(sectionId);
+            else if (prevSectionId && onSectionSelect) onSectionSelect(prevSectionId);
+        }
+    };
+
+    return (
+        <div
+            className="ghost-divider group relative h-24 -my-12 z-[80] flex items-center justify-center cursor-pointer"
+            onClick={handleContainerClick}
+        >
+            {/* Extended invisible hit area for hover */}
+            <div className="absolute inset-0 w-full h-full pointer-events-none" />
+            <div className="absolute -inset-8 w-[calc(100%+64px)] h-[calc(100%+64px)] pointer-events-none" />
+
+            {/* Button appears on hover */}
             <div className="opacity-0 group-hover:opacity-100 transition-all duration-400 ease-out transform scale-95 group-hover:scale-100">
-                <div className="bg-white border border-slate-200/60 hover:border-slate-300 rounded-[12px] px-3 py-2 shadow-sm hover:shadow-lg transition-all duration-300 relative">
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation(); // Prevent container click
+                        onClick();
+                    }}
+                    className="bg-white border border-slate-200/60 hover:border-slate-300 rounded-[12px] px-3 py-2 shadow-sm hover:shadow-lg transition-all duration-300 relative cursor-pointer"
+                >
                     {/* Linee a tutta larghezza */}
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-screen h-[1px] bg-slate-200/40 -translate-x-full opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
-                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-screen h-[1px] bg-slate-200/40 translate-x-full opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
-                    
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-screen h-[1px] bg-slate-200/40 -translate-x-full opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-screen h-[1px] bg-slate-200/40 translate-x-full opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
+
                     <div className="flex items-center gap-2 relative z-10">
                         <Plus className="w-3.5 h-3.5 text-slate-500" />
                         <span className="text-xs font-medium text-slate-600 font-geist tracking-[-0.01em] whitespace-nowrap">
                             {label || t('builder.addSection')}
                         </span>
                     </div>
-                </div>
+                </button>
             </div>
         </div>
     );
