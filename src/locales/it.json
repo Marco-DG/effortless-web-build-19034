@@ -79,7 +79,7 @@
         "header": {
             "name": "Barra di Navigazione",
             "description": "Intestazione personalizzabile con logo e link",
-            "layoutStyle": "Stile Layout",
+            "layoutStyle": "Layout",
             "headerStyle": "Stile Intestazione",
             "styleSolid": "Solido",
             "styleTransparent": "Trasparente",

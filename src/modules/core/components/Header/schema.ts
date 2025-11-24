@@ -61,11 +61,6 @@ export const HeaderSchema: ComponentSchema = {
             type: 'text',
             label: 'CTA Text',
             defaultValue: 'Book Table'
-        },
-        sticky: {
-            type: 'toggle',
-            label: 'Sticky Header',
-            defaultValue: true
         }
     },
     defaultData: {
@@ -80,7 +75,6 @@ export const HeaderSchema: ComponentSchema = {
         ],
         showCta: false,
         ctaText: 'Book Table',
-        style: 'transparent',
-        sticky: true
+        style: 'transparent'
     }
 };

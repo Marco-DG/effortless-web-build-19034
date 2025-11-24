@@ -9,7 +9,6 @@ interface HeaderProps {
     showCta: boolean;
     ctaText: string;
     style: 'solid' | 'transparent' | 'glass';
-    sticky: boolean;
     navigationMode?: 'auto' | 'manual';
 }
 
@@ -20,7 +19,6 @@ export const UniversalHeader: React.FC<HeaderProps> = ({
     showCta,
     ctaText,
     style,
-    sticky,
     navigationMode = 'auto'
 }) => {
     const { activeProject, setActivePage } = useAppStore();
@@ -59,7 +57,7 @@ export const UniversalHeader: React.FC<HeaderProps> = ({
     // Dynamic classes based on state and config
     const getHeaderClass = () => {
         const base = "w-full z-50 transition-all duration-300";
-        const position = sticky ? "fixed top-0 left-0 right-0" : "absolute top-0 left-0 right-0";
+        const position = "fixed top-0 left-0 right-0";
 
         let background = "";
         let textColor = "";
