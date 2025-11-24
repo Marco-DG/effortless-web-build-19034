@@ -178,7 +178,7 @@ export const CompactVisualSelectFieldRenderer: React.FC<FieldRendererProps> = ({
     const { t } = useTranslation();
 
     return (
-        <div className="space-y-2">
+        <div className="grid grid-cols-3 gap-2">
             {field.options?.map((opt) => {
                 const isSelected = value === opt.value;
                 const Icon = opt.icon ? CompactIconMap[opt.icon] : null;
@@ -188,28 +188,22 @@ export const CompactVisualSelectFieldRenderer: React.FC<FieldRendererProps> = ({
                         key={opt.value}
                         onClick={() => onChange(opt.value)}
                         className={`
-                        w-full flex items-center gap-3 p-3 bg-white border border-slate-200/60 rounded-[12px] transition-all text-left
+                        flex flex-col items-center justify-center gap-2 p-2 bg-white border border-slate-200/60 rounded-[12px] transition-all
                         ${isSelected
-                                ? 'ring-2 ring-blue-500/20 border-blue-500'
+                                ? 'ring-2 ring-blue-500/20 border-blue-500 bg-blue-50/30'
                                 : 'hover:border-slate-300 hover:shadow-sm hover:bg-slate-50'
                             }
                     `}
+                        title={t(opt.label)}
                     >
                         {Icon && (
-                            <div className="w-16 h-10 rounded overflow-hidden border border-slate-200 flex-shrink-0">
+                            <div className={`w-8 h-8 rounded flex items-center justify-center ${isSelected ? 'text-blue-600' : 'text-slate-500'}`}>
                                 <Icon />
                             </div>
                         )}
-                        <span className={`text-sm font-medium flex-1 ${isSelected ? 'text-blue-700' : 'text-slate-700'}`}>
+                        <span className={`text-xs font-medium text-center leading-tight ${isSelected ? 'text-blue-700' : 'text-slate-600'}`}>
                             {t(opt.label)}
                         </span>
-                        {isSelected && (
-                            <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                                    <path d="M2 6L5 9L10 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                            </div>
-                        )}
                     </button>
                 );
             })}

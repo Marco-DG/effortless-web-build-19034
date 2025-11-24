@@ -81,9 +81,9 @@
             "description": "Customizable header with logo and links",
             "layoutStyle": "Layout Style",
             "headerStyle": "Header Style",
-            "styleSolid": "Solid - Opaque Background",
-            "styleTransparent": "Transparent - Overlay",
-            "styleGlass": "Glass - Glassmorphism Effect"
+            "styleSolid": "Solid",
+            "styleTransparent": "Transparent",
+            "styleGlass": "Glass"
         },
         "footer": {
             "name": "Footer",

@@ -81,9 +81,9 @@
             "description": "Intestazione personalizzabile con logo e link",
             "layoutStyle": "Stile Layout",
             "headerStyle": "Stile Intestazione",
-            "styleSolid": "Solido - Sfondo Opaco",
-            "styleTransparent": "Trasparente - Sovrapposto",
-            "styleGlass": "Vetro - Effetto Glassmorphism"
+            "styleSolid": "Solido",
+            "styleTransparent": "Trasparente",
+            "styleGlass": "Vetro"
         },
         "footer": {
             "name": "Footer",
