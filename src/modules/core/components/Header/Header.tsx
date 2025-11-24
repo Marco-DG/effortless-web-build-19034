@@ -68,7 +68,7 @@ export const UniversalHeader: React.FC<HeaderProps> = ({
             background = "bg-[var(--theme-background)] border-b border-white/10 shadow-sm";
             textColor = "text-[var(--theme-text)]";
         } else if (style === 'transparent') {
-            background = "bg-transparent";
+            background = "bg-transparent border-b border-transparent";
             textColor = "text-white"; // Assuming transparent is usually over dark hero
         } else if (style === 'glass') {
             background = "bg-white/10 backdrop-blur-md border-b border-white/10";
