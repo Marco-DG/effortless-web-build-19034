@@ -99,9 +99,12 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
             {/* Root Node / Page Selector */}
             <div className="relative z-20">
                 <SidebarItem
-                    icon={FileText}
+                    customIcon={
+                        <span className="text-[10px] font-bold text-slate-500 font-geist">
+                            {activeProject.pages.indexOf(activePage) + 1}/{activeProject.pages.length}
+                        </span>
+                    }
                     label={activePage.title || t('common.pageTitle')}
-                    subLabel={`${activeProject.pages.indexOf(activePage) + 1}/${activeProject.pages.length}`}
                     isExpanded={isExpanded}
                     onClick={() => setIsPageDropdownOpen(!isPageDropdownOpen)}
                     isActive={isPageDropdownOpen}

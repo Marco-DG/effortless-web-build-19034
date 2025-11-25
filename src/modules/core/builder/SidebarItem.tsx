@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { LucideIcon } from 'lucide-react';
 
 interface SidebarItemProps {
-    icon: LucideIcon;
+    icon?: LucideIcon;
     label: string;
     subLabel?: string;
     isActive?: boolean;
@@ -15,6 +16,7 @@ interface SidebarItemProps {
     className?: string;
     isDraggable?: boolean;
     isLocked?: boolean;
+    customIcon?: React.ReactNode;
 }
 
 export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
@@ -30,7 +32,8 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
     isLocked,
     variant = 'ghost',
     iconClassName,
-    actionVisibility = 'always'
+    actionVisibility = 'always',
+    customIcon
 }, ref) => {
     const baseStyles = "group relative flex items-center w-full h-10 px-3 rounded-[12px] border transition-all duration-200 cursor-pointer select-none";
 
@@ -55,14 +58,20 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
                 ${isDraggable && !isActive ? 'hover:shadow-sm' : ''}
                 ${isLocked ? 'opacity-60 grayscale-[0.5]' : ''}
                 ${className}
-            `}
+`}
         >
-            {/* Fixed Icon - Always pinned to left */}
-            <Icon
-                size={20}
-                strokeWidth={1.5}
-                className={`shrink-0 transition-colors duration-200 ${iconClassName || defaultIconColor}`}
-            />
+            {/* Fixed Icon or Custom Content - Always pinned to left */}
+            {customIcon ? (
+                <div className={`shrink-0 flex items-center justify-center w-5 h-5 ${iconClassName || 'text-slate-500'}`}>
+                    {customIcon}
+                </div>
+            ) : Icon && (
+                <Icon
+                    size={20}
+                    strokeWidth={1.5}
+                    className={`shrink - 0 transition - colors duration - 200 ${iconClassName || defaultIconColor} `}
+                />
+            )}
 
             {/* Collapsible Text Container */}
             <div
@@ -74,7 +83,7 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
             >
                 {/* Inner Content with Static Padding - Prevents layout jitter */}
                 <div className="flex items-center gap-2 pl-2.5 min-w-0 w-full">
-                    <span className={`text-sm truncate tracking-[-0.01em] ${isActive ? 'font-semibold text-slate-900' : 'font-medium text-slate-700 group-hover:text-slate-900'}`}>
+                    <span className={`text - sm truncate tracking - [-0.01em] ${isActive ? 'font-semibold text-slate-900' : 'font-medium text-slate-700 group-hover:text-slate-900'} `}>
                         {label}
                     </span>
                     {subLabel && (
@@ -88,9 +97,9 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
             {/* Actions / Chevron */}
             <div
                 className={`
-                    shrink-0 flex items-center ml-auto transition-all duration-300
+shrink - 0 flex items - center ml - auto transition - all duration - 300
                     ${actionVisibility === 'hover' ? 'opacity-0 group-hover:opacity-100' : ''}
-                `}
+`}
                 style={{
                     opacity: isExpanded ? (actionVisibility === 'hover' ? undefined : 1) : 0,
                     width: isExpanded ? 'auto' : '0px',
