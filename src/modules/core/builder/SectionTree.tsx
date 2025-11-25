@@ -99,28 +99,27 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
             <div className="relative z-20">
                 <button
                     onClick={() => setIsPageDropdownOpen(!isPageDropdownOpen)}
-                    style={{
-                        transform: 'translateZ(0)',
-                        transition: 'background-color 300ms ease-in-out, border-color 300ms ease-in-out'
-                    }}
-                    className={`
+                        style={{
+                            transform: 'translateZ(0)',
+                            transition: 'background-color 300ms ease-in-out, border-color 300ms ease-in-out'
+                        }}
+                        className={`
                             w-full flex items-center justify-between py-2.5 px-3 rounded-[12px] border font-geist overflow-hidden shadow-sm
                             ${isPageDropdownOpen ? 'bg-slate-50 border-slate-300' : 'bg-white border-slate-200/60 hover:border-slate-300'}
                         `}
-                >
-                    <FileText
-                        size={20}
-                        strokeWidth={1.5}
-                        className="shrink-0 text-slate-700"
-                    />
-                    <div
-                        className="flex items-center gap-2 flex-1 min-w-0 overflow-hidden transition-all duration-300 ease-in-out"
-                        style={{
-                            opacity: isExpanded ? 1 : 0,
-                            maxWidth: isExpanded ? '100%' : '0px',
-                            marginLeft: isExpanded ? '0.625rem' : '0px'
-                        }}
                     >
+                        <FileText
+                            size={20}
+                            strokeWidth={1.5}
+                            className="shrink-0 text-slate-700"
+                        />
+                        <div
+                            className="flex items-center gap-2 flex-1 min-w-0 overflow-hidden transition-all duration-300 ease-in-out ml-2.5"
+                            style={{
+                                opacity: isExpanded ? 1 : 0,
+                                maxWidth: isExpanded ? '100%' : '0px'
+                            }}
+                        >
                         <span className="text-sm font-semibold text-slate-900 truncate tracking-[-0.01em]">{activePage.title || t('common.pageTitle')}</span>
                         <span className="text-[10px] font-medium text-slate-400 shrink-0">{activeProject.pages.indexOf(activePage) + 1}/{activeProject.pages.length}</span>
                     </div>
@@ -247,11 +246,10 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                     <Plus size={20} strokeWidth={1.5} className="shrink-0 text-blue-600" />
 
                     <span
-                        className="text-sm font-medium text-slate-700 group-hover:text-slate-900 font-geist tracking-[-0.01em] overflow-hidden transition-all duration-300 ease-in-out whitespace-nowrap"
+                        className="text-sm font-medium text-slate-700 group-hover:text-slate-900 font-geist tracking-[-0.01em] overflow-hidden transition-all duration-300 ease-in-out whitespace-nowrap ml-2.5"
                         style={{
                             opacity: isExpanded ? 1 : 0,
-                            maxWidth: isExpanded ? '200px' : '0px',
-                            marginLeft: isExpanded ? '0.625rem' : '0px'
+                            maxWidth: isExpanded ? '200px' : '0px'
                         }}
                     >
                         {t('builder.addSection')}
@@ -305,12 +303,11 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                                         />
 
                                                         <div
-                                                            className="flex-1 overflow-hidden transition-all duration-300 ease-in-out"
+                                                            className="flex-1 overflow-hidden transition-all duration-300 ease-in-out ml-2.5"
                                                             style={{
                                                                 minWidth: 0,
                                                                 maxWidth: isExpanded ? '100%' : '0px',
-                                                                opacity: isExpanded ? 1 : 0,
-                                                                marginLeft: isExpanded ? '0.625rem' : '0px'
+                                                                opacity: isExpanded ? 1 : 0
                                                             }}
                                                         >
                                                             <div className={`
