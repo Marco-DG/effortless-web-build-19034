@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ComponentSchema, FieldSchema } from '../builder/types';
 import { CleanFormField } from '../../site-builder/components/forms';
@@ -18,9 +18,11 @@ interface AutoSidebarProps {
     schema: ComponentSchema;
     data: Record<string, any>;
     onUpdate: (newData: Record<string, any>) => void;
+    activeTab?: 'design' | 'content';
+    onTabChange?: (tab: 'design' | 'content') => void;
 }
 
-export const AutoSidebar: React.FC<AutoSidebarProps> = ({ schema, data, onUpdate }) => {
+export const AutoSidebar: React.FC<AutoSidebarProps> = ({ schema, data, onUpdate, activeTab = 'design' }) => {
     const { t } = useTranslation();
 
     const handleFieldChange = (key: string, value: any) => {
@@ -29,6 +31,19 @@ export const AutoSidebar: React.FC<AutoSidebarProps> = ({ schema, data, onUpdate
             [key]: value
         });
     };
+
+    // Check if schema has categorized fields
+    const hasCategories = useMemo(() => {
+        return Object.values(schema.fields).some(field => field.category);
+    }, [schema.fields]);
+
+    // Filter fields by category
+    const filteredFields = useMemo(() => {
+        if (!hasCategories) {
+            return Object.entries(schema.fields);
+        }
+        return Object.entries(schema.fields).filter(([_, field]) => field.category === activeTab);
+    }, [schema.fields, activeTab, hasCategories]);
 
     const renderField = (key: string, field: FieldSchema) => {
         const value = data[key] !== undefined ? data[key] : field.defaultValue;
@@ -64,10 +79,8 @@ export const AutoSidebar: React.FC<AutoSidebarProps> = ({ schema, data, onUpdate
 
     return (
         <div className="space-y-8 animate-fade-in">
-
-
             <div className="space-y-6">
-                {Object.entries(schema.fields).map(([key, field]) => renderField(key, field))}
+                {filteredFields.map(([key, field]) => renderField(key, field))}
             </div>
         </div>
     );

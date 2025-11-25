@@ -40,7 +40,9 @@
         "data": "Data",
         "create": "Create",
         "slug": "URL Slug",
-        "enterNewPageTitle": "Enter new page title"
+        "enterNewPageTitle": "Enter new page title",
+        "design": "Design",
+        "content": "Content"
     },
     "builder": {
         "moveUp": "Move Up",

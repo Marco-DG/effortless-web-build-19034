@@ -40,7 +40,9 @@
         "data": "Dati",
         "create": "Crea",
         "slug": "Slug URL",
-        "enterNewPageTitle": "Inserisci nuovo titolo pagina"
+        "enterNewPageTitle": "Inserisci nuovo titolo pagina",
+        "design": "Design",
+        "content": "Contenuto"
     },
     "builder": {
         "moveUp": "Sposta Su",

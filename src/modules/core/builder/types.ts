@@ -95,6 +95,7 @@ export interface FieldSchema {
     defaultValue?: any;
     options?: { label: string; value: string; icon?: string }[]; // For select & visual-select
     validation?: z.ZodType<any>; // Optional Zod validation
+    category?: 'design' | 'content'; // For grouping fields in tabs
 }
 
 export interface ComponentSchema {
