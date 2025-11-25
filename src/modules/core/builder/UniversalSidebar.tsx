@@ -118,7 +118,7 @@ export const UniversalSidebar: React.FC = () => {
 
     const customHeader = isEditingSection && activeComponentDef ? (
         <div>
-            <div className="flex items-start gap-5">
+            <div className="flex items-start gap-5 mb-4">
                 <div className="w-14 h-14 rounded-[18px] bg-gradient-to-br from-white via-slate-50 to-slate-100/80 border border-slate-200/50 flex items-center justify-center shadow-lg shadow-slate-900/8 backdrop-blur-sm">
                     <Layout className="w-6 h-6 text-slate-700" strokeWidth={1.5} />
                 </div>
@@ -132,7 +132,7 @@ export const UniversalSidebar: React.FC = () => {
                 </div>
             </div>
             {hasCategories && (
-                <div className="mt-4">
+                <div className="-mx-8">
                     <SegmentedControl
                         options={[
                             { value: 'design', label: t('common.design') },
