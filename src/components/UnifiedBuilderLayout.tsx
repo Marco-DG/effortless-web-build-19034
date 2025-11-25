@@ -148,15 +148,19 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
 
         {/* Sidebar Navigation */}
         <div
-          className={`flex flex-col flex-shrink-0 relative transition-all duration-300 ease-in-out z-20 ${isHovered ? 'w-72' : 'w-60'}`}
+          style={{
+            width: isHovered ? '18rem' : '15rem',
+            transition: 'width 300ms ease-in-out'
+          }}
+          className="flex flex-col flex-shrink-0 relative z-20"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
           <div className="absolute right-0 top-0 bottom-0 sidebar-divider"></div>
           <ScrollArea className="flex-1">
-            <div className="space-y-2 px-3 py-3">
+            <div className="space-y-2 py-3">
               {categories.map((category, categoryIndex) => (
-                <div key={category.id} className="space-y-1.5">
+                <div key={category.id} className="space-y-1.5 px-3">
 
 
                   {/* Sezioni della categoria */}
