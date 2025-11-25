@@ -67,7 +67,18 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
 }) => {
   const { t } = useTranslation();
   const [isHovered, setIsHovered] = React.useState(false);
+  const [isEditorHovered, setIsEditorHovered] = React.useState(false);
   const currentSection = sections.find(s => s.id === activeSection);
+
+  // Calculate expansion state
+  // Expanded if NOT hovering the editor (so Preview or Sidebar Hover)
+  const isExpanded = !isEditorHovered;
+
+  // Calculate width
+  // Editor Hover -> Collapsed (3.625rem)
+  // Sidebar Hover -> Full (18rem)
+  // Preview (Default) -> Intermediate (15rem) - "Up to text"
+  const sidebarWidth = isEditorHovered ? '3.625rem' : (isHovered ? '18rem' : '15rem');
 
   // Group sections by category
   const categories = React.useMemo(() => {
@@ -149,7 +160,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
         {/* Sidebar Navigation */}
         <div
           style={{
-            width: isHovered ? '18rem' : '3.625rem',
+            width: sidebarWidth,
             transition: 'width 300ms ease-in-out'
           }}
           className="flex flex-col flex-shrink-0 relative z-20"
@@ -164,8 +175,8 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
 
 
                   {/* Sezioni della categoria */}
-                  {renderCategory && renderCategory(category.id, isHovered) ? (
-                    renderCategory(category.id, isHovered)
+                  {renderCategory && renderCategory(category.id, isExpanded) ? (
+                    renderCategory(category.id, isExpanded)
                   ) : (
                     category.sections.map((section, sectionIndex) => {
                       const isActive = activeSection === section.id;
@@ -200,7 +211,11 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
         </div>
 
         {/* Section Editor */}
-        <div className="flex-1 min-w-0 flex flex-col">
+        <div
+          className="flex-1 min-w-0 flex flex-col"
+          onMouseEnter={() => setIsEditorHovered(true)}
+          onMouseLeave={() => setIsEditorHovered(false)}
+        >
           {/* Section Header */}
           <div className="px-10 py-8 border-b border-slate-200/30 bg-white/40 backdrop-blur-xl">
             {headerContent ? (
