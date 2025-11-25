@@ -11,26 +11,31 @@ export const ContentSchema: ComponentSchema = {
             type: 'text',
             label: 'Title',
             defaultValue: 'Our Story',
+            category: 'content',
             validation: z.string().min(1)
         },
         subtitle: {
             type: 'text',
             label: 'Subtitle',
-            defaultValue: 'A journey of taste'
+            defaultValue: 'A journey of taste',
+            category: 'content'
         },
         text: {
             type: 'rich-text',
             label: 'Content',
-            defaultValue: 'Share your story here. Describe your philosophy, your history, or what makes your business unique.'
+            defaultValue: 'Share your story here. Describe your philosophy, your history, or what makes your business unique.',
+            category: 'content'
         },
         image: {
             type: 'image',
             label: 'Image',
-            defaultValue: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&q=80'
+            defaultValue: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&q=80',
+            category: 'design'
         },
         layout: {
             type: 'select',
             label: 'Layout',
+            category: 'design',
             options: [
                 { label: 'Image Left', value: 'image-left' },
                 { label: 'Image Right', value: 'image-right' }
@@ -40,12 +45,14 @@ export const ContentSchema: ComponentSchema = {
         ctaText: {
             type: 'text',
             label: 'Button Text',
-            defaultValue: 'Learn More'
+            defaultValue: 'Learn More',
+            category: 'content'
         },
         ctaLink: {
             type: 'text',
             label: 'Button Link',
-            defaultValue: '#'
+            defaultValue: '#',
+            category: 'content'
         }
     },
     defaultData: {

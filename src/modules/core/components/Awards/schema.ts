@@ -11,11 +11,13 @@ export const AwardsSchema: ComponentSchema = {
             type: 'text',
             label: 'Section Title',
             defaultValue: 'Awards',
+            category: 'content',
             validation: z.string().min(1)
         },
         items: {
             type: 'list',
             label: 'Awards List',
+            category: 'content',
             defaultValue: [
                 { name: 'Michelin Star', year: '2023', label: '1 Star' },
                 { name: 'Gault & Millau', year: '2023', label: '18/20' }

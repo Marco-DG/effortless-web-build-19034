@@ -11,22 +11,26 @@ export const HeroSchema: ComponentSchema = {
             type: 'text',
             label: 'Headline',
             defaultValue: 'Welcome to Our Site',
+            category: 'content',
             validation: z.string().min(1)
         },
         subtitle: {
             type: 'textarea',
             label: 'Subheadline',
             defaultValue: 'Create something amazing today.',
+            category: 'content'
         },
         backgroundImage: {
             type: 'image',
             label: 'Background Image',
-            defaultValue: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80'
+            defaultValue: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80',
+            category: 'design'
         },
         layout: {
             type: 'select',
             label: 'Layout',
             defaultValue: 'center',
+            category: 'design',
             options: [
                 { label: 'Centered', value: 'center' },
                 { label: 'Split Left', value: 'split-left' },
@@ -38,6 +42,7 @@ export const HeroSchema: ComponentSchema = {
             type: 'select',
             label: 'Visual Style',
             defaultValue: 'minimal',
+            category: 'design',
             options: [
                 { label: 'Minimal', value: 'minimal' },
                 { label: 'Gradient', value: 'gradient' },
@@ -47,12 +52,14 @@ export const HeroSchema: ComponentSchema = {
         ctaText: {
             type: 'text',
             label: 'Button Text',
-            defaultValue: 'Get Started'
+            defaultValue: 'Get Started',
+            category: 'content'
         },
         ctaLink: {
             type: 'text',
             label: 'Button Link',
-            defaultValue: '#'
+            defaultValue: '#',
+            category: 'content'
         }
     },
     defaultData: {

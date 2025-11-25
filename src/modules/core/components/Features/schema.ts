@@ -11,16 +11,19 @@ export const FeaturesSchema: ComponentSchema = {
             type: 'text',
             label: 'Section Title',
             defaultValue: 'Our Services',
+            category: 'content',
             validation: z.string().min(1)
         },
         subtitle: {
             type: 'text',
             label: 'Subtitle',
-            defaultValue: 'What we offer'
+            defaultValue: 'What we offer',
+            category: 'content'
         },
         items: {
             type: 'list',
             label: 'Features List',
+            category: 'content',
             defaultValue: [
                 { title: 'Private Dining', description: 'Exclusive room for special events.' },
                 { title: 'Wine Pairing', description: 'Expertly curated wine selection.' },

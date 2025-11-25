@@ -7,34 +7,39 @@ export const FooterSchema: ComponentSchema = {
     description: 'Multi-column footer with social links and newsletter.',
     category: 'other',
     fields: {
-        columns: {
+        layout: {
             type: 'select',
-            label: 'Layout Columns',
-            defaultValue: '4',
+            label: 'Footer Layout',
+            defaultValue: 'centered',
+            category: 'design',
             options: [
-                { label: 'Simple (Centered)', value: '1' },
-                { label: '3 Columns', value: '3' },
-                { label: '4 Columns', value: '4' }
+                { label: 'Centered', value: 'centered' },
+                { label: 'Columns', value: 'columns' },
+                { label: 'Minimal', value: 'minimal' }
             ]
         },
         showSocial: {
             type: 'toggle',
             label: 'Show Social Links',
-            defaultValue: true
+            defaultValue: true,
+            category: 'design'
         },
         showNewsletter: {
             type: 'toggle',
             label: 'Show Newsletter',
-            defaultValue: true
+            defaultValue: true,
+            category: 'design'
         },
         copyrightText: {
             type: 'text',
             label: 'Copyright Text',
-            defaultValue: '© 2024 Restaurant Name. All rights reserved.'
+            defaultValue: '© 2024 Restaurant. All rights reserved.',
+            category: 'content'
         },
         links: {
             type: 'list',
             label: 'Footer Links',
+            category: 'content',
             defaultValue: [
                 { label: 'Privacy Policy', href: '#' },
                 { label: 'Terms of Service', href: '#' }

@@ -11,16 +11,19 @@ export const TestimonialsSchema: ComponentSchema = {
             type: 'text',
             label: 'Section Title',
             defaultValue: 'What Our Guests Say',
+            category: 'content',
             validation: z.string().min(1)
         },
         subtitle: {
             type: 'text',
             label: 'Subtitle',
-            defaultValue: 'Testimonials'
+            defaultValue: 'Testimonials',
+            category: 'content'
         },
         reviews: {
             type: 'list',
             label: 'Reviews',
+            category: 'content',
             defaultValue: [
                 { author: 'James Beard', role: 'Food Critic', text: 'An absolute delight for the senses.', rating: '5' },
                 { author: 'Sarah Jenkins', role: 'Regular Guest', text: 'The best pasta I have ever had outside of Italy.', rating: '5' }

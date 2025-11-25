@@ -11,27 +11,32 @@ export const ReservationSchema: ComponentSchema = {
             type: 'text',
             label: 'Title',
             defaultValue: 'Reserve Your Table',
+            category: 'content',
             validation: z.string().min(1)
         },
         description: {
             type: 'textarea',
             label: 'Description',
-            defaultValue: 'Experience culinary excellence. Book your table now for an unforgettable evening.'
+            defaultValue: 'Experience culinary excellence. Book your table now for an unforgettable evening.',
+            category: 'content'
         },
         buttonText: {
             type: 'text',
             label: 'Button Text',
-            defaultValue: 'Book Now'
+            defaultValue: 'Book Now',
+            category: 'content'
         },
         buttonLink: {
             type: 'text',
             label: 'Booking Link',
-            defaultValue: '#'
+            defaultValue: '#',
+            category: 'content'
         },
         backgroundImage: {
             type: 'image',
             label: 'Background Image',
-            defaultValue: 'https://images.unsplash.com/photo-1514362545857-3bc16549766b?auto=format&fit=crop&q=80'
+            defaultValue: 'https://images.unsplash.com/photo-1514362545857-3bc16549766b?auto=format&fit=crop&q=80',
+            category: 'design'
         }
     },
     defaultData: {

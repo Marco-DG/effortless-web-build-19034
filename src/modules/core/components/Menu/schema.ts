@@ -10,17 +10,20 @@ export const MenuSchema: ComponentSchema = {
         title: {
             type: 'text',
             label: 'Section Title',
-            defaultValue: 'Our Menu'
+            defaultValue: 'Our Menu',
+            category: 'content'
         },
         subtitle: {
             type: 'text',
             label: 'Section Subtitle',
-            defaultValue: 'Culinary excellence in every dish'
+            defaultValue: 'Culinary excellence in every dish',
+            category: 'content'
         },
         layout: {
             type: 'select',
             label: 'Layout Style',
             defaultValue: 'classic',
+            category: 'design',
             options: [
                 { label: 'Classic List', value: 'classic' },
                 { label: 'Modern Grid', value: 'grid' },
@@ -30,11 +33,13 @@ export const MenuSchema: ComponentSchema = {
         currency: {
             type: 'text',
             label: 'Currency Symbol',
-            defaultValue: '$'
+            defaultValue: '$',
+            category: 'content'
         },
         items: {
             type: 'list',
             label: 'Menu Items',
+            category: 'content',
             defaultValue: [
                 {
                     name: 'Truffle Risotto',
