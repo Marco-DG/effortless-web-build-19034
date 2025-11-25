@@ -160,7 +160,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
           <ScrollArea className="flex-1">
             <div className="space-y-2 py-3">
               {categories.map((category, categoryIndex) => (
-                <div key={category.id} className="space-y-1.5 px-3">
+                <div key={category.id} className="space-y-1.5 px-1.5">
 
 
                   {/* Sezioni della categoria */}

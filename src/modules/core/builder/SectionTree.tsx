@@ -96,16 +96,15 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
             {/* Page Tree Structure */}
             <div className="relative">
                 {/* Root Node / Page Selector */}
-                <div className="relative z-20 mb-3 px-3">
+                <div className="relative z-20 mb-3 px-1.5">
                     <button
                         onClick={() => setIsPageDropdownOpen(!isPageDropdownOpen)}
                         style={{
                             transform: 'translateZ(0)',
-                            width: isExpanded ? 'calc(18rem - 1.5rem)' : 'calc(15rem - 1.5rem)',
-                            transition: 'width 300ms ease-in-out, background-color 300ms ease-in-out, border-color 300ms ease-in-out'
+                            transition: 'background-color 300ms ease-in-out, border-color 300ms ease-in-out'
                         }}
                         className={`
-                            flex items-center justify-between gap-2.5 py-2.5 px-3 rounded-[12px] border font-geist overflow-hidden
+                            w-full flex items-center justify-between gap-2.5 py-2.5 px-3 rounded-[12px] border font-geist overflow-hidden
                             ${isPageDropdownOpen ? 'bg-slate-50 border-slate-300' : 'bg-white border-slate-200/60 hover:border-slate-300'}
                         `}
                     >
@@ -216,16 +215,15 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                 </div>
 
                 {/* Sections List */}
-                <div className="relative space-y-1 px-3">
+                <div className="relative space-y-1 px-1.5">
                     {/* Add Section Button */}
                     <div className="relative">
                         <button
                             onClick={() => setIsModalOpen(true)}
                             style={{
-                                width: isExpanded ? 'calc(18rem - 1.5rem)' : 'calc(15rem - 1.5rem)',
-                                transition: 'width 300ms ease-in-out, background-color 300ms ease-in-out'
+                                transition: 'background-color 300ms ease-in-out'
                             }}
-                            className="flex items-center gap-2.5 py-2.5 px-3 rounded-[12px] border border-transparent hover:bg-slate-50 font-medium group"
+                            className="w-full flex items-center gap-2.5 py-2.5 px-3 rounded-[12px] border border-transparent hover:bg-slate-50 font-medium group"
                         >
                             <Plus size={20} strokeWidth={1.5} className="shrink-0 text-blue-600" />
 
@@ -265,11 +263,10 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                                     >
                                                         <div
                                                             style={{
-                                                                width: isExpanded ? 'calc(18rem - 1.5rem)' : 'calc(15rem - 1.5rem)',
-                                                                transition: 'width 300ms ease-in-out, background-color 200ms'
+                                                                transition: 'background-color 200ms'
                                                             }}
                                                             className={`
-                                                                group relative flex items-center gap-2.5 py-2.5 px-3 rounded-[12px] min-w-0
+                                                                group relative flex items-center gap-2.5 py-2.5 px-3 rounded-[12px] min-w-0 w-full
                                                                 ${snapshot.isDragging ? 'shadow-lg ring-2 ring-blue-500/10 rotate-1 z-50 bg-white' : 'hover:bg-slate-50'}
                                                                 ${isActive ? 'bg-slate-50' : ''}
                                                                 ${!section.isEnabled ? 'opacity-60 grayscale-[0.5]' : ''}
@@ -282,7 +279,7 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                                                 className={`shrink-0 transition-colors ${isActive ? 'text-slate-900' : 'text-slate-700 group-hover:text-slate-900'}`}
                                                             />
 
-                                                            <div className="flex-1 min-w-0">
+                                                            <div className="flex-1" style={{ minWidth: 0, maxWidth: '100%' }}>
                                                                 <div className={`
                                                                     text-sm font-medium truncate transition-colors font-geist tracking-[-0.01em]
                                                                     ${isActive ? 'text-slate-900 font-semibold' : 'text-slate-700 group-hover:text-slate-900'}
@@ -291,7 +288,9 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                                                 </div>
                                                             </div>
 
-                                                            <div className={`flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-all duration-200 shrink-0 ${!isExpanded ? 'hidden' : ''}`}>
+                                                            <div
+                                                                className={`flex items-center gap-0.5 overflow-hidden transition-all duration-300 ease-in-out shrink-0 max-w-0 opacity-0 ${isExpanded ? 'group-hover:max-w-[100px] group-hover:opacity-100' : ''}`}
+                                                            >
                                                                 {!isLocked && (
                                                                     <button
                                                                         onClick={(e) => {
