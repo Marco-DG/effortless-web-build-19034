@@ -104,7 +104,7 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                         transition: 'background-color 300ms ease-in-out, border-color 300ms ease-in-out'
                     }}
                     className={`
-                            w-full flex items-center justify-between gap-2.5 py-2.5 px-3 rounded-[12px] border font-geist overflow-hidden shadow-sm
+                            w-full flex items-center justify-between py-2.5 px-3 rounded-[12px] border font-geist overflow-hidden shadow-sm
                             ${isPageDropdownOpen ? 'bg-slate-50 border-slate-300' : 'bg-white border-slate-200/60 hover:border-slate-300'}
                         `}
                 >
@@ -117,7 +117,8 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                         className="flex items-center gap-2 flex-1 min-w-0 overflow-hidden transition-all duration-300 ease-in-out"
                         style={{
                             opacity: isExpanded ? 1 : 0,
-                            maxWidth: isExpanded ? '100%' : '0px'
+                            maxWidth: isExpanded ? '100%' : '0px',
+                            marginLeft: isExpanded ? '0.625rem' : '0px'
                         }}
                     >
                         <span className="text-sm font-semibold text-slate-900 truncate tracking-[-0.01em]">{activePage.title || t('common.pageTitle')}</span>
@@ -241,7 +242,7 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                     style={{
                         transition: 'background-color 300ms ease-in-out'
                     }}
-                    className="w-full flex items-center gap-2.5 py-2.5 px-3 rounded-[12px] border border-transparent hover:bg-slate-50 font-medium group"
+                    className="w-full flex items-center py-2.5 px-3 rounded-[12px] border border-transparent hover:bg-slate-50 font-medium group"
                 >
                     <Plus size={20} strokeWidth={1.5} className="shrink-0 text-blue-600" />
 
@@ -249,7 +250,8 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                         className="text-sm font-medium text-slate-700 group-hover:text-slate-900 font-geist tracking-[-0.01em] overflow-hidden transition-all duration-300 ease-in-out whitespace-nowrap"
                         style={{
                             opacity: isExpanded ? 1 : 0,
-                            maxWidth: isExpanded ? '200px' : '0px'
+                            maxWidth: isExpanded ? '200px' : '0px',
+                            marginLeft: isExpanded ? '0.625rem' : '0px'
                         }}
                     >
                         {t('builder.addSection')}
@@ -289,7 +291,7 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                                             transition: 'background-color 200ms'
                                                         }}
                                                         className={`
-                                                                group relative flex items-center gap-2.5 py-2.5 px-3 rounded-[12px] min-w-0 w-full
+                                                                group relative flex items-center py-2.5 px-3 rounded-[12px] min-w-0 w-full
                                                                 ${snapshot.isDragging ? 'shadow-lg ring-2 ring-blue-500/10 rotate-1 z-50 bg-white' : 'hover:bg-slate-50'}
                                                                 ${isActive ? 'bg-slate-50' : ''}
                                                                 ${!section.isEnabled ? 'opacity-60 grayscale-[0.5]' : ''}
@@ -307,7 +309,8 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                                             style={{
                                                                 minWidth: 0,
                                                                 maxWidth: isExpanded ? '100%' : '0px',
-                                                                opacity: isExpanded ? 1 : 0
+                                                                opacity: isExpanded ? 1 : 0,
+                                                                marginLeft: isExpanded ? '0.625rem' : '0px'
                                                             }}
                                                         >
                                                             <div className={`

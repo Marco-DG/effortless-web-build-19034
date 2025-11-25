@@ -149,7 +149,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
         {/* Sidebar Navigation */}
         <div
           style={{
-            width: isHovered ? '18rem' : '4rem',
+            width: isHovered ? '18rem' : '3.5rem',
             transition: 'width 300ms ease-in-out'
           }}
           className="flex flex-col flex-shrink-0 relative z-20"
