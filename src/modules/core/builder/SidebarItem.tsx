@@ -78,7 +78,7 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
                 className="flex-1 flex items-center overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.2,0,0,1)]"
                 style={{
                     maxWidth: isExpanded ? '100%' : '0px',
-                    opacity: isExpanded ? 1 : 0
+                    opacity: 1
                 }}
             >
                 {/* Inner Content with Static Padding - Prevents layout jitter */}
