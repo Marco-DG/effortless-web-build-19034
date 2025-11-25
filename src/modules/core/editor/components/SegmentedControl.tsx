@@ -12,6 +12,9 @@ interface SegmentedControlProps {
 }
 
 export const SegmentedControl: React.FC<SegmentedControlProps> = ({ options, value, onChange }) => {
+    // Find index of active option
+    const activeIndex = options.findIndex(opt => opt.value === value);
+
     return (
         <div className="w-full border-b border-slate-200/60">
             <div className="flex relative">
@@ -22,7 +25,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({ options, val
                             key={option.value}
                             onClick={() => onChange(option.value)}
                             className={`
-                                flex-1 px-4 py-3 text-sm font-semibold transition-colors duration-200 relative
+                                flex-1 px-4 py-3 text-sm font-semibold transition-colors duration-200 relative z-10
                                 ${isActive
                                     ? 'text-slate-900'
                                     : 'text-slate-500'
@@ -30,12 +33,18 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = ({ options, val
                             `}
                         >
                             {option.label}
-                            {isActive && (
-                                <div className="absolute bottom-0 left-4 right-4 h-0.5 bg-slate-900 rounded-full transition-all duration-300 ease-out" />
-                            )}
                         </button>
                     );
                 })}
+                {/* Sliding indicator */}
+                <div
+                    className="absolute bottom-0 h-0.5 bg-slate-900 rounded-full"
+                    style={{
+                        left: `calc(${activeIndex * (100 / options.length)}% + 1rem)`,
+                        width: `calc(${100 / options.length}% - 2rem)`,
+                        transition: 'all 400ms cubic-bezier(0.4, 0, 0.2, 1)'
+                    }}
+                />
             </div>
         </div>
     );
