@@ -69,7 +69,7 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
                 <Icon
                     size={20}
                     strokeWidth={1.5}
-                    className={`shrink - 0 transition - colors duration - 200 ${iconClassName || defaultIconColor} `}
+                    className={`shrink-0 transition-colors duration-200 ${iconClassName || defaultIconColor}`}
                 />
             )}
 
@@ -83,7 +83,7 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
             >
                 {/* Inner Content with Static Padding - Prevents layout jitter */}
                 <div className="flex items-center gap-2 pl-2.5 min-w-0 w-full">
-                    <span className={`text - sm truncate tracking - [-0.01em] ${isActive ? 'font-semibold text-slate-900' : 'font-medium text-slate-700 group-hover:text-slate-900'} `}>
+                    <span className={`text-sm truncate tracking-[-0.01em] ${isActive ? 'font-semibold text-slate-900' : 'font-medium text-slate-700 group-hover:text-slate-900'}`}>
                         {label}
                     </span>
                     {subLabel && (
@@ -97,9 +97,9 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
             {/* Actions / Chevron */}
             <div
                 className={`
-shrink - 0 flex items - center ml - auto transition - all duration - 300
+                    shrink-0 flex items-center ml-auto transition-all duration-300
                     ${actionVisibility === 'hover' ? 'opacity-0 group-hover:opacity-100' : ''}
-`}
+                `}
                 style={{
                     opacity: isExpanded ? (actionVisibility === 'hover' ? undefined : 1) : 0,
                     width: isExpanded ? 'auto' : '0px',

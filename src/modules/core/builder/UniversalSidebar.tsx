@@ -5,12 +5,10 @@ import { AutoSidebar } from '../editor/AutoSidebar';
 import { SegmentedControl } from '../editor/components/SegmentedControl';
 import { useAppStore } from '../../../store/app-store';
 import { getComponentDefinition } from './registry';
-import { Layout, Layers, Palette, Settings, FileText } from 'lucide-react';
-import { BusinessSettingsEditor } from '../settings/BusinessSettingsEditor';
+import { Layout, Layers } from 'lucide-react';
 import { ThemeEditor } from '../theme/ThemeEditor';
 import { SectionManager } from './SectionManager';
 import { SectionTree } from './SectionTree';
-import { PageSettings } from './PageSettings';
 
 // Ensure components are registered
 import { registerHero } from '../components/Hero';
@@ -59,13 +57,6 @@ export const UniversalSidebar: React.FC = () => {
 
     // Define Sidebar Tools
     const sidebarTools = [
-        // {
-        //     id: 'page_manager',
-        //     label: t('common.pages'),
-        //     icon: FileText,
-        //     category: 'structure',
-        //     description: t('common.managePages')
-        // },
         {
             id: 'structure_manager',
             label: t('common.layers'),
@@ -73,7 +64,6 @@ export const UniversalSidebar: React.FC = () => {
             category: 'structure',
             description: t('common.manageSections')
         },
-
     ];
 
     // Check if we are editing a specific section
@@ -96,8 +86,6 @@ export const UniversalSidebar: React.FC = () => {
         }
 
         switch (activeSectionId) {
-            // case 'page_manager':
-            //     return <PageSettings />;
             case 'structure_manager':
                 return <SectionManager />;
             case 'theme_editor':

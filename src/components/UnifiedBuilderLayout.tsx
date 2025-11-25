@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Eye, Download, LucideIcon, ExternalLink } from 'lucide-react';
+import { Eye, LucideIcon, ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 // ... (existing code)
