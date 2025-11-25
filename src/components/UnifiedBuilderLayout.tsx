@@ -75,10 +75,10 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
   const isExpanded = !isEditorHovered;
 
   // Calculate width
-  // Editor Hover -> Collapsed (3.625rem)
-  // Sidebar Hover -> Full (18rem)
-  // Preview (Default) -> Intermediate (15rem) - "Up to text"
-  const sidebarWidth = isEditorHovered ? '3.625rem' : (isHovered ? '18rem' : '15rem');
+  // Editor Hover -> Collapsed (3.5rem)
+  // Sidebar Hover -> Full (16rem)
+  // Preview (Default) -> Intermediate (13rem) - "Up to text"
+  const sidebarWidth = isEditorHovered ? '3.5rem' : (isHovered ? '16rem' : '13rem');
 
   // Group sections by category
   const categories = React.useMemo(() => {
@@ -163,7 +163,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
             width: sidebarWidth,
             transition: 'width 700ms cubic-bezier(0.2, 0, 0, 1)'
           }}
-          className="flex flex-col flex-shrink-0 relative z-20"
+          className="flex flex-col flex-shrink-0 relative z-20 overflow-hidden"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
