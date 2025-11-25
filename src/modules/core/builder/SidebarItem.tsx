@@ -69,13 +69,13 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
                 <Icon
                     size={20}
                     strokeWidth={1.5}
-                    className={`shrink-0 transition-colors duration-500 ${iconClassName || defaultIconColor}`}
+                    className={`shrink-0 transition-colors duration-700 ${iconClassName || defaultIconColor}`}
                 />
             )}
 
             {/* Collapsible Text Container */}
             <div
-                className="flex-1 flex items-center overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                className="flex-1 flex items-center overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.2,0,0,1)]"
                 style={{
                     maxWidth: isExpanded ? '100%' : '0px',
                     opacity: isExpanded ? 1 : 0
@@ -97,7 +97,7 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
             {/* Actions / Chevron */}
             <div
                 className={`
-                    shrink-0 flex items-center ml-auto transition-all duration-500
+                    shrink-0 flex items-center ml-auto transition-all duration-700
                     ${actionVisibility === 'hover' ? 'opacity-0 group-hover:opacity-100' : ''}
                 `}
                 style={{

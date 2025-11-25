@@ -161,7 +161,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
         <div
           style={{
             width: sidebarWidth,
-            transition: 'width 500ms cubic-bezier(0.4, 0, 0.2, 1)'
+            transition: 'width 700ms cubic-bezier(0.2, 0, 0, 1)'
           }}
           className="flex flex-col flex-shrink-0 relative z-20"
           onMouseEnter={() => setIsHovered(true)}
