@@ -11,16 +11,19 @@ export const GridSchema: ComponentSchema = {
             type: 'text',
             label: 'Section Title',
             defaultValue: 'Our Features',
+            category: 'content'
         },
         subtitle: {
             type: 'textarea',
             label: 'Section Subtitle',
             defaultValue: 'Discover what makes us unique.',
+            category: 'content'
         },
         columns: {
             type: 'select',
             label: 'Columns',
             defaultValue: '3',
+            category: 'design',
             options: [
                 { label: '2 Columns', value: '2' },
                 { label: '3 Columns', value: '3' },
@@ -31,6 +34,7 @@ export const GridSchema: ComponentSchema = {
             type: 'select',
             label: 'Card Style',
             defaultValue: 'card',
+            category: 'design',
             options: [
                 { label: 'Card (Boxed)', value: 'card' },
                 { label: 'Minimal (Icon + Text)', value: 'minimal' },
@@ -40,6 +44,7 @@ export const GridSchema: ComponentSchema = {
         items: {
             type: 'list',
             label: 'Grid Items',
+            category: 'content',
             defaultValue: [
                 { title: 'Feature 1', description: 'Description here', icon: 'Star' },
                 { title: 'Feature 2', description: 'Description here', icon: 'Heart' },

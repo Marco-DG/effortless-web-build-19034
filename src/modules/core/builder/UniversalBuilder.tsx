@@ -16,7 +16,7 @@ import { registerContent } from '../components/Content';
 import { registerFeatures } from '../components/Features';
 import { registerTestimonials } from '../components/Testimonials';
 import { registerAwards } from '../components/Awards';
-import { registerContact } from '../components/Contact';
+
 import { registerReservation } from '../components/Reservation';
 
 // Call registration once
@@ -30,7 +30,7 @@ registerContent();
 registerFeatures();
 registerTestimonials();
 registerAwards();
-registerContact();
+
 registerReservation();
 
 export const UniversalBuilder: React.FC = () => {

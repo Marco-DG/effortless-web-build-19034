@@ -10,17 +10,20 @@ export const GallerySchema: ComponentSchema = {
         title: {
             type: 'text',
             label: 'Section Title',
-            defaultValue: 'Gallery'
+            defaultValue: 'Gallery',
+            category: 'content'
         },
         subtitle: {
             type: 'text',
             label: 'Section Subtitle',
-            defaultValue: 'A glimpse into our world'
+            defaultValue: 'A glimpse into our world',
+            category: 'content'
         },
         layout: {
             type: 'select',
             label: 'Layout Style',
             defaultValue: 'masonry',
+            category: 'design',
             options: [
                 { label: 'Masonry (Pinterest)', value: 'masonry' },
                 { label: 'Grid (Square)', value: 'grid' },
@@ -31,6 +34,7 @@ export const GallerySchema: ComponentSchema = {
             type: 'select',
             label: 'Columns',
             defaultValue: '3',
+            category: 'design',
             options: [
                 { label: '2 Columns', value: '2' },
                 { label: '3 Columns', value: '3' },
@@ -41,6 +45,7 @@ export const GallerySchema: ComponentSchema = {
             type: 'select',
             label: 'Gap Size',
             defaultValue: '4',
+            category: 'design',
             options: [
                 { label: 'Small', value: '2' },
                 { label: 'Medium', value: '4' },
@@ -50,6 +55,7 @@ export const GallerySchema: ComponentSchema = {
         images: {
             type: 'list',
             label: 'Images',
+            category: 'content',
             defaultValue: [
 
                 { url: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&q=80', alt: 'Interior' },

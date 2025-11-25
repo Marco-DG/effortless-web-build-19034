@@ -11,7 +11,7 @@ import { ContentSchema } from '../modules/core/components/Content';
 import { FeaturesSchema } from '../modules/core/components/Features';
 import { TestimonialsSchema } from '../modules/core/components/Testimonials';
 import { AwardsSchema } from '../modules/core/components/Awards';
-import { ContactSchema } from '../modules/core/components/Contact';
+
 import { ReservationSchema } from '../modules/core/components/Reservation';
 import { getAllSchemas } from '../modules/core/builder/registry';
 import i18n from '../i18n';
@@ -198,15 +198,7 @@ const createDefaultProject = (name: string): SiteConfig => {
               title: i18n.t('defaults.awards.title', { defaultValue: AwardsSchema.defaultData.title })
             }
           },
-          {
-            id: 'contact_1',
-            type: 'contact',
-            isEnabled: true,
-            data: {
-              ...ContactSchema.defaultData,
-              title: i18n.t('defaults.contact.title', { defaultValue: ContactSchema.defaultData.title })
-            }
-          },
+
           {
             id: 'reservation_1',
             type: 'reservation',
@@ -497,11 +489,7 @@ export const useAppStore = create<AppStore>()(
             title: i18n.t('defaults.testimonials.title', { defaultValue: defaultData.title }),
             subtitle: i18n.t('defaults.testimonials.subtitle', { defaultValue: defaultData.subtitle })
           };
-        } else if (type === 'contact') {
-          defaultData = {
-            ...defaultData,
-            title: i18n.t('defaults.contact.title', { defaultValue: defaultData.title })
-          };
+
         } else if (type === 'header') {
           defaultData = {
             ...defaultData,
@@ -736,11 +724,7 @@ export const useAppStore = create<AppStore>()(
                 newData.subtitle = i18n.t('defaults.testimonials.subtitle', { lng: lang });
                 hasChanges = true;
               }
-            } else if (section.type === 'contact') {
-              if (matchesAnyDefault(section.data.title, 'defaults.contact.title')) {
-                newData.title = i18n.t('defaults.contact.title', { lng: lang });
-                hasChanges = true;
-              }
+
             } else if (section.type === 'header') {
               if (matchesAnyDefault(section.data.logoText, 'defaults.header.logoText')) {
                 newData.logoText = i18n.t('defaults.header.logoText', { lng: lang });
