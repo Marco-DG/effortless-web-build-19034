@@ -104,7 +104,7 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                             transition: 'background-color 300ms ease-in-out, border-color 300ms ease-in-out'
                         }}
                         className={`
-                            w-full flex items-center justify-between gap-2.5 py-2.5 px-3 rounded-[12px] border font-geist overflow-hidden
+                            w-full flex items-center justify-between gap-2.5 py-2.5 px-3 rounded-[12px] border font-geist overflow-hidden shadow-sm
                             ${isPageDropdownOpen ? 'bg-slate-50 border-slate-300' : 'bg-white border-slate-200/60 hover:border-slate-300'}
                         `}
                     >
@@ -289,7 +289,7 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                                             </div>
 
                                                             <div
-                                                                className={`flex items-center gap-0.5 overflow-hidden transition-all duration-300 ease-in-out shrink-0 max-w-0 opacity-0 ${isExpanded ? 'group-hover:max-w-[100px] group-hover:opacity-100' : ''}`}
+                                                                className={`absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-0.5 transition-all duration-200 ease-in-out opacity-0 ${isExpanded ? 'group-hover:opacity-100' : ''} ${isActive ? 'bg-slate-50' : 'bg-slate-50'} pl-2`}
                                                             >
                                                                 {!isLocked && (
                                                                     <button
