@@ -78,10 +78,26 @@ export const AutoSidebar: React.FC<AutoSidebarProps> = ({ schema, data, onUpdate
     };
 
     return (
-        <div className="space-y-8 animate-fade-in">
-            <div className="space-y-6">
+        <div className="space-y-8">
+            <div
+                key={activeTab}
+                className="space-y-6"
+                style={{
+                    animation: 'fadeIn 300ms ease-out',
+                }}
+            >
                 {filteredFields.map(([key, field]) => renderField(key, field))}
             </div>
+            <style>{`
+                @keyframes fadeIn {
+                    from {
+                        opacity: 0;
+                    }
+                    to {
+                        opacity: 1;
+                    }
+                }
+            `}</style>
         </div>
     );
 };
