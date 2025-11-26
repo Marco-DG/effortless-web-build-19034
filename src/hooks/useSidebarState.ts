@@ -1,7 +1,8 @@
 import React from 'react';
-import { SIDEBAR_WIDTHS, type SidebarState } from '../constants/sidebar';
+import { SIDEBAR_WIDTHS } from '../constants/sidebar';
+import { type SidebarState, type SidebarStateReturn } from '../types/sidebar';
 
-export const useSidebarState = () => {
+export const useSidebarState = (): SidebarStateReturn => {
   const [isHovered, setIsHovered] = React.useState(false);
   const [isEditorHovered, setIsEditorHovered] = React.useState(false);
   const [lastKnownWidth, setLastKnownWidth] = React.useState<SidebarState>('expanded');

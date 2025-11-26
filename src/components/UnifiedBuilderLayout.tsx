@@ -4,6 +4,7 @@ import { Eye, LucideIcon, ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useSidebarState } from '../hooks/useSidebarState';
 import { SidebarContainer } from './SidebarContainer';
+import { type BuilderSection, type BuilderType } from '../types/sidebar';
 
 // ... (existing code)
 
@@ -27,24 +28,16 @@ import { SidebarContainer } from './SidebarContainer';
   </button>
 </div >
 
-export interface BuilderSection {
-  id: string;
-  label: string;
-  icon: LucideIcon;
-  category: string;
-  description: string;
-}
-
 export interface UnifiedBuilderLayoutProps {
   // Builder configuration
-  builderType: 'logo' | 'menu' | 'site';
+  builderType: BuilderType;
   sections: readonly BuilderSection[];
   activeSection: string;
   onSectionChange: (sectionId: string) => void;
   renderCategory?: (categoryId: string, isExpanded: boolean) => React.ReactNode;
 
   // Header configuration
-  onSwitchBuilder?: (builder: 'logo' | 'menu' | 'site') => void;
+  onSwitchBuilder?: (builder: BuilderType) => void;
   onExport?: () => void;
   extraHeaderActions?: React.ReactNode;
   headerContent?: React.ReactNode;
@@ -93,7 +86,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
     }));
   }, [sections, t]);
 
-  const getBuilderLabel = (type: 'logo' | 'menu' | 'site') => {
+  const getBuilderLabel = (type: BuilderType) => {
     switch (type) {
       case 'logo': return 'Logo';
       case 'menu': return 'Menù';

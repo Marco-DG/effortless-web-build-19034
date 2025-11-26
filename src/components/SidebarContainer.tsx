@@ -1,19 +1,7 @@
 import React from 'react';
 import { ScrollArea } from './ui/scroll-area';
 import { SIDEBAR_TRANSITIONS } from '../constants/sidebar';
-
-interface SidebarContainerProps {
-  /** Current width of the sidebar (from useSidebarState) */
-  width: string;
-  /** Whether the sidebar is currently expanded */
-  isExpanded: boolean;
-  /** Callback when hover state changes on the sidebar */
-  onHoverChange: (hovered: boolean) => void;
-  /** Content to render inside the sidebar */
-  children: React.ReactNode;
-  /** Optional custom className for the container */
-  className?: string;
-}
+import { type SidebarContainerProps } from '../types/sidebar';
 
 /**
  * Dedicated sidebar container component that handles:
