@@ -7,7 +7,6 @@ export interface SiteConfig {
     name: string;
     theme: SiteTheme;
     pages: PageConfig[];
-    // sections: SectionConfig[]; // DEPRECATED: Moved to PageConfig
     metadata: SiteMetadata;
     // Legacy support for other builders
     logo?: any;
