@@ -1,7 +1,5 @@
-export { MenuBuilder } from './MenuBuilder';
 export { MenuBuilderRedesigned } from './MenuBuilderRedesigned';
 export { MenuPreview } from './MenuPreview';
-export { MenuControls } from './MenuControls';
 
 // Sections
 export { MenuConfigSection } from './sections/MenuConfigSection';
