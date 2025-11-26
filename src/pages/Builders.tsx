@@ -8,7 +8,7 @@ import { MenuPreview } from '../modules/menu-builder/MenuPreview';
 
 // NEW: Import Universal Builder Components
 import { UniversalSidebar } from '../modules/core/builder/UniversalSidebar';
-import { UniversalPreview } from '../modules/core/builder/UniversalPreview';
+import { Engine } from '../modules/core/builder/Engine';
 
 const Builders: React.FC = () => {
   const navigate = useNavigate();
@@ -99,8 +99,46 @@ const Builders: React.FC = () => {
           />
         );
       case 'site':
-        // NEW: Use Universal Preview
-        return <UniversalPreview />;
+        // NEW: Use Engine directly (eliminato wrapper UniversalPreview ridondante)
+        const activePage = projectData.pages?.find(p => p.id === ui.activePageId) || projectData.pages?.[0];
+        if (!activePage) {
+          return (
+            <div className="w-full h-full flex items-center justify-center bg-slate-100">
+              <div className="text-center space-y-4">
+                <h3 className="text-lg font-semibold text-slate-800">Nessuna pagina selezionata</h3>
+                <p className="text-sm text-slate-500">Seleziona una pagina dalla sidebar</p>
+              </div>
+            </div>
+          );
+        }
+        
+        return (
+          <div className="w-full h-full overflow-y-auto bg-slate-100">
+            <div className="w-full min-h-full bg-white overflow-hidden transform-gpu">
+              <Engine
+                config={projectData}
+                sections={activePage.sections}
+                activeSectionId={ui.activeSectionId}
+                onSectionSelect={useAppStore.getState().setActiveSection}
+                onAddSection={(type, index) => useAppStore.getState().addSection(type, index)}
+                onMoveSection={(index, direction) => {
+                  const newIndex = direction === 'up' ? index - 1 : index + 1;
+                  if (newIndex < 0 || newIndex >= activePage.sections.length) return;
+                  useAppStore.getState().reorderSections(index, newIndex);
+                }}
+                onDeleteSection={(sectionId) => {
+                  if (confirm('Sei sicuro di voler eliminare questa sezione?')) {
+                    useAppStore.getState().deleteSection(sectionId);
+                    if (ui.activeSectionId === sectionId) {
+                      useAppStore.getState().setActiveSection(null);
+                    }
+                  }
+                }}
+                onDuplicateSection={(sectionId) => useAppStore.getState().duplicateSection(sectionId)}
+              />
+            </div>
+          </div>
+        );
       default:
         return null;
     }
