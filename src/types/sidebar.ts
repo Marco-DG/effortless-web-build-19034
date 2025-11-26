@@ -94,16 +94,3 @@ export interface SidebarStateReturn {
   lastKnownWidth: SidebarState;
 }
 
-/** Props for UnifiedBuilderLayout component - sidebar specific */
-export interface SidebarLayoutProps {
-  /** Builder configuration */
-  builderType: BuilderType;
-  /** List of sections to display in sidebar */
-  sections: readonly BuilderSection[];
-  /** Currently active section ID */
-  activeSection: string;
-  /** Callback when section selection changes */
-  onSectionChange: (sectionId: string) => void;
-  /** Optional custom renderer for categories */
-  renderCategory?: (categoryId: string, isExpanded: boolean) => React.ReactNode;
-}
