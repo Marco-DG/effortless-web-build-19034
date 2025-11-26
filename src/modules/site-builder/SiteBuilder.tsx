@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAppStore } from '../../store/app-store';
-import { SimpleSiteBuilder } from './SimpleSiteBuilder';
+import { UniversalBuilder } from '../core/builder/UniversalBuilder';
 import { LogoBuilderRedesigned } from '../logo-builder/LogoBuilderRedesigned';
 import { MenuBuilderRedesigned } from '../menu-builder/MenuBuilderRedesigned';
 
@@ -23,7 +23,7 @@ export const SiteBuilder: React.FC = () => {
         return <MenuBuilderRedesigned onSwitchBuilder={handleMacroTabChange} />;
       case 'site':
       default:
-        return <SimpleSiteBuilder onSwitchBuilder={handleMacroTabChange} />;
+        return <UniversalBuilder />;
     }
   };
 

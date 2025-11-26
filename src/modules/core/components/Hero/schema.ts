@@ -63,12 +63,12 @@ export const HeroSchema: ComponentSchema = {
         }
     },
     defaultData: {
-        title: 'Welcome to Our Site',
-        subtitle: 'Create something amazing today.',
-        backgroundImage: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop',
+        title: 'Osteria del Borgo',
+        subtitle: 'Tradizione e sapori autentici nel cuore della città',
+        backgroundImage: 'https://images.unsplash.com/photo-1527169402691-feff5539e52c?q=80&w=1600&auto=format&fit=crop',
         layout: 'center',
         style: 'dark-overlay',
-        ctaText: 'Get Started',
+        ctaText: 'Prenota Ora',
         ctaLink: '#'
     }
 };

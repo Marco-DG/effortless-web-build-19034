@@ -56,12 +56,12 @@ export const ContentSchema: ComponentSchema = {
         }
     },
     defaultData: {
-        title: 'Our Story',
-        subtitle: 'Tradition & Innovation',
-        text: 'Founded in 2010, we started with a simple mission: to bring authentic flavors to the modern table. Our chef, Marco Rossi, combines traditional techniques with contemporary presentation to create dishes that are both familiar and surprising.',
+        title: 'La Nostra Storia',
+        subtitle: 'Chef Marco Benedetti',
+        text: 'La mia passione per la cucina nasce dalla tradizione di famiglia. Ogni piatto racconta una storia, ogni sapore è un ricordo che prende vita. Dalla nonna che mi insegnava i segreti della pasta fatta in casa, fino ai viaggi che mi hanno portato a scoprire tecniche innovative, la mia cucina è un ponte tra passato e futuro.',
         image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&q=80',
         layout: 'image-left',
-        ctaText: 'Read More',
+        ctaText: 'Scopri di più',
         ctaLink: '#'
     }
 };
