@@ -1,6 +1,6 @@
 import React from 'react';
 import { Wine, Star } from 'lucide-react';
-import { PremiumCard } from '../../components/forms';
+import { CleanFormField } from '../../components/forms';
 import { getTemplateDefaults } from '../site-builder/template-defaults';
 
 interface TemplateSelectorProps {
@@ -106,8 +106,8 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ project, onU
   ];
   
   return (
-    <PremiumCard
-      title="Template Design"
+    <CleanFormField
+      label="Template Design"
       description="Scegli il template base per il design del tuo sito web"
     >
       <div className="space-y-4">
@@ -191,6 +191,6 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ project, onU
           </div>
         ))}
       </div>
-    </PremiumCard>
+    </CleanFormField>
   );
 };

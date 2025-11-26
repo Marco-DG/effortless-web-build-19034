@@ -1,17 +1,4 @@
-// Premium Design System Components (Legacy)
-export { PremiumFormField } from './PremiumFormField';
-export { PremiumToggle } from './PremiumToggle';
-export { PremiumNumberInput } from './PremiumNumberInput';
-export { PremiumActionButton } from './PremiumActionButton';
-export { PremiumTemplateGrid } from './PremiumTemplateGrid';
-export { PremiumTextInput } from './PremiumTextInput';
-export { PremiumCard } from './PremiumCard';
-export { PremiumListItem } from './PremiumListItem';
-export { PremiumSelect } from './PremiumSelect';
-export { PremiumColorPicker } from './PremiumColorPicker';
-export { PremiumOptionGrid } from './PremiumOptionGrid';
-
-// Clean Design System Components (New)
+// Clean Design System Components
 export { CleanFormField } from './CleanFormField';
 export { CleanTextInput } from './CleanTextInput';
 export { CleanSelect } from './CleanSelect';
@@ -19,3 +6,14 @@ export { CleanToggle } from './CleanToggle';
 export { CleanButton } from './CleanButton';
 export { CleanSectionHeader } from './CleanSectionHeader';
 export { CleanInfoBox } from './CleanInfoBox';
+
+// Premium Bridge Components (TEMPORARY - TODO: Remove after migration)
+export { PremiumActionButton } from './PremiumActionButton';
+export { PremiumCard } from './PremiumCard';
+export { PremiumTextInput } from './PremiumTextInput';
+export { PremiumToggle } from './PremiumToggle';
+export { PremiumSelect } from './PremiumSelect';
+export { PremiumListItem } from './PremiumListItem';
+export { PremiumOptionGrid } from './PremiumOptionGrid';
+export { PremiumColorPicker } from './PremiumColorPicker';
+export { PremiumNumberInput } from './PremiumNumberInput';

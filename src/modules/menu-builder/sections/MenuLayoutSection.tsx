@@ -1,6 +1,6 @@
 import React from 'react';
 import { MenuConfig } from '../../../types';
-import { PremiumCard, PremiumOptionGrid, PremiumToggle } from '../../../components/forms';
+import { CleanFormField, CleanToggle } from '../../../components/forms';
 
 interface MenuLayoutSectionProps {
   config: MenuConfig;
@@ -100,67 +100,116 @@ export const MenuLayoutSection: React.FC<MenuLayoutSectionProps> = ({
   return (
     <div className="space-y-6">
       {/* Layout Generale */}
-      <PremiumOptionGrid
+      <CleanFormField
         label="Layout Generale"
         description="Scegli la struttura principale del tuo menu"
-        selectedValue={config.layout || 'single-column'}
-        options={layoutOptions}
-        onChange={(value) => onUpdate({ layout: value })}
-        columns={2}
-      />
+      >
+        <div className="grid grid-cols-2 gap-4">
+          {layoutOptions.map((option) => (
+            <button
+              key={option.value}
+              onClick={() => onUpdate({ layout: option.value })}
+              className={`p-4 rounded-lg border-2 transition-all duration-200 text-left ${
+                (config.layout || 'single-column') === option.value
+                  ? 'border-blue-500 bg-blue-50'
+                  : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+              }`}
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <option.icon />
+                <span className="font-medium text-slate-900">{option.label}</span>
+              </div>
+              <p className="text-sm text-slate-600">{option.description}</p>
+            </button>
+          ))}
+        </div>
+      </CleanFormField>
 
       {/* Stile Categorie */}
-      <PremiumOptionGrid
+      <CleanFormField
         label="Stile Categorie"
         description="Come visualizzare le sezioni del menu (Antipasti, Primi, etc.)"
-        selectedValue={config.categoryStyle || 'headers'}
-        options={categoryStyles}
-        onChange={(value) => onUpdate({ categoryStyle: value })}
-        columns={2}
-      />
+      >
+        <div className="grid grid-cols-2 gap-4">
+          {categoryStyles.map((option) => (
+            <button
+              key={option.value}
+              onClick={() => onUpdate({ categoryStyle: option.value })}
+              className={`p-4 rounded-lg border-2 transition-all duration-200 text-left ${
+                (config.categoryStyle || 'headers') === option.value
+                  ? 'border-blue-500 bg-blue-50'
+                  : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+              }`}
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <option.icon />
+                <span className="font-medium text-slate-900">{option.label}</span>
+              </div>
+              <p className="text-sm text-slate-600">{option.description}</p>
+            </button>
+          ))}
+        </div>
+      </CleanFormField>
 
       {/* Opzioni di Visualizzazione */}
-      <PremiumCard
-        title="Opzioni di Visualizzazione"
-        description="Controlla elementi aggiuntivi e funzionalità del menu"
-      >
+      <div className="space-y-4 border border-slate-200 rounded-lg p-6">
+        <div className="border-b border-slate-100 pb-4">
+          <h3 className="font-semibold text-lg text-slate-900">Opzioni di Visualizzazione</h3>
+          <p className="text-sm text-slate-600 mt-1">Controlla elementi aggiuntivi e funzionalità del menu</p>
+        </div>
+        
         <div className="space-y-4">
-          <PremiumToggle
+          <CleanFormField
             label="Mostra indice categorie"
             description="Aggiungi un indice navigabile all'inizio del menu"
-            checked={config.showCategoryIndex !== false}
-            onChange={(checked) => onUpdate({ showCategoryIndex: checked })}
-          />
+          >
+            <CleanToggle
+              checked={config.showCategoryIndex !== false}
+              onChange={(checked) => onUpdate({ showCategoryIndex: checked })}
+            />
+          </CleanFormField>
 
-          <PremiumToggle
+          <CleanFormField
             label="Numerazione elementi"
             description="Aggiungi numeri progressivi agli elementi del menu"
-            checked={config.showItemNumbers === true}
-            onChange={(checked) => onUpdate({ showItemNumbers: checked })}
-          />
+          >
+            <CleanToggle
+              checked={config.showItemNumbers === true}
+              onChange={(checked) => onUpdate({ showItemNumbers: checked })}
+            />
+          </CleanFormField>
 
-          <PremiumToggle
+          <CleanFormField
             label="Icone categoria"
             description="Mostra icone decorative accanto ai titoli delle categorie"
-            checked={config.showCategoryIcons === true}
-            onChange={(checked) => onUpdate({ showCategoryIcons: checked })}
-          />
+          >
+            <CleanToggle
+              checked={config.showCategoryIcons === true}
+              onChange={(checked) => onUpdate({ showCategoryIcons: checked })}
+            />
+          </CleanFormField>
 
-          <PremiumToggle
+          <CleanFormField
             label="Separatori visuali"
             description="Aggiungi linee o separatori tra le sezioni"
-            checked={config.showSeparators !== false}
-            onChange={(checked) => onUpdate({ showSeparators: checked })}
-          />
+          >
+            <CleanToggle
+              checked={config.showSeparators !== false}
+              onChange={(checked) => onUpdate({ showSeparators: checked })}
+            />
+          </CleanFormField>
 
-          <PremiumToggle
+          <CleanFormField
             label="Layout responsive"
             description="Ottimizza automaticamente il layout per dispositivi mobili"
-            checked={config.responsiveLayout !== false}
-            onChange={(checked) => onUpdate({ responsiveLayout: checked })}
-          />
+          >
+            <CleanToggle
+              checked={config.responsiveLayout !== false}
+              onChange={(checked) => onUpdate({ responsiveLayout: checked })}
+            />
+          </CleanFormField>
         </div>
-      </PremiumCard>
+      </div>
     </div>
   );
 };
