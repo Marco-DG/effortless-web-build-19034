@@ -75,10 +75,10 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
   const isExpanded = !isEditorHovered;
 
   // Calculate width
-  // Editor Hover -> Collapsed (3.5rem)
+  // Editor Hover -> Collapsed (3.75rem)
   // Sidebar Hover -> Full (16rem)
   // Preview (Default) -> Intermediate (13rem) - "Up to text"
-  const sidebarWidth = isEditorHovered ? '3.5rem' : (isHovered ? '16rem' : '13rem');
+  const sidebarWidth = isEditorHovered ? '3.75rem' : (isHovered ? '16rem' : '13rem');
 
   // Group sections by category
   const categories = React.useMemo(() => {

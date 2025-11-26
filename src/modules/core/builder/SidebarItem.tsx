@@ -35,7 +35,7 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
     actionVisibility = 'always',
     customIcon
 }, ref) => {
-    const baseStyles = "group relative flex items-center w-full h-10 px-2 rounded-[12px] border transition-[background-color,border-color,shadow,opacity] duration-200 cursor-pointer select-none";
+    const baseStyles = "group relative flex items-center w-full h-10 px-1.5 rounded-[12px] border transition-[background-color,border-color,shadow,opacity] duration-200 cursor-pointer select-none";
 
     const variants = {
         ghost: isActive
