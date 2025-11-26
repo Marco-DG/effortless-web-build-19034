@@ -68,17 +68,27 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
   const { t } = useTranslation();
   const [isHovered, setIsHovered] = React.useState(false);
   const [isEditorHovered, setIsEditorHovered] = React.useState(false);
+  const [lastKnownWidth, setLastKnownWidth] = React.useState<'expanded' | 'collapsed'>('expanded');
   const currentSection = sections.find(s => s.id === activeSection);
 
+  // Update last known width when explicitly hovering sidebar areas
+  React.useEffect(() => {
+    if (isHovered) {
+      setLastKnownWidth('expanded');
+    } else if (isEditorHovered) {
+      setLastKnownWidth('collapsed');
+    }
+    // When neither is hovered, we keep the lastKnownWidth unchanged
+  }, [isHovered, isEditorHovered]);
+
   // Calculate expansion state
-  // Expanded if NOT hovering the editor (so Preview or Sidebar Hover)
-  const isExpanded = !isEditorHovered;
+  const isExpanded = isHovered || (!isEditorHovered && lastKnownWidth === 'expanded');
 
   // Calculate width
-  // Editor Hover -> Collapsed (3.75rem)
   // Sidebar Hover -> Full (16rem)
-  // Preview (Default) -> Intermediate (13rem) - "Up to text"
-  const sidebarWidth = isEditorHovered ? '3.75rem' : (isHovered ? '16rem' : '13rem');
+  // Editor Hover -> Collapsed (3.75rem)
+  // No hover -> Keep last known state
+  const sidebarWidth = isHovered ? '16rem' : (isEditorHovered ? '3.75rem' : (lastKnownWidth === 'expanded' ? '16rem' : '3.75rem'));
 
   // Group sections by category
   const categories = React.useMemo(() => {
