@@ -169,16 +169,14 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
         >
           <div className="absolute right-0 top-0 bottom-0 sidebar-divider"></div>
           <ScrollArea className="flex-1">
-            <div className="space-y-2 py-3">
-              {categories.map((category, categoryIndex) => (
-                <div key={category.id} className="space-y-1.5 px-1.5">
-
-
+            <div className="flex flex-col gap-2 p-2">
+              {categories.map((category) => (
+                <React.Fragment key={category.id}>
                   {/* Sezioni della categoria */}
                   {renderCategory && renderCategory(category.id, isExpanded) ? (
                     renderCategory(category.id, isExpanded)
                   ) : (
-                    category.sections.map((section, sectionIndex) => {
+                    category.sections.map((section) => {
                       const isActive = activeSection === section.id;
                       return (
                         <button
@@ -204,7 +202,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
                       );
                     })
                   )}
-                </div>
+                </React.Fragment>
               ))}
             </div>
           </ScrollArea>
