@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAppStore } from '../../../store/app-store';
-import { CleanSectionHeader } from '../../site-builder/components/forms';
+import { CleanSectionHeader } from '../../../components/forms';
 import { Globe, Type, Palette, Building2, Layout, ChevronDown, Plus, Trash2, Check, X } from 'lucide-react';
 
 export const PageSettings: React.FC = () => {

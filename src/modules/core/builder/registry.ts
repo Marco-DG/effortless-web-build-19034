@@ -16,7 +16,9 @@ export function registerComponent(
     schema: ComponentSchema
 ) {
     if (registry[type]) {
-        console.warn(`Component "${type}" is already registered. Overwriting.`);
+        if (process.env.NODE_ENV === 'development') {
+            console.warn(`Component "${type}" is already registered. Overwriting.`);
+        }
     }
 
     registry[type] = {
@@ -24,7 +26,9 @@ export function registerComponent(
         schema
     };
 
-    console.log(`[Registry] Registered component: ${type}`);
+    if (process.env.NODE_ENV === 'development') {
+        console.log(`[Registry] Registered component: ${type}`);
+    }
 }
 
 /**

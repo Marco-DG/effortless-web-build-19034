@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ComponentSchema, FieldSchema } from '../builder/types';
-import { CleanFormField } from '../../site-builder/components/forms';
+import { CleanFormField } from '../../../components/forms';
 import {
     TextFieldRenderer,
     TextAreaRenderer,

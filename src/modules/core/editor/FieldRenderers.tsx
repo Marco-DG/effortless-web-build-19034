@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FieldSchema } from '../builder/types';
-import { CleanTextInput, CleanSelect, CleanToggle } from '../../site-builder/components/forms';
+import { CleanTextInput, CleanSelect, CleanToggle } from '../../../components/forms';
 import { ImagePicker } from './components/ImagePicker';
 import { ColorPicker } from './components/ColorPicker';
 import { RichTextEditor } from './components/RichTextEditor';

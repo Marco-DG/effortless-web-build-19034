@@ -3,7 +3,6 @@ import { LogoConfig } from '../../types';
 import { ADVANCED_LOGO_TEMPLATES, processTemplate } from './AdvancedTemplates';
 
 // Debug: verifica che ADVANCED_LOGO_TEMPLATES sia importato
-console.log('ADVANCED_LOGO_TEMPLATES:', ADVANCED_LOGO_TEMPLATES);
 
 interface TemplateSelectorProps {
   logoConfig: LogoConfig;

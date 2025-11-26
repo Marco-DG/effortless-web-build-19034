@@ -41,7 +41,6 @@ export const LogoBuilderRedesigned: React.FC<LogoBuilderRedesignedProps> = ({
   };
 
   const handleExport = () => {
-    console.log('Export logo:', logoConfig);
     // TODO: Implementare export
   };
 

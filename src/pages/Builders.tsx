@@ -85,7 +85,6 @@ const Builders: React.FC = () => {
               );
               // Update logic adapted for new store structure
               // We might need a specific action for logo updates in the future
-              console.warn('Logo updates temporarily disabled during migration');
             }}
             onElementSelect={() => { }}
             selectedElementId={null}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../../../store/app-store';
 import { Plus, FileText, MoreVertical, Trash2, Edit2, Check, X, Settings, Globe } from 'lucide-react';
-import { CleanSectionHeader } from '../../site-builder/components/forms';
+import { CleanSectionHeader } from '../../../components/forms';
 
 export const PageManager: React.FC = () => {
     const { t } = useTranslation();
