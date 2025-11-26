@@ -86,9 +86,9 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
 
   // Calculate width
   // Sidebar Hover -> Full (16rem)
-  // Editor Hover -> Collapsed (3.75rem)
+  // Editor Hover -> Collapsed (3.5rem) - matches w-14 h-14 (56px)
   // No hover -> Keep last known state
-  const sidebarWidth = isHovered ? '16rem' : (isEditorHovered ? '3.75rem' : (lastKnownWidth === 'expanded' ? '16rem' : '3.75rem'));
+  const sidebarWidth = isHovered ? '16rem' : (isEditorHovered ? '3.5rem' : (lastKnownWidth === 'expanded' ? '16rem' : '3.5rem'));
 
   // Group sections by category
   const categories = React.useMemo(() => {
@@ -178,6 +178,14 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
           onMouseLeave={() => setIsHovered(false)}
         >
           <div className="absolute right-0 top-0 bottom-0 sidebar-divider"></div>
+          {/* Fade mask to hide overflow text during animations */}
+          <div 
+            className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white via-white/60 to-transparent pointer-events-none z-10"
+            style={{
+              opacity: isExpanded ? 0 : 1,
+              transition: 'opacity 300ms cubic-bezier(0.2, 0, 0, 1)'
+            }}
+          />
           <ScrollArea className="flex-1">
             <div className="flex flex-col gap-2 p-2">
               {categories.map((category) => (
