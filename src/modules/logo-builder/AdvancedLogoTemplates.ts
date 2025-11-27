@@ -674,22 +674,9 @@ export const ADVANCED_LOGO_TEMPLATES: LogoTemplate[] = [
   }
 ];
 
-export const getAdvancedTemplatesByCategory = (category: string) => 
-  ADVANCED_LOGO_TEMPLATES.filter(template => template.category === category);
-
-export const getAdvancedTemplateById = (id: string) => 
-  ADVANCED_LOGO_TEMPLATES.find(template => template.id === id);
-
-import { AWARD_WINNING_TEMPLATES, getAllAwardWinningTemplates } from './AwardWinningTemplates';
-import { EXTREME_DESIGN_TEMPLATES, getAllExtremeTemplates } from './ExtremeDesignTemplates';
-
-export const getAllAdvancedTemplates = () => [
-  ...ADVANCED_LOGO_TEMPLATES,
-  ...AWARD_WINNING_TEMPLATES,
-  ...EXTREME_DESIGN_TEMPLATES
-];
+import { getAllAwardWinningTemplates } from './AwardWinningTemplates';
+import { getAllExtremeTemplates } from './ExtremeDesignTemplates';
 
 // Funzioni specifiche per accedere ai diversi livelli di template
 export const getAwardWinningTemplates = getAllAwardWinningTemplates;
 export const getExtremeTemplates = getAllExtremeTemplates;
-export const getBasicAdvancedTemplates = () => ADVANCED_LOGO_TEMPLATES;

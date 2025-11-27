@@ -713,16 +713,3 @@ export const EXTREME_DESIGN_TEMPLATES: LogoTemplate[] = [
 
 // Combina tutti i template estremi
 export const getAllExtremeTemplates = () => EXTREME_DESIGN_TEMPLATES;
-
-// Funzione per template per difficoltà di realizzazione
-export const getTemplatesByComplexity = (level: 'extreme' | 'master' | 'legendary') => {
-  const complexityMap = {
-    extreme: ['impossible-typography', 'bauhaus-deconstruction'],
-    master: ['surreal-culinary', 'biomechanical-cyberpunk', 'extreme-art-nouveau'],
-    legendary: ['japanese-minimal-perfection'],
-  };
-  
-  return EXTREME_DESIGN_TEMPLATES.filter(template => 
-    complexityMap[level].includes(template.id)
-  );
-};

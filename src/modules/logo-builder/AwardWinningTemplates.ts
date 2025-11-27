@@ -933,11 +933,3 @@ export const AWARD_WINNING_TEMPLATES: LogoTemplate[] = [
 
 // Funzione per ottenere tutti i template award-winning
 export const getAllAwardWinningTemplates = () => AWARD_WINNING_TEMPLATES;
-
-// Funzione per filtrare per categoria
-export const getTemplatesByCategory = (category: string) =>
-  AWARD_WINNING_TEMPLATES.filter(template => template.category === category);
-
-// Funzione per cercare per tag
-export const getTemplatesByTag = (tag: string) =>
-  AWARD_WINNING_TEMPLATES.filter(template => template.tags.includes(tag));
