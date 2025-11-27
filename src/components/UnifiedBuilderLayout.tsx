@@ -177,7 +177,8 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
                           className={`w-5 h-5 flex-shrink-0 transition-all duration-200 ${isActive ? 'text-slate-900' : 'text-slate-400 group-hover:text-slate-700'
                             }`}
                         />
-                        <span className={`hidden lg:block ml-3 text-left font-geist tracking-[-0.01em] transition-all duration-200 ${isActive ? 'font-semibold' : 'font-medium'
+                        <span className={`hidden lg:block ml-3 text-left font-geist tracking-[-0.01em] whitespace-nowrap overflow-hidden transition-all duration-500 ${isActive ? 'font-semibold' : 'font-medium'
+                          } ${isExpanded ? 'opacity-100 translate-x-0 delay-100' : 'opacity-0 -translate-x-2'
                           }`}>
                           {section.label}
                         </span>

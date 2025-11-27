@@ -78,11 +78,10 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
                 className="flex-1 flex items-center overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.2,0,0,1)]"
                 style={{
                     maxWidth: isExpanded ? '100%' : '0px',
-                    opacity: 1
                 }}
             >
                 {/* Inner Content with Static Padding - Prevents layout jitter */}
-                <div className="flex items-center gap-2 pl-2.5 min-w-0 w-full">
+                <div className={`flex items-center gap-2 pl-2.5 min-w-0 w-full transition-opacity duration-500 ${isExpanded ? 'opacity-100 delay-100' : 'opacity-0'}`}>
                     <span className={`text-sm truncate tracking-[-0.01em] ${isActive ? 'font-semibold text-slate-900' : 'font-medium text-slate-700 group-hover:text-slate-900'}`}>
                         {label}
                     </span>
