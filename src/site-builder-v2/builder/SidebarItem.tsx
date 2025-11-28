@@ -35,18 +35,20 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
     actionVisibility = 'always',
     customIcon
 }, ref) => {
-    const baseStyles = "group relative flex items-center w-full h-10 px-1.5 rounded-[12px] border transition-[background-color,border-color,shadow,opacity] duration-200 cursor-pointer select-none";
+    const baseStyles = "group relative flex items-center w-full h-10 px-1.5 rounded-[12px] border transition-all duration-200 cursor-pointer select-none";
 
     const variants = {
-        ghost: isActive
-            ? 'bg-slate-50 border-transparent'
+        ghost: isActive 
+            ? 'bg-slate-100 border-slate-200 shadow-sm'
             : 'bg-transparent border-transparent hover:bg-slate-50',
         outlined: isActive
-            ? 'bg-slate-50 border-slate-300'
+            ? 'bg-slate-100 border-slate-300 shadow-md'
             : 'bg-white border-slate-200/60 hover:border-slate-300 shadow-sm'
     };
 
-    const defaultIconColor = isActive ? 'text-slate-900' : 'text-slate-700 group-hover:text-slate-900';
+    const defaultIconColor = isActive 
+        ? 'text-slate-800' 
+        : 'text-slate-700 group-hover:text-slate-900';
 
     return (
         <div
@@ -55,12 +57,12 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
             className={`
                 ${baseStyles}
                 ${variants[variant]}
-                ${isDraggable && !isActive ? 'hover:shadow-sm' : ''}
-                ${isLocked ? 'opacity-60 grayscale-[0.5]' : ''}
+                ${isDraggable ? 'hover:shadow-sm' : ''}
+                ${isLocked ? 'opacity-60' : ''}
                 ${className}
-`}
+            `}
         >
-            {/* Fixed Icon or Custom Content - Always pinned to left */}
+            {/* Icon - Always visible */}
             {customIcon ? (
                 <div className={`shrink-0 flex items-center justify-center w-5 h-5 ${iconClassName || 'text-slate-500'}`}>
                     {customIcon}
@@ -69,45 +71,44 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
                 <Icon
                     size={20}
                     strokeWidth={1.5}
-                    className={`shrink-0 transition-colors duration-700 ${iconClassName || defaultIconColor}`}
+                    className={`shrink-0 ${iconClassName || defaultIconColor}`}
                 />
             )}
 
-            {/* Collapsible Text Container */}
-            <div
-                className="flex-1 flex items-center overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.2,0,0,1)]"
+            {/* Text - Smooth fade in/out */}
+            <div 
+                className="flex-1 flex items-center gap-2 pl-2.5 min-w-0 overflow-hidden transition-opacity duration-300 ease-out"
                 style={{
-                    maxWidth: isExpanded ? '100%' : '0px',
+                    opacity: isExpanded ? 1 : 0,
                 }}
             >
-                {/* Inner Content with Static Padding - Prevents layout jitter */}
-                <div className={`flex items-center gap-2 pl-2.5 min-w-0 w-full transition-opacity duration-500 ${isExpanded ? 'opacity-100 delay-100' : 'opacity-0'}`}>
-                    <span className={`text-sm truncate tracking-[-0.01em] ${isActive ? 'font-semibold text-slate-900' : 'font-medium text-slate-700 group-hover:text-slate-900'}`}>
-                        {label}
+                <span className={`text-sm font-medium truncate tracking-[-0.01em] transition-colors duration-150 ${
+                    isActive 
+                        ? 'text-slate-800 font-semibold' 
+                        : 'text-slate-700 group-hover:text-slate-900'
+                }`}>
+                    {label}
+                </span>
+                {subLabel && (
+                    <span className="text-xs text-slate-400 font-medium shrink-0">
+                        {subLabel}
                     </span>
-                    {subLabel && (
-                        <span className="text-[10px] font-medium text-slate-400 shrink-0">
-                            {subLabel}
-                        </span>
-                    )}
-                </div>
+                )}
             </div>
 
-            {/* Actions / Chevron */}
-            <div
-                className={`
-                    shrink-0 flex items-center ml-auto transition-all duration-700
-                    ${actionVisibility === 'hover' ? 'opacity-0 group-hover:opacity-100' : ''}
-                `}
-                style={{
-                    opacity: isExpanded ? (actionVisibility === 'hover' ? undefined : 1) : 0,
-                    width: isExpanded ? 'auto' : '0px',
-                    pointerEvents: isExpanded ? 'auto' : 'none',
-                    overflow: 'hidden'
-                }}
-            >
-                {actions}
-            </div>
+            {/* Actions - Smooth fade in/out */}
+            {actions && (
+                <div 
+                    className={`shrink-0 flex items-center ml-auto transition-opacity duration-300 ease-out ${
+                        actionVisibility === 'hover' ? 'group-hover:opacity-100' : ''
+                    }`}
+                    style={{
+                        opacity: isExpanded ? (actionVisibility === 'hover' ? 0 : 1) : 0,
+                    }}
+                >
+                    {actions}
+                </div>
+            )}
         </div>
     );
 });
