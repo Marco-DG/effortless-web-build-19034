@@ -108,7 +108,7 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                     isExpanded={isExpanded}
                     onClick={() => setIsPageDropdownOpen(!isPageDropdownOpen)}
                     isActive={isPageDropdownOpen}
-                    variant="outlined"
+                    variant="dropdown"
                     actions={
                         <ChevronDown
                             size={16}
@@ -210,8 +210,7 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                     label={t('builder.addSection')}
                     isExpanded={isExpanded}
                     onClick={() => setIsModalOpen(true)}
-                    className="text-blue-600"
-                    iconClassName="text-blue-600"
+                    variant="action"
                 />
 
                 {/* All Sections (Draggable) */}

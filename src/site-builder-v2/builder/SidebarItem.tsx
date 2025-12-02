@@ -10,7 +10,7 @@ interface SidebarItemProps {
     isExpanded: boolean;
     onClick: (e: React.MouseEvent) => void;
     actions?: React.ReactNode;
-    variant?: 'ghost' | 'outlined';
+    variant?: 'ghost' | 'outlined' | 'dropdown' | 'action';
     iconClassName?: string;
     actionVisibility?: 'always' | 'hover';
     className?: string;
@@ -35,77 +35,79 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
     actionVisibility = 'always',
     customIcon
 }, ref) => {
-    const baseStyles = "group relative flex items-center w-full h-10 px-1.5 rounded-[12px] border transition-all duration-200 cursor-pointer select-none";
+    const getBaseStyles = () => {
+        const baseTransition = variant === 'dropdown' ? 'transition-none' : 'transition-all duration-200';
+        const baseCursor = variant === 'dropdown' ? 'cursor-pointer' : 'cursor-pointer';
+        const groupClass = variant === 'dropdown' ? '' : 'group';
+        const sidebarClass = variant === 'dropdown' ? 'sidebar-dropdown-item' : 'sidebar-nav-item';
+        return `${sidebarClass} w-full flex items-center px-3 py-2.5 text-sm ${baseTransition} rounded-[12px] ${groupClass} font-medium ${baseCursor} select-none`;
+    };
 
     const variants = {
         ghost: isActive 
-            ? 'bg-slate-100 border-slate-200 shadow-sm'
-            : 'bg-transparent border-transparent hover:bg-slate-50',
+            ? 'bg-slate-100 text-slate-900 font-semibold'
+            : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900',
         outlined: isActive
-            ? 'bg-slate-100 border-slate-300 shadow-md'
-            : 'bg-white border-slate-200/60 hover:border-slate-300 shadow-sm'
+            ? 'bg-slate-100 text-slate-900 font-semibold border border-slate-200'  
+            : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900 border border-slate-200/50 hover:border-slate-300',
+        dropdown: 'bg-white border border-slate-200/60 shadow-sm text-slate-700 !bg-white hover:!bg-white hover:!border-slate-200/60 hover:!rounded-[12px] hover:!transform-none hover:!translate-x-0',
+        action: 'text-blue-600 hover:bg-blue-50/60 border border-transparent hover:border-blue-200/50'
     };
 
     const defaultIconColor = isActive 
-        ? 'text-slate-800' 
-        : 'text-slate-700 group-hover:text-slate-900';
+        ? 'text-slate-900'
+        : (variant === 'action' ? 'text-blue-600' : (variant === 'dropdown' ? 'text-slate-700' : 'text-slate-500 group-hover:text-slate-900'));
 
     return (
         <div
             ref={ref}
             onClick={onClick}
             className={`
-                ${baseStyles}
+                ${getBaseStyles()}
                 ${variants[variant]}
-                ${isDraggable ? 'hover:shadow-sm' : ''}
+                ${isDraggable && variant !== 'dropdown' ? 'hover:shadow-sm' : ''}
                 ${isLocked ? 'opacity-60' : ''}
                 ${className}
             `}
         >
-            {/* Icon - Always visible */}
-            {customIcon ? (
-                <div className={`shrink-0 flex items-center justify-center w-5 h-5 ${iconClassName || 'text-slate-500'}`}>
-                    {customIcon}
-                </div>
-            ) : Icon && (
-                <Icon
-                    size={20}
-                    strokeWidth={1.5}
-                    className={`shrink-0 ${iconClassName || defaultIconColor}`}
-                />
-            )}
-
-            {/* Text - Smooth fade in/out */}
-            <div 
-                className="flex-1 flex items-center gap-2 pl-2.5 min-w-0 overflow-hidden transition-opacity duration-300 ease-out"
-                style={{
-                    opacity: isExpanded ? 1 : 0,
-                }}
-            >
-                <span className={`text-sm font-medium truncate tracking-[-0.01em] transition-colors duration-150 ${
-                    isActive 
-                        ? 'text-slate-800 font-semibold' 
-                        : 'text-slate-700 group-hover:text-slate-900'
-                }`}>
-                    {label}
-                </span>
-                {subLabel && (
-                    <span className="text-xs text-slate-400 font-medium shrink-0">
-                        {subLabel}
-                    </span>
+            {/* Icon container - Same position in both collapsed/expanded */}
+            <div className="shrink-0 w-5 h-5 flex items-center justify-center">
+                {customIcon ? (
+                    <div className={iconClassName || defaultIconColor}>
+                        {customIcon}
+                    </div>
+                ) : Icon && (
+                    <Icon
+                        size={18}
+                        strokeWidth={1.5}
+                        className={iconClassName || defaultIconColor}
+                    />
                 )}
             </div>
 
-            {/* Actions - Smooth fade in/out */}
-            {actions && (
-                <div 
-                    className={`shrink-0 flex items-center ml-auto transition-opacity duration-300 ease-out ${
-                        actionVisibility === 'hover' ? 'group-hover:opacity-100' : ''
-                    }`}
-                    style={{
-                        opacity: isExpanded ? (actionVisibility === 'hover' ? 0 : 1) : 0,
-                    }}
-                >
+            {/* Text - Simple fade in/out with consistent spacing */}
+            {isExpanded && (
+                <div className={`flex-1 flex items-center gap-2 pl-2.5 min-w-0 ${
+                    variant === 'dropdown' ? '' : 'transform group-hover:-translate-x-0.5 transition-transform duration-200'
+                }`}>
+                    <span className="text-sm font-medium truncate">
+                        {label}
+                    </span>
+                    {subLabel && (
+                        <span className="text-xs text-slate-400 font-medium shrink-0">
+                            {subLabel}
+                        </span>
+                    )}
+                </div>
+            )}
+
+            {/* Actions - Simple conditional rendering */}
+            {isExpanded && actions && (
+                <div className={`shrink-0 flex items-center ml-auto ${
+                    variant === 'dropdown' 
+                        ? '' 
+                        : (actionVisibility === 'hover' ? 'opacity-0 group-hover:opacity-100 transform group-hover:-translate-x-0.5 transition-all duration-200' : 'transform group-hover:-translate-x-0.5 transition-transform duration-200')
+                }`}>
                     {actions}
                 </div>
             )}
