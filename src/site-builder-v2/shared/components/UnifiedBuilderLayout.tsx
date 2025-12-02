@@ -1,9 +1,10 @@
 import React from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Eye, LucideIcon, ExternalLink } from 'lucide-react';
+import { Eye, LucideIcon, ExternalLink, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useSidebarState } from '../../hooks/useSidebarState';
 import { SidebarContainer } from './SidebarContainer';
+import { SidebarNavigation } from './SidebarNavigation';
 import { type BuilderSection, type BuilderType } from '../../types/sidebar';
 
 // ... (existing code)
@@ -100,25 +101,14 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
       {/* Header con tab condivisa */}
       {onSwitchBuilder && (
         <div className="flex items-center justify-between px-4 py-4 border-b border-slate-200/30 bg-white/60 backdrop-blur-xl relative z-50">
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
-            {(['logo', 'menu', 'site'] as const).map((type) => (
-              <button
-                key={type}
-                type="button"
-                onClick={() => onSwitchBuilder(type)}
-                className={`topbar-tab relative px-4 py-2.5 font-medium text-sm transition-all duration-300 ease-out whitespace-nowrap ${builderType === type
-                  ? 'text-slate-900 topbar-tab-active'
-                  : 'text-slate-600 hover:text-slate-900'
-                  }`}
-              >
-                <span className="relative z-10 font-geist font-medium tracking-[-0.01em]">
-                  {getBuilderLabel(type)}
-                </span>
-                {builderType !== type && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/40 via-white/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-[14px]" />
-                )}
-              </button>
-            ))}
+          <div className="flex items-center gap-3 px-2">
+            <div className="w-10 h-10 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center">
+              <User className="w-5 h-5 text-slate-900" strokeWidth={1.5} />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm font-semibold text-slate-900 font-geist leading-none">Marco Rossi</span>
+              <span className="text-xs text-slate-500 font-medium font-geist mt-1">Admin</span>
+            </div>
           </div>
 
           <div className="flex items-center gap-2 flex-shrink-0">
@@ -152,43 +142,13 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
           isExpanded={isExpanded}
           onHoverChange={setIsHovered}
         >
-          <div className="flex flex-col gap-2 p-2">
-            {categories.map((category) => (
-              <React.Fragment key={category.id}>
-                {/* Sezioni della categoria */}
-                {renderCategory && renderCategory(category.id, isExpanded) ? (
-                  renderCategory(category.id, isExpanded)
-                ) : (
-                  category.sections.map((section) => {
-                    const isActive = activeSection === section.id;
-                    return (
-                      <button
-                        key={section.id}
-                        onClick={() => onSectionChange(section.id)}
-                        className={`sidebar-nav-item w-full flex items-center justify-center lg:justify-start 
-                          px-3 py-2.5 text-sm transition-all duration-200
-                          rounded-[12px] group font-medium
-                          ${isActive
-                            ? 'bg-slate-100 text-slate-900'
-                            : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
-                          }`}
-                      >
-                        <section.icon
-                          className={`w-5 h-5 flex-shrink-0 transition-all duration-200 ${isActive ? 'text-slate-900' : 'text-slate-400 group-hover:text-slate-700'
-                            }`}
-                        />
-                        <span className={`hidden lg:block ml-3 text-left font-geist tracking-[-0.01em] whitespace-nowrap overflow-hidden transition-all duration-500 ${isActive ? 'font-semibold' : 'font-medium'
-                          } ${isExpanded ? 'opacity-100 translate-x-0 delay-100' : 'opacity-0 -translate-x-2'
-                          }`}>
-                          {section.label}
-                        </span>
-                      </button>
-                    );
-                  })
-                )}
-              </React.Fragment>
-            ))}
-          </div>
+          <SidebarNavigation
+            categories={categories}
+            activeSection={activeSection}
+            onSectionChange={onSectionChange}
+            isExpanded={isExpanded}
+            renderCategory={renderCategory}
+          />
         </SidebarContainer>
 
         {/* Section Editor */}

@@ -235,48 +235,45 @@ export const SectionTree: React.FC<SectionTreeProps> = ({ isExpanded }) => {
                                             isDragDisabled={isLocked}
                                         >
                                             {(provided, snapshot) => (
-                                                <div
+                                                <SidebarItem
                                                     ref={provided.innerRef}
                                                     {...provided.draggableProps}
                                                     {...provided.dragHandleProps}
-                                                >
-                                                    <SidebarItem
-                                                        icon={Icon}
-                                                        label={t(`components.${section.type}.name`, { defaultValue: section.type.charAt(0).toUpperCase() + section.type.slice(1) })}
-                                                        isExpanded={isExpanded}
-                                                        isActive={isActive}
-                                                        isDraggable={true}
-                                                        isLocked={!section.isEnabled}
-                                                        onClick={() => setActiveSection(section.id)}
-                                                        actionVisibility="hover"
-                                                        actions={
-                                                            !isLocked && (
-                                                                <div className="flex items-center gap-0.5">
-                                                                    <button
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation();
-                                                                            toggleSection(section.id);
-                                                                        }}
-                                                                        className="p-1 rounded hover:bg-slate-200 text-slate-400 hover:text-slate-700"
-                                                                    >
-                                                                        {section.isEnabled ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
-                                                                    </button>
-                                                                    <button
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation();
-                                                                            if (confirm(t('common.confirmDeleteSection'))) {
-                                                                                deleteSection(section.id);
-                                                                            }
-                                                                        }}
-                                                                        className="p-1 rounded hover:bg-red-50 text-slate-400 hover:text-red-600"
-                                                                    >
-                                                                        <Trash2 className="w-3 h-3" />
-                                                                    </button>
-                                                                </div>
-                                                            )
-                                                        }
-                                                    />
-                                                </div>
+                                                    icon={Icon}
+                                                    label={t(`components.${section.type}.name`, { defaultValue: section.type.charAt(0).toUpperCase() + section.type.slice(1) })}
+                                                    isExpanded={isExpanded}
+                                                    isActive={isActive}
+                                                    isDraggable={true}
+                                                    isLocked={!section.isEnabled}
+                                                    onClick={() => setActiveSection(section.id)}
+                                                    actionVisibility="hover"
+                                                    actions={
+                                                        !isLocked && (
+                                                            <div className="flex items-center gap-0.5">
+                                                                <button
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        toggleSection(section.id);
+                                                                    }}
+                                                                    className="p-1 rounded hover:bg-slate-200 text-slate-400 hover:text-slate-700"
+                                                                >
+                                                                    {section.isEnabled ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                                                                </button>
+                                                                <button
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        if (confirm(t('common.confirmDeleteSection'))) {
+                                                                            deleteSection(section.id);
+                                                                        }
+                                                                    }}
+                                                                    className="p-1 rounded hover:bg-red-50 text-slate-400 hover:text-red-600"
+                                                                >
+                                                                    <Trash2 className="w-3 h-3" />
+                                                                </button>
+                                                            </div>
+                                                        )
+                                                    }
+                                                />
                                             )}
                                         </Draggable>
                                     );

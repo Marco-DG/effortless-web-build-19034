@@ -1,14 +1,13 @@
-
 import React from 'react';
 import { LucideIcon } from 'lucide-react';
 
-interface SidebarItemProps {
+interface SidebarItemProps extends React.HTMLAttributes<HTMLDivElement> {
     icon?: LucideIcon;
     label: string;
     subLabel?: string;
     isActive?: boolean;
     isExpanded: boolean;
-    onClick: (e: React.MouseEvent) => void;
+    onClick?: (e: React.MouseEvent) => void;
     actions?: React.ReactNode;
     variant?: 'ghost' | 'outlined' | 'dropdown' | 'action';
     iconClassName?: string;
@@ -33,28 +32,29 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
     variant = 'ghost',
     iconClassName,
     actionVisibility = 'always',
-    customIcon
+    customIcon,
+    ...props
 }, ref) => {
     const getBaseStyles = () => {
-        const baseTransition = variant === 'dropdown' ? 'transition-none' : 'transition-all duration-200';
         const baseCursor = variant === 'dropdown' ? 'cursor-pointer' : 'cursor-pointer';
         const groupClass = variant === 'dropdown' ? '' : 'group';
         const sidebarClass = variant === 'dropdown' ? 'sidebar-dropdown-item' : 'sidebar-nav-item';
-        return `${sidebarClass} w-full flex items-center px-3 py-2.5 text-sm ${baseTransition} rounded-[12px] ${groupClass} font-medium ${baseCursor} select-none`;
+        // Removed w-full, added mx-1. Flex parent (stretch) will handle width.
+        return `${sidebarClass} mx-1 h-11 flex items-center px-2 py-2.5 text-sm transition-colors duration-200 rounded-[12px] ${groupClass} font-medium ${baseCursor} select-none`;
     };
 
     const variants = {
-        ghost: isActive 
+        ghost: isActive
             ? 'bg-slate-100 text-slate-900 font-semibold'
             : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900',
         outlined: isActive
-            ? 'bg-slate-100 text-slate-900 font-semibold border border-slate-200'  
+            ? 'bg-slate-100 text-slate-900 font-semibold border border-slate-200'
             : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900 border border-slate-200/50 hover:border-slate-300',
         dropdown: 'bg-white border border-slate-200/60 shadow-sm text-slate-700 !bg-white hover:!bg-white hover:!border-slate-200/60 hover:!rounded-[12px] hover:!transform-none hover:!translate-x-0',
         action: 'text-blue-600 hover:bg-blue-50/60 border border-transparent hover:border-blue-200/50'
     };
 
-    const defaultIconColor = isActive 
+    const defaultIconColor = isActive
         ? 'text-slate-900'
         : (variant === 'action' ? 'text-blue-600' : (variant === 'dropdown' ? 'text-slate-700' : 'text-slate-500 group-hover:text-slate-900'));
 
@@ -62,16 +62,16 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
         <div
             ref={ref}
             onClick={onClick}
+            {...props}
             className={`
                 ${getBaseStyles()}
                 ${variants[variant]}
-                ${isDraggable && variant !== 'dropdown' ? 'hover:shadow-sm' : ''}
                 ${isLocked ? 'opacity-60' : ''}
                 ${className}
             `}
         >
-            {/* Icon container - Same position in both collapsed/expanded */}
-            <div className="shrink-0 w-5 h-5 flex items-center justify-center">
+            {/* Icon container - Fixed width for stability */}
+            <div className="shrink-0 w-8 flex items-center justify-center">
                 {customIcon ? (
                     <div className={iconClassName || defaultIconColor}>
                         {customIcon}
@@ -87,9 +87,7 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
 
             {/* Text - Simple fade in/out with consistent spacing */}
             {isExpanded && (
-                <div className={`flex-1 flex items-center gap-2 pl-2.5 min-w-0 ${
-                    variant === 'dropdown' ? '' : 'transform group-hover:-translate-x-0.5 transition-transform duration-200'
-                }`}>
+                <div className={`flex-1 flex items-center gap-2 pl-2.5 min-w-0`}>
                     <span className="text-sm font-medium truncate">
                         {label}
                     </span>
@@ -103,11 +101,10 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
 
             {/* Actions - Simple conditional rendering */}
             {isExpanded && actions && (
-                <div className={`shrink-0 flex items-center ml-auto ${
-                    variant === 'dropdown' 
-                        ? '' 
-                        : (actionVisibility === 'hover' ? 'opacity-0 group-hover:opacity-100 transform group-hover:-translate-x-0.5 transition-all duration-200' : 'transform group-hover:-translate-x-0.5 transition-transform duration-200')
-                }`}>
+                <div className={`shrink-0 flex items-center ml-auto ${variant === 'dropdown'
+                    ? ''
+                    : (actionVisibility === 'hover' ? 'opacity-0 group-hover:opacity-100 transition-opacity duration-200' : '')
+                    }`}>
                     {actions}
                 </div>
             )}
