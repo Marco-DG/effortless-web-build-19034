@@ -100,8 +100,8 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
 
       {/* Header con tab condivisa */}
       {onSwitchBuilder && (
-        <div className="flex items-center justify-between px-4 py-4 border-b border-slate-200/30 bg-white/60 backdrop-blur-xl relative z-50">
-          <div className="flex items-center gap-3 px-2">
+        <div className="flex items-center justify-between pl-2 pr-4 py-4 border-b border-slate-200/30 bg-white/60 backdrop-blur-xl relative z-50">
+          <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center">
               <User className="w-5 h-5 text-slate-900" strokeWidth={1.5} />
             </div>

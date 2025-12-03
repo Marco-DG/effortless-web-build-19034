@@ -85,9 +85,12 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
                 )}
             </div>
 
-            {/* Text - Simple fade in/out with consistent spacing */}
-            {isExpanded && (
-                <div className={`flex-1 flex items-center gap-2 pl-2.5 min-w-0`}>
+            {/* Text - Smooth fade in/out without movement */}
+            <div className={`
+                flex-1 overflow-hidden transition-all duration-700 ease-in-out
+                ${isExpanded ? 'w-auto opacity-100' : 'w-0 opacity-0'}
+            `}>
+                <div className="flex items-center gap-2 pl-2.5 min-w-max">
                     <span className="text-sm font-medium truncate">
                         {label}
                     </span>
@@ -97,15 +100,21 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
                         </span>
                     )}
                 </div>
-            )}
+            </div>
 
-            {/* Actions - Simple conditional rendering */}
-            {isExpanded && actions && (
-                <div className={`shrink-0 flex items-center ml-auto ${variant === 'dropdown'
-                    ? ''
-                    : (actionVisibility === 'hover' ? 'opacity-0 group-hover:opacity-100 transition-opacity duration-200' : '')
-                    }`}>
-                    {actions}
+            {/* Actions - Smooth fade in/out without movement */}
+            {actions && (
+                <div className={`
+                    shrink-0 overflow-hidden transition-all duration-700 ease-in-out
+                    ${isExpanded ? 'w-auto opacity-100' : 'w-0 opacity-0'}
+                    ${variant === 'dropdown'
+                        ? ''
+                        : (actionVisibility === 'hover' ? 'opacity-0 group-hover:opacity-100' : '')
+                    }
+                `}>
+                    <div className="flex items-center ml-auto pl-2">
+                        {actions}
+                    </div>
                 </div>
             )}
         </div>
