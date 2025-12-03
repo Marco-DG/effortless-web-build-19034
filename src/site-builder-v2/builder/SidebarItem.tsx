@@ -87,7 +87,7 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
 
             {/* Text - Smooth fade in/out without movement */}
             <div className={`
-                flex-1 overflow-hidden transition-all duration-700 ease-in-out
+                flex-1 overflow-hidden transition-all duration-600 ease-in-out
                 ${isExpanded ? 'w-auto opacity-100' : 'w-0 opacity-0'}
             `}>
                 <div className="flex items-center gap-2 pl-2.5 min-w-max">
