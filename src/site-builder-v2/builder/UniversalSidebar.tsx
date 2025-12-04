@@ -1,7 +1,9 @@
 import React from 'react';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { useTranslation } from 'react-i18next';
 import { UnifiedBuilderLayout } from '../shared/components/UnifiedBuilderLayout';
 import { AutoSidebar } from '../editor/AutoSidebar';
+import { Engine } from './Engine';
 import { SegmentedControl } from '../editor/components/SegmentedControl';
 import { useAppStore } from '../store/app-store';
 import { getComponentDefinition } from './registry';
@@ -44,16 +46,45 @@ export const UniversalSidebar: React.FC = () => {
         ui,
         setActiveSection,
         updateSection,
-        setActiveMode
+        setActiveMode,
+        addSection,
+        reorderSections,
+        deleteSection,
+        duplicateSection
     } = useAppStore();
     const [activeTab, setActiveTab] = React.useState<'design' | 'content'>('design');
-    const { activeSectionId, activePageId } = ui;
+    const { activeSectionId, activePageId, previewOpen } = ui;
 
     if (!activeProject) return null;
 
     // Find active page
     const activePage = activeProject.pages?.find(p => p.id === activePageId) || activeProject.pages?.[0];
     if (!activePage) return <div>No pages found</div>;
+    const activePageSections = activePage.sections;
+
+    // Handlers for Engine
+    const handleAddSection = (type: string, index: number) => {
+        addSection(type, index);
+    };
+
+    const handleMoveSection = (index: number, direction: 'up' | 'down') => {
+        const newIndex = direction === 'up' ? index - 1 : index + 1;
+        if (newIndex < 0 || newIndex >= activePageSections.length) return;
+        reorderSections(index, newIndex);
+    };
+
+    const handleDeleteSection = (sectionId: string) => {
+        if (confirm(t('common.confirmDeleteSection'))) {
+            deleteSection(sectionId);
+            if (activeSectionId === sectionId) {
+                setActiveSection(null);
+            }
+        }
+    };
+
+    const handleDuplicateSection = (sectionId: string) => {
+        duplicateSection(sectionId);
+    };
 
     // Define Sidebar Tools
     const sidebarTools = [
@@ -73,28 +104,57 @@ export const UniversalSidebar: React.FC = () => {
 
     // Determine what to render in the content area
     const renderContent = () => {
-        if (isEditingSection && activeComponentDef && activeSectionConfig) {
+        const normalContent = (isEditingSection && activeComponentDef && activeSectionConfig) ? (
+            <AutoSidebar
+                schema={activeComponentDef.schema}
+                data={activeSectionConfig.data}
+                onUpdate={(newData) => updateSection(activeSectionConfig.id, newData)}
+                activeTab={activeTab}
+                onTabChange={setActiveTab}
+            />
+        ) : (
+            (() => {
+                switch (activeSectionId) {
+                    case 'structure_manager':
+                        return <SectionManager />;
+                    case 'theme_editor':
+                        return <ThemeEditor />;
+                    default:
+                        return <SectionManager />;
+                }
+            })()
+        );
+
+        if (previewOpen) {
             return (
-                <AutoSidebar
-                    schema={activeComponentDef.schema}
-                    data={activeSectionConfig.data}
-                    onUpdate={(newData) => updateSection(activeSectionConfig.id, newData)}
-                    activeTab={activeTab}
-                    onTabChange={setActiveTab}
-                />
+                <>
+                    {/* Mobile: Show Engine */}
+                    <div className="lg:hidden w-full bg-white">
+                        <Engine
+                            previewMode={true}
+                            config={activeProject}
+                            sections={activePageSections}
+                            activeSectionId={activeSectionId}
+                            onSectionSelect={setActiveSection}
+                            onAddSection={handleAddSection}
+                            onMoveSection={handleMoveSection}
+                            onDeleteSection={handleDeleteSection}
+                            onDuplicateSection={handleDuplicateSection}
+                        />
+                    </div>
+                    {/* Desktop: Show Normal Content */}
+                    <div className="hidden lg:block w-full h-full">
+                        <ScrollArea className="h-full">
+                            <div className="p-6 bg-gradient-to-b from-white/30 via-slate-50/20 to-slate-50/40">
+                                {normalContent}
+                            </div>
+                        </ScrollArea>
+                    </div>
+                </>
             );
         }
 
-        switch (activeSectionId) {
-            case 'structure_manager':
-                return <SectionManager />;
-            case 'theme_editor':
-                return <ThemeEditor />;
-            default:
-                // Default to Page Settings if nothing selected (or if ID doesn't match)
-                // Default to Structure Manager (Layers) since Page Settings is disabled
-                return <SectionManager />;
-        }
+        return normalContent;
     };
 
     // If editing a section, we can show a custom header or let AutoSidebar handle it.

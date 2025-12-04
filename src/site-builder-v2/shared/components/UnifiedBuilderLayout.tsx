@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Eye, LucideIcon, ExternalLink, User } from 'lucide-react';
+import { Eye, LucideIcon, ExternalLink, User, X } from 'lucide-react';
+import { useAppStore } from '../../store/app-store';
 import { useTranslation } from 'react-i18next';
 import { useSidebarState } from '../../hooks/useSidebarState';
 import { SidebarContainer } from './SidebarContainer';
@@ -68,6 +69,8 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
     setIsHovered,
     setIsEditorHovered
   } = useSidebarState();
+  const { ui, togglePreview } = useAppStore();
+  const { previewOpen } = ui;
   const currentSection = sections.find(s => s.id === activeSection);
 
   // Group sections by category
@@ -124,10 +127,23 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
             </a>
             <button
               type="button"
-              className="lg:hidden inline-flex items-center gap-2 rounded-[12px] bg-slate-900 text-white px-4 py-2.5 text-sm font-medium shadow-lg shadow-slate-900/20 hover:bg-slate-800 transition-all duration-200"
+              onClick={togglePreview}
+              className={`lg:hidden inline-flex items-center gap-2 rounded-[12px] px-4 py-2.5 text-sm font-medium shadow-lg transition-all duration-200 ${previewOpen
+                ? 'bg-slate-100 text-slate-900 shadow-slate-200/50 hover:bg-slate-200'
+                : 'bg-slate-900 text-white shadow-slate-900/20 hover:bg-slate-800'
+                }`}
             >
-              <Eye className="w-4 h-4" />
-              <span className="font-geist font-medium tracking-[-0.01em]">Anteprima</span>
+              {previewOpen ? (
+                <>
+                  <X className="w-4 h-4" />
+                  <span className="font-geist font-medium tracking-[-0.01em]">Chiudi</span>
+                </>
+              ) : (
+                <>
+                  <Eye className="w-4 h-4" />
+                  <span className="font-geist font-medium tracking-[-0.01em]">Anteprima</span>
+                </>
+              )}
             </button>
           </div>
         </div>
@@ -141,6 +157,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
           width={sidebarWidth}
           isExpanded={isExpanded}
           onHoverChange={setIsHovered}
+          className={previewOpen ? 'hidden lg:flex' : 'flex'}
         >
           <SidebarNavigation
             categories={categories}
@@ -158,7 +175,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
           onMouseLeave={() => setIsEditorHovered(false)}
         >
           {/* Section Header */}
-          <div className="px-10 py-8 border-b border-slate-200/30 bg-white/40 backdrop-blur-xl">
+          <div className={`px-10 py-8 border-b border-slate-200/30 bg-white/40 backdrop-blur-xl ${previewOpen ? 'hidden lg:block' : ''}`}>
             {headerContent ? (
               headerContent
             ) : (
@@ -183,11 +200,17 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
           </div>
 
           {/* Section Content */}
-          <ScrollArea className="flex-1" viewportClassName="!block" viewportStyle={{ display: 'block' }}>
-            <div className={contentClassName || "p-6 bg-gradient-to-b from-white/30 via-slate-50/20 to-slate-50/40"}>
+          {previewOpen ? (
+            <div className="flex-1 flex flex-col min-h-0 w-full overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
               {children}
             </div>
-          </ScrollArea>
+          ) : (
+            <ScrollArea className="flex-1" viewportClassName="!block" viewportStyle={{ display: 'block' }}>
+              <div className={contentClassName || "p-6 bg-gradient-to-b from-white/30 via-slate-50/20 to-slate-50/40"}>
+                {children}
+              </div>
+            </ScrollArea>
+          )}
         </div>
       </div>
     </div>

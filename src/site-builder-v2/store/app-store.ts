@@ -435,31 +435,29 @@ export const useAppStore = create<AppStore>()(
       // --- Section Management (Scoped to Active Page) ---
 
       updateSection: (sectionId, data) => {
-        console.log('🔧 UpdateSection chiamata:', { sectionId, data });
         set((state) => {
-        if (!state.activeProject || !state.ui.activePageId) return state;
+          if (!state.activeProject || !state.ui.activePageId) return state;
 
-        const activePage = state.activeProject.pages.find(p => p.id === state.ui.activePageId);
-        if (!activePage) return state;
+          const activePage = state.activeProject.pages.find(p => p.id === state.ui.activePageId);
+          if (!activePage) return state;
 
-        const newSections = activePage.sections.map(section =>
-          section.id === sectionId
-            ? { ...section, data: { ...section.data, ...data } }
-            : section
-        );
+          const newSections = activePage.sections.map(section =>
+            section.id === sectionId
+              ? { ...section, data: { ...section.data, ...data } }
+              : section
+          );
 
-        const newPages = state.activeProject.pages.map(p =>
-          p.id === state.ui.activePageId ? { ...p, sections: newSections } : p
-        );
+          const newPages = state.activeProject.pages.map(p =>
+            p.id === state.ui.activePageId ? { ...p, sections: newSections } : p
+          );
 
-        const result = {
-          activeProject: {
-            ...state.activeProject,
-            pages: newPages
-          }
-        };
-        console.log('✅ UpdateSection completato, sezione aggiornata:', newSections.find(s => s.id === sectionId)?.data);
-        return result;
+          const result = {
+            activeProject: {
+              ...state.activeProject,
+              pages: newPages
+            }
+          };
+          return result;
         });
       },
 
