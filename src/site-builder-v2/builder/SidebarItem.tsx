@@ -86,19 +86,24 @@ export const SidebarItem = React.forwardRef<HTMLDivElement, SidebarItemProps>(({
             </div>
 
             {/* Text - Smooth fade in/out without movement */}
-            <div className={`
-                flex-1 overflow-hidden transition-all duration-700 ease-in-out
-                ${isExpanded ? 'w-auto opacity-100' : 'w-0 opacity-0'}
-            `}>
-                <div className="flex items-center gap-2 pl-2.5 min-w-max">
-                    <span className="text-sm font-medium truncate">
-                        {label}
-                    </span>
-                    {subLabel && (
-                        <span className="text-xs text-slate-400 font-medium shrink-0">
-                            {subLabel}
+            {/* Text - Smooth fade in/out without movement */}
+            <div
+                className={`
+                    flex-1 grid transition-[grid-template-columns,opacity] duration-700 ease-out
+                    ${isExpanded ? 'grid-cols-[1fr] opacity-100' : 'grid-cols-[0fr] opacity-0'}
+                `}
+            >
+                <div className="overflow-hidden">
+                    <div className="flex items-center gap-2 pl-2.5 min-w-max">
+                        <span className="text-sm font-medium truncate">
+                            {label}
                         </span>
-                    )}
+                        {subLabel && (
+                            <span className="text-xs text-slate-400 font-medium shrink-0">
+                                {subLabel}
+                            </span>
+                        )}
+                    </div>
                 </div>
             </div>
 

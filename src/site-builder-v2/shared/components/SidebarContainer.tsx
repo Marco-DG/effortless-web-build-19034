@@ -22,16 +22,16 @@ export const SidebarContainer: React.FC<SidebarContainerProps> = ({
   return (
     <div
       style={{
-        width,
+        '--sidebar-width': width,
         transition: SIDEBAR_TRANSITIONS.WIDTH
-      }}
-      className={`flex flex-col flex-shrink-0 relative z-20 overflow-hidden ${className}`}
+      } as React.CSSProperties}
+      className={`flex flex-col flex-shrink-0 relative z-20 overflow-hidden w-[var(--sidebar-width)] ${className}`}
       onMouseEnter={() => onHoverChange(true)}
       onMouseLeave={() => onHoverChange(false)}
     >
       {/* Elegant border divider */}
       <div className="absolute right-0 top-0 bottom-0 sidebar-divider"></div>
-      
+
       {/* Scrollable content area */}
       <ScrollArea className="flex-1">
         {children}
