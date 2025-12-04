@@ -230,7 +230,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
           onMouseLeave={() => setIsEditorHovered(false)}
         >
           {/* Section Header */}
-          <div className={`px-10 py-8 border-b border-slate-200/30 bg-white/40 backdrop-blur-xl ${previewOpen ? 'hidden lg:block' : ''}`}>
+          <div className={`px-8 pt-8 pb-0 border-b border-slate-200/30 bg-white/40 backdrop-blur-xl ${previewOpen ? 'hidden lg:block' : ''}`}>
             {headerContent ? (
               headerContent
             ) : (
@@ -261,7 +261,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
             </div>
           ) : (
             <ScrollArea className="flex-1" viewportClassName="!block" viewportStyle={{ display: 'block' }}>
-              <div className={contentClassName || "p-6 bg-gradient-to-b from-white/30 via-slate-50/20 to-slate-50/40"}>
+              <div className={contentClassName || "p-4 bg-gradient-to-b from-white/30 via-slate-50/20 to-slate-50/40"}>
                 {children}
               </div>
             </ScrollArea>
