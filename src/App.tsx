@@ -15,6 +15,16 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const RouteWrapper = () => {
   const location = useLocation();
+
+  // Don't animate the preview route to avoid layout issues
+  if (location.pathname === '/preview') {
+    return (
+      <Routes location={location}>
+        <Route path="/preview" element={<Preview />} />
+      </Routes>
+    );
+  }
+
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -28,7 +38,7 @@ const RouteWrapper = () => {
           <Route path="/" element={<Index />} />
           <Route path="/builders" element={<Builders />} />
           <Route path="/builder2" element={<Builder2 />} />
-          <Route path="/preview" element={<Preview />} />
+          {/* Preview is handled above, but kept here for completeness if needed elsewhere, though usually mutually exclusive */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </motion.div>

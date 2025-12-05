@@ -62,7 +62,7 @@ export const Engine: React.FC<EngineProps> = ({
 
     return (
         <div
-            className={`w-full min-h-screen bg-[var(--theme-background)] text-[var(--theme-text)] ${!previewMode && !hasFooter ? 'pb-32' : ''}`}
+            className={`w-full min-h-screen bg-[var(--theme-background)] text-[var(--theme-text)] overflow-x-hidden ${!previewMode && !hasFooter ? 'pb-32' : ''}`}
             style={{ fontFamily: 'var(--theme-font-body)' }}
         >
             <AddSectionModal
@@ -162,9 +162,9 @@ const GhostDivider: React.FC<{
                     }}
                     className="bg-white border border-slate-200/60 hover:border-slate-300 rounded-[12px] px-3 py-2 shadow-sm hover:shadow-lg transition-all duration-300 relative cursor-pointer"
                 >
-                    {/* Linee a tutta larghezza */}
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-screen h-[1px] bg-slate-200/40 -translate-x-full opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
-                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-screen h-[1px] bg-slate-200/40 translate-x-full opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
+                    {/* Linee a tutta larghezza - contained to prevent overflow */}
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[100vw] h-[1px] bg-slate-200/40 -translate-x-full opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[100vw] h-[1px] bg-slate-200/40 translate-x-full opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
 
                     <div className="flex items-center gap-2 relative z-10">
                         <Plus className="w-3.5 h-3.5 text-slate-500" />

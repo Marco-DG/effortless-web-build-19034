@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useAppStore } from '../store/app-store';
-import { Engine } from '../modules/core/builder/Engine';
+import { useAppStore } from '../site-builder-v2/store/app-store';
+import { Engine } from '../site-builder-v2/builder/Engine';
 import { useTranslation } from 'react-i18next';
 
 export default function Preview() {
@@ -9,14 +9,36 @@ export default function Preview() {
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    // Allow a brief moment for Zustand persist to rehydrate
-    setIsHydrated(true);
+    const checkHydration = () => {
+      const state = useAppStore.getState();
+
+      // Check if we have an active project or if we've waited long enough
+      if (state.activeProject || useAppStore.persist?.hasHydrated()) {
+        setIsHydrated(true);
+      } else {
+        // If not hydrated yet, retry shortly
+        requestAnimationFrame(checkHydration);
+      }
+    };
+
+    // Start checking
+    checkHydration();
+
+    // Force rehydration if needed
+    if (useAppStore.persist?.rehydrate) {
+      useAppStore.persist.rehydrate();
+    }
   }, []);
 
   if (!isHydrated) {
-    return <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="animate-pulse text-slate-400">Loading...</div>
-    </div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-6 h-6 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></div>
+          <div className="text-slate-500 font-medium text-sm">Caricamento anteprima...</div>
+        </div>
+      </div>
+    );
   }
 
   if (!activeProject) {
@@ -49,7 +71,7 @@ export default function Preview() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white w-full overflow-x-hidden">
       <Engine
         config={activeProject}
         sections={activePage.sections}

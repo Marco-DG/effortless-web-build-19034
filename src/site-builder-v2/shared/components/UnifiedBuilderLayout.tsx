@@ -10,25 +10,7 @@ import { type BuilderSection, type BuilderType } from '../../types/sidebar';
 
 // ... (existing code)
 
-<div className="flex items-center gap-2">
-  <a
-    href="/preview"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-flex items-center justify-center gap-2 px-3 h-10 rounded-[12px] bg-white text-slate-600 border border-slate-200/60 hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300 transition-all duration-200 shadow-sm"
-    title="Apri in nuova scheda"
-  >
-    <ExternalLink className="w-4 h-4" />
-    <span className="hidden xl:inline font-medium text-sm">Anteprima</span>
-  </a>
-  <button
-    type="button"
-    className="lg:hidden inline-flex items-center gap-2 rounded-[12px] bg-slate-900 text-white px-4 py-2.5 text-sm font-medium shadow-lg shadow-slate-900/20 hover:bg-slate-800 transition-all duration-200"
-  >
-    <Eye className="w-4 h-4" />
-    <span className="font-geist font-medium tracking-[-0.01em]">Anteprima</span>
-  </button>
-</div >
+
 
 export interface UnifiedBuilderLayoutProps {
   // Builder configuration
@@ -55,21 +37,20 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
   activeSection,
   onSectionChange,
   onSwitchBuilder,
-  onExport,
-  extraHeaderActions,
+  children,
   headerContent,
   contentClassName,
-  renderCategory,
-  children
+  renderCategory
 }) => {
   const { t } = useTranslation();
+  const { activeProject, ui, togglePreview, toggleSidebar, closeSidebar } = useAppStore();
+
   const {
     isExpanded,
     sidebarWidth,
     setIsHovered,
     setIsEditorHovered
   } = useSidebarState();
-  const { ui, togglePreview, toggleSidebar, closeSidebar } = useAppStore();
   const { previewOpen, sidebarOpen } = ui;
   const currentSection = sections.find(s => s.id === activeSection);
 
@@ -135,6 +116,17 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
 
           {/* Right: Actions based on State */}
           <div className="flex items-center gap-2 flex-shrink-0">
+
+            {/* Desktop: Preview in new tab (Always visible on desktop) */}
+            <a
+              href="/preview"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden lg:inline-flex items-center justify-center w-10 h-10 rounded-[12px] bg-white text-slate-600 border border-slate-200/60 hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300 transition-all duration-200 shadow-sm"
+              title="Apri in nuova scheda"
+            >
+              <ExternalLink className="w-4 h-4" />
+            </a>
 
             {/* STATE 1: PREVIEW OPEN -> Show External Link + Close Preview */}
             {previewOpen && (
@@ -256,7 +248,7 @@ export const UnifiedBuilderLayout: React.FC<UnifiedBuilderLayoutProps> = ({
 
           {/* Section Content */}
           {previewOpen ? (
-            <div className="flex-1 flex flex-col min-h-0 w-full overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+            <div className="flex-1 flex flex-col min-h-0 w-full overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
               {children}
             </div>
           ) : (
