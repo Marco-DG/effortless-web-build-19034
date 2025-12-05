@@ -63,13 +63,13 @@ export const UniversalHeader: React.FC<HeaderProps> = ({
         let textColor = "";
 
         if (style === 'solid' || (style === 'transparent' && scrolled)) {
-            background = "bg-[var(--theme-background)] border-b border-white/10 shadow-sm";
+            background = "bg-[var(--theme-background)] shadow-sm"; // Removed border-b
             textColor = "text-[var(--theme-text)]";
         } else if (style === 'transparent') {
-            background = "bg-transparent border-b border-transparent";
-            textColor = "text-white"; // Assuming transparent is usually over dark hero
+            background = "bg-transparent"; // Removed border-b
+            textColor = "text-white";
         } else if (style === 'glass') {
-            background = "bg-white/10 backdrop-blur-md border-b border-white/10";
+            background = "bg-white/10 backdrop-blur-md border-b border-white/5"; // Reduced border opacity
             textColor = "text-white";
         }
 
