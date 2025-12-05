@@ -1,0 +1,203 @@
+{
+    "common": {
+        "save": "Salva",
+        "delete": "Elimina",
+        "cancel": "Annulla",
+        "edit": "Modifica",
+        "add": "Aggiungi",
+        "remove": "Rimuovi",
+        "loading": "Caricamento...",
+        "error": "Errore",
+        "success": "Successo",
+        "pages": "Pagine",
+        "managePages": "Gestisci la struttura del sito e la SEO.",
+        "pageTitle": "Titolo Pagina",
+        "urlSlug": "Slug URL",
+        "seoTitle": "Titolo SEO",
+        "seoDesc": "Descrizione SEO",
+        "browserTabTitle": "Titolo Scheda Browser",
+        "searchEngineDesc": "Descrizione per motori di ricerca...",
+        "pageSettings": "Impostazioni Pagina",
+        "deletePage": "Elimina Pagina",
+        "pageNamePlaceholder": "Nome Pagina (es. Menu)",
+        "createPage": "Crea Pagina",
+        "addNewPage": "Aggiungi Nuova Pagina",
+        "confirmDeletePage": "Eliminare questa pagina?",
+        "confirmDeleteSection": "Sei sicuro di voler eliminare questa sezione?",
+        "loadingProject": "Caricamento Progetto...",
+        "noPageSelected": "Nessuna pagina selezionata",
+        "layers": "Sezioni",
+        "manageSections": "Gestisci sezioni e layout",
+        "settings": "Impostazioni",
+        "businessProfile": "Profilo aziendale",
+        "editingComponent": "Modifica Componente",
+        "structure": "Struttura",
+        "design": "Design",
+        "controls": "Controlli",
+        "config": "Configurazione",
+        "management": "Gestione",
+        "appearance": "Aspetto",
+        "data": "Dati",
+        "create": "Crea",
+        "slug": "Slug URL",
+        "enterNewPageTitle": "Inserisci nuovo titolo pagina",
+        "design": "Design",
+        "content": "Contenuto"
+    },
+    "builder": {
+        "moveUp": "Sposta Su",
+        "moveDown": "Sposta Giù",
+        "settings": "Impostazioni",
+        "layers": "Livelli",
+        "pages": "Pagine",
+        "preview": "Anteprima",
+        "publish": "Pubblica",
+        "addSection": "Aggiungi sezione",
+        "addPage": "Crea Nuova Pagina",
+        "editPage": "Modifica Pagina",
+        "addFooterOrSection": "Aggiungi Footer / Sezione",
+        "chooseComponent": "Scegli un componente da aggiungere alla pagina",
+        "pageStructure": "Sezioni",
+        "pageStructureDesc": "",
+        "components": "Componenti"
+    },
+    "components": {
+        "hero": {
+            "name": "Hero",
+            "description": "Sezione principale di benvenuto"
+        },
+        "features": {
+            "name": "Lista Funzionalità",
+            "description": "Griglia di funzionalità, servizi o comfort."
+        },
+        "testimonials": {
+            "name": "Recensioni",
+            "description": "Recensioni dei clienti"
+        },
+        "contact": {
+            "name": "Contatti",
+            "description": "Informazioni di contatto"
+        },
+        "header": {
+            "name": "Barra di Navigazione",
+            "description": "Intestazione personalizzabile con logo e link",
+            "layoutStyle": "Layout",
+            "headerStyle": "Stile Intestazione",
+            "styleSolid": "Solido",
+            "styleTransparent": "Trasparente",
+            "styleGlass": "Vetro"
+        },
+        "footer": {
+            "name": "Footer",
+            "description": "Footer multi-colonna con link social e newsletter."
+        },
+        "menu": {
+            "name": "Menù",
+            "description": "Anteprima del menù"
+        },
+        "gallery": {
+            "name": "Galleria",
+            "description": "Galleria foto del ristorante"
+        },
+        "reservation": {
+            "name": "Eventi",
+            "description": "Eventi e manifestazioni"
+        },
+        "content": {
+            "name": "Chi Siamo",
+            "description": "Informazioni sul ristorante"
+        },
+        "awards": {
+            "name": "Riconoscimenti",
+            "description": "Mostra i tuoi risultati e le menzioni stampa."
+        },
+        "grid": {
+            "name": "Posizione",
+            "description": "Mappa e indicazioni"
+        }
+    },
+    "Headline": "Titolo",
+    "Subheadline": "Sottotitolo",
+    "Background Image": "Immagine di Sfondo",
+    "Layout": "Layout",
+    "Visual Style": "Stile Visivo",
+    "Button Text": "Testo Bottone",
+    "Button Link": "Link Bottone",
+    "Cover / Hero": "Copertina / Hero",
+    "Centered": "Centrato",
+    "Split Left": "Diviso Sinistra",
+    "Split Right": "Diviso Destra",
+    "Cinematic": "Cinematografico",
+    "Minimal": "Minimale",
+    "Gradient": "Sfumato",
+    "Dark Overlay": "Sovrapposizione Scura",
+    "defaults": {
+        "hero": {
+            "title": "Benvenuto nel nostro sito",
+            "subtitle": "Crea qualcosa di straordinario oggi.",
+            "ctaText": "Inizia Ora"
+        },
+        "business": {
+            "tagline": "Esperienza Gastronomica Raffinata",
+            "description": "Un viaggio culinario tra tradizione e innovazione."
+        },
+        "project": {
+            "description": "Creato con Universal Builder"
+        },
+        "features": {
+            "title": "I Nostri Servizi",
+            "subtitle": "Vivi il Meglio"
+        },
+        "testimonials": {
+            "title": "Dicono di Noi",
+            "subtitle": "Testimonianze"
+        },
+        "contact": {
+            "title": "Vienici a Trovare"
+        },
+        "header": {
+            "logoText": "Ristorante",
+            "ctaText": "Prenota Tavolo",
+            "links": {
+                "home": "Home",
+                "menu": "Menu",
+                "events": "Eventi",
+                "contact": "Contatti"
+            }
+        },
+        "footer": {
+            "copyrightText": "© 2024 Nome Ristorante. Tutti i diritti riservati.",
+            "links": {
+                "privacy": "Privacy Policy",
+                "terms": "Termini di Servizio",
+                "cookie": "Cookie Policy"
+            }
+        },
+        "menu": {
+            "title": "Menu Stagionale",
+            "subtitle": "Ingredienti locali, preparati con passione."
+        },
+        "gallery": {
+            "title": "La Nostra Atmosfera",
+            "subtitle": "Vivi l'atmosfera della nostra location."
+        },
+        "reservation": {
+            "title": "Prenota il tuo Tavolo",
+            "description": "Vivi un'esperienza culinaria d'eccellenza. Prenota ora per una serata indimenticabile.",
+            "buttonText": "Prenota Ora"
+        },
+        "content": {
+            "title": "La Nostra Storia",
+            "subtitle": "Tradizione & Innovazione",
+            "text": "Fondata nel 2010, abbiamo iniziato con una missione semplice: portare sapori autentici sulla tavola moderna. Il nostro chef, Marco Rossi, combina tecniche tradizionali con presentazioni contemporanee per creare piatti familiari e sorprendenti.",
+            "ctaText": "Leggi di Più"
+        },
+        "awards": {
+            "title": "I Nostri Riconoscimenti"
+        },
+        "grid": {
+            "title": "I Nostri Servizi",
+            "subtitle": "Scopri cosa ci rende unici."
+        }
+    }
+}
